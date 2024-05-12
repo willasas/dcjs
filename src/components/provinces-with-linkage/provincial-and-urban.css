@@ -1,0 +1,42 @@
+.addr-form {
+  position: relative;
+  margin: 0 auto;
+  width: 480px;
+  height: auto;
+}
+.addr-form .prov-el, .addr-form .city-el, .addr-form .country-el, .addr-form .full-el {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.addr-form .prov-el label, .addr-form .city-el label, .addr-form .country-el label, .addr-form .full-el label {
+  max-width: 180px;
+  width: 100%;
+  font-size: 22px;
+  color: #000;
+  line-height: 32px;
+  text-align: right;
+  margin-right: 10px;
+}
+.addr-form .prov-el input, .addr-form .city-el input, .addr-form .country-el input, .addr-form .full-el input {
+  width: 360px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid rgb(0, 213, 241);
+}
+.addr-form .prov-el input[name=sex], .addr-form .city-el input[name=sex], .addr-form .country-el input[name=sex], .addr-form .full-el input[name=sex] {
+  width: 32px;
+  height: 32px;
+}
+.addr-form .prov-el select, .addr-form .city-el select, .addr-form .country-el select, .addr-form .full-el select {
+  width: 360px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid rgb(0, 213, 241);
+}
+
+/*# sourceMappingURL=provincial-and-urban.css.map */

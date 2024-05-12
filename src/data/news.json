@@ -1,0 +1,18 @@
+{
+  "news": [
+    {"title": "新闻标题1", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover1.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题2", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover2.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题3", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover3.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题4", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover4.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题5", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover5.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题6", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover6.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题7", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover7.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题8", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover8.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题9", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover9.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题10", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover10.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题11", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover11.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题12", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover12.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题13", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover13.png", "info":"正文内容正文内容"},
+    {"title": "新闻标题14", "desc":"新闻描述信息", "date": "2022-10-21", "cover":"images/cover14.png", "info":"正文内容正文内容"}
+  ]
+}

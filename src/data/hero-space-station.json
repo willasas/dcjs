@@ -1,0 +1,154 @@
+{
+	"hero_id": "107",
+	"hero_name": "赵云",
+	"hero_title": "苍天翔龙",
+	"hero_line": "枪如惊雷，照一身肝胆!",
+	"hero_describe": "最强佣兵团“龙”背后之人，被称作影子。曹操巧妙撩拨着龙的野心，影子从中嗅到了阴谋的气息，无法说服龙的影子只能退出组织。当佣兵团受命与吕布一战，却被屠戮殆尽时，影子现身与龙合力杀死了吕布后，又随之离去，并从此消失。数年后，当曹操大军席卷三分之地时，曾经站在龙背后的影子，以赵子龙之名于长坂坡参见。",
+	"hero_energy": "武道",
+	"hero_identity": "龙枪战士",
+	"hero_card_img": "image/20210907/16309971364137.jpg",
+	"hero_height": "186",
+	"hero_area": "三分之地",
+	"hero_camp": "蜀",
+	"race": "人类",
+	"career": "战士/刺客",
+	"hero_icon_756_775": "image/20211116/16370464901066.png",
+	"hero_icon_453_464": "image/20210910/16312383066464.png",
+	"hero_icon_750_760": "image/20210910/16312382914421.png",
+	"kv_transverse_plate_img": "image/20210910/16312383096594.jpg",
+	"kv_riser_img": "image/20210910/16312382944001.jpg",
+	"hero_source": "赵云是三国时的蜀汉名将。常山真定人，字子龙。东汉末年大乱，群雄并起之时，起兵归于公孙瓒。公孙瓒败亡，投奔刘备，时刘备未成气候。刘备依附荆州刘表，兵微将寡。赶上曹操大军南下，刘备于混战之中溃退，丢下了妻儿。赵云于长坂坡救下当时刘备唯一的儿子刘禅并甘夫人，由此闻名天下。此后，赵云在刘备军中，地位一直低于关羽和张飞，但却屡立战功。夺取荆州，益州，都冲锋在前，夺取汉中之时，以少胜多，击退曹操大军。刘备战后走过赵云争战之地，感慨说：\"子龙一身都是胆也。\"赵云不仅勇冠三军，而且非常有见识，征服蜀地之后，有人建议把蜀中良田美宅分给诸将，赵云则说蜀中大乱甫定，应该把这些分给百姓，以安定民心。荆州被关羽丢了之后，刘备在激愤之中起兵跟东吴争斗。完全违背了诸葛亮为他制定的北拒曹操，东和孙权的大政方针，只有赵云规劝他不要兴兵。刘备死后，赵云成为诸葛亮最为倚重的将领，最初几次出岐山，进攻中原，以攻为守，都有赵云参与。可惜，出师未捷身先死，赵云一生都效忠于蜀国。",
+	"hero_biography_link": "http://pvp.qq.com/webplat/info/news_version3/15592/27363/38458/m21998/201906/814988.shtml",
+	"hero_story": [
+		{
+			"cover_transverse_plate_img": "image/20211203/16385285543856.jpg",
+			"cover_riser_img": "image/20211203/16385285659557.jpg",
+			"cover_img": "image/20211203/16385285458228.jpg",
+			"name": "玄雍密档",
+			"desc": "",
+			"details_and_content": ""
+		},
+		{
+			"cover_transverse_plate_img": "image/20210908/16310934803619.jpg",
+			"cover_riser_img": "image/20210908/16310934934891.jpg",
+			"cover_img": "image/20210908/16310935089708.jpg",
+			"name": "永生的殿堂",
+			"desc": "",
+			"details_and_content": "http://pvp.qq.com/webplat/info/news_version3/15592/27363/38458/m21998/202003/852416.shtml"
+		}
+	],
+	"skin_appreciation_list1": [
+		{
+			"skin_cover_name": "白执事",
+			"skin_cover_img": "image/20210915/16316770719672.jpg"
+		},
+		{
+			"skin_cover_name": "皇家上将",
+			"skin_cover_img": "image/20210915/16316771497724.jpg"
+		},
+		{
+			"skin_cover_name": "忍·炎影",
+			"skin_cover_img": "image/20210915/16316771833103.jpg"
+		},
+		{
+			"skin_cover_name": "未来纪元",
+			"skin_cover_img": "image/20210915/16316772102284.jpg"
+		},
+		{
+			"skin_cover_name": "嘻哈天王",
+			"skin_cover_img": "image/20230609/16862792719825.jpg"
+		},
+		{
+			"skin_cover_name": "引擎之心",
+			"skin_cover_img": "image/20210915/16316772647280.jpg"
+		},
+		{
+			"skin_cover_name": "龙胆",
+			"skin_cover_img": "image/20210915/16316773136358.jpg"
+		},
+		{
+			"skin_cover_name": "淬星耀世",
+			"skin_cover_img": "image/20210923/16323875484854.jpg"
+		},
+		{
+			"skin_cover_name": "百木心枪",
+			"skin_cover_img": "image/20220419/16503370947991.jpg"
+		}
+	],
+	"skin_appreciation_list2": [
+		{
+			"skin_cover_img": "image/20210915/16316770866793.jpg",
+			"skin_cover_name": "白执事"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316771567766.jpg",
+			"skin_cover_name": "皇家上将"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316771906515.jpg",
+			"skin_cover_name": "忍·炎影"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316772177444.jpg",
+			"skin_cover_name": "未来纪元"
+		},
+		{
+			"skin_cover_img": "image/20230609/16862792828281.jpg",
+			"skin_cover_name": "嘻哈天王"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316772718122.jpg",
+			"skin_cover_name": "引擎之心"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316773269351.jpg",
+			"skin_cover_name": "龙胆"
+		},
+		{
+			"skin_cover_img": "image/20210923/16323875567858.jpg",
+			"skin_cover_name": "淬星耀世"
+		},
+		{
+			"skin_cover_img": "image/20220419/16503371029258.jpg",
+			"skin_cover_name": "百木心枪"
+		}
+	],
+	"skin_appreciation_list3": [
+		{
+			"skin_cover_img": "image/20210915/16316771078870.jpg",
+			"skin_cover_name": "白执事"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316771642134.jpg",
+			"skin_cover_name": "皇家上将"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316771988166.jpg",
+			"skin_cover_name": "忍·炎影"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316772234822.jpg",
+			"skin_cover_name": "未来纪元"
+		},
+		{
+			"skin_cover_img": "image/20230609/16862792916214.jpg",
+			"skin_cover_name": "嘻哈天王"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316772785475.jpg",
+			"skin_cover_name": "引擎之心"
+		},
+		{
+			"skin_cover_img": "image/20210915/16316773332737.jpg",
+			"skin_cover_name": "龙胆"
+		},
+		{
+			"skin_cover_img": "image/20210923/16323875632698.jpg",
+			"skin_cover_name": "淬星耀世"
+		},
+		{
+			"skin_cover_img": "image/20220419/16503371111460.jpg",
+			"skin_cover_name": "百木心枪"
+		}
+	]
+}

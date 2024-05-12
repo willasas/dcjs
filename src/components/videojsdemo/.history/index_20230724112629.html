@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>video js demo</title>
+</head>
+<body>
+  <div class="data-vjs-player">
+    <!-- via data-setup -->
+    <video id="vid1" class="video-js" data-setup="{}">
+      <source src="//vjs.zencdn.net/v/oceans.mp4">
+    </video>
+  </div>
+
+
+  <script>
+    const player = videojs('vid1', {});
+  </script>
+</body>
+</html>

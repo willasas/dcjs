@@ -1,0 +1,9 @@
+/*!
+  Name: 1px mixin
+  Author: william
+  Author URI: http://gitlab.palwo.com/ptt/willasas
+  Description: 移动端1像素解决方案混合器
+  Version: 1.0.1
+	Tags: 1px,rem,border
+  Update: October 13th,2021
+*/@media only screen and (-webkit-min-device-pixel-ratio: 2){.border-bottom::after{-webkit-transform:scaleY(0.5);transform:scaleY(0.5)}.border-top::after{-webkit-transform:scaleY(0.5);transform:scaleY(0.5)}.border-left::after{-webkit-transform:scaleY(0.5);transform:scaleY(0.5)}.border-right::after{-webkit-transform:scaleY(0.5);transform:scaleY(0.5)}.border-1px::after{width:200%;height:200%;transform:scale(0.5);transform-origin:0 0}}@media only screen and (-webkit-min-device-pixel-ratio: 3){.border-bottom::after{-webkit-transform:scaleY(0.33);transform:scaleY(0.33)}.border-top::after{-webkit-transform:scaleY(0.33);transform:scaleY(0.33)}.border-left::after{-webkit-transform:scaleY(0.33);transform:scaleY(0.33)}.border-right::after{-webkit-transform:scaleY(0.33);transform:scaleY(0.33)}.border-1px::after{width:300%;height:300%;transform:scale(0.33);transform-origin:0 0}}

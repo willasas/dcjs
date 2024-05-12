@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<!--[if lt IE 8]><p class="browser-tips">您的浏览器版本过低，请升级浏览器获得更好的体验<p><![endif]-->
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+		/>
+		<meta name="author" content="公司名称" />
+		<meta name="Copyright" content="某某公司版权所有" />
+		<meta name="description" content="描述信息1,描述信息2，描述信息等等" />
+		<meta name="keywords" content="关键字1,关键字2,关键字3,关键字等等" />
+		<!-- 引入重置样式表 -->
+		<link rel="stylesheet" type="text/css" href="css/m-reset.css" />
+		<!-- 引入通用组件样式表 -->
+		<link rel="stylesheet" type="text/css" href="css/m-common.css" />
+		<!-- 自己写的css样式文件放在这个下面，例如：index.css。若有其他页面调用的样式表，则放在页面样式表(index.css)前即可 -->
+		<!-- <link rel="stylesheet" type="text/css" href="css/index.css" /> -->
+
+		<title>移动端 - 活动名称 - ***官方网站 - 暗晶科技</title>
+
+		<!--适配主逻辑 S-->
+		<script type="text/javascript">
+			//实现真实一像素显示
+			function getOnePx() {
+				var dpi = window.devicePixelRatio,
+					scalez = 1 / dpi;
+				document.write(
+					'<meta content="width=device-width,initial-scale=' +
+						scalez +
+						',maximum-scale=' +
+						scalez +
+						',user-scalable=no" name="viewport">'
+				);
+			}
+			//适配函数
+			function reset() {
+				var htmlo = document.getElementsByTagName('html')[0],
+					clientW =
+						document.documentElement.clientWidth || document.body.clientWidth,
+					fontSz = clientW / 16 + 'px';
+				htmlo.style.fontSize = fontSz;
+			}
+			//调用一像素显示
+			getOnePx();
+			//初始进来执行一次适配
+			reset();
+			//当屏幕旋转的时候，再次执行一次适配,这里延时100ms是为了解决当用户快速转换屏幕的时候，适配失败的问题
+			window.addEventListener(
+				'resize',
+				function () {
+					setTimeout(function () {
+						reset();
+					}, 100);
+				},
+				false
+			);
+		</script>
+		<!--适配主逻辑 E-->
+		<!-- 适配2 S -->
+		<script>
+			//mode  移动端的适配方式 按需 传参  目前只有两种 px和rem
+			(function (win, doc, mode) {
+				var std = 750;
+				if (
+					/(iPhone|iPad|iPod|iOS|Android|Windows Phone|BlackBerry|SymbianOS)/i.test(
+						navigator.userAgent
+					)
+				) {
+					var h = document.getElementsByTagName('head')[0];
+					h.insertAdjacentHTML(
+						'beforeEnd',
+						'<meta name="apple-mobile-web-app-capable" content="yes">'
+					);
+					h.insertAdjacentHTML(
+						'beforeEnd',
+						'<meta name="apple-mobile-web-app-status-bar-style" content="black">'
+					);
+					h.insertAdjacentHTML(
+						'beforeEnd',
+						'<meta name="format-detection" content="telephone=no">'
+					);
+					h.insertAdjacentHTML(
+						'beforeEnd',
+						'<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />'
+					);
+					if (mode == 'px') {
+						if (!win.addEventListener) return;
+						var html = document.documentElement;
+						function setFont() {
+							function adaptVP(a) {
+								function c() {
+									var c, d;
+									return (
+										(b.uWidth = a.uWidth ? a.uWidth : 750),
+										(b.dWidth = a.dWidth
+											? a.dWidth
+											: window.screen.width || window.screen.availWidth),
+										(b.ratio = window.devicePixelRatio
+											? window.devicePixelRatio
+											: 1),
+										(b.userAgent = navigator.userAgent),
+										(b.bConsole = a.bConsole ? a.bConsole : !1),
+										a.mode
+											? ((b.mode = a.mode), void 0)
+											: ((c = b.userAgent.match(/Android/i)),
+											  c &&
+													((b.mode = 'android-2.2'),
+													(d = b.userAgent.match(/Android\s(\d+.\d+)/i)),
+													d && (d = parseFloat(d[1])),
+													2.2 == d || 2.3 == d
+														? (b.mode = 'android-2.2')
+														: 4.4 > d
+														? (b.mode = 'android-dpi')
+														: d >= 4.4 &&
+														  (b.mode =
+																b.dWidth > b.uWidth
+																	? 'android-dpi'
+																	: 'android-scale')),
+											  void 0)
+									);
+								}
+								function d() {
+									var e,
+										f,
+										g,
+										h,
+										c = '',
+										d = !1;
+									switch (b.mode) {
+										case 'apple':
+											f =
+												(window.screen.availWidth * b.ratio) /
+												b.uWidth /
+												b.ratio;
+											c =
+												'width=' +
+												b.uWidth +
+												',initial-scale=' +
+												f +
+												',minimum-scale=' +
+												f +
+												',maximum-scale=' +
+												f +
+												',user-scalable=no';
+											break;
+										case 'android-2.2':
+											a.dWidth ||
+												(b.dWidth =
+													2 == b.ratio
+														? 720
+														: 1.5 == b.ratio
+														? 480
+														: 1 == b.ratio
+														? 375
+														: 0.75 == b.ratio
+														? 240
+														: 480),
+												(e = window.screen.width || window.screen.availWidth),
+												375 == e
+													? (b.dWidth = b.ratio * e)
+													: 750 > e && (b.dWidth = e),
+												(b.mode = 'android-dpi'),
+												(d = !0);
+										case 'android-dpi':
+											(f = ((160 * b.uWidth) / b.dWidth) * b.ratio),
+												(c =
+													'target-densitydpi=' +
+													f +
+													', width=' +
+													b.uWidth +
+													', user-scalable=no'),
+												d && (b.mode = 'android-2.2');
+											break;
+										case 'android-scale':
+											c = 'width=' + b.uWidth + ', user-scalable=no';
+									}
+									(g =
+										document.querySelector("meta[name='viewport']") ||
+										document.createElement('meta')),
+										(g.name = 'viewport'),
+										(g.content = c),
+										(h = document.getElementsByTagName('head')),
+										h.length > 0 && h[0].appendChild(g);
+								}
+								function e() {
+									var a = '';
+									for (key in b) a += key + ': ' + b[key] + '; ';
+									alert(a);
+								}
+								if (a) {
+									var b = {
+										uWidth: 0,
+										dWidth: 0,
+										ratio: 1,
+										mode: 'apple',
+										userAgent: null,
+										bConsole: !1,
+									};
+									c(), d(), b.bConsole && e();
+								}
+							}
+							adaptVP({ uWidth: 750 });
+						}
+						win.addEventListener('resize', setFont, false);
+						setFont();
+					} else if (mode == 'rem') {
+						var docEl = doc.documentElement,
+							resizeEvt =
+								'orientationchange' in window ? 'orientationchange' : 'resize',
+							recalc = function () {
+								var clientWidth = docEl.clientWidth;
+								if (!clientWidth) return;
+								docEl.style.fontSize = 100 * (clientWidth / std) + 'px';
+							};
+						if (!doc.addEventListener) return;
+						recalc();
+						win.addEventListener(resizeEvt, recalc, false);
+						doc.addEventListener('DOMContentLoaded', recalc, false);
+					}
+				}
+			})(window, document, 'rem');
+		</script>
+		<!-- 适配2 E -->
+		<style>
+
+			* {
+				box-sizing: border-box;
+				color: white;
+				font-family: "Noto Sans JP", sans-serif;
+			}
+
+			body {
+				background-color: black;
+				display: flex;
+				flex-flow: column wrap;
+				justofy-content: center;
+				align-items: center;
+			}
+
+			.win-grid {
+				border: 1px solid white;
+				letter-spacing: 2px;
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				align-items: stretch;
+				text-align: center;
+				grid-gap: 1rem;
+				padding: 1rem;
+			}
+
+			.win-btn {
+				padding: 1rem 2rem;
+				text-align: center;
+				border-radius: 0;
+				border: 1px solid transparent;
+			}
+
+			button:focus {
+				outline: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="header">
+				<!-- 埋点曝光，官网一定要加 exposure-tag="英文名,中文解释" -->
+				<div class="nav" exposure-tag="英文名,中文解释"></div>
+				<a href="javascript:;" class="inverted"></a>
+				<!-- 按钮上报，一定要加 onclick="STATSendClick('btn','share','分享');" -->
+				<a
+					href="javascript:;"
+					class=""
+					onclick="STATSendClick('btn','share','分享');"
+					title="链接说明"
+				>
+				</a>
+			</div>
+			<!-- 模块一 开始 -->
+			<div class="wrapper1">
+				<div class="main">
+					<div class="win-grid">
+						<div class="win-btn" id="1">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="2">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="3">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="4">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="5">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="6">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="7">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="8">
+							This is a windows hoverable item inside windows grid
+						</div>
+						<div class="win-btn" id="9">
+							This is a windows hoverable item inside windows grid
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 模块一 结束 -->
+			<!-- 模块二 开始 -->
+			<div class="wrapper2">
+				<div class="mian"></div>
+			</div>
+			<!-- 模块二 结束 -->
+			<!-- 模块三 开始 -->
+			<div class="wrapper3">
+				<div class="main"></div>
+			</div>
+			<!-- 模块三 结束 -->
+			<!-- 模块四 开始 -->
+			<div class="wrapper4">
+				<div class="main"></div>
+			</div>
+			<!-- 模块四 结束 -->
+			<!-- 模块五 开始 -->
+			<div class="wrapper5">
+				<div class="main"></div>
+			</div>
+			<!-- 模块五 结束 -->
+			<!-- 模块六 开始 -->
+			<div class="footer">
+				<p></p>
+			</div>
+			<!-- 模块六 结束 -->
+		</div>
+
+		<!-- js统一放在此处 -->
+		<!-- jq支持 S -->
+		<script
+			src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			crossorigin="anonymous"
+		></script>
+		<!-- jq支持 E -->
+		<!-- 其他js支持 S -->
+
+		<!-- 其他js支持 E -->
+		<!-- 公用头部 S -->
+		<script src="./js/title.js"></script>
+		<!-- 公用头部 E -->
+		<!-- 公用页脚 S -->
+		<script src="./js/foot.js"></script>
+		<!-- 公用页脚 E -->
+		<!-- 页面PV统计代码 S -->
+		<script src=""></script>
+		<script>
+			//页面PVjs,此段代码不能放到外链JS中
+		</script>
+		<!-- 页面PV统计代码 E -->
+		<!-- 通用组件 S -->
+		<script src="js/m-common.js"></script>
+		<!-- 通用组件 E -->
+		<!-- 页面js放在这下面 S -->
+		<!-- <script src="./js/example.js"></script> -->
+		<!-- 页面js放在这下面 E -->
+		<script src="js/mousemovehover.js"></script>
+	</body>
+</html>

@@ -1,0 +1,3487 @@
+[
+  {"Type": "language", "Subtag": "aa", "Description": "Afar", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ab", "Description": "Abkhazian", "Added": "2005-10-16", "Suppress-Script": "Cyrl"},
+  {"Type": "language", "Subtag": "ae", "Description": "Avestan", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "af", "Description": "Afrikaans", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "ak", "Description": "Akan", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "am", "Description": "Amharic", "Added": "2005-10-16", "Suppress-Script": "Ethi", "Scope": ""},
+  {"Type": "language", "Subtag": "an", "Description": "Aragonese", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "ar", "Description": "Arabic", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "as", "Description": "Assamese", "Added": "2005-10-16", "Suppress-Script": "Beng"},
+  {"Type": "language", "Subtag": "av", "Description": "Avaric", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ay", "Description": "Aymara", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "az", "Description": "Azerbaijani", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  
+  {"Type": "language", "Subtag": "ba", "Description": "Bashkir", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "be", "Description": "Belarusian", "Added": "2005-10-16", "Suppress-Script": "Cyrl"},
+  {"Type": "language", "Subtag": "bg", "Description": "Bulgarian", "Added": "2005-10-16", "Suppress-Script": "Cyrl"},
+  {"Type": "language", "Subtag": "bh", "Description": "Bihari languages", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "collection"},
+  {"Type": "language", "Subtag": "bi", "Description": "Bislama", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "bm", "Description": "Bambara", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "bn", "Description": "Bengali,Bangla", "Added": "2005-10-16", "Suppress-Script": "Beng"},
+  {"Type": "language", "Subtag": "bo", "Description": "Tibetan", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "br", "Description": "Breton", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "bs", "Description": "Bosnian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "sh"},
+  
+  {"Type": "language", "Subtag": "ca", "Description": "Catalan,Valencian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "ce", "Description": "Chechen", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ch", "Description": "Chamorro", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "co", "Description": "Corsican", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "cr", "Description": "Cree", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "cs", "Description": "Czech", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "cu", "Description": "Church Slavic,Church Slavonic,Old Bulgarian,Old Church Slavonic,Old Slavonic", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "cv", "Description": "Chuvash", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "cy", "Description": "Welsh", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+ 
+  {"Type": "language", "Subtag": "da", "Description": "Danish", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "de", "Description": "German", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "dv", "Description": "Dhivehi,Divehi,Maldivian", "Added": "2005-10-16", "Suppress-Script": "Thaa"},
+  {"Type": "language", "Subtag": "dz", "Description": "Dzongkha", "Added": "2005-10-16", "Suppress-Script": "Tibt"},
+  
+  {"Type": "language", "Subtag": "ee", "Description": "Ewe", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "el", "Description": "Modern Greek (1453-)", "Added": "2005-10-16", "Suppress-Script": "Grek"},
+  {"Type": "language", "Subtag": "en", "Description": "English", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "eo", "Description": "Esperanto", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "es", "Description": "Spanish,Castilian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "et", "Description": "Estonian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "eu", "Description": "Basque", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+
+  {"Type": "language", "Subtag": "fa", "Description": "Persian", "Added": "2005-10-16", "Suppress-Script": "Arab", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "ff", "Description": "Fulah", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "fi", "Description": "Finnish", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "fj", "Description": "Fijian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "fo", "Description": "Faroese", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "fr", "Description": "French", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "fy", "Description": "Western Frisian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  
+  {"Type": "language", "Subtag": "ga", "Description": "Irish", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "gd", "Description": "Scottish Gaelic,Gaelic", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "gl", "Description": "Galician", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "gn", "Description": "Guarani", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "gu", "Description": "Gujarati", "Added": "2005-10-16", "Suppress-Script": "Gujr"},
+  {"Type": "language", "Subtag": "gv", "Description": "Manx", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  
+  {"Type": "language", "Subtag": "ha", "Description": "Hausa", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "he", "Description": "Hebrew", "Added": "2005-10-16", "Suppress-Script": "Hebr"},
+  {"Type": "language", "Subtag": "hi", "Description": "Hindi", "Added": "2005-10-16", "Suppress-Script": "Deva"},
+  {"Type": "language", "Subtag": "ho", "Description": "Hiri Motu", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "hr", "Description": "Croatian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "sh"},
+  {"Type": "language", "Subtag": "ht", "Description": "Haitian,Haitian Creole", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "hu", "Description": "Hungarian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "hy", "Description": "Armenian", "Added": "2005-10-16", "Suppress-Script": "Armn"},
+  {"Type": "language", "Subtag": "hz", "Description": "Herero", "Added": "2005-10-16", "Suppress-Script": ""},
+  
+  {"Type": "language", "Subtag": "ia", "Description": "Interlingua (International Auxiliary Language Association)", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "id", "Description": "Indonesian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "ms"},
+  {"Type": "language", "Subtag": "ie", "Description": "Interlingue,Occidental", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ig", "Description": "Igbo", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ii", "Description": "Sichuan Yi,Nuosu", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ik", "Description": "Inupiaq", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "in", "Description": "Indonesian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "ms"},
+  {"Type": "language", "Subtag": "io", "Description": "Ido", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "is", "Description": "Icelandic", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "it", "Description": "Italian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "iu", "Description": "Inuktitut", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "iw", "Description": "Hebrew", "Added": "2005-10-16", "Suppress-Script": "Hebr"},
+  
+  {"Type": "language", "Subtag": "ja", "Description": "Japanese", "Added": "2005-10-16", "Suppress-Script": "Jpan"},
+  {"Type": "language", "Subtag": "ji", "Description": "Yiddish", "Added": "2005-10-16", "Suppress-Script": "yi"},
+  {"Type": "language", "Subtag": "jv", "Description": "Javanese", "Added": "2005-10-16", "Suppress-Script": ""},
+  
+  {"Type": "language", "Subtag": "ka", "Description": "Georgian", "Added": "2005-10-16", "Suppress-Script": "Geor"},
+  {"Type": "language", "Subtag": "kg", "Description": "Kongo", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "ki", "Description": "Kikuyu,Gikuyu", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "kj", "Description": "Kuanyama", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "kk", "Description": "Kazakh", "Added": "2005-10-16", "Suppress-Script": "Cyrl"},
+  {"Type": "language", "Subtag": "kl", "Description": "Kalaallisut,Greenlandic", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "km", "Description": "Khmer,Central Khmer", "Added": "2005-10-16", "Suppress-Script": "Khmr"},
+  {"Type": "language", "Subtag": "kn", "Description": "Kannada", "Added": "2005-10-16", "Suppress-Script": "Knda"},
+  {"Type": "language", "Subtag": "ko", "Description": "Korean", "Added": "2005-10-16", "Suppress-Script": "Kore"},
+  {"Type": "language", "Subtag": "kr", "Description": "Kanuri", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "ks", "Description": "Kashmiri", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ku", "Description": "Kurdish", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "kv", "Description": "Komi", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "kw", "Description": "Cornish", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ky", "Description": "Kirghiz,Kyrgyz", "Added": "2005-10-16", "Suppress-Script": ""},
+  
+  {"Type": "language", "Subtag": "la", "Description": "Latin", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "lb", "Description": "Luxembourgish,Letzeburgesch", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "lg", "Description": "Ganda,Luganda", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "li", "Description": "Limburgan,Limburger,Limburgish", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ln", "Description": "Lingala", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "lo", "Description": "Lao", "Added": "2005-10-16", "Suppress-Script": "Laoo"},
+  {"Type": "language", "Subtag": "lt", "Description": "Lithuanian", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "lu", "Description": "Luba-Katanga", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "lv", "Description": "Latvian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  
+  {"Type": "language", "Subtag": "mg", "Description": "Malagasy", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "mh", "Description": "Marshallese", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "mi", "Description": "Maori", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "mk", "Description": "Macedonian", "Added": "2005-10-16", "Suppress-Script": "Cyrl"},
+  {"Type": "language", "Subtag": "ml", "Description": "Malayalam", "Added": "2005-10-16", "Suppress-Script": "Mlym"},
+  {"Type": "language", "Subtag": "mn", "Description": "Mongolian", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "mr", "Description": "Marathi", "Added": "2005-10-16", "Suppress-Script": "Deva"},
+  {"Type": "language", "Subtag": "ms", "Description": "Malay (macrolanguage)", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "mt", "Description": "Maltese", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "my", "Description": "Burmese", "Added": "2005-10-16", "Suppress-Script": "Mymr"},
+ 
+  {"Type": "language", "Subtag": "na", "Description": "Nauru", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "nb", "Description": "Norwegian Bokmål", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "nd", "Description": "North Ndebele", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "ne", "Description": "Nepali (macrolanguage)", "Added": "2005-10-16", "Suppress-Script": "Deva", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "ng", "Description": "Ndonga", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "nl", "Description": "Dutch,Flemish", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "nn", "Description": "Norwegian Nynorsk", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "no", "Description": "Norwegian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "nr", "Description": "South Ndebele", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "nv", "Description": "Navajo", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "ny", "Description": "Nyanja,Chewa,Chichewa", "Added": "2005-10-16", "Suppress-Script": ""},
+ 
+  {"Type": "language", "Subtag": "oc", "Description": "Occitan (post 1500)", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "oj", "Description": "Ojibwa", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "om", "Description": "Oromo", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "or", "Description": "Oriya (macrolanguage),Odia (macrolanguage)", "Added": "2005-10-16", "Suppress-Script": "Orya", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "os", "Description": "Ossetian,Ossetic", "Added": "2005-10-16", "Suppress-Script": ""},
+  
+  {"Type": "language", "Subtag": "pa", "Description": "Panjabi,Punjabi", "Added": "2005-10-16", "Suppress-Script": "Guru"},
+  {"Type": "language", "Subtag": "pi", "Description": "Pali", "Added": "2005-10-16", "Suppress-Script": ""},
+  {"Type": "language", "Subtag": "pl", "Description": "Polish", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  {"Type": "language", "Subtag": "ps", "Description": "Pushto,Pashto", "Added": "2005-10-16", "Suppress-Script": "Arab", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "pt", "Description": "Portuguese", "Added": "2005-10-16", "Suppress-Script": "Latn"},
+  
+  {"Type": "language", "Subtag": "qu", "Description": "Quechua", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "rm", "Description": "Romansh", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "rn", "Description": "Rundi", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "ro", "Description": "Romanian,Moldavian,Moldovan", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "ru", "Description": "Russian", "Added": "2005-10-16", "Suppress-Script": "Cyrl", "Scope": ""},
+  {"Type": "language", "Subtag": "rw", "Description": "Kinyarwanda", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "sa", "Description": "Sanskrit", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "sc", "Description": "Sardinian", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "sd", "Description": "Sindhi", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "se", "Description": "Northern Sami", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "sg", "Description": "Sango", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "sh", "Description": "Serbo-Croatian", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "si", "Description": "Sinhala,Sinhalese", "Added": "2005-10-16", "Suppress-Script": "Sinh", "Scope": ""},
+  {"Type": "language", "Subtag": "sk", "Description": "Slovak", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "sl", "Description": "Slovenian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "sm", "Description": "Samoan", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "sn", "Description": "Shona", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "so", "Description": "Somali", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "sq", "Description": "Albanian", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "sr", "Description": "Serbian", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "ss", "Description": "Swati", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "st", "Description": "Southern Sotho", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "su", "Description": "Sundanese", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "sv", "Description": "Swedish", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "sw", "Description": "Swahili (macrolanguage)", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": "macrolanguage"},
+
+  {"Type": "language", "Subtag": "ta", "Description": "Tamil", "Added": "2005-10-16", "Suppress-Script": "Taml", "Scope": ""},
+  {"Type": "language", "Subtag": "te", "Description": "Telugu", "Added": "2005-10-16", "Suppress-Script": "Telu", "Scope": ""},
+  {"Type": "language", "Subtag": "tg", "Description": "Tajik", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "th", "Description": "Thai", "Added": "2005-10-16", "Suppress-Script": "Thai", "Scope": ""},
+  {"Type": "language", "Subtag": "ti", "Description": "Tigrinya", "Added": "2005-10-16", "Suppress-Script": "Ethi", "Scope": ""},
+  {"Type": "language", "Subtag": "tk", "Description": "Turkmen", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "tl", "Description": "Tagalog", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "tn", "Description": "Tswana", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "to", "Description": "Tonga (Tonga Islands)", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "tr", "Description": "Turkish", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "ts", "Description": "Tsonga", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "tt", "Description": "Tatar", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "tw", "Description": "Twi", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "ty", "Description": "Tahitian", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "ug", "Description": "Uighur", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "uk", "Description": "Ukrainian", "Added": "2005-10-16", "Suppress-Script": "Cyrl", "Scope": ""},
+  {"Type": "language", "Subtag": "ur", "Description": "Urdu", "Added": "2005-10-16", "Suppress-Script": "Arab", "Scope": ""},
+  {"Type": "language", "Subtag": "uz", "Description": "Uzbek", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "ve", "Description": "Venda", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "vi", "Description": "Vietnamese", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  {"Type": "language", "Subtag": "vo", "Description": "Volapük", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "wa", "Description": "Walloon", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  {"Type": "language", "Subtag": "wo", "Description": "Wolof", "Added": "2005-10-16", "Suppress-Script": "", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "xh", "Description": "Xhosa", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "yi", "Description": "Yiddish", "Added": "2005-10-16", "Suppress-Script": "Hebr", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "yo", "Description": "Yoruba", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  
+  {"Type": "language", "Subtag": "za", "Description": "Zhuang,Chuang", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "zh", "Description": "Chinese", "Added": "2005-10-16", "Suppress-Script": "", "Scope": "macrolanguage"},
+  {"Type": "language", "Subtag": "zu", "Description": "Zulu", "Added": "2005-10-16", "Suppress-Script": "Latn", "Scope": ""},
+  
+  
+
+  {"Type": "region", "Subtag": "AA", "Description": "Ghotuo", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AC", "Description": "Ascension Island", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AD", "Description": "Andorra", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AE", "Description": "United Arab Emirates", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AF", "Description": "Afghanistan", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AG", "Description": "Antigua and Barbuda", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AI", "Description": "Anguilla", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AL", "Description": "Albania", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AM", "Description": "Armenia", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AO", "Description": "Angola", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AQ", "Description": "Antarctica", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AR", "Description": "Argentina", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AS", "Description": "American Samoa", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AT", "Description": "Austria", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AU", "Description": "Australia", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AW", "Description": "Aruba", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AX", "Description": "?land Islands", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "AZ", "Description": "Azerbaijan", "Added": "2005-10-16"},
+  
+  {"Type": "region", "Subtag": "BA", "Description": "Bosnia and Herzegovina", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BB", "Description": "Barbados", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BD", "Description": "Bangladesh", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BE", "Description": "Belgium", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BF", "Description": "Burkina Faso", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BG", "Description": "Bulgaria", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BH", "Description": "Bahrain", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BI", "Description": "Burundi", "Added": "2005-10-16"},
+
+  {"Type": "region", "Subtag": "BJ", "Description": "Benin", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BL", "Description": "Saint-Barth��lemy", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BM", "Description": "Bermuda", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BN", "Description": "Brunei Darussalam", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BO", "Description": "Bolivia", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BQ", "Description": "Bonaire,Sint Eustatius and Saba", "Added": "2011-01-07"},
+  {"Type": "region", "Subtag": "BR", "Description": "Brazil", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BS", "Description": "Bahamas", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BT", "Description": "Bhutan", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "BU", "Description": "Burma", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+  {"Type": "region", "Subtag": "", "Description": "", "Added": "2005-10-16"},
+
+ 
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: BU"
+ },
+ {
+  "Type: language": "Description: Burma"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1989-12-05"
+ },
+ {
+  "Type: language": "Preferred-Value: MM"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: BV"
+ },
+ {
+  "Type: language": "Description: Bouvet Island"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: BW"
+ },
+ {
+  "Type: language": "Description: Botswana"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: BY"
+ },
+ {
+  "Type: language": "Description: Belarus"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: BZ"
+ },
+ {
+  "Type: language": "Description: Belize"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CA"
+ },
+ {
+  "Type: language": "Description: Canada"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CC"
+ },
+ {
+  "Type: language": "Description: Cocos (Keeling) Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CD"
+ },
+ {
+  "Type: language": "Description: The Democratic Republic of the Congo"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CF"
+ },
+ {
+  "Type: language": "Description: Central African Republic"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CG"
+ },
+ {
+  "Type: language": "Description: Congo"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CH"
+ },
+ {
+  "Type: language": "Description: Switzerland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CI"
+ },
+ {
+  "Type: language": "Description: Côte d'Ivoire"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CK"
+ },
+ {
+  "Type: language": "Description: Cook Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CL"
+ },
+ {
+  "Type: language": "Description: Chile"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CM"
+ },
+ {
+  "Type: language": "Description: Cameroon"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CN"
+ },
+ {
+  "Type: language": "Description: China"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CO"
+ },
+ {
+  "Type: language": "Description: Colombia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CP"
+ },
+ {
+  "Type: language": "Description: Clipperton Island"
+ },
+ {
+  "Type: language": "Added: 2009-07-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CQ"
+ },
+ {
+  "Type: language": "Description: Sark"
+ },
+ {
+  "Type: language": "Added: 2023-02-07"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CR"
+ },
+ {
+  "Type: language": "Description: Costa Rica"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CS"
+ },
+ {
+  "Type: language": "Description: Serbia and Montenegro"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 2006-10-05"
+ },
+ {
+  "Type: language": "Comments: see RS for Serbia or ME for Montenegro"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CU"
+ },
+ {
+  "Type: language": "Description: Cuba"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CV"
+ },
+ {
+  "Type: language": "Description: Cabo Verde"
+ },
+ {
+  "Type: language": "Description: Cape Verde"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CW"
+ },
+ {
+  "Type: language": "Description: Curaçao"
+ },
+ {
+  "Type: language": "Added: 2011-01-07"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CX"
+ },
+ {
+  "Type: language": "Description: Christmas Island"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CY"
+ },
+ {
+  "Type: language": "Description: Cyprus"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: CZ"
+ },
+ {
+  "Type: language": "Description: Czechia"
+ },
+ {
+  "Type: language": "Description: Czech Republic"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DD"
+ },
+ {
+  "Type: language": "Description: German Democratic Republic"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1990-10-30"
+ },
+ {
+  "Type: language": "Preferred-Value: DE"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DE"
+ },
+ {
+  "Type: language": "Description: Germany"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DG"
+ },
+ {
+  "Type: language": "Description: Diego Garcia"
+ },
+ {
+  "Type: language": "Added: 2009-07-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DJ"
+ },
+ {
+  "Type: language": "Description: Djibouti"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DK"
+ },
+ {
+  "Type: language": "Description: Denmark"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DM"
+ },
+ {
+  "Type: language": "Description: Dominica"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DO"
+ },
+ {
+  "Type: language": "Description: Dominican Republic"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: DZ"
+ },
+ {
+  "Type: language": "Description: Algeria"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EA"
+ },
+ {
+  "Type: language": "Description: Ceuta",
+  "Column2": " Melilla"
+ },
+ {
+  "Type: language": "Added: 2009-07-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EC"
+ },
+ {
+  "Type: language": "Description: Ecuador"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EE"
+ },
+ {
+  "Type: language": "Description: Estonia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EG"
+ },
+ {
+  "Type: language": "Description: Egypt"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EH"
+ },
+ {
+  "Type: language": "Description: Western Sahara"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ER"
+ },
+ {
+  "Type: language": "Description: Eritrea"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ES"
+ },
+ {
+  "Type: language": "Description: Spain"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ET"
+ },
+ {
+  "Type: language": "Description: Ethiopia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EU"
+ },
+ {
+  "Type: language": "Description: European Union"
+ },
+ {
+  "Type: language": "Added: 2009-07-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: EZ"
+ },
+ {
+  "Type: language": "Description: Eurozone"
+ },
+ {
+  "Type: language": "Added: 2016-07-14"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FI"
+ },
+ {
+  "Type: language": "Description: Finland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FJ"
+ },
+ {
+  "Type: language": "Description: Fiji"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FK"
+ },
+ {
+  "Type: language": "Description: Falkland Islands (Malvinas)"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FM"
+ },
+ {
+  "Type: language": "Description: Federated States of Micronesia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FO"
+ },
+ {
+  "Type: language": "Description: Faroe Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FR"
+ },
+ {
+  "Type: language": "Description: France"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: FX"
+ },
+ {
+  "Type: language": "Description: Metropolitan France"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1997-07-14"
+ },
+ {
+  "Type: language": "Preferred-Value: FR"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GA"
+ },
+ {
+  "Type: language": "Description: Gabon"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GB"
+ },
+ {
+  "Type: language": "Description: United Kingdom"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Comments: as of 2006-03-29 GB no longer includes the Channel Islands and"
+ },
+ {
+  "Type: language": "  Isle of Man; see GG",
+  "Column2": " JE",
+  "Column3": " IM"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GD"
+ },
+ {
+  "Type: language": "Description: Grenada"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GE"
+ },
+ {
+  "Type: language": "Description: Georgia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GF"
+ },
+ {
+  "Type: language": "Description: French Guiana"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GG"
+ },
+ {
+  "Type: language": "Description: Guernsey"
+ },
+ {
+  "Type: language": "Added: 2006-03-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GH"
+ },
+ {
+  "Type: language": "Description: Ghana"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GI"
+ },
+ {
+  "Type: language": "Description: Gibraltar"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GL"
+ },
+ {
+  "Type: language": "Description: Greenland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GM"
+ },
+ {
+  "Type: language": "Description: Gambia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GN"
+ },
+ {
+  "Type: language": "Description: Guinea"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GP"
+ },
+ {
+  "Type: language": "Description: Guadeloupe"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GQ"
+ },
+ {
+  "Type: language": "Description: Equatorial Guinea"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GR"
+ },
+ {
+  "Type: language": "Description: Greece"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GS"
+ },
+ {
+  "Type: language": "Description: South Georgia and the South Sandwich Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GT"
+ },
+ {
+  "Type: language": "Description: Guatemala"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GU"
+ },
+ {
+  "Type: language": "Description: Guam"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GW"
+ },
+ {
+  "Type: language": "Description: Guinea-Bissau"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: GY"
+ },
+ {
+  "Type: language": "Description: Guyana"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: HK"
+ },
+ {
+  "Type: language": "Description: Hong Kong"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: HM"
+ },
+ {
+  "Type: language": "Description: Heard Island and McDonald Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: HN"
+ },
+ {
+  "Type: language": "Description: Honduras"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: HR"
+ },
+ {
+  "Type: language": "Description: Croatia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: HT"
+ },
+ {
+  "Type: language": "Description: Haiti"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: HU"
+ },
+ {
+  "Type: language": "Description: Hungary"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IC"
+ },
+ {
+  "Type: language": "Description: Canary Islands"
+ },
+ {
+  "Type: language": "Added: 2009-07-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ID"
+ },
+ {
+  "Type: language": "Description: Indonesia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IE"
+ },
+ {
+  "Type: language": "Description: Ireland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IL"
+ },
+ {
+  "Type: language": "Description: Israel"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IM"
+ },
+ {
+  "Type: language": "Description: Isle of Man"
+ },
+ {
+  "Type: language": "Added: 2006-03-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IN"
+ },
+ {
+  "Type: language": "Description: India"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IO"
+ },
+ {
+  "Type: language": "Description: British Indian Ocean Territory"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IQ"
+ },
+ {
+  "Type: language": "Description: Iraq"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IR"
+ },
+ {
+  "Type: language": "Description: Islamic Republic of Iran"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IS"
+ },
+ {
+  "Type: language": "Description: Iceland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: IT"
+ },
+ {
+  "Type: language": "Description: Italy"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: JE"
+ },
+ {
+  "Type: language": "Description: Jersey"
+ },
+ {
+  "Type: language": "Added: 2006-03-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: JM"
+ },
+ {
+  "Type: language": "Description: Jamaica"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: JO"
+ },
+ {
+  "Type: language": "Description: Jordan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: JP"
+ },
+ {
+  "Type: language": "Description: Japan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KE"
+ },
+ {
+  "Type: language": "Description: Kenya"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KG"
+ },
+ {
+  "Type: language": "Description: Kyrgyzstan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KH"
+ },
+ {
+  "Type: language": "Description: Cambodia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KI"
+ },
+ {
+  "Type: language": "Description: Kiribati"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KM"
+ },
+ {
+  "Type: language": "Description: Comoros"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KN"
+ },
+ {
+  "Type: language": "Description: Saint Kitts and Nevis"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KP"
+ },
+ {
+  "Type: language": "Description: Democratic People's Republic of Korea"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KR"
+ },
+ {
+  "Type: language": "Description: Republic of Korea"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KW"
+ },
+ {
+  "Type: language": "Description: Kuwait"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KY"
+ },
+ {
+  "Type: language": "Description: Cayman Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: KZ"
+ },
+ {
+  "Type: language": "Description: Kazakhstan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LA"
+ },
+ {
+  "Type: language": "Description: Lao People's Democratic Republic"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LB"
+ },
+ {
+  "Type: language": "Description: Lebanon"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LC"
+ },
+ {
+  "Type: language": "Description: Saint Lucia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LI"
+ },
+ {
+  "Type: language": "Description: Liechtenstein"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LK"
+ },
+ {
+  "Type: language": "Description: Sri Lanka"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LR"
+ },
+ {
+  "Type: language": "Description: Liberia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LS"
+ },
+ {
+  "Type: language": "Description: Lesotho"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LT"
+ },
+ {
+  "Type: language": "Description: Lithuania"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LU"
+ },
+ {
+  "Type: language": "Description: Luxembourg"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LV"
+ },
+ {
+  "Type: language": "Description: Latvia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: LY"
+ },
+ {
+  "Type: language": "Description: Libya"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MA"
+ },
+ {
+  "Type: language": "Description: Morocco"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MC"
+ },
+ {
+  "Type: language": "Description: Monaco"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MD"
+ },
+ {
+  "Type: language": "Description: Moldova"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ME"
+ },
+ {
+  "Type: language": "Description: Montenegro"
+ },
+ {
+  "Type: language": "Added: 2006-10-05"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MF"
+ },
+ {
+  "Type: language": "Description: Saint Martin (French part)"
+ },
+ {
+  "Type: language": "Added: 2007-11-02"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MG"
+ },
+ {
+  "Type: language": "Description: Madagascar"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MH"
+ },
+ {
+  "Type: language": "Description: Marshall Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MK"
+ },
+ {
+  "Type: language": "Description: North Macedonia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ML"
+ },
+ {
+  "Type: language": "Description: Mali"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MM"
+ },
+ {
+  "Type: language": "Description: Myanmar"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MN"
+ },
+ {
+  "Type: language": "Description: Mongolia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MO"
+ },
+ {
+  "Type: language": "Description: Macao"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MP"
+ },
+ {
+  "Type: language": "Description: Northern Mariana Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MQ"
+ },
+ {
+  "Type: language": "Description: Martinique"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MR"
+ },
+ {
+  "Type: language": "Description: Mauritania"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MS"
+ },
+ {
+  "Type: language": "Description: Montserrat"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MT"
+ },
+ {
+  "Type: language": "Description: Malta"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MU"
+ },
+ {
+  "Type: language": "Description: Mauritius"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MV"
+ },
+ {
+  "Type: language": "Description: Maldives"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MW"
+ },
+ {
+  "Type: language": "Description: Malawi"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MX"
+ },
+ {
+  "Type: language": "Description: Mexico"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MY"
+ },
+ {
+  "Type: language": "Description: Malaysia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: MZ"
+ },
+ {
+  "Type: language": "Description: Mozambique"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NA"
+ },
+ {
+  "Type: language": "Description: Namibia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NC"
+ },
+ {
+  "Type: language": "Description: New Caledonia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NE"
+ },
+ {
+  "Type: language": "Description: Niger"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NF"
+ },
+ {
+  "Type: language": "Description: Norfolk Island"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NG"
+ },
+ {
+  "Type: language": "Description: Nigeria"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NI"
+ },
+ {
+  "Type: language": "Description: Nicaragua"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NL"
+ },
+ {
+  "Type: language": "Description: Netherlands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NO"
+ },
+ {
+  "Type: language": "Description: Norway"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NP"
+ },
+ {
+  "Type: language": "Description: Nepal"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NR"
+ },
+ {
+  "Type: language": "Description: Nauru"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NT"
+ },
+ {
+  "Type: language": "Description: Neutral Zone"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1993-07-12"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NU"
+ },
+ {
+  "Type: language": "Description: Niue"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: NZ"
+ },
+ {
+  "Type: language": "Description: New Zealand"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: OM"
+ },
+ {
+  "Type: language": "Description: Oman"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PA"
+ },
+ {
+  "Type: language": "Description: Panama"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PE"
+ },
+ {
+  "Type: language": "Description: Peru"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PF"
+ },
+ {
+  "Type: language": "Description: French Polynesia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PG"
+ },
+ {
+  "Type: language": "Description: Papua New Guinea"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PH"
+ },
+ {
+  "Type: language": "Description: Philippines"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PK"
+ },
+ {
+  "Type: language": "Description: Pakistan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PL"
+ },
+ {
+  "Type: language": "Description: Poland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PM"
+ },
+ {
+  "Type: language": "Description: Saint Pierre and Miquelon"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PN"
+ },
+ {
+  "Type: language": "Description: Pitcairn"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PR"
+ },
+ {
+  "Type: language": "Description: Puerto Rico"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PS"
+ },
+ {
+  "Type: language": "Description: State of Palestine"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PT"
+ },
+ {
+  "Type: language": "Description: Portugal"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PW"
+ },
+ {
+  "Type: language": "Description: Palau"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: PY"
+ },
+ {
+  "Type: language": "Description: Paraguay"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: QA"
+ },
+ {
+  "Type: language": "Description: Qatar"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: QM..QZ"
+ },
+ {
+  "Type: language": "Description: Private use"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: RE"
+ },
+ {
+  "Type: language": "Description: Réunion"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: RO"
+ },
+ {
+  "Type: language": "Description: Romania"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: RS"
+ },
+ {
+  "Type: language": "Description: Serbia"
+ },
+ {
+  "Type: language": "Added: 2006-10-05"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: RU"
+ },
+ {
+  "Type: language": "Description: Russian Federation"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: RW"
+ },
+ {
+  "Type: language": "Description: Rwanda"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SA"
+ },
+ {
+  "Type: language": "Description: Saudi Arabia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SB"
+ },
+ {
+  "Type: language": "Description: Solomon Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SC"
+ },
+ {
+  "Type: language": "Description: Seychelles"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SD"
+ },
+ {
+  "Type: language": "Description: Sudan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SE"
+ },
+ {
+  "Type: language": "Description: Sweden"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SG"
+ },
+ {
+  "Type: language": "Description: Singapore"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SH"
+ },
+ {
+  "Type: language": "Description: Saint Helena",
+  "Column2": " Ascension and Tristan da Cunha"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SI"
+ },
+ {
+  "Type: language": "Description: Slovenia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SJ"
+ },
+ {
+  "Type: language": "Description: Svalbard and Jan Mayen"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SK"
+ },
+ {
+  "Type: language": "Description: Slovakia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SL"
+ },
+ {
+  "Type: language": "Description: Sierra Leone"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SM"
+ },
+ {
+  "Type: language": "Description: San Marino"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SN"
+ },
+ {
+  "Type: language": "Description: Senegal"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SO"
+ },
+ {
+  "Type: language": "Description: Somalia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SR"
+ },
+ {
+  "Type: language": "Description: Suriname"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SS"
+ },
+ {
+  "Type: language": "Description: South Sudan"
+ },
+ {
+  "Type: language": "Added: 2011-08-25"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ST"
+ },
+ {
+  "Type: language": "Description: Sao Tome and Principe"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SU"
+ },
+ {
+  "Type: language": "Description: Union of Soviet Socialist Republics"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1992-08-30"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SV"
+ },
+ {
+  "Type: language": "Description: El Salvador"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SX"
+ },
+ {
+  "Type: language": "Description: Sint Maarten (Dutch part)"
+ },
+ {
+  "Type: language": "Added: 2011-01-07"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SY"
+ },
+ {
+  "Type: language": "Description: Syrian Arab Republic"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: SZ"
+ },
+ {
+  "Type: language": "Description: Eswatini"
+ },
+ {
+  "Type: language": "Description: eSwatini"
+ },
+ {
+  "Type: language": "Description: Swaziland"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TA"
+ },
+ {
+  "Type: language": "Description: Tristan da Cunha"
+ },
+ {
+  "Type: language": "Added: 2009-07-29"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TC"
+ },
+ {
+  "Type: language": "Description: Turks and Caicos Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TD"
+ },
+ {
+  "Type: language": "Description: Chad"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TF"
+ },
+ {
+  "Type: language": "Description: French Southern Territories"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TG"
+ },
+ {
+  "Type: language": "Description: Togo"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TH"
+ },
+ {
+  "Type: language": "Description: Thailand"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TJ"
+ },
+ {
+  "Type: language": "Description: Tajikistan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TK"
+ },
+ {
+  "Type: language": "Description: Tokelau"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TL"
+ },
+ {
+  "Type: language": "Description: Timor-Leste"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TM"
+ },
+ {
+  "Type: language": "Description: Turkmenistan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TN"
+ },
+ {
+  "Type: language": "Description: Tunisia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TO"
+ },
+ {
+  "Type: language": "Description: Tonga"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TP"
+ },
+ {
+  "Type: language": "Description: East Timor"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 2002-05-20"
+ },
+ {
+  "Type: language": "Preferred-Value: TL"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TR"
+ },
+ {
+  "Type: language": "Description: Türkiye"
+ },
+ {
+  "Type: language": "Description: Turkey"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TT"
+ },
+ {
+  "Type: language": "Description: Trinidad and Tobago"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TV"
+ },
+ {
+  "Type: language": "Description: Tuvalu"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TW"
+ },
+ {
+  "Type: language": "Description: Taiwan",
+  "Column2": " Province of China"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: TZ"
+ },
+ {
+  "Type: language": "Description: United Republic of Tanzania"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: UA"
+ },
+ {
+  "Type: language": "Description: Ukraine"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: UG"
+ },
+ {
+  "Type: language": "Description: Uganda"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: UM"
+ },
+ {
+  "Type: language": "Description: United States Minor Outlying Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: UN"
+ },
+ {
+  "Type: language": "Description: United Nations"
+ },
+ {
+  "Type: language": "Added: 2016-07-14"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: US"
+ },
+ {
+  "Type: language": "Description: United States"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: UY"
+ },
+ {
+  "Type: language": "Description: Uruguay"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: UZ"
+ },
+ {
+  "Type: language": "Description: Uzbekistan"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VA"
+ },
+ {
+  "Type: language": "Description: Holy See (Vatican City State)"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VC"
+ },
+ {
+  "Type: language": "Description: Saint Vincent and the Grenadines"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VE"
+ },
+ {
+  "Type: language": "Description: Venezuela"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VG"
+ },
+ {
+  "Type: language": "Description: British Virgin Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VI"
+ },
+ {
+  "Type: language": "Description: U.S. Virgin Islands"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VN"
+ },
+ {
+  "Type: language": "Description: Viet Nam"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: VU"
+ },
+ {
+  "Type: language": "Description: Vanuatu"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: WF"
+ },
+ {
+  "Type: language": "Description: Wallis and Futuna"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: WS"
+ },
+ {
+  "Type: language": "Description: Samoa"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: XA..XZ"
+ },
+ {
+  "Type: language": "Description: Private use"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: YD"
+ },
+ {
+  "Type: language": "Description: Democratic Yemen"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1990-08-14"
+ },
+ {
+  "Type: language": "Preferred-Value: YE"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: YE"
+ },
+ {
+  "Type: language": "Description: Yemen"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: YT"
+ },
+ {
+  "Type: language": "Description: Mayotte"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: YU"
+ },
+ {
+  "Type: language": "Description: Yugoslavia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 2003-07-23"
+ },
+ {
+  "Type: language": "Comments: see BA",
+  "Column2": " HR",
+  "Column3": " ME",
+  "Column4": " MK",
+  "Column5": " RS",
+  "Column6": " or SI"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ZA"
+ },
+ {
+  "Type: language": "Description: South Africa"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ZM"
+ },
+ {
+  "Type: language": "Description: Zambia"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ZR"
+ },
+ {
+  "Type: language": "Description: Zaire"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ {
+  "Type: language": "Deprecated: 1997-07-14"
+ },
+ {
+  "Type: language": "Preferred-Value: CD"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ZW"
+ },
+ {
+  "Type: language": "Description: Zimbabwe"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ null,
+ {
+  "Type: language": "Type: region"
+ },
+ {
+  "Type: language": "Subtag: ZZ"
+ },
+ {
+  "Type: language": "Description: Private use"
+ },
+ {
+  "Type: language": "Added: 2005-10-16"
+ },
+ 
+ {"Type": "region","Subtag": "001","Description": "World","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "002","Description": "Africa","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "003","Description": "North America,Includes Northern America (021),Caribbean (029) and Central","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "005","Description": "South America","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "009","Description": "Oceania","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "011","Description": "Western Africa","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "013","Description": "Central America","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "014","Description": "Eastern Africa","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "015","Description": "Northern Africa","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "017","Description": "Middle Africa","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "018","Description": "Southern Africa","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "019","Description": "Americas","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "021","Description": "Northern America,Does not include Caribbean (029) or Central America (013);","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "029","Description": "Caribbean","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "030","Description": "Eastern Asia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "034","Description": "Southern Asia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "035","Description": "South-Eastern Asia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "039","Description": "Southern Europe","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "053","Description": "Australia and New Zealand","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "054","Description": "Melanesia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "057","Description": "Micronesia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "061","Description": "Polynesia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "142","Description": "Asia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "143","Description": "Central Asia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "145","Description": "Western Asia","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "150","Description": "Europe","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "151","Description": "Eastern Europe","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "154","Description": "Northern Europe","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "155","Description": "Western Europe","Added": "2005-10-16"},
+ {"Type": "region","Subtag": "202","Description": "Sub-Saharan Africa","Added": "2017-04-18"},
+ {"Type": "region","Subtag": "419","Description": "Latin America and the Caribbean","Added": "2005-10-16"}
+]

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>背景色变化</title>
+
+  <style>
+    .box{
+      display: block;
+      margin: 40px auto 0;
+      width: 100px;
+      height: 100px;
+    }
+
+    .green{
+      background-color: rgb(102, 0, 128);
+    }
+  </style>
+</head>
+<body>
+  <div class="box green"></div>
+
+
+  <script src="../../src/assets/js/lab/gsap/gsap.min.js"></script>
+  <script>
+    gsap.to(".box", {
+      duration: 2,
+      backgroundColor: '#8d3d',
+    })
+  </script>
+</body>
+</html>

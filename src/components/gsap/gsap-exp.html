@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="gsap-exp.css">
+
+  <title>gsap examples</title>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="section sec1">
+      <div class="main">
+        <!-- 1.平移，旋转 -->
+        <div class="my-element1"></div>
+        
+        <!-- 2.使0和100之间产生动画 -->
+        <div class="score-display" id="scoreDisplay"></div>
+        
+        <!-- 3.动画控制 -->
+        <div class="ani-info1">
+          <!-- ele -->
+          <div class="box1" id="box1"></div>
+          <!-- 控制按钮 -->
+          <input type="button" id="playBtn" value="play()" title="播放">
+          <input type="button" id="pauseBtn" value="pause()" title="暂停">
+          <input type="button" id="resumeBtn" value="resume()" title="继续">
+          <input type="button" id="reverseBtn" value="reverse()" title="返回">
+          <input type="button" id="playFromBtn" value="play(5)" title="时间点播放">
+          <input type="button" id="reverseFromBtn" value="reverse(1)" title="时间点返回">
+          <input type="button" id="seekBtn" value="seek(3)" title="时间点播放/返回"><br/>
+          <input type="button" id="timeScaleSlowBtn" value="timeScale(0.5)" title="减速">
+          <input type="button" id="timeScaleNormalBtn" value="timeScale(1)" title="原速">
+          <input type="button" id="timeScaleFastBtn" value="timeScale(2)" title="加速">
+          <input type="button" id="restartBtn" value="restart()" title="重新播放">
+        </div>
+
+        <!-- 4.yoyo -->
+        <div class="box2" id="box2">0</div>
+
+        <!-- 5.每个动画的开始时间按0.5s错开。TweenLite没有stagger-->
+        <div class="ani-info2">
+          <div class="sbox b1"></div>
+          <div class="sbox b2"></div>
+          <div class="sbox b3"></div>
+          <div class="sbox b4"></div>
+          <div class="sbox b5"></div>
+          <div class="sbox b6"></div>
+          <div class="sbox b7"></div>
+          <div class="sbox b8"></div>
+        </div>
+
+        <!-- 6. 每个stagger动画都是一个单独的动画-->
+        <div class="ani-info3">
+          <div class="gbox g1">1</div>
+          <div class="gbox g2">2</div>
+          <div class="gbox g3">3</div>
+        </div>
+        
+        <!-- 7. cycle 属性允许在stagger的相关方法中使用循环设定的属性值，包括TweenMax, TimelineLite and TimelineMax (JS注释中有详细列表)-->
+        <div class="ani-info4">
+          <div class="abox"></div>
+          <div class="abox"></div>
+          <div class="abox"></div>
+          <div class="abox"></div>
+          <div class="abox"></div>
+          <div class="abox"></div>
+          <div class="abox"></div>
+          <div class="abox"></div>
+        </div>
+
+        <!-- 16. hover effects with GreenSock -->
+        <div class="banner" id="banner">
+          <button id="cta-btn" style="display: block; margin: 120px auto 0;">Click!</button>
+        </div>
+
+        <!--  -->
+        <div class="circle-box">
+          <span class="circle" style="display: inline;background-color: aqua; width: 100px; height: 100px; border-radius: 50%;margin-right: 20px;"></span>
+          <span class="circle" style="display: inline;background-color: rgb(0, 255, 42); width: 100px; height: 100px; border-radius: 50%;margin-right: 20px;"></span>
+          <span class="circle" style="display: inline;background-color: rgb(98, 0, 255); width: 100px; height: 100px; border-radius: 50%;margin-right: 20px;"></span>
+          <span class="circle" style="display: inline;background-color: rgb(255, 0, 212); width: 100px; height: 100px; border-radius: 50%;margin-right: 20px;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="section sec2">
+      <div class="main">
+        
+      </div>
+    </div>
+    <div class="section sec3">
+      <div class="main">
+        
+      </div>
+    </div>
+    <div class="section sec4">
+      <div class="main">
+        
+      </div>
+    </div>
+    <div class="section sec5">
+      <div class="main">
+        
+      </div>
+    </div>
+    <div class="section sec6">
+      <div class="main">
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <script src="../../src/assets/js/lab/gsap/gsap.min.js"></script>
+  <script src="../../src/assets/js/lab/gsap/ScrollTrigger.min.js"></script>
+  <script src="../../src/assets/js/lab/gsap/TweenLite.min.js"></script>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger)
+    const Scroll = new function(){
+      let sections
+      let page
+      let main
+      let scrollTrigger
+      let tl
+      let win
+
+      // init
+      this.init = () => {
+        sections = document.querySelectorAll('section')
+        page = document.querySelector('.wrapper')
+        main = document.querySelector('.main')
+        win = {
+          w: window.innerWidth,
+          h: window.innerHeight,
+        }
+
+        this.setupTimeline()
+        this.setupScrollTrigger()
+        window.addEventListener('resize', this.onResize)
+      }
+
+      // Setup ScrollTrigger
+      this.setupScrollTrigger = () => {
+        // page.style.height = (this.getTotalScroll() + win.h) + 'px'
+      
+        scrollTrigger = ScrollTrigger.create({
+          id: 'mainScroll',
+          trigger: 'wrapper',
+          animation: tl,
+          pin: true,
+          scrub: true,
+          snap: {
+            snapTo: (value) => {
+            
+              let labels = Object.values(tl.labels)
+            
+              const snapPoints = labels.map(x => x / tl.totalDuration());
+              const proximity = 0.1
+            
+              console.log(tl.labels , tl.totalDuration(), labels, snapPoints)
+            
+              for (let i = 0; i < snapPoints.length; i++) {
+                if (value > snapPoints[i] - proximity && value < snapPoints[i] + proximity) {
+                  return snapPoints[i]
+                }
+              }
+            },
+            duration: { min: 0.2, max: 0.6 },
+          },
+          start: 'top top',
+          end: '+=' + this.getTotalScroll(),
+        })
+      }
+    
+      // Setup timeline
+      this.setupTimeline = () => {
+        tl = gsap.timeline()
+        tl.addLabel("label-initial")
+        
+        sections.forEach((section, index) => {
+          const nextSection = sections[index+1]
+          if (!nextSection) return
+
+          tl.to(nextSection, {
+            y: -1 * nextSection.offsetHeight,
+            duration: nextSection.offsetHeight,
+            ease: 'linear',
+          })
+          .addLabel(`label${index}`)
+        })
+      }
+	
+      // On resize
+      this.onResize = () => {
+        win = {
+          w: window.innerWidth,
+          h: window.innerHeight
+        }
+        
+        this.reset()
+      }
+    
+      // Reset
+      this.reset = () => {
+        if (typeof ScrollTrigger.getById('mainScroll') === 'object') {
+          ScrollTrigger.getById('mainScroll').kill()
+        }
+        
+        if (typeof tl === 'object') {
+          tl.kill()
+          tl.seek(0)
+        }
+        
+        document.body.scrollTop = document.documentElement.scrollTop = 0
+        this.init()
+      }
+	
+      // Get total scroll
+      this.getTotalScroll = () => {
+        let totalScroll = 0
+        sections.forEach(section => {
+          totalScroll += section.offsetHeight
+        })
+        totalScroll -= win.h
+        return totalScroll
+      }
+    }
+
+    Scroll.init()
+
+
+    // 1.在原有的位置向右移动200px并旋转
+    TweenMax.to('.my-element1', 3, { rotate: 360, duration: 2, delay: 1, x: 200});
+
+    // 2.使0和100之间产生动画
+    var demo = {score:0},
+    scoreDisplay = document.getElementById("scoreDisplay");
+	
+    //创建一个tween在20秒内改变score的属性值从0到100.
+    var tween = TweenLite.to(demo,20,{
+      score:100,
+      // onUpdate:showScore
+      onUpdate: ()=>{
+        // 在tween update时通过这个function输出.
+        scoreDisplay.innerHTML = demo.score.toFixed(2);
+      }
+    })
+    
+    // 3.GreenSock 的四个核心工具都可以对动画进行控制
+    var box = document.getElementById("box1"),
+        playBtn = document.getElementById("playBtn"),
+        pauseBtn = document.getElementById("pauseBtn"),
+        resumeBtn = document.getElementById("resumeBtn"),
+        reverseBtn = document.getElementById("reverseBtn"),
+        playFromBtn = document.getElementById("playFromBtn"),
+        reverseFromBtn = document.getElementById("reverseFromBtn"),
+        seekBtn = document.getElementById("seekBtn"),
+        timeScaleSlowBtn = document.getElementById("timeScaleSlowBtn"),
+        restartBtn = document.getElementById("restartBtn"),
+        tween = TweenLite.to(box, 6, {left: "632px", ease: Linear.easeNone});
+    
+    playBtn.onclick = function(){
+      // 当前位置播放动画，如果动画播放完成，play()无效
+      tween.play();
+    };
+
+    pauseBtn.onclick = function(){
+      tween.pause();
+    };
+
+    // 当前位置继续动画
+    resumeBtn.onclick = function(){
+      tween.resume();
+    }
+
+    // 
+    reverseBtn.onclick = function(){
+      tween.reverse();
+    };
+
+    // 某时间点开始播放（秒）
+    playFromBtn.onclick = function(){
+      tween.play(5);
+    }
+
+    // 某时间点开始返回（秒）
+    reverseFromBtn.onclick = function(){
+      tween.reverse(1);
+    }
+
+    // 跳到特定时间（秒）
+    seekBtn.onclick = function(){
+      tween.seek(3);
+    }
+
+    timeScaleSlowBtn.onclick = function() {
+		  //减速.
+			tween.timeScale(0.5);
+		}
+
+		timeScaleNormalBtn.onclick = function() {
+			//恢复速度.
+			tween.timeScale(1);
+		}
+
+		timeScaleFastBtn.onclick = function() {
+			//加速.
+			tween.timeScale(2);
+		}
+
+		restartBtn.onclick = function() {
+			//重新开始.
+			tween.restart();
+		}
+
+
+    // 4. yoyo
+    var box2 = document.getElementById('box2'),
+        count = 0,
+        tween;
+    tween = TweenMax.to(box2, 2, {
+      left: "700px",
+      repeat: 10,
+      yoyo: true,
+      onRepeat: onRepeat,
+      repeatDelay: 0.5,
+      ease: Linear.easeNone
+    })
+
+    function onRepeat(){
+      count++;
+      box2.innerHTML = count;
+      TweenLite.set(box2, {
+        backgroundColor: "hsl(" + Math.random() * 255 + ", 90%, 60%)"
+      });
+    }
+
+    // 5. TweenMax、TimelineLite、TimelineMax可以使用stagger（错开动画），TweenLite则没有。
+    TweenMax.staggerTo(".sbox", 1, {rotation: 360, y: 100}, .5);
+
+    // 6. 每个stagger动画都是一个单独的动画
+    TweenMax.staggerTo(".gbox", 0.8, {rotation: 360, y: 120}, 1.2);
+
+    // 7. cycle 属性允许在stagger的相关方法中使用循环设定的属性值，包括TweenMax.cycle，TimelineLite.cycle，或TimelineMax.cycle。cycle的第一个参数是动画的类型，可
+    TweenMax.staggerTo(".abox", 1, {
+      cycle:{
+        backgroundColor: ["red", "white", "pink"],
+        y:function(index, target){
+          return index * 20;
+        }
+      }
+    }, 0.5);
+
+
+    // 8. .to tweens to the bellow values
+    TweenMax.to(element, 1 {
+      x: 100,
+      y: 100,
+      autoAlpha: 0,
+      ease: Power3.easeIn,
+    });
+
+    // .from tweens from the chosen values to the current values
+    TweenMax.from(element, 1, {
+      x: 100,
+      y: 100,
+      autoAlpha: 0,
+      ease: Power3.easeOut,
+    });
+
+    // 9. easing
+    ease: Power1, Power2, Power3, Power4, sine, Expo, circ, Bounce
+    .easeOut
+    .easeIn
+    .easeInOut
+
+    ease: Power0.easeNone
+    ease: Power1.easeOut
+
+    ease: Back, Elastic, Rough, SlowMo, Stepped
+
+    Elastic.easeIn.config(1,.5)
+    ease: CustomEase
+
+    // 10. callback functions
+    tl.from(cta, 1, {
+      x: 300,
+      onComplete: stopAnim
+    })
+    var times = 2;
+    function stopAnim(){
+      if(times = 0){
+        timeline.pause();
+      }
+      times--;
+    }
+    onComplete, onCompleteParams, onRepeat, onRepeatParams, onStart, onReverseComplete, onReverseCompleteParams, onStartParams, onUpdate, onUpdateParams, startAt, onOverwrite, callbackScope
+  
+    // 11. delayed call function
+    var maxAnimationTime = 30;
+    TweenMax.delayedCall(maxAnimationTime, stopAnim);
+    function stopAnim(){
+      tl.pause();
+    }
+
+    // 12. timelineMax
+    var tl = new TimelineMax({
+      delay: 2,
+      paused: true, 	// or: false, 	// or: null, 	// or: number, 	// or: selector,
+      repeat: 2,
+      repeatDelay: 1,
+      yoyo: true,
+    });
+
+    tl.to(element, 1, {x: 100, y: 0})
+      .to(element, 1, {x: 100, y: 100})
+      .to(element, 1, {x: -100, y: 0});
+
+    tl.to(element, 1, {scale: .5}, .5);
+
+    tl.to(element, 1, {scale: .5}, '-=.5');
+    tl.to(element, 1, {scale: 1}, '+=.5');
+
+    tl.set(element, {xPercent: -50});
+    tl.add('allOut', '+=1');
+    tl.to(element, 1, {scale: .5}, 'allOut')
+
+    tl.staggerFrom(object,1, {
+      autoAlpha: 0,
+      x: 200
+    }, .3);
+
+    // 13. timeline controls
+    tl.play();
+    tl.play(5);
+    tl.seek('allOut');
+    tl.timeScale(2);
+    tl.pause();
+    tl.resume();
+    tl.reverse();
+    tl.restart();
+    tl.progress(.5);
+
+    // 14. nesting timelines
+    var timeline;
+    function firstTl(){
+      var tl = new TimelineMax().from(ele, 1, {vars});
+      return tl;
+    }
+
+    // create a function with master timeline
+    function masterTl(){
+      timeline = new TimelineMax({repeat: -1}).add( firstTl() );
+      return timeline;
+    }
+
+    // start after all elements finished loading
+    window.onload = function(){
+      masterTl();
+    }
+
+    // 15. code snippets
+    staggerFromTo(variable, 1, {
+      cycle: {
+        x: [-100, -70, 100, 70],
+        ease: Back.easeOut
+      }
+    }, .5);
+
+    // 16.animate cta on banner hover
+    var banner = document.getElementById('banner');
+    var tween = TweenMax.to('#cta=btn', .5, {scale: 1.2, paused: true});
+    banner.addEventListener('mouseover', function(){tween.play();});
+    banner.addEventListener('mouseleave', function(){tween.reverse();});
+
+    // 17. random value within min/max range, with a callback
+    var duration = rand(1, 3);
+    TweenMax.to(ele, duration, {x: 200});
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    // 18. relative values
+    x: '100%'
+    y: '100%'
+    x: '+=50px'
+    y: '-=50px'
+    xPercent: -50
+    yPercent: -50
+
+    // 19. function-based values
+    TweenMax.to('.box', 1, {
+      x: function() {
+        return Math.random() * 300
+      }
+    })
+    TweenMax.to('.box', 1, {
+      x: function(index){
+        return (index + 1) * 100
+      }
+    })
+
+    // 20. transform
+    TransformOrigin: '50%, 0%'
+    rotation: 360
+    scale: 2
+    // scaleX: 2, scaleY: 2
+    force3D: false
+
+    // useful tricks
+    clearProps: 'all'
+    immediateRender: true // for animations - don't forget to turn it on! (not that important though
+    TweenMax.defaultEase = Power3.easeInOut;
+    TweenMax.killTweensOf(yourObject);
+
+
+    gsap.from('.circle', {duration: 1, opacity: 0, delay: 1.5, y: 150, stagger: .25});
+
+  </script>
+</body>
+</html>
+

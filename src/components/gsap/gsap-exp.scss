@@ -1,0 +1,224 @@
+@import '../../src/scss/normalize';
+
+.wrapper{
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+
+  .section{
+    position: relative;
+    margin: 0 auto;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .main{
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.sec1 {
+  background-color: rgb(23, 23, 143);
+  
+  .my-element1 {
+    margin: 30px auto 0;
+    width: 200px;
+    height: 200px;
+    background-color: aqua;
+  }
+
+  .score-display{
+    font-size: 40px;
+    text-align: center;
+    margin-top: 70px;
+    color: #fff;
+  }
+
+
+  .ani-info1 {
+    width: 100%;
+    height: auto;
+
+    .box1 {
+      width:50px;
+      height:50px;
+      border-radius:6px;
+      margin-top:4px;
+      margin-bottom: 60px;
+      display: block;
+      position: absolute;
+      background-color: aquamarine;
+    }
+    
+    input[type="button"] {
+      -webkit-appearance: button;
+      padding: 8px;
+      margin: 8px 8px;
+    }
+  }
+
+  .box2{
+    width:100px;
+		height:100px;
+		position:relative;
+		border-radius:6px;
+		margin-top:4px;
+		text-align:center;
+		line-height:100px;
+		color:black;
+		font-size:80px;
+    background-color: aquamarine;
+  }
+
+  .ani-info2{
+    width: 100%;
+
+    .sbox{
+      width:50px;
+      height:50px;
+      position:relative;
+      border-radius:6px;
+      margin-top:4px;
+      display:inline-block
+    }
+
+    .b{
+      &1{
+        background-color: rgb(192, 171, 145);
+      }
+      &2{
+        background-color: rgb(199, 161, 115);
+      }
+      &3{
+        background-color: rgb(170, 130, 77);
+      }
+      &4{
+        background-color: rgb(221, 148, 54);
+      }
+      &5{
+        background-color: rgb(231, 168, 84);
+      }
+      &6{
+        background-color: rgb(212, 143, 52);
+      }
+      &7{
+        background-color: rgb(223, 134, 19);
+      }
+      &8{
+        background-color: rgb(221, 128, 6);
+      }
+    }
+  }
+
+  
+  .ani-info3 {
+    margin: 30px auto 0;
+    width: 100%;
+
+    .gbox{
+      width:50px;
+      height:50px;
+      position:relative;
+      border-radius:6px;
+      margin-top:4px;
+      display: inline-block;
+      line-height:50px;
+      text-align:center;
+      color:#333;
+      font-size:24px;
+
+      &.g1 {
+        background-color: #632424;
+      }
+
+      &.g2 {
+        background-color: #661818;
+      }
+      
+      &.g3 {
+        background-color: #831111;
+      }
+    }
+  }
+
+  
+  .ani-info4 {
+    margin: 30px auto 0;
+    width: 100%;
+
+    .abox {
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+      position: relative;
+      border-radius: 6px;
+      margin: 4px;
+
+      &:nth-child(1){
+        background-color: rgb(192, 171, 145);
+      }
+
+      &:nth-child(2){
+        background-color: rgb(199, 161, 115);
+      }
+      
+      &:nth-child(3){
+        background-color: rgb(170, 130, 77);
+      }
+      
+      &:nth-child(4){
+        background-color: rgb(221, 148, 54);
+      }
+      
+      &:nth-child(5){
+        background-color: rgb(231, 168, 84);
+      }
+      
+      &:nth-child(6){
+        background-color: rgb(212, 143, 52);
+      }
+      
+      &:nth-child(7){
+        background-color: rgb(223, 134, 19);
+      }
+      
+      &:nth-child(8){
+        background-color: rgb(221, 128, 6);
+      }
+    }
+  }
+}
+
+.sec2 {
+  background-color: rgb(32, 134, 134);
+}
+
+.sec3 {
+  background-color: rgb(130, 32, 134);
+}
+
+.sec4 {
+  background-color: rgb(134, 32, 88);
+}
+
+.sec5 {
+  background-color: rgb(134, 32, 49);
+}
+
+.sec6 {
+  background-color: rgb(32, 134, 112);
+}
+
+.sec7 {
+  background-color: rgb(32, 134, 95);
+}
+
+.sec8 {
+  background-color: rgb(32, 134, 57);
+}

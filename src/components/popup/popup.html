@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>custom popup</title>
+
+    <style>
+        .popup {
+            width: 100vw;
+            height: 100vh;
+            outline: none;
+            display: block;
+            visibility: visible;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .popup .popup-con {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .popup .popup-con .popup-info {
+            margin: 0 auto;
+            width: 96%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .popup .popup-con .popup-info .popup-title {
+            /* margin: 40px auto 20px; */
+            font-family: "Microsoft YaHei";
+            font-size: 48px;
+            font-weight: bold;
+            font-style: normal;
+            line-height: 48px;
+            color: #fff;
+            text-align: center;
+            letter-spacing: normal;
+            text-decoration: none;
+        }
+
+        .popup .popup-con .popup-info .popup-desc {
+            margin: 20px auto 0;
+            width: 100%;
+            height: auto;
+            font-family: "Microsoft YaHei";
+            font-size: 20px;
+            font-weight: normal;
+            font-style: normal;
+            line-height: 20px;
+            color: #fff;
+            text-align: center;
+            letter-spacing: normal;
+            text-decoration: none;
+        }
+
+        .popup .popup-bg {
+            width: 960px;
+            height: 540px;
+            border: 2px solid #12ded2;
+            background: #000;
+            margin: 0 auto;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .popup .popup-close {
+            display: block;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+
+            background: #006155;
+            color: #12ded2;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            font-size: 30px;
+            padding: 1px;
+            text-decoration: none;
+        }
+
+        .popup .popup-close:before {
+            content: '\2716';
+        }
+
+        /* pop2 */
+        .alert-mask {
+            width: 100vw;
+            height: 100vh;
+            z-index: 999;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            display: none;
+            background-color: rgb(0, 0, 0);
+        }
+
+        .alert {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0 auto;
+            width: 680px;
+            height: 420px;
+            background-color: rgb(252, 252, 252);
+            border-radius: 8px;
+            z-index: 1;
+            display: none;
+        }
+
+        .alert-con {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .alert-bg {
+            overflow: hidden;
+            border-radius: 8px;
+            width: 676px;
+            height: 416px;
+            border: 2px solid rgb(34, 208, 252);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .input-txt {
+            width: 400px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #03f7ff;
+            font-size: 18px;
+        }
+
+        .input-txt:focus {
+            border: 2px solid #fc9003;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #000000;
+        }
+
+        .submit {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            width: 400px;
+            height: 40px;
+        }
+
+        .cancel,
+        .confirm {
+            border-radius: 30px;
+            border: none;
+            transition: all 0.2s;
+            background-color: #03f7ff;
+            width: 180px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .cancel:hover,
+        .confirm:hover {
+            border-radius: 30px;
+            width: 180px;
+            height: 40px;
+            background-color: #fc9003;
+            color: white;
+        }
+
+        .alert-close {
+            opacity: 0.7;
+            display: block;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: #006155;
+            color: #12ded2;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            font-size: 30px;
+            padding: 1px;
+            text-decoration: none;
+        }
+
+        .alert-close:before {
+            content: '\2716';
+        }
+
+        .alert-close:hover {
+            opacity: 1;
+        }
+
+
+        /* pop3 */
+        .pop3 {
+            width: 100vw;
+            height: 100vh;
+            outline: none;
+            display: block;
+            visibility: visible;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .pop3 .pop-con {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .pop3 .pop-con .pop-info {
+            margin: 0 auto;
+            overflow: hidden;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .pop3 .pop-con .pop-close {
+            display: block;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: #074952;
+            color: #12ded2;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            font-size: 30px;
+            text-decoration: none;
+        }
+
+        .pop3 .pop-con .pop-close::before {
+            content: "✖";
+        }
+
+        .pop3 .pop-bg {
+            width: 1152px;
+            height: 600px;
+            border: 2px solid #12ded2;
+            background: #035d69;
+            margin: 0 auto;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .pop3 .pop-bg video {
+            width: 1152px;
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- popup1 -->
+    <div class="popup" id="popup1" style="display: none">
+        <!-- popup bg -->
+        <div class="popup-con popup-bg">
+            <!-- popup content -->
+            <div class="popup-info">
+                <h3 class="popup-title">popup title</h3>
+                <p class="popup-desc">popup description text,popup description text...</p>
+            </div>
+            <a class="popup-close" href="javascript:;" onclick="hidePopup()"></a>
+        </div>
+    </div>
+
+    <!-- popup2 -->
+    <div id="alert-mask" class="alert-mask">
+        <!-- alert -->
+        <div class="alert" id="custom-alert">
+            <div class="alert-con">
+                <!-- alert info -->
+                <div class="alert-bg">
+                    <input type="text" class="input-txt" placeholder="please enter your email address" id="input-txt">
+                    <div class="submit">
+                        <a href="javascript:;" class="cancel" onclick="cancel()">cancel</a>
+                        <a href="javascript:;" class="confirm" onclick="confirm()">confirm</a>
+                    </div>
+                </div>
+                <!-- alert close btn -->
+                <a href="javascript:;" class="alert-close" onclick="cancel()"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup3 -->
+    <div class="pop3" id="pop3" style="display: none">
+        <div class="pop-con pop-bg">
+            <div class="pop-info">
+                <video id="pop-video" src="" preload="auto" controls="controls" autoplay="true"
+                    poster="https://image.lightspeed-studios.com/images/lqstudios/news/news_pic20.jpg">
+                    <!-- <sources src="" type="video/mp4"></sources> -->
+                </video>
+            </div>
+            <a class="pop-close" href="javascript:;" onclick="hidePop()"></a>
+        </div>
+    </div>
+
+
+    <!-- usage popup1 -->
+    <button class="popup-btn" onclick="showPopup()">custom popup1</button>
+    <!-- usage popup2 -->
+    <button class="popup-btn" onclick="chickAlert()">custom popup2</button>
+    <!-- usage popup3 -->
+    <button class="popup-btn" onclick="showPop()">custom video popup3</button>
+
+
+    <script type="text/javascript">
+        // popup1
+        let popup = document.getElementById("popup1");
+        // show popup
+        function showPopup() {
+            popup.style.display = "block";
+        }
+
+        // hide popup
+        function hidePopup() {
+            popup.style.display = "none";
+        }
+
+
+        // popup2
+        let alert_mask = document.getElementById("alert-mask");
+        let alert = document.getElementById("custom-alert");
+        // showPopup of alert
+        function chickAlert() {
+            alert_mask.style.display = "block";
+            alert.style.display = "block";
+        }
+
+        // cancel function
+        function cancel() {
+            alert_mask.style.display = "none";
+            alert.style.display = "none";
+        }
+
+        // confirm function
+        function confirm() {
+            cancel();
+            console.log("alert cancel");
+        }
+
+
+        // popup3
+        let pop3 = document.getElementById("pop3");
+        // show popup
+        function showPop() {
+            pop3.style.display = "block";
+        }
+
+        // hide popup
+        var vd_ele = document.getElementById("pop-video");
+        // video play function
+        function playVideo(src) {
+            vd_ele.src = src;
+            vd_ele.play();
+        }
+
+        // video pause function
+        function pauseVideo() {
+            vd_ele.src = "";
+            vd_ele.pause();
+        }
+
+        // show pop
+        function showPop() {
+            pop3.style.display = "block";
+            playVideo("https://image.lightspeed-studios.com/images/lqstudios/video/develop_vd1.mp4")
+        }
+
+        // close pop
+        function hidePop() {
+            pauseVideo()
+            pop3.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

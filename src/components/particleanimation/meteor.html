@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>meteor particle animate</title>
+
+  <style>
+    @keyframes particleAnimation{
+      from {
+          left: -100px;
+      }
+      to {
+          left: calc( 100% + 100px );
+      }
+    }
+
+    body{
+      background:black;
+    }
+
+    .particle{
+      position:fixed;
+      left:0px;
+      top:50px;
+      width:1px;
+      height:1px;
+      background-color:white;
+      position:fixed;
+      -webkit-animation: particleAnimation 3s ease-in-out infinite;
+      animation: particleAnimation 3s ease-in-out infinite;
+    }
+    .particle::before{
+      position:absolute;
+      display:block;
+      content:"";
+      width:100px;
+      right:1px;
+      top:50%;
+      transform: translateY(-50%);
+      height:1px;
+      background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(255,255,255,0.4) 100%); 
+    }
+
+  </style>
+</head>
+<body>
+  <div class="meteor-container" id="meteor-container">
+
+  </div>
+
+  <script>
+    // 随机函数
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    // 粒子初始化
+    function meteorInit() {
+      var generator = document.getElementById("meteor-container");
+      generator.style.width = document.body.offsetWidth + 'px';
+      generator.style.height = document.body.offsetHeight + 'px';
+      // 粒子总数
+      var particleCount = 10;
+      for (var i = 0; i < particleCount; i++) {
+        // 粒子大小
+        var size = getRandomInt(2, 2);
+        // 粒子主要样式和动画
+        var n = '<div class="particle" style="top:' + getRandomInt(5, 95) + '%; left:' + getRandomInt(5,95) + '%; width:'
+        + size + 'px; height:' + size + 'px; animation-delay:' + (getRandomInt(0,30)/10) + 's; background-color:rgba('
+        + getRandomInt(254, 255) + ',' + getRandomInt(254, 255) + ',' + getRandomInt(254, 255) + ',' + (getRandomInt(2, 8)/10) + ');"></div>';
+        // 打印生成的粒子dom
+        // console.log("Particle " + i + ": " + n);
+        var node = document.createElement("div");
+        node.innerHTML = n;
+        generator.appendChild(node);
+      }
+    }
+
+    meteorInit();
+  </script>
+</body>
+</html>

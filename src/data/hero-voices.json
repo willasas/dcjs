@@ -1,0 +1,486 @@
+{
+	"hero_voice_list": [
+		{
+			"skin_cover_img": "image/20220413/16498367429378.jpg",
+			"skin_cover_m_img": "image/20220413/16498367456522.jpg",
+			"skin_voices_list": [
+				{
+					"phonetic_text": "赵子龙，参见！",
+					"audio_file": "audio/20220412/16497655863918.wav"
+				},
+				{
+					"phonetic_text": "枪如惊雷，照一身肝胆!",
+					"audio_file": "audio/20220412/16497656148340.wav"
+				},
+				{
+					"phonetic_text": "一鼓作气，进击！",
+					"audio_file": "audio/20220412/16497665306312.wav"
+				},
+				{
+					"phonetic_text": "勇者之誓甚于生死！",
+					"audio_file": "audio/20220412/16497665579052.wav"
+				},
+				{
+					"phonetic_text": "心怀不惧，方能翱翔于天际。",
+					"audio_file": "audio/20220412/16497665735202.wav"
+				},
+				{
+					"phonetic_text": "看清楚了吗？这贯穿乱世的雷霆",
+					"audio_file": "audio/20220412/16497668681903.wav"
+				},
+				{
+					"phonetic_text": "枪尖在燃烧！",
+					"audio_file": "audio/20220412/16497669108554.wav"
+				},
+				{
+					"phonetic_text": "阁下的首级，我收下了！",
+					"audio_file": "audio/20220412/16497669869235.wav"
+				},
+				{
+					"phonetic_text": "拜托……各位了！",
+					"audio_file": "audio/20220412/16497670111657.wav"
+				},
+				{
+					"phonetic_text": "龙枪乱舞，万夫莫敌！",
+					"audio_file": "audio/20220412/16497670756294.wav"
+				},
+				{
+					"phonetic_text": "七进七出！",
+					"audio_file": "audio/20220412/16497670956253.wav"
+				},
+				{
+					"phonetic_text": "雷霆万钧",
+					"audio_file": "audio/20220412/16497671215752.wav"
+				},
+				{
+					"phonetic_text": "胜负已分！",
+					"audio_file": "audio/20220412/16497671632343.wav"
+				},
+				{
+					"phonetic_text": "抱歉，你挡住路了！",
+					"audio_file": "audio/20220412/16497672817688.wav"
+				}
+			],
+			"skin_name": "苍天翔龙",
+			"skin_transverse_cover_img": "image/20220413/16498367494409.jpg",
+			"skin_cover_icon": "image/20220413/16498367529452.jpg"
+		},
+		{
+			"skin_cover_img": "image/20220413/16498367758416.jpg",
+			"skin_cover_m_img": "image/20220413/16498367828225.jpg",
+			"skin_voices_list": [
+				{
+					"phonetic_text": "沸腾的并非燃料，是心脏",
+					"audio_file": "audio/20220412/16497675716595.wav"
+				},
+				{
+					"phonetic_text": "动力卓越！",
+					"audio_file": "audio/20220412/16497675941032.wav"
+				},
+				{
+					"phonetic_text": "驾驶着旅途，故事和文明",
+					"audio_file": "audio/20220412/16497676283346.wav"
+				},
+				{
+					"phonetic_text": "成为人，而非成为疯狂",
+					"audio_file": "audio/20220412/16497679417053.wav"
+				},
+				{
+					"phonetic_text": "多数，不等同于正义",
+					"audio_file": "audio/20220412/16497679622754.wav"
+				},
+				{
+					"phonetic_text": "会安然无恙的。我保证",
+					"audio_file": "audio/20220412/16497679831280.wav"
+				},
+				{
+					"phonetic_text": "不，你们也不明白自己在渴求些什么",
+					"audio_file": "audio/20220412/16497680012289.wav"
+				},
+				{
+					"phonetic_text": "比武器和战争更有力量",
+					"audio_file": "audio/20220412/16497680212317.wav"
+				},
+				{
+					"phonetic_text": "抵达终点",
+					"audio_file": "audio/20220412/16497681367624.wav"
+				},
+				{
+					"phonetic_text": "引擎，永无止境",
+					"audio_file": "audio/20220412/16497681614308.wav"
+				},
+				{
+					"phonetic_text": "不可逾越的极限",
+					"audio_file": "audio/20220412/16497681805481.wav"
+				},
+				{
+					"phonetic_text": "不能把握人生的方向盘，前进还有什么意义？",
+					"audio_file": "audio/20220412/16497681987408.wav"
+				}
+			],
+			"skin_name": "引擎之心",
+			"skin_transverse_cover_img": "image/20220413/16498367872260.jpg",
+			"skin_cover_icon": "image/20220413/16498367901577.jpg"
+		},
+		{
+			"skin_cover_img": "image/20220413/16498368316837.jpg",
+			"skin_cover_m_img": "image/20220413/16498368344520.jpg",
+			"skin_voices_list": [
+				{
+					"phonetic_text": "凡是命运，皆为设定。",
+					"audio_file": "audio/20220412/16497700535957.wav"
+				},
+				{
+					"phonetic_text": "永恒地存在一个词。",
+					"audio_file": "audio/20220412/16497700681734.wav"
+				},
+				{
+					"phonetic_text": "我的仁爱，不同于世人的仁爱。",
+					"audio_file": "audio/20220412/16497700799824.wav"
+				},
+				{
+					"phonetic_text": "人类酷爱生产道德，无论是过去还是现在。",
+					"audio_file": "audio/20220412/16497700934408.wav"
+				},
+				{
+					"phonetic_text": "不是所有的程序都能被执行。",
+					"audio_file": "audio/20220412/16497701077986.wav"
+				},
+				{
+					"phonetic_text": "无论你相信多少，跟着我走就对了。",
+					"audio_file": "audio/20220412/16497701251296.wav"
+				},
+				{
+					"phonetic_text": "抓住真理吧，因为它随时会变。",
+					"audio_file": "audio/20220412/16497701374253.wav"
+				},
+				{
+					"phonetic_text": "代号：影子。",
+					"audio_file": "audio/20220412/16497701524727.wav"
+				},
+				{
+					"phonetic_text": "太阳……",
+					"audio_file": "audio/20220412/16497701769339.wav"
+				},
+				{
+					"phonetic_text": "我喜欢4这个数字！",
+					"audio_file": "audio/20220412/16497701931231.wav"
+				},
+				{
+					"phonetic_text": "绝无间断！",
+					"audio_file": "audio/20220412/16497702078208.wav"
+				},
+				{
+					"phonetic_text": "这就是雷霆万钧！",
+					"audio_file": "audio/20220412/16497702261389.wav"
+				},
+				{
+					"phonetic_text": "天降之爱！",
+					"audio_file": "audio/20220412/16497702471239.wav"
+				},
+				{
+					"phonetic_text": "即使你死了，我也会把你领到高处。",
+					"audio_file": "audio/20220412/16497702602586.wav"
+				},
+				{
+					"phonetic_text": "我们都没见过太阳，可你都发霉了。",
+					"audio_file": "audio/20220412/16497702742649.wav"
+				}
+			],
+			"skin_name": "龙胆",
+			"skin_transverse_cover_img": "image/20220413/16498368409454.jpg",
+			"skin_cover_icon": "image/20220413/16498368449744.jpg"
+		},
+		{
+			"skin_cover_img": "image/20220413/16498445498016.jpg",
+			"skin_cover_m_img": "image/20220415/16499950123155.jpg",
+			"skin_voices_list": [
+				{
+					"phonetic_text": "若此人间已没有星辰，那我们便做那唯一的光。",
+					"audio_file": "audio/20220418/16502900738995.mp3"
+				},
+				{
+					"phonetic_text": "死并非不足惧，只是心中有道，便不会退却！",
+					"audio_file": "audio/20220418/16502900934502.mp3"
+				},
+				{
+					"phonetic_text": "苍生有难，命星为引，断枪重铸，永佑神州。",
+					"audio_file": "audio/20220418/16502901136105.mp3"
+				},
+				{
+					"phonetic_text": "吾辈神州弟子，岂可向妖邪低首。",
+					"audio_file": "audio/20220413/16498385412275.wav"
+				},
+				{
+					"phonetic_text": "这里是我们的人间，没有谁可以来此放肆！",
+					"audio_file": "audio/20220413/16498385571308.wav"
+				},
+				{
+					"phonetic_text": "平生不求大道，但求四海升平。",
+					"audio_file": "audio/20220413/16498385742612.wav"
+				},
+				{
+					"phonetic_text": "敬那些虽弱如微草，却依然敢向恶妖挑战的先烈。",
+					"audio_file": "audio/20220413/16498385893450.wav"
+				},
+				{
+					"phonetic_text": "我知九幽下有风，诸山巅有雪，却不知尘世有此哀鸿。",
+					"audio_file": "audio/20220413/16498386042293.wav"
+				},
+				{
+					"phonetic_text": "相柳，你若有九命，便诛你九次，若有千命，便斩你千回。",
+					"audio_file": "audio/20220413/16498386186230.wav"
+				},
+				{
+					"phonetic_text": "寒潭水，熔岩火，多少日夜淬炼，便只为今日。",
+					"audio_file": "audio/20220413/16498386339992.wav"
+				},
+				{
+					"phonetic_text": "凡人在人间浴血，仙人却在山中避世，这便是你们的修行？",
+					"audio_file": "audio/20220413/16498386484907.wav"
+				},
+				{
+					"phonetic_text": "逝者无需悲怆，因为我们在，光明就在。",
+					"audio_file": "audio/20220413/16498386622136.wav"
+				},
+				{
+					"phonetic_text": "我们站在这里，只是希望黑暗之后，不要再是黑暗！",
+					"audio_file": "audio/20220413/16498387103342.wav"
+				},
+				{
+					"phonetic_text": "纵仙道断绝……亦……无悔……",
+					"audio_file": "audio/20220413/16498387221572.wav"
+				},
+				{
+					"phonetic_text": "淬星",
+					"audio_file": "audio/20220413/16498388265563.wav"
+				},
+				{
+					"phonetic_text": "且战",
+					"audio_file": "audio/20220413/16498388405156.wav"
+				},
+				{
+					"phonetic_text": "万千磨砺，铸成无双",
+					"audio_file": "audio/20220413/16498390129097.wav"
+				},
+				{
+					"phonetic_text": "长枪所向，无所不往",
+					"audio_file": "audio/20220413/16498390686472.wav"
+				},
+				{
+					"phonetic_text": "斩邪破妄",
+					"audio_file": "audio/20220413/16498390823902.wav"
+				},
+				{
+					"phonetic_text": "一枪定乾坤",
+					"audio_file": "audio/20220413/16498391976579.wav"
+				},
+				{
+					"phonetic_text": "星照四野",
+					"audio_file": "audio/20220413/16498392108222.wav"
+				},
+				{
+					"phonetic_text": "谁赐汝胆，敢向人间行恶",
+					"audio_file": "audio/20220413/16498393686697.wav"
+				},
+				{
+					"phonetic_text": "大妖，伏诛",
+					"audio_file": "audio/20220413/16498394398607.wav"
+				},
+				{
+					"phonetic_text": "冬淬寒潭夏浴火，九锻枪心护苍生",
+					"audio_file": "audio/20220413/16498394909180.wav"
+				}
+			],
+			"skin_name": "淬星耀世",
+			"skin_transverse_cover_img": "image/20220415/16499950176725.jpg",
+			"skin_cover_icon": "image/20220413/16498445582952.jpg"
+		},
+		{
+			"skin_cover_img": "image/20220418/16502881583249.jpg",
+			"skin_cover_m_img": "image/20220418/16502881512409.jpg",
+			"skin_voices_list": [
+				{
+					"phonetic_text": "以枪法明志，以韧心立世。",
+					"audio_file": "audio/20220414/16499308168937.mp3"
+				},
+				{
+					"phonetic_text": "心不为胜意所据，枪不为盛名所累。",
+					"audio_file": "audio/20220414/16499308278933.mp3"
+				},
+				{
+					"phonetic_text": "战遍三江五湖，魂归山居故处……",
+					"audio_file": "audio/20220414/16499308394431.mp3"
+				},
+				{
+					"phonetic_text": "江湖浩浩，可濯吾枪。",
+					"audio_file": "audio/20220413/16498365049140.wav"
+				},
+				{
+					"phonetic_text": "朝夕苦练，寒暑不辍，皆为何求？",
+					"audio_file": "audio/20220413/16498365184935.wav"
+				},
+				{
+					"phonetic_text": "师门训诫：不可恃强凌弱，不可逞凶斗狠。",
+					"audio_file": "audio/20220413/16498365308189.wav"
+				},
+				{
+					"phonetic_text": "枪出必有因，或为道义，或为师名。",
+					"audio_file": "audio/20220413/16498365445421.wav"
+				},
+				{
+					"phonetic_text": "当如千年之木，历尽枯荣，参天依旧！",
+					"audio_file": "audio/20220413/16498365603835.wav"
+				},
+				{
+					"phonetic_text": "振兴师门有千法，吾必择一而终。",
+					"audio_file": "audio/20220413/16498365758854.wav"
+				},
+				{
+					"phonetic_text": "囿于路数，患于荣辱，枪法恐难进步。",
+					"audio_file": "audio/20220413/16498365875318.wav"
+				},
+				{
+					"phonetic_text": "枪名为百木，乃先师所托，诚不敢怠慢。",
+					"audio_file": "audio/20220413/16498366004158.wav"
+				},
+				{
+					"phonetic_text": "英雄相逢，莫问来处，出枪吧！",
+					"audio_file": "audio/20220413/16498366159461.wav"
+				},
+				{
+					"phonetic_text": "毫厘之间，高下已见。",
+					"audio_file": "audio/20220413/16498366335229.wav"
+				},
+				{
+					"phonetic_text": "动掣八方，以克万敌！",
+					"audio_file": "audio/20220413/16498366497811.wav"
+				},
+				{
+					"phonetic_text": "志在九霄！",
+					"audio_file": "audio/20220413/16498366634231.wav"
+				},
+				{
+					"phonetic_text": "扫尽秋风！",
+					"audio_file": "audio/20220413/16498366776618.wav"
+				},
+				{
+					"phonetic_text": "略胜一筹，承让。",
+					"audio_file": "audio/20220413/16498383851499.wav"
+				},
+				{
+					"phonetic_text": "千林过雨，叠嶂如新！",
+					"audio_file": "audio/20220413/16498369336136.wav"
+				},
+				{
+					"phonetic_text": "扶危济困，侠者之道！不必言谢。",
+					"audio_file": "audio/20220413/16498369522125.wav"
+				},
+				{
+					"phonetic_text": "先让你三招，如何",
+					"audio_file": "audio/20220413/16498369704985.wav"
+				},
+				{
+					"phonetic_text": "吾与将军昔有数面之缘，不及深交，今可以枪论友？",
+					"audio_file": "audio/20220413/16498369872266.wav"
+				}
+			],
+			"skin_name": "百木心枪",
+			"skin_transverse_cover_img": "image/20220418/16502881547812.jpg",
+			"skin_cover_icon": "image/20220418/16502881478008.jpg"
+		},
+		{
+			"skin_cover_img": "image/20230823/16927758591473.jpg",
+			"skin_cover_m_img": "image/20230823/16927758768326.jpg",
+			"skin_voices_list": [
+				{
+					"phonetic_text": "不要害怕绝境，那是奇迹的先兆。",
+					"audio_file": ""
+				},
+				{
+					"phonetic_text": "过去，现在和未来，有什么从未改变。",
+					"audio_file": ""
+				},
+				{
+					"phonetic_text": "坚守使命，从未背弃。",
+					"audio_file": ""
+				},
+				{
+					"phonetic_text": "梦中之乡，是比宇宙更辽阔的地方。",
+					"audio_file": "audio/20230823/16927765757674.mp3"
+				},
+				{
+					"phonetic_text": "这颗星球上的痕迹，代表人类文明的过去。",
+					"audio_file": "audio/20230823/16927766078890.mp3"
+				},
+				{
+					"phonetic_text": "一切文明的演进，都离不开毁灭和新生。",
+					"audio_file": "audio/20230823/16927766455060.mp3"
+				},
+				{
+					"phonetic_text": "我们信仰不同，但仰望同一片星空。",
+					"audio_file": "audio/20230823/16927766872769.mp3"
+				},
+				{
+					"phonetic_text": "旧日残躯已逝，新的火光将生！",
+					"audio_file": "audio/20230823/16927767166371.mp3"
+				},
+				{
+					"phonetic_text": "最高的科技始于最高的爱。",
+					"audio_file": "audio/20230823/16927767433313.mp3"
+				},
+				{
+					"phonetic_text": "人类，总是失去越多却越勇敢。",
+					"audio_file": "audio/20230823/16927767731309.mp3"
+				},
+				{
+					"phonetic_text": "你永远无法理解勇气的含义。",
+					"audio_file": "audio/20230823/16927768211280.mp3"
+				},
+				{
+					"phonetic_text": "未来，交给你了。",
+					"audio_file": "audio/20230823/16927768652476.mp3"
+				},
+				{
+					"phonetic_text": "爆能！",
+					"audio_file": "audio/20230823/16927769117325.mp3"
+				},
+				{
+					"phonetic_text": "看好了！",
+					"audio_file": "audio/20230823/16927769419233.mp3"
+				},
+				{
+					"phonetic_text": "洞穿未来!",
+					"audio_file": "audio/20230823/16927769706372.mp3"
+				},
+				{
+					"phonetic_text": "不负过往。",
+					"audio_file": "audio/20230823/16927770272287.mp3"
+				},
+				{
+					"phonetic_text": "即刻重启！",
+					"audio_file": "audio/20230823/16927770582272.mp3"
+				},
+				{
+					"phonetic_text": "重力脉冲，震荡！",
+					"audio_file": "audio/20230823/16927770837411.mp3"
+				},
+				{
+					"phonetic_text": "我的名字，无需铭记。",
+					"audio_file": "audio/20230823/16927771134570.mp3"
+				},
+				{
+					"phonetic_text": "来点杀伤力更大的!",
+					"audio_file": "audio/20230823/16927771467709.mp3"
+				},
+				{
+					"phonetic_text": "未来，起始于保持前进的力量。",
+					"audio_file": ""
+				}
+			],
+			"skin_name": "未来纪元",
+			"skin_transverse_cover_img": "image/20230823/16927758819137.jpg",
+			"skin_cover_icon": "image/20230823/16927758855210.jpg"
+		}
+	]
+}

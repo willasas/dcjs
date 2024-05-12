@@ -1,0 +1,219 @@
+@charset "utf-8";
+/*!
+  Name: base
+  Author: william
+  Author URI: 
+  Description: base would contain variables, reset, colors etc.
+  Version: 1.0.1
+	Tags: base,front end,variables
+  Update: December 6th,2021
+*/
+
+// ================== global variables[全局变量] ==================
+/**
+* 全局变量配置及说明
+*
+* @param {String} $$design-width-pc pc端设计稿大小
+* @param {String} $$design-width-e 内嵌设计稿大小
+* @param {String} $$design-width-m 移动端设计稿大小
+* @param {String} $width 宽度
+* @param {String} $height 高度
+* @param {String} $fonts 字体
+* @param {String} $webkit WebKit内核(谷歌、safari等)
+* @param {String} $moz Gecko内核(火狐)
+* @param {String} $ms Trident内核(IE浏览器)
+* @param {String} $o ：Presto内核(opera)
+* @param {String} $top 距离父容器顶部的距离
+* @param {String} $right 距离父容器右边的距离
+* @param {String} $bottom 距离父容器底部的距离
+* @param {String} $left 距离父容器左边的距离
+* @param {String} $common-path-pc PC端本地路径
+* @param {String} $common-path-e 内嵌本地路径
+* @param {String} $common-path-m 移动端本地路径
+* @param {String} $after-path-pc PC端分离后路径
+* @param {String} $after-path-e 内嵌分离后路径
+* @param {String} $after-path-m 移动端分离后路径
+* @param {String} $basic-font-size 跟字体大小
+*/
+$design-width-pc: 1920px !default;
+$design-width-e: 1200px !default;
+$design-width-m: 750px !default;
+$ui-pc-width: 1920 !default;
+$ui-m-width: 750 !default;
+$width: auto !default;
+$height: auto !default;
+$fonts: font !default;
+$webkit: -webkit- !default;
+$moz: -moz- !default;
+$ms: -ms- !default;
+$o: -o- !default;
+$common-path-pc: '../ossweb-img/';
+$common-path-e: '../ossweb-img/n/';
+$common-path-m: '../ossweb-img/m/';
+$after-path-pc: '//game.gtimg.cn/images/lol/act/a20211014set6/';
+$after-path-e: '//game.gtimg.cn/images/lol/act/a20211014set6/n/';
+$after-path-m: '//game.gtimg.cn/images/lol/act/a20211014set6/m/';
+$basic-font-size: 100px !default;
+// ================== colors[颜色] ==================
+
+/**
+* 提示信息专用颜色变量配置
+*
+* @param {Colors} $color-def 默认颜色
+* @param {Colors} $color-success 成功或通过时的颜色
+* @param {Colors} $color-warning 警告颜色
+* @param {Colors} $color-danger 报错时的颜色
+* @param {Colors} $color-info 消息提示时的颜色
+*/
+$color-def: white;
+$color-success: #4fc48d;
+$color-warning: #f3d93f;
+$color-danger: #f6588e;
+$color-info: #27c6fa;
+
+// ================== reset[重置样式表] ==================
+// reset for mobile
+@media screen and (max-device-width: 1024px) {
+  html,body,blockquote,div,p,ul,li,dl,dt,dd,em,i,span,a,img,input,h1,h2,h3,h4,h5,h6,hr,figure,pre { margin: 0; padding:0 }
+  a,img,input { border: none; }
+  body { font: 14px/1.75  -apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif; -webkit-tap-highlight-color: rgba(0,0,0,0); }
+  a { text-decoration: none;outline: none;border: none;}
+  ul,li { list-style:none }
+  a,img { -webkit-touch-callout: none; } /* 禁止长按链接与图片弹出菜单，根据需要选择是否删除，如果有长按保存图片的需求，必须删除img */
+  html,body { 
+    -webkit-overflow-scrolling: touch;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -ms-user-select: none;
+    height: auto; 
+  } /* 禁止选中文本（如无文本选中需求，此为必选项） */
+  input {
+    background: none;
+    outline: none;
+    border: none;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  select {
+    border: none;
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+
+  img{
+    display: block;
+    object-fit: cover;
+  }
+  .show{
+    display: block;
+  }
+
+  // PX TO REM
+  html {
+    font-size: $basic-font-size;
+    font-size: 1rem;
+    font-size: 13.33333333vw;
+  }
+
+  // function for PX To VW
+  @function vw($pixels) {
+    $screen-width: 1024 !default;
+    @return $pixels / $screen-width * 100vw;
+  }
+}
+
+// reset for pc
+@media screen and (min-device-width: 1025px) {
+  body,dl,dd,ul,ol,h1,h2,h3,h4,h5,h6,p,form,header,section,article,footer { margin: 0; }
+  body,button,input,select,textarea { font:12px/1.5 tahoma,sans-serif }
+  h1,h2,h3,h4,h5,h6 { font-size: inherit; font-weight: inherit }
+  em,b { font-style:normal }
+  a { 
+    text-decoration:none;
+
+    &:hover,&:focus {
+      text-decoration: none;
+      -webkit-filter: brightness(1.1);
+      -o-filter: brightness(1.1);
+      -moz-filter: brightness(1.1);
+      filter: brightness(1.1);
+    }
+  }
+  img,svg,video,canvas,audio,iframe,embed,object { border: 0; display: block; object-fit: cover; vertical-align: middle;}
+  img,video{max-width: 100%; height: auto;}
+  // Grey model
+  // body{ filter: grayscale(1)}
+  button,input,select,textarea { font-size: 100%; outline:none }
+  table { border-collapse: collapse; border-spacing:0 }
+  td,th,ul,ol { padding:0 }
+  ul,ol,li { list-style: none; margin:0; padding:0;}
+  *,::before,::after { content: '';border-width: 0; border-style: solid; border-color: inherit;}
+  .show{
+    display: block;
+  }
+  /* reset end */
+
+  // function for PX To VW
+  @function vw($pixels) {
+    $screen-width: 2560 !default;
+    @return $pixels / $screen-width * 100vw;
+  }
+
+  // custom input
+  input{
+    width: 300px;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: solid 1px #ffd476;
+    box-sizing: border-box;
+    background-color: transparent;
+    outline: none;
+    color: #ffd476;
+    font-size: 14px;
+    /* Key Style */
+    caret-color: #ffd476; 
+    /* Delete the input status line */
+    outline: none;
+
+    // input custom placeholder
+    &::-webkit-input-placeholder {
+      color: #babbc1;
+      font-size: 14px;
+    }
+
+    // Delete the arrow at the end of input=number
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }    
+  }
+
+  // Customize the selected text style
+  p::selection{
+    color: #ffffff;
+    background-color: #ff4c9f;
+  }
+}
+
+@function sum($numbers...) {
+  $sum: 0;
+  @each $number in $numbers {
+    $sum: $sum + $number;
+  }
+  @return $sum;
+}
+
+// usage
+.micro {
+  // width: 180px;
+  width: sum(50px, 30px, 100px); 
+  height: 100px;
+}
