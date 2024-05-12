@@ -71,4 +71,3 @@ _site
 .bak
 template/
 config.json
-.parcel-cache
