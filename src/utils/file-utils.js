@@ -125,3 +125,68 @@ const untildify = (str) => {
 
 
 
+/**
+ * 下载一个链接的文件
+ *
+ * @param {string} link 文件的URL
+ * @param {string} [name] 文件名，默认为URL的最后一部分
+ */
+function download(link, name) {
+  if (!name) {
+    name = link.slice(link.lastIndexOf('/') + 1);
+  }
+
+  const eleLink = document.createElement('a');
+  eleLink.download = name;
+  eleLink.style.display = 'none';
+  eleLink.href = link;
+  document.body.appendChild(eleLink);
+  eleLink.click();
+  document.body.removeChild(eleLink);
+}
+
+
+
+// 使用download函数,假设你有一个文件URL
+const url = 'http://example.com/path/to/your/file.pdf';
+// 调用download函数，提供URL和文件名
+download(url, 'myFile.pdf');
+
+
+
+/**
+ * 浏览器下载静态文件（如DOM、JSON文件等）
+ *
+ * @param {string} name 文件名
+ * @param {*} content 文件内容，可以是字符串或其他类型，会自动转换为Blob
+ */
+function downloadFile(name, content) {
+  if (typeof name === 'undefined') {
+    throw new Error('The first parameter "name" is required');
+  }
+  if (typeof content === 'undefined') {
+    throw new Error('The second parameter "content" is required');
+  }
+
+  // 如果内容不是Blob，将其转换为Blob
+  const blob = content instanceof Blob ? content : new Blob([content]);
+
+  // 创建一个URL表示Blob对象
+  const link = URL.createObjectURL(blob);
+  download(link, name);
+}
+
+
+
+// 使用downloadFile函数
+// 假设你有JSON内容要下载
+const jsonData = { key: 'value' };
+const jsonString = JSON.stringify(jsonData);
+// 调用downloadFile函数，提供文件名和内容
+downloadFile('data.json', jsonString);
+
+// 或从url中获取内容
+fetch('http://example.com/api/data')
+  .then(response => response.text())
+  .then(data => downloadFile('data.txt', data))
+  .catch(error => console.error('Error fetching data:', error));

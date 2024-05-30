@@ -2053,3 +2053,34 @@ asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(results => {
   console.error("An error occurred:", error); // 打印任何发生的错误
 });
 
+
+
+// 定义一个函数，用于禁止用户手势缩放
+function disablePinchZoom() {
+  // 添加 touchstart 事件监听器，阻止同时按下两个手指的事件
+  document.addEventListener('touchstart', function(event) {
+    // 如果检测到超过一个手指触摸屏幕，阻止默认的触摸行为
+    if (event.touches.length > 1) {
+      event.preventDefault();
+    }
+  });
+
+  // 添加 touchend 事件监听器，防止快速连续触摸
+  var lastTouchEnd = 0;
+
+  document.addEventListener('touchend', function(event) {
+    // 获取当前时间戳
+    var now = new Date().getTime();
+
+    // 检查两次触摸之间的时间差是否小于300ms，如果是，则阻止事件
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+
+    // 更新最后的触摸结束时间
+    lastTouchEnd = now;
+  });
+}
+
+// 当页面加载完成时，调用 disablePinchZoom 函数
+window.addEventListener('load', disablePinchZoom);
