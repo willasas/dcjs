@@ -1,28 +1,19 @@
 {
-  "name": "custom-mixins",
+  "name": "dcjs",
   "version": "1.0.0",
-  "description": "",
+  "description": "a js tools for webdevelopment",
   "keywords": [
-    "postcss",
-    "scss",
-    "mixins",
+    "js",
+    "utils",
     "functions",
-    "font",
-    "postcss-plugin",
-    "color",
-    "rgb",
-    "hcl"
+    "file",
+    "browser",
+    "cookies"
   ],
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "watch:sass": "sass --watch sass/main.scss:css/style.css",
-    "devserver": "@gerhobbelt/live-server",
-    "start": "npm-run-all --parallel devserver watch:sass",
-    "compile:sass": "sass sass/main.scss:css/style.comp.css",
-    "concat:css": "concat -o css/style.concat.css css/normalize.css css/style.comp.css",
-    "prefix:css": "postcss css/style.concat.css --use autoprefixer -o css/style.prefix.css",
-    "compress:css": "node-sass css/style.prefix.css css/style.css --output-style compressed",
-    "build": "npm-run-all compile:sass concat:css prefix:css compress:css",
+    "start": "npm-run-all src/index.js",
+    "build": "npm-run-bulid src/index.js",
     "test": "node test/test.js | tap-spec"
   },
   "postcss": {

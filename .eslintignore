@@ -3,3 +3,4 @@ build
 src/assets
 public
 dist
+src/vender
