@@ -599,6 +599,113 @@ const showImages = () => {
 showImages();
 
 
+/**
+ * 读取并显示上传的图片
+ * 
+ * 该函数从页面中获取上传的文件，验证其是否为图片类型，然后使用FileReader以DataURL的形式读取图片，
+ * 并将其显示在结果容器中。如果上传非图片类型文件或读取文件时发生错误，将显示错误信息。
+ */
+function readImage() {
+  const fileInput = document.getElementById('uploaded-file');
+  const resultContainer = document.getElementById('result');
+
+  // 检查是否有文件被上传
+  if (!fileInput.files.length) {
+    displayError('请上传一个文件。');
+    return;
+  }
+  
+  // 只处理第一个文件
+  const file = fileInput.files[0];
+  
+  // 检查文件类型，确保它是图片
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  if (!allowedTypes.includes(file.type)) {
+    displayError('只允许上传JPEG、PNG和GIF格式的图片。');
+    return;
+  }
+  
+  const fileReader = new FileReader();
+
+  // 当文件读取成功时，创建图片并显示
+  fileReader.addEventListener(
+    'load',
+    () => {
+      const img = createImage(fileReader.result);
+      resultContainer.appendChild(img);
+    },
+    { once: true }
+  );
+
+  // 当文件读取失败时，显示错误信息
+  fileReader.addEventListener(
+    'error',
+    () => {
+      displayError('读取文件时发生错误。');
+    },
+    { once: true }
+  );
+
+  try {
+    // 尝试读取文件
+    fileReader.readAsDataURL(file);
+  } catch (error) {
+    console.error('读取文件失败:', error);
+    displayError('读取文件时发生错误。');
+  }
+}
+
+/**
+ * 创建一个新的图片元素，并设置其源为给定的DataURL
+ * 
+ * @param {string} src - 图片的DataURL
+ * @return {Element} 创建的图片元素
+ */
+function createImage(src) {
+  const img = document.createElement('img');
+  img.src = src;
+  return img;
+}
+
+/**
+ * 在页面中显示一个错误信息
+ * 
+ * @param {string} message - 要显示的错误信息
+ */
+function displayError(message) {
+  const errorContainer = document.createElement('div');
+  errorContainer.textContent = message;
+  errorContainer.style.color = 'red';
+  document.body.appendChild(errorContainer);
+}
+
+// 使用readImage()
+/* <h1>上传图片</h1>
+    <input type="file" id="uploaded-file" accept="image/*" />
+    <div id="result"></div>
+    <div id="error-container"></div> */
+document.getElementById('uploaded-file').addEventListener('change', readImg);
+function readImg() {
+  const fileReader = new FileReader();
+  const file = document.getElementById('uploaded-file').files[0];
+  const errorContainer = document.getElementById('error-container');
+  if (!file) {
+    errorContainer.textContent = '请先选择一个文件。';
+    return;
+  }
+  fileReader.addEventListener('load', () => {
+    const resultContainer = document.getElementById('result');
+    const img = document.createElement('img');
+    img.src = fileReader.result;
+    resultContainer.innerHTML = '';
+    resultContainer.appendChild(img);
+  });
+  fileReader.addEventListener('error', () => {
+    errorContainer.textContent = '读取文件时出错。';
+  });
+  fileReader.readAsDataURL(file);
+}
+
 
 /**
  * 在指定元素之前插入HTML字符串。
@@ -1094,5 +1201,42 @@ if (sectionElement) {
 }
 
 
+/**
+ * 检测元素之外的点击
+ * 在实现隐藏弹窗或收起下拉框时，如果你还在一层层判断是否点击了某个元素之外的区域，则可以使用此函数
+ * 
+ */
+document.addEventListener('click', function(evt){
+  const isClickedOutside = !ele.contains(evt.targett);
+})
 
 
+/**
+ * 一次性的事件监听
+ * 
+ * 
+*/
+const ele = document.getElementById('yourElementId'); // 假设你已经有了一个元素ID
+const eventName = 'event-name'; // 你的事件名称
+
+// 内联事件处理器，只触发一次
+ele.addEventListener(eventName, (e) => {
+  // 处理事件的逻辑
+}, { once: true });
+
+
+
+/**
+ * 给页面中所有的外链添加noopener和noreferrer
+ * 
+ */
+// 获取所有target="_blank"的a标签
+const links = document.querySelectorAll('a[target="_blank"]');
+
+// 遍历这些链接并添加rel属性
+links.forEach(link => {
+  // 检查rel属性是否已经包含noopener和noreferrer，如果没有，则添加
+  if (!link.rel.includes('noopener') || !link.rel.includes('noreferrer')) {
+    link.rel = link.rel ? link.rel + 'noopener noreferrer' : 'noopener noreferrer';
+  }
+});

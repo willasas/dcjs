@@ -41,6 +41,77 @@ bottomVisibleDebounced();
 
 
 /**
+ * 异步复制文本到剪贴板的函数。
+ * @param {string} val 需要被复制的文本。
+ * @returns {void} 不返回任何内容。
+ */
+const copyText = async (val) => {
+  try {
+    // 尝试使用 Clipboard API 进行复制
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(val);
+        console.log('复制成功');
+        return;
+      } catch (error) {
+        console.error('使用 Clipboard API 复制失败:', error);
+      }
+    }
+
+    // 对不支持 Clipboard API 的浏览器采用兼容性处理方案
+    const textArea = document.createElement('textarea');
+    // 配置 textarea 的属性，以隐藏并防止用户选中
+    Object.assign(textArea, {
+      value: val,
+      style: {
+        position: 'fixed',
+        left: '-999px',
+        top: '0',
+        width: '0',
+        height: '0',
+        opacity: '0',
+        zIndex: '-999',
+        pointerEvents: 'none',
+        overflow: 'hidden',
+        userSelect: 'none',
+        MozUserSelect: 'none',
+        WebkitUserSelect: 'none',
+      },
+      readonly: true,
+    });
+
+    // 将 textarea 添加到 DOM 中，并尝试选择文本以执行复制操作
+    document.body.appendChild(textArea);
+    textArea.select();
+    const success = document.execCommand('copy');
+
+    // 完成复制后，从 DOM 中移除 textarea
+    document.body.removeChild(textArea);
+
+    // 检查复制是否成功，如果失败则抛出错误
+    if (!success) {
+      throw new Error('无法复制文本');
+    }
+  } catch (error) {
+    console.error('复制失败:', error);
+  }
+};
+
+/**
+ * 监听文档点击事件，以绑定复制事件。
+ */
+document.addEventListener('click', async () => {
+  const textToCopy = '这是要复制到剪贴板的内容';
+  try {
+    await copyText(textToCopy);
+  } catch (error) {
+    console.error('复制失败:', error);
+  }
+});
+
+
+
+/**
  * 安全地将给定字符串复制到剪贴板。
  * @param {string} str 需要被复制的字符串。
  */
@@ -1931,4 +2002,54 @@ if (!browserSupportsCSSProperty('animation')) {
   // 如果不支持，执行相应的降级或替代操作
   console.log('Animation is not supported.');
 }
+
+
+
+/**
+       * 创建一个异步池来限制并发处理的任务数量。
+       * @param {number} poolLimit 并发池的限制数量。
+       * @param {Iterable} iterable 可迭代对象，包含需要处理的任务。
+       * @param {Function} iteratorFn 一个函数，用于执行给定的任务，并返回一个Promise。
+       * @returns {Promise<Array>} 当所有任务完成时，返回一个包含任务结果的数组。
+       */
+async function asyncPool(poolLimit, iterable, iteratorFn) {
+  const ret = []; // 用于存储所有任务的Promise
+  const executing = new Set(); // 用于跟踪当前正在执行的任务
+
+  // 封装单个任务的处理逻辑
+  async function handleTask(item) {
+    try {
+      // 控制并发，如果当前执行的任务数达到限制，则等待
+      while (executing.size >= poolLimit) {
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+      executing.add(true); // 表示一个任务开始执行
+      const result = await iteratorFn(item, iterable); // 执行任务，并等待结果
+      executing.delete(true); // 任务完成，移除执行标记
+      return result;
+    } catch (error) {
+      executing.delete(true); // 发生错误时，也要移除执行标记
+      throw error; // 重新抛出错误，以便在调用链中处理
+    }
+  }
+
+  // 遍历可迭代对象，为每个任务构造一个Promise
+  for (const item of iterable) {
+    ret.push(handleTask(item).then(result => [item, result]));
+  }
+
+  // 等待所有任务的Promise解决
+  return Promise.all(ret).then(values => {
+    // 提取结果，只返回任务的解决值，不包括原始项
+    return values.map(v => v[1]);
+  });
+}
+
+// 使用方法示例
+const timeout = i => new Promise(resolve => setTimeout(() => resolve(i), i));
+asyncPool(2, [1000, 5000, 3000, 2000], timeout).then(results => {
+  console.log(results); // 打印各个任务的结果
+}).catch(error => {
+  console.error("An error occurred:", error); // 打印任何发生的错误
+});
 
