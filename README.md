@@ -46,3 +46,12 @@
 ```
 
 #### 使用方法
+
+```bash
+# 安装依赖
+npm install
+# 更新parcel至最新版
+npm install -g parcel@latest
+# 打包
+npm run bulid 
+```

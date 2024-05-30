@@ -12,6 +12,9 @@
   ],
   "source": "src/index.js",
   "main": "dist/dc.js",
+  "directories": {
+    "lib": "dist"
+  },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "watch": "parcel watch src/index.js",
