@@ -12,8 +12,12 @@
 		<meta name="Copyright" content="某某公司版权所有" />
 		<meta name="description" content="描述信息1,描述信息2，描述信息等等" />
 		<meta name="keywords" content="关键字1,关键字2,关键字3,关键字等等" />
-		<!-- 引入重置样式表 -->
-		<link rel="stylesheet" type="text/css" href="scss/dcscss.css" />
+		<!-- 引入通用样式表 -->
+		<link rel="stylesheet" type="text/css" href="scss/dc.css" />
+		<!-- 在每个链接中添加带有所需语言代码的hreflang。一个链接应该作为默认的后备版本，通过添加hreflang="x-default"而不是语言代码来识别。最后对于语言切换器中的每个链接，将rel属性的值设置为"alternate"，以指示所链接的页面是当前页面的替代页面。 -->
+		<link href="https://example.com" rel="alternate" hreflang="x-default" />
+		<link href="https://example.com/en" rel="alternate" hreflang="en" />
+		<link href="https://example.com/de" rel="alternate" hreflang="de" />
 		<!-- 引入通用组件样式表 -->
 		<!-- <link rel="stylesheet" type="text/css" href="css/m-common.css" /> -->
 		<!-- 自己写的css样式文件放在这个下面，例如：index.css。若有其他页面调用的样式表，则放在页面样式表(index.css)前即可 -->
@@ -59,171 +63,6 @@
 			);
 		</script>
 		<!--适配主逻辑 E-->
-		<!-- 适配2 S -->
-		<script>
-			//mode  移动端的适配方式 按需 传参  目前只有两种 px和rem
-			(function (win, doc, mode) {
-				var std = 750;
-				if (
-					/(iPhone|iPad|iPod|iOS|Android|Windows Phone|BlackBerry|SymbianOS)/i.test(
-						navigator.userAgent
-					)
-				) {
-					var h = document.getElementsByTagName('head')[0];
-					h.insertAdjacentHTML(
-						'beforeEnd',
-						'<meta name="apple-mobile-web-app-capable" content="yes">'
-					);
-					h.insertAdjacentHTML(
-						'beforeEnd',
-						'<meta name="apple-mobile-web-app-status-bar-style" content="black">'
-					);
-					h.insertAdjacentHTML(
-						'beforeEnd',
-						'<meta name="format-detection" content="telephone=no">'
-					);
-					h.insertAdjacentHTML(
-						'beforeEnd',
-						'<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />'
-					);
-					if (mode == 'px') {
-						if (!win.addEventListener) return;
-						var html = document.documentElement;
-						function setFont() {
-							function adaptVP(a) {
-								function c() {
-									var c, d;
-									return (
-										(b.uWidth = a.uWidth ? a.uWidth : 750),
-										(b.dWidth = a.dWidth
-											? a.dWidth
-											: window.screen.width || window.screen.availWidth),
-										(b.ratio = window.devicePixelRatio
-											? window.devicePixelRatio
-											: 1),
-										(b.userAgent = navigator.userAgent),
-										(b.bConsole = a.bConsole ? a.bConsole : !1),
-										a.mode
-											? ((b.mode = a.mode), void 0)
-											: ((c = b.userAgent.match(/Android/i)),
-											  c &&
-													((b.mode = 'android-2.2'),
-													(d = b.userAgent.match(/Android\s(\d+.\d+)/i)),
-													d && (d = parseFloat(d[1])),
-													2.2 == d || 2.3 == d
-														? (b.mode = 'android-2.2')
-														: 4.4 > d
-														? (b.mode = 'android-dpi')
-														: d >= 4.4 &&
-														  (b.mode =
-																b.dWidth > b.uWidth
-																	? 'android-dpi'
-																	: 'android-scale')),
-											  void 0)
-									);
-								}
-								function d() {
-									var e,
-										f,
-										g,
-										h,
-										c = '',
-										d = !1;
-									switch (b.mode) {
-										case 'apple':
-											f =
-												(window.screen.availWidth * b.ratio) /
-												b.uWidth /
-												b.ratio;
-											c =
-												'width=' +
-												b.uWidth +
-												',initial-scale=' +
-												f +
-												',minimum-scale=' +
-												f +
-												',maximum-scale=' +
-												f +
-												',user-scalable=no';
-											break;
-										case 'android-2.2':
-											a.dWidth ||
-												(b.dWidth =
-													2 == b.ratio
-														? 720
-														: 1.5 == b.ratio
-														? 480
-														: 1 == b.ratio
-														? 375
-														: 0.75 == b.ratio
-														? 240
-														: 480),
-												(e = window.screen.width || window.screen.availWidth),
-												375 == e
-													? (b.dWidth = b.ratio * e)
-													: 750 > e && (b.dWidth = e),
-												(b.mode = 'android-dpi'),
-												(d = !0);
-										case 'android-dpi':
-											(f = ((160 * b.uWidth) / b.dWidth) * b.ratio),
-												(c =
-													'target-densitydpi=' +
-													f +
-													', width=' +
-													b.uWidth +
-													', user-scalable=no'),
-												d && (b.mode = 'android-2.2');
-											break;
-										case 'android-scale':
-											c = 'width=' + b.uWidth + ', user-scalable=no';
-									}
-									(g =
-										document.querySelector("meta[name='viewport']") ||
-										document.createElement('meta')),
-										(g.name = 'viewport'),
-										(g.content = c),
-										(h = document.getElementsByTagName('head')),
-										h.length > 0 && h[0].appendChild(g);
-								}
-								function e() {
-									var a = '';
-									for (key in b) a += key + ': ' + b[key] + '; ';
-									alert(a);
-								}
-								if (a) {
-									var b = {
-										uWidth: 0,
-										dWidth: 0,
-										ratio: 1,
-										mode: 'apple',
-										userAgent: null,
-										bConsole: !1,
-									};
-									c(), d(), b.bConsole && e();
-								}
-							}
-							adaptVP({ uWidth: 750 });
-						}
-						win.addEventListener('resize', setFont, false);
-						setFont();
-					} else if (mode == 'rem') {
-						var docEl = doc.documentElement,
-							resizeEvt =
-								'orientationchange' in window ? 'orientationchange' : 'resize',
-							recalc = function () {
-								var clientWidth = docEl.clientWidth;
-								if (!clientWidth) return;
-								docEl.style.fontSize = 100 * (clientWidth / std) + 'px';
-							};
-						if (!doc.addEventListener) return;
-						recalc();
-						win.addEventListener(resizeEvt, recalc, false);
-						doc.addEventListener('DOMContentLoaded', recalc, false);
-					}
-				}
-			})(window, document, 'rem');
-		</script>
-		<!-- 适配2 E -->
 		<style>
 
 			* {
@@ -268,14 +107,37 @@
 			<div class="header">
 				<!-- 埋点曝光，官网一定要加 exposure-tag="英文名,中文解释" -->
 				<div class="nav" exposure-tag="英文名,中文解释"></div>
+				<!-- 元素添加translate="no"属性，表示此处不好被翻译 -->
+				<span translate="no">Wien<span>
 				<a href="javascript:;" class="inverted"></a>
 				<!-- 按钮上报，一定要加 onclick="STATSendClick('btn','share','分享');" -->
 				<a
-					href="javascript:;"
+					href="https://example.com"
 					class=""
 					onclick="STATSendClick('btn','share','分享');"
 					title="链接说明"
-				>
+					hreflang="x-default"
+					lang="zh"
+					aria-current="true"
+				>中文链接
+				</a>
+				<a
+					href="https://example.com/en"
+					class=""
+					onclick="STATSendClick('btn','share','分享');"
+					title="链接说明"
+					hreflang="en"
+					lang="en"
+				>英文链接
+				</a>
+				<a
+					href="https://example.com/de"
+					class=""
+					onclick="STATSendClick('btn','share','分享');"
+					title="链接说明"
+					hreflang="de"
+					lang="de"
+				>德语链接
 				</a>
 			</div>
 			<!-- 模块一 开始 -->
@@ -310,6 +172,14 @@
 							This is a windows hoverable item inside windows grid
 						</div>
 					</div>
+					<!-- 使用reversed属性可以保持视觉和语义列表项的顺序相同，但它们从最高到最低编号。这意味着将此属性添加到您的有序列表（<ol>）不会反转列表项，而只是反转列表编号，有序列表不受影响（ul） -->
+					<ol reversed>
+						<li>Cookies</li>
+						<li>Crema Catalana</li>
+						<li>Tiramisu</li>
+						<li>Pastel de Nata</li>
+						<li>Sacher cake</li>
+					</ol>
 				</div>
 			</div>
 			<!-- 模块一 结束 -->
@@ -320,7 +190,19 @@
 			<!-- 模块二 结束 -->
 			<!-- 模块三 开始 -->
 			<div class="wrapper3">
-				<div class="main"></div>
+				<div class="main">
+					<!-- 有了autocomplete属性，浏览器可以建议以前用户输入表单字段的值，这意味着用户不必记住或手动输入个人信息。这对有认知障碍、行动不便、注意力缺陷、视力低下或失明的人有显著的好处。有些人可能会发现减少表单中的手动输入特别有益，因为它减少了大量打字的需要。 -->
+					<form action="/" autocomplete="on">
+						<label for="firstName">First Name</label>
+						<input autocomplete="given-name" name="firstName" id="firstName" type="text" />
+						
+						<label for="lastName">Last Name</label>
+						<input autocomplete="family-name" name="lastName" id="lastName" type="text" />
+						
+						<label for="email">Email</label>
+						<input autocomplete="email" name="email" id="email" type="email" />
+					</form>
+				</div>
 			</div>
 			<!-- 模块三 结束 -->
 			<!-- 模块四 开始 -->
