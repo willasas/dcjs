@@ -58,3 +58,21 @@ const cleanup = async () => {
 
 // 假设存在一个合适的时机来调用cleanup函数，例如在单页面应用的组件卸载时
 // cleanup();
+
+// 判断横竖屏
+// 添加事件监听器
+window.addEventListener("orientationchange", function() {
+  checkOrientation();
+}, false);
+
+// 初始检查
+checkOrientation();
+
+function checkOrientation() {
+  var orientation = screen.orientation.type;
+  if (orientation === "portrait-primary" || orientation === "portrait-secondary") {
+    alert("请旋转您的设备至横屏以获得最佳浏览体验！");
+  } else if (orientation === "landscape-primary" || orientation === "landscape-secondary") {
+    alert("横屏");
+  }
+}
