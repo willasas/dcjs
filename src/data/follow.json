@@ -1,0 +1,18 @@
+{
+    "official": [
+        {"name": "QQ", "desc": "官方QQ群", "url": "", "icon": "", "qrcode": ""},
+        {"name": "WeChat", "desc": "官网微信公众", "url": "", "icon": "", "qrcode": ""},
+        {"name": "Weibo", "desc": "官方微博", "url": "", "icon": "", "qrcode": ""},
+        {"name": "抖音", "desc": "官方抖音账号", "url": "", "icon": "", "qrcode": ""},
+        {"name": "bilibili", "desc": "官网B站账号", "url": "", "icon": "", "qrcode": ""},
+        {"name": "小红书", "desc": "官方小红书账号", "url": "", "icon": "", "qrcode": ""}
+    ],
+    "游戏": [
+        {"name": "QQ", "desc": "游戏QQ群", "url": "", "icon": "", "qrcode": ""},
+        {"name": "WeChat", "desc": "游戏微信公众", "url": "", "icon": "", "qrcode": ""},
+        {"name": "Weibo", "desc": "游戏微博", "url": "", "icon": "", "qrcode": ""},
+        {"name": "抖音", "desc": "游戏抖音账号", "url": "", "icon": "", "qrcode": ""},
+        {"name": "bilibili", "desc": "游戏B站账号", "url": "", "icon": "", "qrcode": ""},
+        {"name": "小红书", "desc": "游戏小红书账号", "url": "", "icon": "", "qrcode": ""}
+    ]
+}
