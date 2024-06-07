@@ -90,153 +90,23 @@ document.addEventListener('keydown', function (event) {
 
 
 // ====================移动端设备的缩放比例====================
-(function() {
-  // 定义常量以避免字符串字面量的重复使用
-  const DEVICE_TYPE_PC = 'pc';
-  const DEVICE_TYPE_WAP = 'wap';
+(function(win, doc) {
+  // 使用 navigator.userAgent 判断是否为移动设备，此处不修改以保持功能不变
+  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-  // 封装RSRem相关代码到一个模块内
-  const RSRemModule = (function() {
-    const defaultSize = 750; // 默认字体大小为750
-
-    /**
-     * 创建ID为RSRem的元素节点
-     * @param {string} eleID 元素的ID
-     * @param {number} ReFontSize 元素的data-size属性值
-     */
-    function createEl(eleID, ReFontSize) {
-      let RSRem = document.createElement('div');
-      RSRem.setAttribute('id', eleID);
-      RSRem.setAttribute('data-size', ReFontSize);
-      document.body.appendChild(RSRem);
-    }
-
-    let RSRem = {
-      el: document.getElementById('RSRem'), // 获取id为RSRem的元素节点
-      defaultSize: defaultSize, // 默认字体大小为750
-      /**
-       * 设置字体大小
-       * @param {string|number} size 要设置的字体大小
-       */
-      setSize: function(size) {
-        try {
-          this.size = parseInt(size, 10) || defaultSize; // 将传入的size转换为整数，若为空则使用默认字体大小
-          this.remReSize(); // 调用remReSize方法重新设置字体大小
-        } catch (error) {
-          console.error('Error setting font size:', error);
-        }
-      },
-      /**
-       * 重新设置字体大小
-       */
-      remReSize: function() {
-        let t = (document.documentElement.clientWidth / this.size).toFixed(2); // 计算字体大小比例
-        document.documentElement.style.setProperty('font-size', 100 * t + 'px'); // 设置页面字体大小
-      },
-      /**
-       * 初始化方法
-       * @returns {Object} 返回包含移除监听器方法的对象
-       */
-      init: function() {
-        let size = this.defaultSize; // 默认字体大小
-        if (this.el) {
-          // 如果存在id为RSRem的元素节点
-          size = parseInt(this.el.getAttribute('data-size'), 10) || defaultSize; // 获取元素节点data-size属性值，若为空则使用默认字体大小
-          console.log('font-size: ' + size);
-        }
-        this.setSize(size); // 设置字体大小
-
-        // 添加事件监听器，并使用函数闭包来存储事件处理函数，以便未来移除监听器
-        let resizeHandler = debounce(() => {
-          RSRem.remReSize(); // 调用remReSize方法重新设置字体大小
-        }, 100); // 使用100毫秒的防抖时间
-
-        let loadHandler = () => {
-          RSRem.remReSize(); // 调用remReSize方法重新设置字体大小
-        };
-
-        window.addEventListener('resize', resizeHandler, false);
-        window.addEventListener('load', loadHandler, false);
-
-        // 返回处理函数以便未来移除监听器
-        return {
-          removeResizeListener: function() {
-            window.removeEventListener('resize', resizeHandler, false);
-          },
-          removeLoadListener: function() {
-            window.removeEventListener('load', loadHandler, false);
-          }
-        };
-      }
-    };
-
-    // 返回公共接口
-    return RSRem;
-  })();
-
-  // 初始化RSRem对象
-  RSRemModule.init();
-
-  // 判断设备类型，pc表示pc端，wap表示移动端
-  function getDevice() {
-    if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
-      return DEVICE_TYPE_WAP; // 设备类型为移动端
-    } else {
-      return DEVICE_TYPE_PC; // 设备类型为pc端
-    }
-  }
-
-  // 使用IIFE封装以避免全局变量污染
-  (function() {
-    let headDom = document.getElementsByTagName('head')[0];
-    let deviceType = getDevice();
-
-    if (deviceType === DEVICE_TYPE_PC) {
-      // 如果设备类型为pc
-      document.addEventListener('DOMContentLoaded', () => createEl('RSRem', '1920'));
-      RSRemModule.init();
-    } else {
-      // 如果设备类型为移动端
-      document.addEventListener('DOMContentLoaded', () => createEl('RSRem', '750'));
-      RSRemModule.init();
-    }
-  })();
-
-  // 防抖函数
   /**
    * 函数防抖
    * @param {Function} func 要执行的函数
    * @param {number} wait 延迟时间
    * @returns {Function} 返回一个新函数
    */
-  // function debounce(func, wait) {
-  //   let timeout;
-  //   return function() {
-  //     const context = this, args = arguments;
-  //     clearTimeout(timeout);
-  //     timeout = setTimeout(() => func.apply(context, args), wait);
-  //   };
-  // }
-})();
-
-
-
-// 适配2
-(function (win, doc) {
-  /**
-   * 安全添加事件监听器，兼容多种浏览器
-   * @param {HTMLElement} element - 目标元素
-   * @param {string} event - 事件类型
-   * @param {Function} handler - 事件处理函数
-   * @param {boolean} useCapture - 是否使用捕获
-   */
-  function addEventListenerSafe(element, event, handler, useCapture) {
-    if (element.addEventListener) {
-      element.addEventListener(event, handler, useCapture);
-    } else {
-      // 兼容旧版IE浏览器
-      element.attachEvent('on' + event, handler);
-    }
+  function debounce(func, wait) {
+    let timeout;
+    return function() {
+      const context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
   }
 
   /**
@@ -257,33 +127,81 @@ document.addEventListener('keydown', function (event) {
   }
 
   /**
-   * 根据窗口大小动态设置html元素的字体大小
+   * 安全添加事件监听器，兼容多种浏览器
+   * @param {HTMLElement} element - 目标元素
+   * @param {string} event - 事件类型
+   * @param {Function} handler - 事件处理函数
+   * @param {boolean} useCapture - 是否使用捕获
    */
-  function setFont() {
-    var html = document.documentElement;
-    var k = 1920; // 设定的基准宽度
-
-    // 窗口宽度与基准宽度的比例用于调整字体大小
-    if (html.clientWidth / k * 100 >= 100) {
-      html.style.fontSize = '100px';
-    } else if (html.clientWidth / k * 100 <= 64) {
-      html.style.fontSize = '64px';
-    } else {
-      html.style.fontSize = html.clientWidth / k * 100 + 'px';
+  function addEventListenerSafe(element, event, handler, useCapture) {
+    if (element.addEventListener) {
+      element.addEventListener(event, handler, useCapture);
+    } else if (element.attachEvent) { // 仅当确实需要支持旧版IE时才包含这部分
+      element.attachEvent('on' + event, handler);
     }
   }
 
-  /**
-   * 初始化函数，页面加载以及窗口大小改变时调用setFont函数
-   */
-  function init() {
-    setFont();
-    // 使用节流函数优化resize事件的处理
-    addEventListenerSafe(window, 'resize', throttle(setFont, 100), false);
+  // 设计稿的原始尺寸，将魔术数字提取成易于理解的常量名称
+  const DESIGN_WIDTH_MOBILE = 1624;
+  const DESIGN_HEIGHT_MOBILE = 750;
+  const DESIGN_WIDTH_DESKTOP = 1920;
+  const DESIGN_HEIGHT_DESKTOP = 1080;
+  const designWidth = isMobileDevice ? DESIGN_WIDTH_MOBILE : DESIGN_WIDTH_DESKTOP;
+  const designHeight = isMobileDevice ? DESIGN_HEIGHT_MOBILE : DESIGN_HEIGHT_DESKTOP;
+
+  // 计算缩放比例并调整页面的公共函数
+  function adjustBase() {
+    const viewportWidth = win.innerWidth;
+    const viewportHeight = win.innerHeight;
+    
+    const windowZoom = viewportWidth / viewportHeight;
+    const psZoom = designWidth / designHeight;
+
+    let scale = viewportHeight < designHeight || (viewportWidth > designWidth && windowZoom > psZoom) 
+      ? viewportHeight / designHeight 
+      : viewportWidth / designWidth;
+
+    doc.documentElement.style.fontSize = `${scale * 100}px`;
   }
 
-  // 页面加载完成后执行初始化
-  // 兼容性处理，添加事件监听器
-  addEventListenerSafe(doc, 'DOMContentLoaded', init, false);
-  addEventListenerSafe(win, 'load', init, false);
+  // 调整页面缩放的函数（PC端），此处没有明显优化点，保持原样
+  function adjustZoom() {
+    adjustBase();
+  }
+  adjustZoom();
+
+  // 移动端特有的调整
+  function adjustMobileSpecific() {
+    const html = doc.documentElement;
+    const isLandscape = html.clientWidth / html.clientHeight > designWidth / designHeight;
+
+    html.style.fontSize = `${(isLandscape ? html.clientHeight / designHeight : html.clientWidth / designWidth) * 100}px`;
+    html.style.setProperty('--window-width', `${html.clientWidth}px`);
+    html.style.setProperty('--window-height', `${html.clientHeight}px`);
+  }
+
+  // 合并调整逻辑
+  function adjustAll() {
+    adjustBase();
+
+    if (isMobileDevice) {
+      adjustMobileSpecific();
+    }
+  }
+
+  // 使用防抖技术优化resize事件的性能
+  const debounceAdjustAll = debounce(adjustAll, 100);
+
+  // 页面加载时调整
+  doc.addEventListener('DOMContentLoaded', adjustAll);
+
+  // 窗口大小改变时重新调整
+  win.addEventListener('resize', debounceAdjustAll);
+
+  // 页面完全加载时再调整一次
+  win.addEventListener('load', adjustAll);
+
+  // addEventListenerSafe(win, 'resize', debounceAdjustAll, false);
+  // addEventListenerSafe(doc, 'DOMContentLoaded', adjustAll, false);
+  // addEventListenerSafe(win, 'load', adjustAll, false);
 })(window, document);
