@@ -573,6 +573,58 @@ const toggleVisibility = (ele) => {
 
 
 /**
+ * 封装加载图片函数，支持并发加载
+ * imageSources数组中的图片按需调整
+ * 
+ */
+const imageSources = [
+  // 假设这里已经是使用绝对路径或者有公共路径前缀的相对路径
+  './image/g-slide-img1.png',
+  './image/g-slide-img2.png',
+  './image/g-slide-img3.png',
+  './image/g-slide-img4.png',
+  './image/g-slide-img5.png',
+];
+
+// 封装加载图片函数，支持并发加载
+function loadImages(sources) {
+  if (!Array.isArray(sources) || sources.length === 0) {
+    console.error('Invalid image sources.');
+    return Promise.resolve(); // 处理边界情况
+  }
+
+  // 使用 Promise.all 并发加载图片
+  return Promise.all(sources.map(source => loadImage(source)));
+}
+
+function loadImage(source) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve();
+    };
+    img.onerror = () => {
+      console.error('Failed to load image:', source);
+      reject(new Error(`Failed to load image: ${source}`)); // 提供更详细的错误信息
+    };
+    img.src = source;
+  });
+}
+
+// 使用
+// 页面加载完成后调用加载图片函数
+$(window).on('load', async () => {
+  try {
+    await loadImages(imageSources);
+    console.log('All images loaded successfully.');
+  } catch (error) {
+    // 这里可以添加更多错误处理逻辑，比如展示一个友好的错误提示给用户
+    console.error('Error loading images:', error);
+  }
+});
+
+
+/**
  * 显示页面中的所有图片
  * 该函数没有参数和返回值
  * 使用requestAnimationFrame优化性能，避免一次性加载所有图片导致页面卡顿

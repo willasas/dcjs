@@ -3448,6 +3448,38 @@ console.log(unionBy([{ id: 1 }, { id: 2 }], [{ id: 2 }, { id: 3 }], x => x.id));
 
 
 /**
+ * 合并多个数组为一个新数组
+ * @param {...Array} arrays 要合并的数组
+ * @returns {Array} 合并后的新数组
+ */
+function mergeArrays(...arrays) {
+  // 使用 Array.prototype.concat.apply 的方式来合并数组
+  // 因为直接使用 ... 操作符在函数内部展开数组参数在某些老版本浏览器中可能不支持
+  return [].concat.apply([], arrays);
+}
+
+// 使用
+// 定义数组
+const arr1 = [
+  './image/g-slide-hero-img1.png',
+  './image/g-slide-hero-img2.png',
+  './image/g-slide-hero-img3.png',
+  './image/g-slide-hero-img4.png',
+];
+
+const arr2 = [
+  './image/g-slide-skill-img1.png',
+  './image/g-slide-skill-img2.png',
+  './image/g-slide-skill-img3.png',
+  './image/g-slide-skill-img4.png',
+];
+
+// 使用封装的函数合并数组
+const resultArr = mergeArrays(arr1, arr2);
+
+
+
+/**
  * 生成两个数组的并集，不包含重复元素，使用指定的比较函数。
  * @param {Array} a 第一个数组
  * @param {Array} b 第二个数组
