@@ -624,6 +624,205 @@ $(window).on('load', async () => {
 });
 
 
+
+/**
+ * 图片预加载
+ * 
+ * 本模块提供了一个图片预加载的功能，支持通过回调函数对加载完成、进度和错误进行处理。
+ * 可以通过构造函数 Preload 传入图片数组和选项进行初始化。
+ */
+class Preload {
+  static VERSION = '1.0.1';
+
+  constructor(pics, options = {}) {
+      if (!Array.isArray(pics)) {
+          throw new Error('pics must be an array');
+      }
+
+      this.pics = pics;
+      this.options = { ...Preload.defaultOptions, ...options };
+      this.loadedCount = 0;
+      this.failedCount = 0;
+
+      if (this.pics.length === 0) {
+          this.options.complete(0, 0);
+          return;
+      }
+
+      this.loadImages();
+  }
+
+  static defaultOptions = {
+      complete: () => {},
+      progress: () => {},
+      error: () => {}
+  };
+
+  async loadImages() {
+      try {
+          const promises = this.pics.map(this.loadImage.bind(this));
+          await Promise.all(promises);
+          this.options.complete(this.pics.length - this.failedCount, this.failedCount);
+      } catch (_) {
+          this.options.error();
+      }
+  }
+
+  loadImage(src) {
+      return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+              this.updateProgress(src, 'loaded');
+              resolve();
+          };
+          img.onerror = () => {
+              this.updateProgress(src, 'failed');
+              reject();
+          };
+          img.src = src;
+      });
+  }
+
+  updateProgress(src, status) {
+      if (status === 'failed') this.failedCount++;
+      this.loadedCount++;
+      this.options.progress(this.loadedCount, this.pics.length, src, status);
+  }
+}
+
+// 示例
+const pics = ['./ossweb-img/bg1.jpg', './ossweb-img/bg1.jpg', './ossweb-img/bg1.jpg'];
+const options = {
+  complete: (successful, failed) => console.log(`已加载 ${successful} 张图片, ${failed} 失败.`),
+  progress: (current, total, src, status) => console.log(`Progress: Loaded ${src} (${status})`),
+  error: () => console.error('图片加载错误.')
+};
+
+const preload = new Preload(pics, options);
+
+
+
+/**
+ * LazyLoader 类用于实现图片的懒加载。
+ * 它通过 IntersectionObserver API 监视图片是否进入视口，并在进入视口时加载图片。
+ * 
+ * @param {Object} options - 配置选项，包括选择器、加载回调和IntersectionObserver的选项。
+ */
+class LazyLoader {
+  constructor(options = {}) {
+      this.options = {
+          selector: '.lazy', // 默认选择器，用于标识需要懒加载的图片元素
+          ...options,
+      };
+      this.observer = null;
+      this.init();
+  }
+  /**
+   * 初始化 LazyLoader，设置观察器并加载初始可见的图片。
+   */
+  init() {
+      this.observeIntersection();
+      this.loadVisibleImages(); // 初始时加载已可视的图片
+  }
+  /**
+   * 创建一个 IntersectionObserver 实例，用于观察图片是否进入视口。
+   */
+  observeIntersection() {
+      this.observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  this.loadImage(entry.target);
+                  observer.unobserve(entry.target);
+              }
+          });
+      }, this.options.intersectionOptions || { rootMargin: '200px' });
+  }
+  /**
+   * 加载当前可见的图片。
+   */
+  loadVisibleImages() {
+      const visibleImages = document.querySelectorAll(`${this.options.selector}:not(.loaded)`);
+      visibleImages.forEach(img => this.loadImage(img));
+  }
+  /**
+   * 加载指定的图片。
+   * 
+   * @param {Element} img - 需要加载的图片元素。
+   */
+  loadImage(img) {
+      if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.classList.add('loaded');
+          if (typeof this.options.loaded === 'function') {
+              this.options.loaded(img);
+          }
+      }
+  }
+  /**
+   * 添加新的图片元素并开始观察它们。
+   * 
+   * @param {string} selector - 新图片元素的选择器。
+   */
+  addImages(selector) {
+      const newImages = document.querySelectorAll(selector);
+      newImages.forEach(img => {
+          if (!img.classList.contains('loaded')) {
+              this.observer.observe(img);
+          }
+      });
+  }
+  /**
+   * 销毁 LazyLoader，停止观察图片。
+   */
+  destroy() {
+      if (this.observer) {
+          this.observer.disconnect();
+      }
+  }
+}
+// 示例使用
+document.addEventListener('DOMContentLoaded', () => {
+    /**
+     * 创建一个 LazyLoader 实例。
+     * 这里配置了加载回调函数和IntersectionObserver的选项。
+     */
+    const lazyLoader = new LazyLoader({
+        loaded: img => console.log(`Image ${img.src} loaded.`),
+        intersectionOptions: { rootMargin: '500px' }, // 自定义根元素边缘，决定提前多少开始加载
+    });
+    // 假设动态添加图片（单张图）
+    setTimeout(() => {
+        /**
+         * 创建一个新的图片元素并添加到文档中。
+         * 然后通过 addImages 方法将其纳入懒加载的观察范围。
+         */
+        const newImages = document.createElement('img');
+        newImages.className = 'lazy';
+        newImages.dataset.src = './ossweb-img/tale-bg1.jpg';
+        document.body.appendChild(newImages);
+        lazyLoader.addImages('.lazy:last-child');
+    }, 7000);
+    
+    // 假设动态添加多张图片
+    setTimeout(() => {
+        // 创建一个函数来生成并添加新的图片元素
+        const createAndAddImages = (count) => {
+            for (let i = 0; i < count; i++) {
+                const newImage = document.createElement('img');
+                newImage.className = 'lazy'; // 保持 lazy 类以标识为懒加载图片
+                newImage.dataset.src = `path/to/new/image_${i + 1}.jpg`; // 动态设置数据源，假设每张图片路径不同
+                document.body.appendChild(newImage);
+            }
+        };
+        // 假设添加5张新图片
+        createAndAddImages(5);
+        // 观察所有新增的 .lazy 类图片
+        lazyLoader.addImages('.lazy:not(.loaded)');
+    }, 7000);
+});
+
+
+
 /**
  * 显示页面中的所有图片
  * 该函数没有参数和返回值
