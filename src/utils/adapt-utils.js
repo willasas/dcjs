@@ -205,3 +205,65 @@ document.addEventListener('keydown', function (event) {
   // addEventListenerSafe(doc, 'DOMContentLoaded', adjustAll, false);
   // addEventListenerSafe(win, 'load', adjustAll, false);
 })(window, document);
+
+
+/**
+ * 页面重定向，适用于双端不是同一个文件时，DESKTOP_REDIRECT_URL和MOBILE_REDIRECT_URL变量的值改成对应的文件url即可
+ * 
+ * 
+*/
+// 封装设备检测逻辑
+function isMobileDevice() {
+  // 使用特性检测结合一些现代API辅助判断
+  if ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 0) {
+    // 如果支持触摸并且有超过0个触点，可能是移动设备
+    return true;
+  }
+
+  // 检查窗口尺寸也是一个常用的辅助判断方法，但需谨慎使用，因为桌面设备也可以调整窗口大小
+  if (typeof window.matchMedia !== "undefined" && window.matchMedia("(max-width: 768px)").matches) {
+    // 如果屏幕宽度小于等于768px，这通常是移动设备的特征
+    return true;
+  }
+
+  // 结合User Agent作为辅助，但不完全依赖它
+  return /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// 通过取反移动设备检测结果来确定是否为桌面设备，增加可读性
+var isDesktopDevice = !isMobileDevice();
+
+// 定义重定向的URL作为常量，以便于维护
+const DESKTOP_REDIRECT_URL = './index.html';
+const MOBILE_REDIRECT_URL = './index-m.html';
+
+// 检测设备并执行重定向(此代码放在桌面端页面中)
+if (isDesktopDevice) {
+  // 对于桌面设备，延迟2秒后重定向，给用户一个反应的时间
+  setTimeout(function() {
+    try {
+      window.location.href = DESKTOP_REDIRECT_URL;
+    } catch (error) {
+      console.error("重定向到桌面端页面失败", error);
+      // 可以添加备用的处理逻辑，比如显示错误信息或尝试再次重定向
+    }
+  }, 2000);
+}
+
+// 在进行重定向前检查是否已经尝试过重定向(此代码放在移动端页面中)
+if (!sessionStorage.getItem('redirected')) {
+  sessionStorage.setItem('redirected', 'true');
+
+  // 检测设备并执行重定向
+  if (isMobileDevice) {
+    // 对于移动设备，立即重定向到移动端页面
+    setTimeout(function() {
+      try {
+        window.location.href = MOBILE_REDIRECT_URL;
+      } catch (error) {
+        console.error("重定向到移动端页面失败", error);
+        // 可以添加备用的处理逻辑，比如显示错误信息或尝试再次重定向
+      }
+    }, 2000);
+  }
+}
