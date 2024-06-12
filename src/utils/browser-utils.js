@@ -220,6 +220,45 @@ counter('#my-id', 1, 1000, 5, 2000); // 为id为"my-id"的元素创建一个2秒
 
 
 /**
+ * 检测当前浏览器是否为主流浏览器，并输出浏览器名称和userAgent信息。
+ * 
+ * 函数不返回任何值，主要用于调试和浏览器检测。
+ */
+function validBrowser() {
+  // 获取浏览器的userAgent字符串
+  const u_agent = window.navigator.userAgent;
+  // 定义一个对象，用于存储不同浏览器的正则表达式
+  const browserDetection = {
+      "Firefox": /Firefox/,
+      "Chrome": /Chrome|CriOS/,
+      "IE(8-10)": /MSIE|Trident/,
+      "IE(11)": /Trident.*rv/
+  };
+  // 默认浏览器名称为"不是主流浏览器!"
+  let browser_name = "不是主流浏览器!";
+
+  // 遍历浏览器检测对象
+  for (let browser in browserDetection) {
+      // 如果userAgent匹配某个浏览器的正则表达式
+      if (browserDetection[browser].test(u_agent)) {
+          // 更新浏览器名称为当前浏览器
+          browser_name = browser;
+          // 结束循环，因为我们只关心第一个匹配的浏览器
+          break; // 检测到匹配项即停止检测
+      }
+  }
+
+  // 输出浏览器名称和userAgent信息到控制台
+  console.log("浏览器:" + browser_name + "<br>");
+  console.log("u_agent:" + u_agent + "<br>");
+}
+
+// 调用validBrowser函数
+validBrowser();
+
+
+
+/**
  * 获取当前页面的URL。
  * 该函数返回浏览器当前加载页面的完整URL。
  * 
