@@ -33,26 +33,16 @@ class PopupSDK {
   }
 
   /**
-   * 显示指定ID的弹窗，并可选设置背景遮罩层的颜色和透明度。
+   * 显示指定ID的弹窗，并可选设置弹窗背景的颜色和透明度。
    * 
    * @param {string} popupId 弹窗元素的ID。
-   * @param {string} [bgColor='rgba(255,255,255,1)'] 背景遮罩层的颜色，默认为不透明白色。
+   * @param {string} [bgColor='rgba(0,0,0,.8)'] 弹窗背景的颜色，默认为透明黑色，可包含透明度信息如 'rgba(255,255,255,0.5)' 为半透明白色。
    */
-  showPopup(popupId, bgColor = 'rgba(255,255,255,1)') {
+  showPopup(popupId, bgColor = 'rgba(0,0,0,.8)') {
     const popup = document.getElementById(popupId);
     if (popup) {
       popup.style.display = 'block';
-
-      // 添加或更新背景遮罩层的样式
-      const mask = popup.querySelector('.popup-mask') || document.createElement('div');
-      mask.className = 'popup-mask';
-      mask.style.backgroundColor = bgColor;
-      
-      if (!popup.querySelector('.popup-mask')) {
-        popup.insertBefore(mask, popup.firstChild);
-      } else {
-        mask.style.backgroundColor = bgColor;
-      }
+      popup.style.backgroundColor = bgColor; // 直接修改弹窗背景颜色及透明度
 
       this.currentPopupId = popupId;
       this.disableBodyScroll();
