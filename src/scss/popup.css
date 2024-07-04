@@ -1,0 +1,36 @@
+@media screen and (min-width: 1025px) { .popup { width: 100vw; height: 100vh; outline: none; display: none; visibility: visible; position: fixed; z-index: 9999; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); }
+  .popup .popup-con { position: relative; margin: 0 auto; }
+  .popup .popup-con .popup-info { margin: 0 auto; width: 100%; height: 100%; overflow: hidden; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; -webkit-box-orient: vertical; -webkit-box-direction: normal; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; }
+  .popup .popup-con .popup-text { width: 100%; height: 60%; }
+  .popup .popup-con .popup-title { font-family: "Microsoft YaHei"; font-size: 48px; font-weight: bold; font-style: normal; line-height: 48px; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
+  .popup .popup-con .popup-desc { margin: 20px auto 0; width: 100%; height: auto; font-family: "Microsoft YaHei"; font-size: 20px; font-weight: normal; font-style: normal; line-height: 20px; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
+  .popup .popup-con .input-txt { width: 400px; height: 40px; border-radius: 8px; border: 2px solid #03f7ff; font-size: 18px; }
+  .popup .popup-con .input-txt:focus { border: 2px solid #fc9003; border-radius: 8px; box-shadow: 0 0 8px #000000; }
+  .popup .popup-con .submit { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; flex-direction: row; width: 400px; height: 40px; }
+  .popup .popup-con .cancel, .popup .popup-con .confirm { border-radius: 30px; border: none; transition: all 0.2s; background-color: #03f7ff; width: 180px; height: 40px; text-align: center; line-height: 40px; font-size: 20px; color: #000; text-decoration: none; }
+  .popup .popup-con .cancel:hover, .popup .popup-con .confirm:hover { border-radius: 30px; width: 180px; height: 40px; background-color: #fc9003; color: white; }
+  .popup .popup-con .popup-close { display: block; position: absolute; top: -20px; right: -20px; background: #074952; color: #12ded2; width: 40px; height: 40px; border-radius: 50%; line-height: 40px; text-align: center; font-size: 30px; text-decoration: none; }
+  .popup .popup-con .popup-close::before { content: '\2716'; }
+  .popup .popup-bg { width: 960px; aspect-ratio: 16 / 9; border: 2px solid #12ded2; background: #035d69; margin: 0 auto; position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
+  .popup .popup-bg video { width: 100%; height: 100%; }
+  .scroll-y { position: relative; overflow-x: hidden; overflow-y: scroll; }
+  .scroll-y::-webkit-scrollbar { width: 4px; border-radius: 0; background: #272727; }
+  .scroll-y::-webkit-scrollbar-thumb { width: 4px; height: 1px; border-radius: 0; background: linear-gradient(to right, #e4e4e4, #ffffff); }
+  .scroll-y::-webkit-scrollbar-thumb:disabled { background: #272727; }
+  .scroll-y::-webkit-scrollbar-track { border-radius: 0; background: #272727; } }
+
+@media screen and (max-width: 1024px) { .popup { width: 100vw; height: 100vh; outline: none; display: block; visibility: visible; position: fixed; z-index: 9999; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); }
+  .popup .popup-con { position: relative; margin: 0 auto; }
+  .popup .popup-con .popup-info { margin: 0 auto; width: 100%; height: 100%; overflow: hidden; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-flex-wrap: wrap; -ms-flex-wrap: wrap; flex-wrap: wrap; }
+  .popup .popup-con .popup-title { margin: 0 auto; width: 100%; font-family: "Microsoft YaHei"; font-size: 34px; font-weight: bold; font-style: normal; line-height: 1.1; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
+  .popup .popup-con .popup-text { width: 100%; height: 60%; }
+  .popup .popup-con .popup-desc { margin: 20px auto 0; width: 100%; height: auto; font-family: "Microsoft YaHei"; font-size: 18px; font-weight: normal; font-style: normal; line-height: 1.2; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
+  .popup .popup-con .popup-close { display: block; position: absolute; top: -20px; right: -20px; background: #074952; color: #12ded2; width: 40px; height: 40px; border-radius: 50%; line-height: 40px; text-align: center; font-size: 30px; text-decoration: none; }
+  .popup .popup-con .popup-close::before { content: '\2716'; }
+  .popup .popup-bg { width: calc(100vw - 80px); aspect-ratio: 16 / 9; border: 2px solid #12ded2; background: #035d69; margin: 0 auto; position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
+  .popup .popup-bg video { width: 100%; height: 100%; }
+  .scroll-y { position: relative; overflow-x: hidden; overflow-y: scroll; }
+  .scroll-y::-webkit-scrollbar { width: 4px; border-radius: 0; background: #272727; }
+  .scroll-y::-webkit-scrollbar-thumb { width: 4px; height: 1px; border-radius: 0; background: linear-gradient(to right, #e4e4e4, #ffffff); }
+  .scroll-y::-webkit-scrollbar-thumb:disabled { background: #272727; }
+  .scroll-y::-webkit-scrollbar-track { border-radius: 0; background: #272727; } }
