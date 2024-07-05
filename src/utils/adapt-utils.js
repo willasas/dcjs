@@ -267,3 +267,37 @@ if (!sessionStorage.getItem('redirected')) {
     }, 2000);
   }
 }
+
+
+/**
+ * 判断操作系统类型
+ * @returns {Object} 包含设备类型信息的对象
+ */
+const detectOS = () => {
+  const userAgent = navigator.userAgent;
+  const isWindowsPhone = /(?:Windows Phone)/.test(userAgent);
+  const isSymbian = /(?:SymbianOS)/.test(userAgent) || isWindowsPhone;
+  const isAndroid = /(?:Android)/.test(userAgent);
+  const isFireFox = /(?:Firefox)/.test(userAgent);
+  const isChrome = /(?:Chrome|CriOS)/.test(userAgent);
+  const isTablet = /(?:iPad|PlayBook)/.test(userAgent) || (isAndroid && !/(?:Mobile)/.test(userAgent)) || (isFireFox && /(?:Tablet)/.test(userAgent));
+  const isPhone = /(?:iPhone)/.test(userAgent) && !isTablet;
+  const isPc = !isPhone && !isAndroid && !isSymbian;
+
+  return {
+    isTablet,
+    isPhone,
+    isAndroid,
+    isPc
+  };
+};
+
+// 调用detectOS函数获取操作系统信息
+const osInfo = detectOS();
+ if (osInfo.isAndroid || osInfo.isPhone) {
+    console.log('当前设备是安卓或苹果手机');
+  } else if (osInfo.isTablet) {
+    console.log('当前设备是平板电脑');
+  } else if (osInfo.isPc) {
+    console.log('这可能是一个电脑');
+  }
