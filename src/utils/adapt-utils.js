@@ -270,34 +270,45 @@ if (!sessionStorage.getItem('redirected')) {
 
 
 /**
- * 判断操作系统类型
- * @returns {Object} 包含设备类型信息的对象
+ * 判断当前设备是否可能是平板
+ * @returns {boolean} 如果设备的屏幕宽高比接近常见平板的宽高比，则返回true，否则返回false
  */
-const detectOS = () => {
+function isProbablyTablet() {
   const userAgent = navigator.userAgent;
-  const isWindowsPhone = /(?:Windows Phone)/.test(userAgent);
-  const isSymbian = /(?:SymbianOS)/.test(userAgent) || isWindowsPhone;
-  const isAndroid = /(?:Android)/.test(userAgent);
-  const isFireFox = /(?:Firefox)/.test(userAgent);
-  const isChrome = /(?:Chrome|CriOS)/.test(userAgent);
-  const isTablet = /(?:iPad|PlayBook)/.test(userAgent) || (isAndroid && !/(?:Mobile)/.test(userAgent)) || (isFireFox && /(?:Tablet)/.test(userAgent));
-  const isPhone = /(?:iPhone)/.test(userAgent) && !isTablet;
-  const isPc = !isPhone && !isAndroid && !isSymbian;
+  const isTabletUserAgent = /iPad|GT-P|SM-T|Galaxy Tab|HUAWEI|MediaPad|MatePad|Lenovo|Yoga Tab|Kindle|KFOT|Surface|Mi Pad|Mi Note Pad|Nexus|LG-V|LG-F|vivoPad|G Pad/i.test(userAgent);
 
-  return {
-    isTablet,
-    isPhone,
-    isAndroid,
-    isPc
-  };
-};
+  // 获取当前屏幕宽高
+  const screenWidth = window.screen.width;
+  const screenHeight = window.screen.height;
 
-// 调用detectOS函数获取操作系统信息
-const osInfo = detectOS();
- if (osInfo.isAndroid || osInfo.isPhone) {
-    console.log('当前设备是安卓或苹果手机');
-  } else if (osInfo.isTablet) {
-    console.log('当前设备是平板电脑');
-  } else if (osInfo.isPc) {
-    console.log('这可能是一个电脑');
+  // 计算屏幕的宽高比
+  const screenAspectRatio = Math.max(screenWidth, screenHeight) / Math.min(screenWidth, screenHeight);
+  
+  // 平板常见的宽高比范围
+  const tabletAspectRatioRange = [1.33, 1.78]; // 4:3 和 16:9
+  
+  // 检查屏幕宽高比是否在平板的范围内
+  return (screenAspectRatio >= tabletAspectRatioRange[0] && screenAspectRatio <= tabletAspectRatioRange[1]) || isTabletUserAgent;
+}
+
+// 获取页面上的wrap元素
+const wrapElement = document.querySelector('.wrap');
+
+// 初始化时设置wrap元素的类名
+updateWrapClass();
+
+// 监听窗口大小变化，以便在屏幕旋转时重新评估
+window.addEventListener('resize', updateWrapClass);
+
+/**
+ * 更新wrap元素的类名，根据是否为平板设备
+ */
+function updateWrapClass() {
+  if (isProbablyTablet()) {
+    // 平板
+    wrapElement.classList.add('isPad');
+  } else {
+    // 非平板（可能是手机或其他设备）
+    wrapElement.classList.remove('isPad');
   }
+}
