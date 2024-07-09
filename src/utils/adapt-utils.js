@@ -268,6 +268,20 @@ if (!sessionStorage.getItem('redirected')) {
   }
 }
 
+/**
+ * 函数防抖，减少函数调用频率(此函数在别的工具中存在，使用时只保留一个即可)
+ * @param {Function} func 要执行的函数
+ * @param {number} wait 等待时间
+ * @return {Function} 返回节流后的函数
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function() {
+    const context = this, args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
 
 /**
  * 判断当前设备是否可能是平板
@@ -277,38 +291,36 @@ function isProbablyTablet() {
   const userAgent = navigator.userAgent;
   const isTabletUserAgent = /iPad|GT-P|SM-T|Galaxy Tab|HUAWEI|MediaPad|MatePad|Lenovo|Yoga Tab|Kindle|KFOT|Surface|Mi Pad|Mi Note Pad|Nexus|LG-V|LG-F|vivoPad|G Pad/i.test(userAgent);
 
+  // 缓存屏幕宽高
+  if (!window.screenCachedWidth || !window.screenCachedHeight) {
+    window.screenCachedWidth = window.screen.width;
+    window.screenCachedHeight = window.screen.height;
+  }
   // 获取当前屏幕宽高
-  const screenWidth = window.screen.width;
-  const screenHeight = window.screen.height;
-
+  const screenWidth = window.screenCachedWidth;
+  const screenHeight = window.screenCachedHeight;
   // 计算屏幕的宽高比
   const screenAspectRatio = Math.max(screenWidth, screenHeight) / Math.min(screenWidth, screenHeight);
-  
-  // 平板常见的宽高比范围
-  const tabletAspectRatioRange = [1.33, 1.78]; // 4:3 和 16:9
-  
+  // 平板常见的宽高比范围 4:3 和 16:9
+  const tabletAspectRatioRange = [1.33, 1.78]; 
   // 检查屏幕宽高比是否在平板的范围内
   return (screenAspectRatio >= tabletAspectRatioRange[0] && screenAspectRatio <= tabletAspectRatioRange[1]) || isTabletUserAgent;
 }
 
-// 获取页面上的wrap元素
-const wrapElement = document.querySelector('.wrap');
+// 更新wrap元素的类名，根据是否为平板设备
+function updateWrapClass() {
+  const wrapElement = document.querySelector('.wrap');
+  if (isProbablyTablet()) {
+      // 平板
+    wrapElement.classList.add('isPad');
+  } else {
+    // 非平板
+    wrapElement.classList.remove('isPad');
+  }
+}
 
 // 初始化时设置wrap元素的类名
 updateWrapClass();
 
-// 监听窗口大小变化，以便在屏幕旋转时重新评估
-window.addEventListener('resize', updateWrapClass);
-
-/**
- * 更新wrap元素的类名，根据是否为平板设备
- */
-function updateWrapClass() {
-  if (isProbablyTablet()) {
-    // 平板
-    wrapElement.classList.add('isPad');
-  } else {
-    // 非平板（可能是手机或其他设备）
-    wrapElement.classList.remove('isPad');
-  }
-}
+// 监听窗口大小变化，使用防抖函数以减少频繁调用
+window.addEventListener('resize', debounce(updateWrapClass, 100));
