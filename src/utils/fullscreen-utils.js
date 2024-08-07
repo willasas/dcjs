@@ -10,6 +10,29 @@ class FullscreenManager {
     constructor(element) {
       this.el = element || document.documentElement; // 默认使用文档根元素
       this.addFullscreenChangeHandler();
+      // 内容区域宽度和高度
+      this.innerWidth = window.innerWidth;
+      this.innerHeight = window.innerHeight;
+      // 窗口边框宽度和高度
+      this.outerWidth = window.outerWidth;
+      this.outerHeight = window.outerHeight;
+      // 文档元素宽度和高度
+      this.docElementWidth = document.documentElement.offsetWidth;
+      this.docElementHeight = document.documentElement.offsetHeight;
+      // 文档滚动宽度和高度
+      this.docScrollWidth = document.documentElement.scrollWidth;
+      this.docScrollHeight = document.documentElement.scrollHeight;
+      // 文档可视区宽度和高度
+      this.clientWidth = document.documentElement.clientWidth;
+      this.clientHeight = document.documentElement.clientHeight;
+      // 屏幕可用宽度和高度
+      this.availWidth = window.screen.availWidth;
+      this.availHeight = window.screen.availHeight;
+      // 屏幕总宽度和高度
+      this.screenTotalWidth = window.screen.width;
+      this.screenTotalHeight = window.screen.height;
+      // 屏幕不可用高度
+      this.screenUnusedHeight = screenTotalHeight - availHeight;
     }
   
     /**
@@ -103,8 +126,29 @@ class FullscreenManager {
       document.body.appendChild(changeBtn);
       changeBtn.addEventListener('click', this.toggleFullScreen.bind(this));
     }
+
+    printDimensions() {
+      return {
+        innerWidth,
+        innerHeight,
+        outerWidth,
+        outerHeight,
+        docElementWidth,
+        docElementHeight,
+        docScrollWidth,
+        docScrollHeight,
+        clientWidth,
+        clientHeight,
+        availWidth,
+        availHeight,
+        screenTotalWidth,
+        screenTotalHeight,
+        screenUnusedHeight
+      };
+    }
 }
   
 // 实例化FullscreenManager并创建按钮
 const manager = new FullscreenManager();
 manager.createToggleBtn();
+manager.printDimensions();
