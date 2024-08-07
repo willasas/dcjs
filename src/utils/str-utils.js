@@ -1313,3 +1313,159 @@ isAffirmative(123); // 抛出TypeError: Expected a string as the first argument
 
 
 
+/**
+ * 一个用于修剪文本以适应指定宽度并添加省略号或其他填充的类。
+ */
+class TextTrimmer {
+  /**
+   * 创建 TextTrimmer 的实例。
+   * @param {Object} [options] - 配置选项。
+   * @param {string} [options.padding='...'] - 当文本被修剪时添加的填充。
+   * @param {Array<string>} [options.classList=[]] - 要应用到元素上的 CSS 类列表。
+   * @param {Object} [options.style={}] - 要应用到元素上的自定义样式。
+   * @param {boolean} [options.debug=false] - 是否启用调试模式。
+  */
+  constructor(options = {}) {
+    this.config = {
+      padding: options.padding || '...',
+      classList: options.classList || [],
+      style: options.style || {},
+      debug: options.debug,
+    };
+    this.placeholderLength = this.calculatePlaceholderLength();
+    this.createElements();
+    this.applyStyles();
+    document.body.appendChild(this.div);
+  }
+  /**
+   * 计算填充字符串的长度。
+   * @returns {number} 填充字符串的长度。
+   */
+  calculatePlaceholderLength() {
+    return this.config.padding.length;
+  }
+
+  /**
+   * 创建用于显示文本的元素。
+   */
+  createElements() {
+    this.el = document.createElement('span');
+    this.div = document.createElement('div');
+  }
+
+  /**
+   * 应用样式到创建的元素上。
+   */
+  applyStyles() {
+    const { style, debug } = this.config;
+    const customStyles = Object.entries(style)
+      .map(([key, value]) => `${key}:${value};`)
+      .join('');
+    this.el.className = this.config.classList.join(' ');
+    this.el.style.cssText = `
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: transparent;
+      color: transparent;
+      height: 100%;
+      white-space: nowrap;
+      overflow: visible;
+      border: 0;
+      ${debug ? "background:white; color:red;" : ""}
+      ${customStyles}
+    `;
+    this.div.style.cssText = `
+      width: 99%;
+      min-height: 50px;
+      line-height: 50px;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      overflow: hidden;
+      outline: 0;
+      background: transparent;
+      ${this.config.debug ? "outline: 1px solid red; background: black;" : ""}
+    `;
+    this.div.appendChild(this.el);
+  }
+  /**
+   * 完成初始化并获取相关信息。
+   * @returns {Object} 包含间隙、百分比和字体大小的信息对象。
+   */
+  complete() {
+    const css = window.getComputedStyle(this.el);
+    const fontSize = parseFloat(css.fontSize) || 16;
+    const offsetWidth = this.el.offsetWidth;
+    const scrollWidth = this.el.scrollWidth;
+    const gap = scrollWidth - offsetWidth;
+    const percent = Math.floor(offsetWidth / scrollWidth * 1000) / 1000;
+    return { gap, percent, fontSize };
+  }
+
+  /**
+   * 修剪文本。
+   * @param {string} content - 要修剪的文本内容。
+   * @returns {string} 修剪后的文本。
+   */
+  cut(content) {
+    this.el.textContent = content;
+    const { percent } = this.complete();
+    const totalLength = this.calculateTotalLength(content);
+    const showLength = Math.ceil(totalLength * percent) - this.placeholderLength;
+    const trimmedContent = this.trimContent(content, showLength);
+    return trimmedContent + this.config.padding;
+  }
+
+  /**
+   * 计算文本的总长度（考虑全角和半角字符）。
+   * @param {string} content - 文本内容。
+   * @returns {number} 文本的总长度。
+   */
+  calculateTotalLength(content) {
+    let total = 0;
+    for (let char of content) {
+      total += char.charCodeAt(0) > 127 ? 2 : 1;
+    }
+    return total;
+  }
+
+  /**
+   * 根据最大长度修剪文本。
+   * @param {string} content - 文本内容。
+   * @param {number} maxLength - 最大长度。
+   * @returns {string} 修剪后的文本。
+   */
+  trimContent(content, maxLength) {
+    let trimmed = '';
+    let currentLength = 0;
+    for (let char of content) {
+      currentLength += char.charCodeAt(0) > 127 ? 2 : 1;
+      if (currentLength > maxLength) break;
+      trimmed += char;
+    }
+    return trimmed;
+  }
+}
+
+// 使用示例
+const trimmer = new TextTrimmer({
+  style: { 'font-size': '16px', 'width': '400px' },
+});
+
+const result = trimmer.cut('这是一个很长的文本，用来测试截断功能。');
+
+console.log(result);  // 输出: 这是一个很长的文本，用来测试截...
+
+// 示例2，截取wrap下的span的内容长度
+// 获取 wrap 类的元素
+const wrapElement = document.querySelector('.wrap');
+// 获取 wrap 下的第一个 span 元素
+const spanElement = wrapElement.querySelector('span');
+// 获取 span 元素的文本内容
+const spanContent = spanElement.textContent;
+// 截取文本
+const trimmedContent = trimmer.cut(spanContent);
+// 更新 span 元素的内容
+spanElement.textContent = trimmedContent;
+console.log(trimmedContent);  // 输出: 截取后的文本
