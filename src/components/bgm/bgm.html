@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./bgm.css">
+  <title>简单的背景音乐播放</title>
+ 
+</head>
+<body>
+  <div class="smp-bgm">
+    <a href="javascript:" class="bgm-btn" id="bgm-audio-btn" onclick="" title="背景音乐" data-status="off">
+      <span class="bgm-icon" id="bgm-icon"></span>
+      <!-- bgm -->
+      <audio src="" id="bgm-audio-container" ref="audio" preload="preload" loop="loop"></audio>
+    </a>
+  
+    <div class="voice-wave">
+      <div class="wave-line line-1 delay-1"></div>
+      <div class="wave-line line-2 delay-2"></div>
+      <div class="wave-line line-3 delay-3"></div>
+      <div class="wave-line line-4 delay-4"></div>
+      <div class="wave-line line-5 delay-5"></div>
+      <div class="wave-line line-6 delay-6"></div>
+      <div class="wave-line line-7 delay-7"></div>
+      <div class="wave-line line-8 delay-8"></div>
+      <div class="wave-line line-9 delay-9"></div>
+    </div>
+  </div>
+
+  <script>
+    // 获取元素引用
+    // var bgmAudio = document.getElementById('bgm-audio-container');
+    // var bgmBtn = document.getElementById('bgm-audio-btn');
+    // var bgmIcon = document.getElementById('bgm-icon');
+    // var bgmIconDef = `<svg class="icon icon_note_play" width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" style="fill-rule:evenodd;" xmlns="http://www.w3.org/2000/svg">
+    //                 <path d="M563.5 9.5c20.896-2.649 37.729 4.351 50.5 21 5.761 13.38 8.095 27.38 7 42 8.26 89.742 50.426 158.242 126.5 205.5 42.355 24.34 88.022 36.34 137 36 24.988 5.487 38.321 20.987 40 46.5-1.48 24.646-14.147 40.146-38 46.5-104.93 1.715-193.43-35.118-265.5-110.5-.05 158.006-.717 316.006-2 474-10.092 91.418-53.926 161.251-131.5 209.5-67.697 38.04-139.031 46.7-214 26-91.167-29.833-151.667-90.333-181.5-181.5-25.32-97.438-5.32-184.105 60-260 67.583-68.973 149.416-96.473 245.5-82.5 38.667 7.514 74 21.514 106 42l21 13.5a118703.92 118703.92 0 0 0 1.5-487c4.044-21.539 16.544-35.206 37.5-41zm-216 563c74.004 2.577 127.837 36.577 161.5 102 28.237 69.237 18.57 132.57-29 190-53.871 54.342-117.371 69.842-190.5 46.5-44.365-17.365-76.865-47.531-97.5-90.5-28.237-69.237-18.57-132.57 29-190 34.329-36.389 76.496-55.723 126.5-58z" opacity=".988"/>
+    //                </svg>`
+    
+    // var bgmIconAfter = `<svg class="icon icon_note_pause" width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    //                       <path fill="#000000" d="M573.56288 9.99424c25.88672 0 46.8992 21.05344 46.8992 46.94016a257.8432 257.8432 0 0 0 257.51552 257.47456c25.88672 0 46.8992 21.05344 46.6944 46.57152 0 25.88672-20.97152 46.8992-46.85824 46.8992a349.92128 349.92128 0 0 1-257.51552-112.76288v328.66304l220.24192 220.28288a40.96 40.96 0 1 1-57.91744 57.91744l-162.36544-162.36544v12.4928a19.08736 19.08736 0 0 1-0.16384 2.49856l-0.32768 2.53952c-5.20192 143.85152-123.53536 259.23584-268.61568 259.23584a269.47584 269.47584 0 0 1-269.1072-269.1072 269.47584 269.47584 0 0 1 276.84864-269.1072L87.49056 206.848A40.96 40.96 0 1 1 145.408 148.93056l381.21472 381.21472V75.3664c0-0.6144 0.08192-1.2288 0.12288-1.80224l0.24576-1.8432a409.1904 409.1904 0 0 1-0.36864-14.7456c0-25.88672 21.05344-46.94016 46.94016-46.94016zM351.31392 571.8016a175.67744 175.67744 0 0 0-175.47264 175.47264 175.67744 175.67744 0 0 0 175.47264 175.5136 175.67744 175.67744 0 0 0 175.5136-175.5136 175.67744 175.67744 0 0 0-175.5136-175.47264z" />
+    //                     </svg>`
+
+    // bgmIcon.innerHTML = bgmIconAfter;
+    // var rotateVal = 0;
+    // var InterVal; // 定时器
+
+
+    // // 设置定时器
+    // function rotate() {
+    //   InterVal = setInterval(function () {
+    //     rotateVal += 4;
+    //     bgmBtn.style.transform = 'rotate(' + rotateVal + 'deg)';
+    //     bgmBtn.style.transition = '5s linear infinite';
+    //   }, 100);
+    // }
+
+    // // 获取随机索引的辅助函数
+    // function getRandomIndex(array) {
+    //   return Math.floor(Math.random() * array.length);
+    // }
+
+    // // 播放音乐
+    // function playMusic(musicSources) {
+    //   if (bgmAudio.paused) {
+    //     var randomBgm = musicSources && musicSources.length > 0 
+    //       ? musicSources[getRandomIndex(musicSources)] 
+    //       : './image/bgm/bgm.mp3';
+
+    //     bgmAudio.src = randomBgm;
+    //     bgmIcon.innerHTML = bgmIconDef;
+    //     bgmAudio.play();
+    //     rotate();// 启动旋转动画
+    //     bgmBtn.classList.remove('active'); // 使用classList API移除类
+    //     // 启动波浪线动画
+    //     document.querySelector('.voice-wave').classList.add('play');
+    //   } else {
+    //     bgmAudio.pause();
+    //     bgmBtn.style.transform = 'none';
+    //     bgmIcon.innerHTML = bgmIconAfter;
+    //     clearInterval(InterVal);
+    //     bgmBtn.classList.add('active'); // 使用classList API添加类
+    //     document.querySelector('.voice-wave').classList.remove('play');
+    //   }
+    // }
+
+    // // 背景音乐列表
+    // var bgmList = ['./image/bgm/bgm1.mp3', './image/bgm/bgm2.mp3', './image/bgm/bgm3.mp3'];
+
+    // // 绑定点击事件
+    // bgmBtn.addEventListener('click', function() {
+    //   playMusic(bgmList);
+    // });
+
+    class sampleBGM {
+      constructor(bgmAudioId, bgmBtnId, bgmIconId, bgmList) {
+        this.bgmAudio = document.getElementById(bgmAudioId);
+        this.bgmBtn = document.getElementById(bgmBtnId);
+        this.bgmIcon = document.getElementById(bgmIconId);
+        this.bgmIconDef = `<svg class="icon icon_note_play" width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" style="fill-rule:evenodd;" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M563.5 9.5c20.896-2.649 37.729 4.351 50.5 21 5.761 13.38 8.095 27.38 7 42 8.26 89.742 50.426 158.242 126.5 205.5 42.355 24.34 88.022 36.34 137 36 24.988 5.487 38.321 20.987 40 46.5-1.48 24.646-14.147 40.146-38 46.5-104.93 1.715-193.43-35.118-265.5-110.5-.05 158.006-.717 316.006-2 474-10.092 91.418-53.926 161.251-131.5 209.5-67.697 38.04-139.031 46.7-214 26-91.167-29.833-151.667-90.333-181.5-181.5-25.32-97.438-5.32-184.105 60-260 67.583-68.973 149.416-96.473 245.5-82.5 38.667 7.514 74 21.514 106 42l21 13.5a118703.92 118703.92 0 0 0 1.5-487c4.044-21.539 16.544-35.206 37.5-41zm-216 563c74.004 2.577 127.837 36.577 161.5 102 28.237 69.237 18.57 132.57-29 190-53.871 54.342-117.371 69.842-190.5 46.5-44.365-17.365-76.865-47.531-97.5-90.5-28.237-69.237-18.57-132.57 29-190 34.329-36.389 76.496-55.723 126.5-58z" opacity=".988"/>
+                   </svg>`
+        this.bgmIconAfter = `<svg class="icon icon_note_pause" width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                          <path fill="#000000" d="M573.56288 9.99424c25.88672 0 46.8992 21.05344 46.8992 46.94016a257.8432 257.8432 0 0 0 257.51552 257.47456c25.88672 0 46.8992 21.05344 46.6944 46.57152 0 25.88672-20.97152 46.8992-46.85824 46.8992a349.92128 349.92128 0 0 1-257.51552-112.76288v328.66304l220.24192 220.28288a40.96 40.96 0 1 1-57.91744 57.91744l-162.36544-162.36544v12.4928a19.08736 19.08736 0 0 1-0.16384 2.49856l-0.32768 2.53952c-5.20192 143.85152-123.53536 259.23584-268.61568 259.23584a269.47584 269.47584 0 0 1-269.1072-269.1072 269.47584 269.47584 0 0 1 276.84864-269.1072L87.49056 206.848A40.96 40.96 0 1 1 145.408 148.93056l381.21472 381.21472V75.3664c0-0.6144 0.08192-1.2288 0.12288-1.80224l0.24576-1.8432a409.1904 409.1904 0 0 1-0.36864-14.7456c0-25.88672 21.05344-46.94016 46.94016-46.94016zM351.31392 571.8016a175.67744 175.67744 0 0 0-175.47264 175.47264 175.67744 175.67744 0 0 0 175.47264 175.5136 175.67744 175.67744 0 0 0 175.5136-175.5136 175.67744 175.67744 0 0 0-175.5136-175.47264z" />
+                        </svg>`
+        this.bgmIcon.innerHTML = this.bgmIconAfter;
+        this.bgmList = bgmList;
+        this.rotateVal = 0;
+        this.InterVal = null; 
+      }
+
+      // 旋转动画函数
+      rotate() {
+        this.interval = setInterval(() => {
+          this.rotateVal += 4;
+          this.bgmBtn.style.transform = `rotate(${this.rotateVal}deg)`;
+          this.bgmBtn.style.transition = '5s linear infinite';
+        }, 100);
+      }
+
+      // 获取随机索引的辅助函数
+      getRandomIndex(array) {
+        return Math.floor(Math.random() * array.length);
+      }
+
+      // 播放音乐
+      playMusic(musicSources) {
+        if (this.bgmAudio.paused) {
+          const randomBgm = musicSources && musicSources.length > 0 
+            ? musicSources[this.getRandomIndex(musicSources)] 
+            : './image/bgm/bgm.mp3';
+
+          this.bgmAudio.src = randomBgm;
+          this.bgmIcon.innerHTML = this.bgmIconDef;
+          this.bgmAudio.play();
+          this.rotate(); // 启动旋转动画
+          this.bgmBtn.classList.remove('active'); // 使用classList API移除类
+          // 启动波浪线动画
+          document.querySelector('.voice-wave').classList.add('play');
+        } else {
+          this.bgmAudio.pause();
+          this.bgmBtn.style.transform = 'none';
+          this.bgmIcon.innerHTML = this.bgmIconAfter;
+          clearInterval(this.interval);
+          this.bgmBtn.classList.add('active'); // 使用classList API添加类
+          document.querySelector('.voice-wave').classList.remove('play');
+        }
+      }
+
+      // 绑定点击事件
+      init() {
+        this.bgmBtn.addEventListener('click', () => {
+          this.playMusic(this.bgmList);
+        });
+      }
+    }
+
+    // 创建实例并初始化
+    const bgmPlayer = new sampleBGM('bgm-audio-container', 'bgm-audio-btn', 'bgm-icon', ['./image/bgm/bgm1.mp3', './image/bgm/bgm2.mp3', './image/bgm/bgm3.mp3']);
+    bgmPlayer.init();
+  </script>
+</body>
+</html>
