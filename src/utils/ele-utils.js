@@ -1491,3 +1491,97 @@ links.forEach(link => {
     link.rel = link.rel ? link.rel + 'noopener noreferrer' : 'noopener noreferrer';
   }
 });
+
+
+
+/**
+ * 一个用于创建鼠标悬停效果的类。
+ * @class
+ * @param {string} btnClassName - 按钮元素的类名。
+ * @param {string} detailClassName - 详情元素的类名。
+ * @param {string} [unit='px'] - 高度单位，默认为 'px'。支持 'px', 'rem', 'vw'。
+ */
+class HoverEffect {
+  /**
+   * 构造函数初始化HoverEffect实例。
+   * @param {string} btnClassName - 按钮元素的类名。
+   * @param {string} detailClassName - 详情元素的类名。
+   * @param {string} [unit='px'] - 高度单位，默认为 'px'。支持 'px', 'rem', 'vw'。
+   */
+  constructor(btnClassName, detailClassName, unit = 'px') {
+    this.btn = document.querySelector(`.${btnClassName}`);
+    this.detail = document.querySelector(`.${detailClassName}`);
+    this.unit = unit;
+    this.init();
+  }
+
+  /**
+   * 初始化事件监听器。
+   */
+  init() {
+    this.btn.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
+    this.btn.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+  }
+
+  /**
+   * 处理鼠标进入事件。
+   */
+  handleMouseEnter() {
+    // 鼠标划入先设置auto
+    this.detail.style.height = 'auto';
+    // 获取到auto的高度
+    const { height } = this.detail.getBoundingClientRect();
+    // 根据单位转换高度
+    let adjustedHeight = height;
+    if (this.unit === 'rem' || this.unit === 'vw') {
+      adjustedHeight /= 100;
+    }
+    // 还原高度0
+    this.detail.style.height = 0;
+    // 使用获取的auto的高度，实现动画效果
+    requestAnimationFrame(() => {
+      this.detail.style.height = `${adjustedHeight}${this.unit}`;
+      this.detail.style.transition = 'height 1s';
+    });
+  }
+
+  /**
+   * 处理鼠标离开事件。
+   */
+  handleMouseLeave() {
+    this.detail.style.height = 0;
+  }
+}
+
+// 使用示例
+/*
+<style>
+.btn{
+  display: block;
+  margin: 0 auto;
+  width: 120px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: cyan;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+}
+
+.detail{
+  margin: 0 auto;
+  width: 150px;
+  height: 0;
+  overflow: hidden;
+  background-color: beige;
+}
+</style>
+<div class="hover-container">
+  <a href="javascript:;" class="btn">hover 展示</a>
+  <div class="detail">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</div>
+</div>
+*/
+new HoverEffect('btn', 'detail', 'px'); // 默认单位为px
+new HoverEffect('btn', 'detail', 'rem'); // 单位为rem
+new HoverEffect('btn', 'detail', 'vw'); // 单位为vw
