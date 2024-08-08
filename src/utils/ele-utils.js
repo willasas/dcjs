@@ -586,6 +586,29 @@ const imageSources = [
   './image/g-slide-img5.png',
 ];
 
+// 逐次加载图片
+const content = document.getElementById('content');
+const graduallyLoadImg = () => {
+  if(!imageSources.length) return;
+  const img = new Image();
+  img.src = imageSources[0];
+  img.setAttribute('class','img-item');
+  img.onload = () => {
+    setTimeout(() => {
+      content.appendChild(img);
+      imageSources.shift();
+      loadImg();
+    },1000);
+    // content.appendChild(img);
+    // imageSources.shift();
+    // loadImg();
+  }
+  img.onerror = () => {
+    // do something
+  }
+}
+graduallyLoadImg();
+
 // 封装加载图片函数，支持并发加载
 function loadImages(sources) {
   if (!Array.isArray(sources) || sources.length === 0) {
