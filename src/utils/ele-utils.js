@@ -587,6 +587,7 @@ const imageSources = [
 ];
 
 // 逐次加载图片
+// <div class="content" id="content"></div>
 const content = document.getElementById('content');
 const graduallyLoadImg = () => {
   if(!imageSources.length) return;
@@ -875,6 +876,9 @@ showImages();
 
 /**
  * 读取并显示上传的图片
+ * <input type="file" id="uploaded-file" accept="image/*" />
+    <div id="result"></div>
+    <div id="error-container"></div>
  * 
  * 该函数从页面中获取上传的文件，验证其是否为图片类型，然后使用FileReader以DataURL的形式读取图片，
  * 并将其显示在结果容器中。如果上传非图片类型文件或读取文件时发生错误，将显示错误信息。

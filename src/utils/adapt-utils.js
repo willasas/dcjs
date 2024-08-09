@@ -324,3 +324,82 @@ updateWrapClass();
 
 // 监听窗口大小变化，使用防抖函数以减少频繁调用
 window.addEventListener('resize', debounce(updateWrapClass, 100));
+
+
+
+/**
+ * 外链平台活动链接
+ * 定义一个对象，用于存储不同平台的链接列表，包括电脑端和移动端
+ * 平台包含：虎牙平台、WeGame、新浪微博、斗鱼、抖音、快手平台、B站
+ */
+const platformLinkList = {
+  huya: {
+    pc: 'https://zt.huya.com/pc/index.html?client=auto',
+    m: 'https://zt.huya.com/m/index.html?client=auto',
+  },
+  wegame: {
+    pc: 'https://act.wegame.com.cn/example/index.html',
+    m: 'https://act.wegame.com.cn/example/index-m.html',
+  },
+  weibo: {
+    pc: '',
+    m: '',
+  },
+  douyu: {
+    pc: 'https://www.douyu.com/indx.html',
+    m: 'https://www.douyu.com/h5/index.html',
+  },
+  kuaishou: {
+    pc: '',
+    m: 'https://ppg.viviv.com/index-m.html',
+  },
+  bilibili: {
+    pc: 'https://www.bilibili.com/activity-azOzm1lCWd.html',
+    m: 'https://www.bilibili.com/activity-azOzm1lCWd.html',
+  }
+};
+
+/**
+* 双端跳转链接
+* @param {string} name 平台
+* @returns {Object|string} 返回一个对象或字符串表示链接是否成功打开
+*/
+function jumpLink(name) {
+  if (!platformLinkList[name]) {
+      console.error(`Platform "${name}" not found.`);
+      return `Platform "${name}" not found.`;
+  }
+  let link = '';
+  if (isMobileDevice()) {
+      if (platformLinkList[name].m) {
+          window.open(platformLinkList[name].m, '_blank');
+          link = platformLinkList[name].m;
+          // return { status: 'success', type: 'mobile' };
+      } else {
+          console.warn(`No mobile link available for platform "${name}".`);
+          // return `No mobile link available for platform "${name}".`;
+      }
+  } else {
+      if (platformLinkList[name].pc) {
+          window.open(platformLinkList[name].pc, '_blank');
+          link = platformLinkList[name].pc;
+          return { status: 'success', type: 'pc' };
+      } else {
+          console.warn(`No PC link available for platform "${name}".`);
+          // return `No PC link available for platform "${name}".`;
+      }
+  }
+  // 返回链接
+  if (link) {
+      window.open(link, '_blank');
+  }
+  return link;
+}
+
+// 使用示例
+jumpLink('huya');
+jumpLink('wegame');
+jumpLink('weibo');
+jumpLink('douyu');
+jumpLink('kuaishou');
+jumpLink('bilibili');
