@@ -1612,3 +1612,151 @@ class HoverEffect {
 new HoverEffect('btn', 'detail', 'px'); // 默认单位为px
 new HoverEffect('btn', 'detail', 'rem'); // 单位为rem
 new HoverEffect('btn', 'detail', 'vw'); // 单位为vw
+
+
+
+/**
+ * 获取图片数据
+ * @param {string} imgUrl - 图片的 URL 地址
+ * @returns {Promise<Blob>} 返回一个 Promise，解析为 Blob 对象
+ */
+async function getImageData(imgUrl) {
+  try {
+    const response = await fetch(imgUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image: ${response.status}`);
+    }
+    const blob = await response.blob();
+    return blob;
+  } catch (error) {
+    console.error('Failed to fetch the image:', error);
+    throw error;
+  }
+}
+
+/**
+ * 将图片 Blob 转换为 PNG 格式
+ * @param {Blob} blob - 原始图片 Blob
+ * @returns {Promise<Blob>} 返回一个 Promise，解析为 PNG 格式的 Blob 对象
+ */
+async function convertToPng(blob) {
+  try {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = URL.createObjectURL(blob);
+    return new Promise((resolve, reject) => {
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        canvas.toBlob((blob) => {
+          URL.revokeObjectURL(img.src); // 清除blob URL以释放内存
+          resolve(blob);
+        }, 'image/png');
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src); // 清除blob URL以释放内存
+        reject(new Error('Failed to load image'));
+      };
+    });
+  } catch (error) {
+    console.error('Failed to convert image to PNG:', error);
+    throw error;
+  }
+}
+
+
+/**
+ * 复制图片到剪贴板
+ * @param {Blob} blob - 需要复制的 Blob 对象
+ * @returns {Promise<void>} 返回一个 Promise，表示复制操作完成
+ */
+async function copyToClipboard(blob) {
+  try {
+    const pngBlob = await convertToPng(blob);
+    const item = new ClipboardItem({ 'image/png': pngBlob });
+    await navigator.clipboard.write([item]);
+    console.log('图片已成功复制到剪贴板！');
+  } catch (error) {
+    console.error('复制图片到剪贴板失败：', error);
+    throw error;
+  }
+}
+
+
+/*========= 复制图片到剪切版 start ==========*/ 
+/**
+ * 从剪贴板粘贴图片
+ * @returns {Promise<void>} 返回一个 Promise，表示粘贴操作完成
+ */
+async function pasteFromClipboard() {
+  try {
+    const clipboardItems = await navigator.clipboard.read();
+    for (const item of clipboardItems) {
+      const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
+      for (const type of types) {
+        if (item.types.includes(type)) {
+          const blob = await item.getType(type);
+          const url = URL.createObjectURL(blob);
+          const imgElement = document.createElement('img');
+          imgElement.src = url;
+          imgElement.alt = 'Pasted Image';
+          imgElement.style.maxWidth = '100%';
+          document.body.appendChild(imgElement);
+          console.log('图片已成功粘贴到网页！');
+          // 清除blob URL以释放内存
+          imgElement.onload = () => {
+            URL.revokeObjectURL(url);
+          };
+          break; // 如果找到一种格式就停止查找
+        }
+      }
+    }
+  } catch (error) {
+    console.error('获取剪贴板内容失败：', error);
+    throw error;
+  }
+}
+
+// 示例使用
+(async () => {
+  try {
+    const imgUrl = 'http://www.example.com/images/pic1.png';
+    // const imgUrl = 'http://www.example.com/images/pic1.jpg'; // 替换为实际的图片URL
+    const blob = await getImageData(imgUrl);
+    await copyToClipboard(blob);
+    await pasteFromClipboard();
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+})();
+
+// 获取按钮元素
+const copyButton = document.getElementById('copyButton');
+const pasteButton = document.getElementById('pasteButton');
+
+// 处理复制按钮点击事件
+copyButton.addEventListener('click', async () => {
+  try {
+    const imgUrl = 'http://www.example.com/images/pic1.png';
+    // const imgUrl = 'http://www.example.com/images/pic1.jpg'; // 替换为实际的图片URL
+    const blob = await getImageData(imgUrl);
+    await copyToClipboard(blob);
+  } catch (error) {
+    console.error('An error occurred while copying:', error);
+  }
+});
+
+// 处理粘贴按钮点击事件
+pasteButton.addEventListener('click', async () => {
+  try {
+    await pasteFromClipboard();
+  } catch (error) {
+    console.error('An error occurred while pasting:', error);
+  }
+});
+
+// 确保页面获得焦点
+document.body.focus();
+/*========= 复制图片到剪切版 end ==========*/ 
