@@ -1024,6 +1024,46 @@ console.log(flatten([1, [2, [3, [4, 5], 6], 7], 8], 2)); // [1, 2, 3, [4, 5], 6,
 
 
 /**
+ *  创建一个动态调用给定函数的包装器，确保传入的参数为正确类型的数组
+ *  @param {function} fn - 要包装的函数
+ *  @returns {function} - 一个包装函数，该函数将动态调用给定函数
+ * 
+*/
+const spreadOver = fn => {
+  // 验证fn是否为函数类型
+  if (typeof fn !== 'function') {
+    throw new TypeError('The first argument must be a function');
+  }
+  return argsArr => {
+    // 验证argsArr是否为数组
+    if (!Array.isArray(argsArr)) {
+      throw new TypeError('The second argument must be an array');
+    }
+    // 验证数组中的每个元素是否为数字且不是NaN
+    if (!argsArr.every(val => typeof val === 'number' && !isNaN(val))) {
+      throw new TypeError('All elements in the array must be numbers');
+    }
+    // 安全地动态调用函数
+    return fn(...argsArr);
+  };
+};
+
+// 使用示例，现在函数将进行参数类型和内容的检查
+const arrayMax = spreadOver(Math.max);
+console.log(arrayMax([1, 2, 3])); // 3 (有效调用)
+console.log(arrayMax([1, 2, '3'])); // 抛出TypeError: All elements in the array must be numbers
+console.log(arrayMax('not an array')); // 抛出TypeError: The second argument must be an array
+console.log(arrayMax(Math.min)); // 抛出TypeError: The first argument must be a function
+
+
+// 从数组中获取最小值
+// 使用Math.min（）与spread运算符（…）结合得到数组中的最小值。
+const arrayMin = arr => Math.min(...arr);
+arrayMin([10, 1, 5]) // 1
+
+
+
+/**
  * 遍历给定数组的每个元素，从数组末尾开始执行回调函数。
  * @param {Array} arr 要遍历的数组。
  * @param {Function} callback 对数组中每个元素执行的回调函数。
@@ -3094,6 +3134,26 @@ const symmetricDifferenceWith = (arr, val, comp) => {
 
 // 示例用法  [1, 1.2, 3.9]
 console.log(symmetricDifferenceWith([1, 1.2, 1.5, 3, 0], [1.9, 3, 0, 3.9], (a, b) => Math.round(a) === Math.round(b)));
+
+
+
+/**
+ * 使用range初始化数组
+ * 使用Array（end-start）创建所需长度的数组，使用map（）来填充范围中的所需值，可以省略start使用默认值0。
+ * 
+*/
+const initializeArrayRange = (end, start = 0) => Array.apply(null, Array(end - start)).map((v, i) => i + start);
+initializeArrayRange(5) // [0,1,2,3,4]
+
+
+
+/**
+ * 用值初始化数组
+ * 使用Array（n）创建所需长度的数组，fill(v)以填充所需的值，可以忽略value使用默认值0。
+ * 
+*/
+const initializeArray = (n, value = 0) => Array(n).fill(value);
+initializeArray(5, 2) // [2,2,2,2,2]
 
 
 

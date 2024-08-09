@@ -312,22 +312,6 @@ const complement = fn => {
   };
 };
 
-/**
- * 判断一个数是否为偶数。
- * @param {number} num - 待判断的数字。
- * @returns {boolean} - 如果num是偶数，则返回true；否则返回false。
- */
-const isEven = num => num % 2 === 0;
-
-/**
- * 通过complement函数生成一个判断一个数是否为奇数的函数。
- */
-const isOdd = complement(isEven);
-
-// 测试isOdd函数
-console.log(isOdd(2)); // false
-console.log(isOdd(3)); // true
-
 
 
 /**
@@ -430,7 +414,7 @@ const converge = (converger, fns) => (...args) => {
   }
 };
 
-const average = converge((a, b) => a / b, [
+const averageArr = converge((a, b) => a / b, [
   arr => {
     // 对传入的数组进行非空检查
     if (!Array.isArray(arr) || arr.length === 0) {
@@ -442,8 +426,8 @@ const average = converge((a, b) => a / b, [
 ]);
 
 try {
-  console.log(average([1, 2, 3, 4, 5, 6, 7])); // 4
-  console.log(average([])); // 这里将抛出异常，因为传入了空数组
+  console.log(averageArr([1, 2, 3, 4, 5, 6, 7])); // 4
+  console.log(averageArr([])); // 这里将抛出异常，因为传入了空数组
 } catch (error) {
   console.error(`Error: ${error}`);
 }
@@ -1854,40 +1838,6 @@ async function sleepyWork() {
 
 // 示例：调用sleepyWork函数
 sleepyWork();
-
-
-
-/**
- *  创建一个动态调用给定函数的包装器，确保传入的参数为正确类型的数组
- *  @param {function} fn - 要包装的函数
- *  @returns {function} - 一个包装函数，该函数将动态调用给定函数
- * 
-*/
-const spreadOver = fn => {
-  // 验证fn是否为函数类型
-  if (typeof fn !== 'function') {
-    throw new TypeError('The first argument must be a function');
-  }
-  return argsArr => {
-    // 验证argsArr是否为数组
-    if (!Array.isArray(argsArr)) {
-      throw new TypeError('The second argument must be an array');
-    }
-    // 验证数组中的每个元素是否为数字且不是NaN
-    if (!argsArr.every(val => typeof val === 'number' && !isNaN(val))) {
-      throw new TypeError('All elements in the array must be numbers');
-    }
-    // 安全地动态调用函数
-    return fn(...argsArr);
-  };
-};
-
-// 使用示例，现在函数将进行参数类型和内容的检查
-const arrayMax = spreadOver(Math.max);
-console.log(arrayMax([1, 2, 3])); // 3 (有效调用)
-console.log(arrayMax([1, 2, '3'])); // 抛出TypeError: All elements in the array must be numbers
-console.log(arrayMax('not an array')); // 抛出TypeError: The second argument must be an array
-console.log(arrayMax(Math.min)); // 抛出TypeError: The first argument must be a function
 
 
 

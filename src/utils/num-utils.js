@@ -575,6 +575,18 @@ console.log(isEven(Infinity)); // RangeError: Number must be a finite integer
 
 
 
+
+/**
+ * 通过complement函数生成一个判断一个数是否为奇数的函数。
+ */
+const isOdd = complement(isEven);
+
+// 测试isOdd函数
+console.log(isOdd(2)); // false
+console.log(isOdd(3)); // true
+
+
+
 /**
  * 检查给定的值是否为负零。
  * @param {number} val - 需要检查的值。
