@@ -592,6 +592,141 @@ console.log(csvToJSON('col1;col2\na;b\nc;d', ';')); // [{'col1': 'a', 'col2': 'b
 
 
 
+/** ============== 提取页面中的表格数据到表格中 end ===============
+ * dom:
+ * <table id="list1">
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>职位</th>
+        <th>年龄</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John Doe</td>
+        <td>"Software Engineer"</td>
+        <td>30</td>
+        <td>"Loves to code and play games. He is a great coder."</td>
+      </tr>
+    </tbody>
+  </table>
+ * 
+*/
+/**
+ * 从指定的表格中提取数据
+ * @param {string} tableId - 表格的ID
+ * @returns {Array<Array<string>>} 返回二维数组，表示表格的数据
+ */
+function extractTableData(tableId) {
+  // 获取表格元素
+  const table = document.getElementById(tableId);
+
+  // 检查表格是否存在
+  if (!table) {
+    throw new Error(`Table with ID '${tableId}' not found.`);
+  }
+
+  // 初始化数据数组
+  const data = [];
+
+  // 遍历表格的每一行
+  for (const row of table.rows) {
+    // 初始化行数据数组
+    const rowData = [];
+    // 遍历行的每个单元格
+    for (const cell of row.cells) {
+      // 提取并处理单元格内容，加入到行数据数组中
+      rowData.push(escapeCsvCell(cell.innerText.trim().replace(/\n/g, ' ')));
+    }
+    // 将行数据加入到数据数组中
+    data.push(rowData);
+  }
+
+  // 返回表格数据
+  return data;
+}
+
+/**
+ * 构建CSV字符串
+ * @param {Array<Array<string>>} data - 表格数据的二维数组
+ * @returns {string} 返回CSV格式的字符串
+ */
+function buildCsvString(data) {
+  // 将二维数组转换为CSV字符串
+  return data.map(row => row.map(escapeCsvCell).join(',')).join('\n');
+}
+
+/**
+ * 用于转义 CSV 单元格中的特殊字符
+ * @param {string} str - 需要转义的字符串
+ * @returns {string} 转义后的字符串
+ */
+function escapeCsvCell(str) {
+  // 如果单元格内容包含逗号或换行符，则需要转义
+  if (str.includes(',') || str.includes('\n')) {
+    // 转义内部的逗号和换行符
+    return `"${str.replace(/,/g, '","').replace(/\n/g, ' ')}"`;
+  }
+  // 如果不需要转义，则直接返回原始字符串
+  return str;
+}
+
+/**
+ * 创建下载链接
+ * @param {string} csvContent - CSV 文件的内容
+ * @returns {string} 下载链接的URL
+ */
+function createDownloadLink(csvContent) {
+  // 创建Blob对象，并指定类型为CSV
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+  // 创建下载链接
+  return URL.createObjectURL(blob);
+}
+
+/**
+ * 触发下载
+ * @param {string} url - 下载链接的URL
+ * @param {string} filename - 下载文件的名称
+ */
+function triggerDownload(url, filename) {
+  // 创建a标签，用于触发下载
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * 整合函数，将表格数据导出为CSV文件
+ * @param {string} tableId - 表格的ID
+ * @param {string} filename - 导出文件的名称
+ */
+function exportTableToCsv(tableId, filename) {
+  try {
+    // 提取表格数据
+    const tableData = extractTableData(tableId);
+    // 构建CSV内容
+    const csvContent = buildCsvString(tableData);
+    // 创建下载链接
+    const downloadUrl = createDownloadLink(csvContent);
+    // 触发下载
+    triggerDownload(downloadUrl, filename);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+// 调用示例
+exportTableToCsv('list1', 'exported_data.csv');
+/*============== 提取页面中的表格数据到表格中 end ===============*/
+
+
 /**
  * 将给定数组深度扁平化。
  * @param {Array} arr 需要扁平化的数组。
