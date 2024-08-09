@@ -366,32 +366,34 @@ const platformLinkList = {
 */
 function jumpLink(name) {
   if (!platformLinkList[name]) {
-      console.error(`Platform "${name}" not found.`);
-      return `Platform "${name}" not found.`;
+    console.error(`Platform "${name}" not found.`);
+    return `Platform "${name}" not found.`;
   }
   let link = '';
   if (isMobileDevice()) {
-      if (platformLinkList[name].m) {
-          window.open(platformLinkList[name].m, '_blank');
-          link = platformLinkList[name].m;
-          // return { status: 'success', type: 'mobile' };
-      } else {
-          console.warn(`No mobile link available for platform "${name}".`);
-          // return `No mobile link available for platform "${name}".`;
-      }
+    // mobile
+    if (platformLinkList[name].m) {
+      window.open(platformLinkList[name].m, '_blank');
+      link = platformLinkList[name].m;
+      // return { status: 'success', type: 'mobile' };
+    } else {
+      console.warn(`No mobile link available for platform "${name}".`);
+      // return `No mobile link available for platform "${name}".`;
+    }
   } else {
-      if (platformLinkList[name].pc) {
-          window.open(platformLinkList[name].pc, '_blank');
-          link = platformLinkList[name].pc;
-          return { status: 'success', type: 'pc' };
-      } else {
-          console.warn(`No PC link available for platform "${name}".`);
-          // return `No PC link available for platform "${name}".`;
-      }
+    // pc
+    if (platformLinkList[name].pc) {
+      window.open(platformLinkList[name].pc, '_blank');
+      link = platformLinkList[name].pc;
+      return { status: 'success', type: 'pc' };
+    } else {
+      console.warn(`No PC link available for platform "${name}".`);
+      // return `No PC link available for platform "${name}".`;
+    }
   }
   // 返回链接
   if (link) {
-      window.open(link, '_blank');
+    window.open(link, '_blank');
   }
   return link;
 }
