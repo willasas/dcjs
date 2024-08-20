@@ -2123,3 +2123,79 @@ function disablePinchZoom() {
 
 // 当页面加载完成时，调用 disablePinchZoom 函数
 window.addEventListener('load', disablePinchZoom);
+
+
+
+/**
+ * 获取本地 IP 地址。
+ * @param {Function} onNewIP - 当发现新的 IP 地址时调用的回调函数。
+ * 
+ * 如果电脑没获取到，基本上是因为浏览器限制了，解除方法如下：
+ * 1.火狐(FireFox) 删除隐藏IP：浏览器输入`about:config`,搜索配置`media.peerconnection.enabled`改为`false` ( 刷新程序,IP正常显示 )
+ * 2.谷歌(Chrome) 删除隐藏IP：浏览器输入：`chrome://flags/#enable-webrtc-hide-local-ips-with-mdns`,把`Anonymize local IPs exposed by WebRTC`设置为`disabled` ( 刷新程序,IP正常显示 )
+ * 3.eage浏览器删除隐藏ip：浏览器输入: `edge://flags/#enable-webrtc-hide-local-ips-with-mdns`,把`Anonymize local IPs exposed by WebRTC`设置为`disabled` ( 刷新程序,IP正常显示 )
+ * 
+ */
+function getLocalIP(onNewIP) {
+  const MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+  const pc = new MyPeerConnection({ iceServers: [] });
+
+  /**
+   * 空函数，用于作为默认的回调函数。
+   */
+  function noop() {}
+
+  /**
+   * 迭代 IP 地址，调用回调函数并更新本地 IP 列表。
+   * @param {string} ip - IP 地址。
+   */
+  function iterateIP(ip) {
+    if (!localIPs[ip]) {
+      onNewIP(ip);
+      localIPs[ip] = true;
+    }
+  }
+
+  /**
+   * 正则表达式，用于匹配 IPv4 地址。
+   */
+  const ipRegex = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
+
+  /**
+   * 存储已发现的 IP 地址。
+   */
+  const localIPs = {};
+
+  /**
+   * 处理 SDP 字符串，提取并处理其中的 IP 地址。
+   * @param {string} sdp - SDP 字符串。
+   */
+  function processSDP(sdp) {
+    sdp.split('\n').forEach(line => {
+      if (line.indexOf('candidate') < 0) return;
+      line.match(ipRegex).forEach(iterateIP);
+    });
+  }
+
+  pc.createDataChannel('');
+
+  pc.createOffer()
+    .then(sdp => {
+      processSDP(sdp.sdp);
+      return pc.setLocalDescription(sdp);
+    })
+    .then(() => {})
+    .catch(reason => {
+      console.error('Failed to create offer:', reason);
+    });
+
+  pc.onicecandidate = event => {
+    if (!event || !event.candidate || !event.candidate.candidate || !event.candidate.candidate.match(ipRegex)) return;
+    event.candidate.candidate.match(ipRegex).forEach(iterateIP);
+  };
+}
+
+// 使用
+getLocalIP(ip => {
+  console.log(ip);
+});
