@@ -710,6 +710,36 @@ const getURLParameters = (url) => {
   }
 };
 
+
+
+/**
+ * 获取url中参数的值
+ * @param {string} variable 查询参数的key。
+ * @returns {Object} 查询参数的value
+ */
+function getQueryVariable(variable) {
+  try {
+    const query = window.location.search.substring(1);
+    const vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+      const pair = vars[i].split("=");
+      if (pair[0] === variable) {
+        // 对返回值进行转义处理以避免XSS攻击
+        return encodeURIComponent(pair[1]);
+      }
+    }
+    return false;
+  } catch (error) {
+    console.error('Error while parsing URL parameters:', error);
+    return null;
+  }
+}
+
+// 打印url中version的值
+console.log(getQueryVariable('version'));
+
+
+
 // 测试示例
 console.log(getURLParameters('http://url.com/page?name=Adam&surname=Smith'));
 // 预期输出: { name: 'Adam', surname: 'Smith' }
@@ -2199,3 +2229,67 @@ function getLocalIP(onNewIP) {
 getLocalIP(ip => {
   console.log(ip);
 });
+
+
+
+// 修复 encodeURI 对方括号的编码问题。encodeURI 不会对保留字符进行编码，但是方括号在某些情况下会被编码为 %5B 和 %5D。
+function fixedEncodeURI(str) {
+  return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
+}
+
+// 使用
+const uri2 = "http://example.com/path/to/resource?query=[value]";
+const encodedURI2 = fixedEncodeURI(uri2);
+console.log(encodedURI2); // 输出: http://example.com/path/to/resource?query=[value]
+
+
+
+// 解码 URI 
+function fixedDecodeURI(str) {
+  try {
+    var a = decodeURI(str);
+    return a;
+  } catch (e) {
+    console.error(`Failed to decode: ${str}`, e);
+    return str; // 返回原始字符串
+  }
+}
+
+// 使用
+const encodedURI3 = "http%3A%2F%2Fexample.com%2Fpath%2Fto%2Fresource%3Fquery%3D%5Bvalue%5D";
+const decodedURI3 = fixedDecodeURI(encodedURI3);
+console.log(decodedURI3); // 输出: http://example.com/path/to/resource?query=[value]
+
+
+
+// 编码除了特定字符之外的所有字符
+function encodeURIComp(str) {
+  return encodeURIComponent(str)
+    .replace(/['()*]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase()) // 替换特殊字符
+    .replace(/%(7C|60|5E)/g, (str, hex) => String.fromCharCode(parseInt(hex, 16))); // 替换特殊编码
+}
+
+
+
+// 解码 URI 
+function decodeURIComp(str) {
+  try {
+    var a = decodeURIComponent(str);
+    return a;
+  } catch (e) {
+    console.error(`Failed to decode: ${str}`, e);
+    return str; // 返回原始字符串
+  }
+}
+
+// 使用编码和解码函数
+// 测试数据
+const uri = "http://example.com/path/to/resource?query=[value]&option=value|value<value'^value*()";
+
+// 编码
+const encodedURI = encodeURIComp(uri);
+console.log("Encoded URI:", encodedURI);
+
+// 解码
+const decodedURI = decodeURIComp(encodedURI);
+console.log("Decoded URI:", decodedURI);
