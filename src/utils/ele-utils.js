@@ -1485,7 +1485,7 @@ if (sectionElement) {
  * 
  */
 document.addEventListener('click', function(evt){
-  const isClickedOutside = !ele.contains(evt.targett);
+  const isClickedOutside = !ele.contains(evt.target);
 })
 
 
