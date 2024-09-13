@@ -1760,3 +1760,20 @@ pasteButton.addEventListener('click', async () => {
 // 确保页面获得焦点
 document.body.focus();
 /*========= 复制图片到剪切版 end ==========*/ 
+
+
+
+/*
+* 判断checkbox是否选中
+* @param {eleId} element id - 需要判断的元素的id
+*/
+function checkStatus(eleId) {
+  const checkbox = document.getElementById(eleId);
+
+  if (checkbox.checked) {
+    console.log("Checkbox is selected.");
+  } else {
+    console.log("Checkbox is not selected.");
+  }
+}
+checkStatus('checkboxId')
