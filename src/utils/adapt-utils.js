@@ -205,8 +205,6 @@ window.addEventListener('load', remAdapt);
     const scale = viewportWidth / designWidth;
 
     if (useRem) {
-      console.log('使用rem单位');
-
       doc.documentElement.style.fontSize = `${scale * 100}px`;
     } else {
       doc.documentElement.style.fontSize = '100%'; // 不进行缩放
@@ -243,6 +241,9 @@ window.addEventListener('load', remAdapt);
 
   setDesignDimensions(2560, 1440); // PC 端
   // setDesignDimensions(750, 1624); // 移动端
+
+  // 初始化时调用 setUnit 函数
+  setUnit(unit);
 
   addEventListenerSafe(win, 'resize', debounceAdjustAll, false);
   addEventListenerSafe(doc, 'DOMContentLoaded', adjustAll, false);
