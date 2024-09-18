@@ -1,64 +1,109 @@
-// 设计稿的宽度和高度
-const designWidth = 2560;
-const designHeight = 1440;
 
-/**
- * 将像素值转换为指定单位（vw或vh）的值。
- * @param {string} unit 转换目标单位，'vw'或'vh'。
- * @param {number} _px 原始像素值。
- * @returns {string} 转换后的值，包含单位。
- */
-function px2Unit(unit, _px) {
-    // 验证参数是否合法
-    if (typeof _px !== 'number' || _px <= 0) {
-        throw new Error('_px must be a positive number.');
+// 基于vw的一屏适配
+// 1. 在scss中使用下面函数将px转为vw或vh
+// $design-width: 2560;
+// $design-height: 1440;
+// @function vw($pixels) {
+//   @return $pixels / $design-width * 100vw;
+// }
+// @function vh($pixels) {
+//   @return $pixels / $design-height * 100vh;
+// }
+// 2.使用： .ele{margin: vh(20) auto 0;width:vw(200);height:vw(120);}
+// 3.注意$design-width和$design-height的值与js中传入的值保持一致
+// 4.引入下面js并调用
+class VwAdapt {
+  constructor(designDimensions) {
+    this.designDimensions = designDimensions;
+    this.userDesignWidth = 2560;
+    this.userDesignHeight = 1440;
+    this.elementWidth = 2560;
+    this.elementHeight = 1440;
+
+    this.init();
+  }
+
+  init() {
+    this.setDesignDimensions(window.innerWidth, window.innerHeight);
+    this.setElementDimensions(this.elementWidth, this.elementHeight);
+    window.addEventListener('resize', this.debounce(() => {
+      this.setDesignDimensions(window.innerWidth, window.innerHeight);
+    }, 200));
+  }
+
+  setDesignDimensions(width, height) {
+    this.userDesignWidth = width;
+    this.userDesignHeight = height;
+    this.updateCssVariables();
+  }
+
+  setElementDimensions(width, height) {
+    this.elementWidth = width;
+    this.elementHeight = height;
+    this.updateCssVariables();
+  }
+
+  findClosestDesign(width, height) {
+    return this.designDimensions.reduce((closest, current) => {
+      const currentAspectRatio = current.width / current.height;
+      const closestAspectRatio = closest.width / closest.height;
+      const currentDiff = Math.abs(width / height - currentAspectRatio);
+      const closestDiff = Math.abs(width / height - closestAspectRatio);
+
+      return currentDiff < closestDiff ? current : closest;
+    }, this.designDimensions[0]);
+  }
+
+  px2vw(pixels, designWidth) {
+    if (typeof pixels !== 'number' || pixels <= 0) {
+      throw new Error('pixels must be a positive number.');
     }
-    // 计算并返回转换后的值
-    return (_px * 100.0) / (unit === 'vw' ? designWidth : designHeight) + unit;
-}
+    return (pixels / designWidth) * 100 + 'vw';
+  }
 
-// 缩放函数，根据窗口大小调整缩放比例
-let scale;
-const updateScale = () => {
-    // 根据当前窗口宽高比与设计稿宽高比，确定适当的缩放比例
-    scale = document.documentElement.clientWidth / document.documentElement.clientHeight < designWidth / designHeight ? 
-                (document.documentElement.clientWidth / designWidth) :
-                (document.documentElement.clientHeight / designHeight);
-};
+  px2vh(pixels, designHeight) {
+    if (typeof pixels !== 'number' || pixels <= 0) {
+      throw new Error('pixels must be a positive number.');
+    }
+    return (pixels / designHeight) * 100 + 'vh';
+  }
 
-// 初始化缩放比例
-updateScale();
+  updateCssVariables() {
+    const closestDesign = this.findClosestDesign(this.userDesignWidth, this.userDesignHeight);
 
-// 监听窗口大小改变事件，以动态更新缩放比例
-window.addEventListener('resize', debounce(updateScale, 200));
+    // 计算并设置 CSS 变量
+    document.documentElement.style.setProperty('--pixel-width', this.px2vw(this.elementWidth, closestDesign.width));
+    document.documentElement.style.setProperty('--pixel-height', this.px2vh(this.elementHeight, closestDesign.height));
+  }
 
-/**
- * 防抖函数，用于限制函数的调用频率。
- * @param {Function} func 要被延迟执行的函数。
- * @param {number} wait 延迟时间，单位为毫秒。
- * @returns {Function} 返回一个新函数，该函数具有防抖功能。
- */
-function debounce(func, wait) {
+  debounce(func, wait) {
     let timeout;
     return function() {
-        const context = this, args = arguments;
-        clearTimeout(timeout);
-        // 设置延迟，以避免频繁调用
-        timeout = setTimeout(() => {
-            func.apply(context, args);
-        }, wait);
+      const context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func.apply(context, args);
+      }, wait);
     };
+  }
 }
 
-// 将关键函数绑定到全局对象上，以便在页面的其他脚本中调用
-window.px2vw = (_px) => px2Unit('vw', _px);
-window.px2vh = (_px) => px2Unit('vh', _px);
-window.updateScale = updateScale;
+// 创建 VwAdapt 实例
+const vwAdapt = new VwAdapt([
+  { width: 3840, height: 2560 },
+  { width: 2560, height: 1440 },
+  { width: 1920, height: 1080 },
+  { width: 750, height: 1624 }
+]);
+// 设置新的设计稿尺寸
+vwAdapt.setDesignDimensions(1920, 1080);
+// 设置新的元素尺寸
+vwAdapt.setElementDimensions(1920, 1080);
 
 
 
 // 一屏适配（基于根字体的rem适配）
-function setFontSize() {
+function remAdapt() {
   // 定义多种设计稿尺寸
   const designDimensions = [
     { width: 3840, height: 2560, rootFontSize: 100 },
@@ -93,17 +138,14 @@ function setFontSize() {
   document.documentElement.style.fontSize = `${fontSize}px`;
 }
 
-// 初始化
-setFontSize();
-
+// 使用rem适配，初始化
+remAdapt();
 // 页面加载时调整
-document.addEventListener('DOMContentLoaded', setFontSize);
-
+document.addEventListener('DOMContentLoaded', remAdapt);
 // 窗口大小改变时重新调整
-window.addEventListener('resize', setFontSize);
-
+window.addEventListener('resize', remAdapt);
 // 页面完全加载时再调整一次
-window.addEventListener('load', setFontSize);
+window.addEventListener('load', remAdapt);
 
 
 
@@ -135,124 +177,6 @@ document.addEventListener('keydown', function (event) {
   }
 }, false);
 
-
-
-// ====================移动端设备的缩放比例====================
-(function(win, doc) {
-  // 使用 navigator.userAgent 判断是否为移动设备，此处不修改以保持功能不变
-  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-  /**
-   * 函数防抖
-   * @param {Function} func 要执行的函数
-   * @param {number} wait 延迟时间
-   * @returns {Function} 返回一个新函数
-   */
-  function debounce(func, wait) {
-    let timeout;
-    return function() {
-      const context = this, args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-  }
-
-  /**
-   * 节流函数，优化频繁触发的事件处理，如resize
-   * @param {Function} func - 待节流的函数
-   * @param {number} wait - 延迟时间，单位ms
-   * @return {Function} 返回一个节流后的函数
-   */
-  function throttle(func, wait) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        func.apply(context, args);
-      }, wait);
-    };
-  }
-
-  /**
-   * 安全添加事件监听器，兼容多种浏览器
-   * @param {HTMLElement} element - 目标元素
-   * @param {string} event - 事件类型
-   * @param {Function} handler - 事件处理函数
-   * @param {boolean} useCapture - 是否使用捕获
-   */
-  function addEventListenerSafe(element, event, handler, useCapture) {
-    if (element.addEventListener) {
-      element.addEventListener(event, handler, useCapture);
-    } else if (element.attachEvent) { // 仅当确实需要支持旧版IE时才包含这部分
-      element.attachEvent('on' + event, handler);
-    }
-  }
-
-  // 设计稿的原始尺寸，将魔术数字提取成易于理解的常量名称
-  const DESIGN_WIDTH_MOBILE = 1624;
-  const DESIGN_HEIGHT_MOBILE = 750;
-  const DESIGN_WIDTH_DESKTOP = 1920;
-  const DESIGN_HEIGHT_DESKTOP = 1080;
-  const designWidth = isMobileDevice ? DESIGN_WIDTH_MOBILE : DESIGN_WIDTH_DESKTOP;
-  const designHeight = isMobileDevice ? DESIGN_HEIGHT_MOBILE : DESIGN_HEIGHT_DESKTOP;
-
-  // 计算缩放比例并调整页面的公共函数
-  function adjustBase() {
-    const viewportWidth = win.innerWidth;
-    const viewportHeight = win.innerHeight;
-    
-    const windowZoom = viewportWidth / viewportHeight;
-    const psZoom = designWidth / designHeight;
-
-    let scale = viewportHeight < designHeight || (viewportWidth > designWidth && windowZoom > psZoom) 
-      ? viewportHeight / designHeight 
-      : viewportWidth / designWidth;
-
-    doc.documentElement.style.fontSize = `${scale * 100}px`;
-  }
-
-  // 调整页面缩放的函数（PC端），此处没有明显优化点，保持原样
-  function adjustZoom() {
-    adjustBase();
-  }
-  adjustZoom();
-
-  // 移动端特有的调整
-  function adjustMobileSpecific() {
-    const html = doc.documentElement;
-    const isLandscape = html.clientWidth / html.clientHeight > designWidth / designHeight;
-
-    html.style.fontSize = `${(isLandscape ? html.clientHeight / designHeight : html.clientWidth / designWidth) * 100}px`;
-    html.style.setProperty('--window-width', `${html.clientWidth}px`);
-    html.style.setProperty('--window-height', `${html.clientHeight}px`);
-  }
-
-  // 合并调整逻辑
-  function adjustAll() {
-    adjustBase();
-
-    if (isMobileDevice) {
-      adjustMobileSpecific();
-    }
-  }
-
-  // 使用防抖技术优化resize事件的性能
-  const debounceAdjustAll = debounce(adjustAll, 100);
-
-  // 页面加载时调整
-  doc.addEventListener('DOMContentLoaded', adjustAll);
-
-  // 窗口大小改变时重新调整
-  win.addEventListener('resize', debounceAdjustAll);
-
-  // 页面完全加载时再调整一次
-  win.addEventListener('load', adjustAll);
-
-  // addEventListenerSafe(win, 'resize', debounceAdjustAll, false);
-  // addEventListenerSafe(doc, 'DOMContentLoaded', adjustAll, false);
-  // addEventListenerSafe(win, 'load', adjustAll, false);
-})(window, document);
 
 
 /**
