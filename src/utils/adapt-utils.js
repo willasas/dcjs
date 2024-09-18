@@ -149,6 +149,108 @@ window.addEventListener('load', remAdapt);
 
 
 
+// 基于rem或px的长页面双端适配 
+// unit：设置单位为px或rem
+(function(win, doc, unit) {
+  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  function debounce(func, wait) {
+    let timeout;
+    return function() {
+      const context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+
+  function throttle(func, wait) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        func.apply(context, args);
+      }, wait);
+    };
+  }
+
+  function addEventListenerSafe(element, event, handler, useCapture) {
+    if (element.addEventListener) {
+      element.addEventListener(event, handler, useCapture);
+    } else if (element.attachEvent) {
+      element.attachEvent('on' + event, handler);
+    }
+  }
+
+  let designWidth = 1920; // 默认 PC 端宽度
+  let designHeight = 1080; // 默认 PC 端高度
+  let useRem = true; // 默认使用rem单位
+
+  if (isMobileDevice) {
+    designWidth = 750; // 默认移动端宽度
+    designHeight = 1624; // 默认移动端高度
+  }
+
+  function setDesignDimensions(width, height) {
+    designWidth = width;
+    designHeight = height;
+  }
+
+  function setUnit(unit) {
+    useRem = unit === 'rem';
+  }
+
+  function adjustBase() {
+    const viewportWidth = win.innerWidth;
+    const scale = viewportWidth / designWidth;
+
+    if (useRem) {
+      console.log('使用rem单位');
+
+      doc.documentElement.style.fontSize = `${scale * 100}px`;
+    } else {
+      doc.documentElement.style.fontSize = '100%'; // 不进行缩放
+    }
+  }
+
+  function adjustZoom() {
+    adjustBase();
+  }
+
+  function adjustMobileSpecific() {
+    const html = doc.documentElement;
+
+    if (useRem) {
+      html.style.fontSize = `${html.clientWidth / designWidth * 100}px`;
+    }
+    html.style.setProperty('--window-width', `${html.clientWidth}px`);
+    html.style.setProperty('--window-height', `${html.clientHeight}px`);
+  }
+
+  function adjustAll() {
+    adjustBase();
+
+    if (isMobileDevice) {
+      adjustMobileSpecific();
+    }
+  }
+
+  const debounceAdjustAll = debounce(adjustAll, 100);
+
+  doc.addEventListener('DOMContentLoaded', adjustAll);
+  win.addEventListener('resize', debounceAdjustAll);
+  win.addEventListener('load', adjustAll);
+
+  setDesignDimensions(2560, 1440); // PC 端
+  // setDesignDimensions(750, 1624); // 移动端
+
+  addEventListenerSafe(win, 'resize', debounceAdjustAll, false);
+  addEventListenerSafe(doc, 'DOMContentLoaded', adjustAll, false);
+  addEventListenerSafe(win, 'load', adjustAll, false);
+})(window, document, 'rem');
+
+
+
 /**
  * 侦听文档的滚动和按键事件，以禁止页面缩放。
  * 当用户按下 Ctrl 键（或 Mac 上的 Command 键）并滚动鼠标，或按下与缩放相关的键时，阻止默认行为。
