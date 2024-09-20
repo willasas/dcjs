@@ -712,6 +712,18 @@ const getURLParameters = (url) => {
 
 
 
+// 获取当前 URL 中的所有参数
+function getSelfURLParameters() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var params = {};
+  urlParams.forEach(function(value, key) {
+    params[key] = value;
+  });
+  return params;
+}
+
+
+
 /**
  * 获取url中参数的值
  * @param {string} variable 查询参数的key。
@@ -747,6 +759,21 @@ console.log(getURLParameters('google.com'));
 // 预期输出: {}
 console.log(getURLParameters('http://url.com/page?&'));
 // 预期输出: {} 与原函数相同，但处理更加合理
+
+
+
+// 将参数附加到 URL 中
+function appendParamsToURL(params) {
+  var paramString = Object.keys(params).map(function(key) {
+    return key + '=' + encodeURIComponent(params[key]);
+  }).join('&');
+
+  var newUrl = window.location.pathname + '?' + paramString;
+  return newUrl;
+}
+// 使用
+const newUrl = appendParamsToURL(getSelfURLParameters());
+window.location.href = newUrl;
 
 
 
