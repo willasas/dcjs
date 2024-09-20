@@ -1862,6 +1862,21 @@ smoothScroll('.fooBar'); // 滚动到第一个类名为fooBar的元素
 
 
 /**
+ * 平滑滚动到指定元素2。
+ * @param {string} selector CSS选择器字符串。
+ */
+function scrollToElement(selector) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+// 示例调用
+scrollToElement('#btn-adventure')
+
+
+
+/**
  * 序列化表单数据为URL编码的字符串。
  * @param {HTMLFormElement} form - 需要被序列化的表单元素。
  * @returns {string} 表单数据的URL编码字符串。

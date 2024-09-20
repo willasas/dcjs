@@ -1479,6 +1479,43 @@ if (sectionElement) {
 }
 
 
+
+/**
+ * 模拟点击事件的函数
+ * @param {string} selector - 要模拟点击的元素的ID或class。
+ */
+function simulateClick(selector) {
+  return new Promise((resolve, reject) => {
+    const element = document.querySelector(selector);
+
+    if (element) {
+      const clickHandler = function() {
+        element.removeEventListener('click', clickHandler);
+        resolve(true);
+      };
+
+      element.addEventListener('click', clickHandler);
+      element.click();
+    } else {
+      reject(new Error('Element not found'));
+    }
+  });
+}
+
+
+// 在也没加载完成时调用模拟点击函数，#btn-adventure换成需要触发点击的元素id或class
+simulateClick('#btn-adventure').then(() => {
+  alert('点击事件已触发');
+  // 处理逻辑
+  // 触发点击事件
+  simulateClick('#btn-adventure');
+})
+.catch((error) => {
+  console.error(error);
+});
+
+
+
 /**
  * 检测元素之外的点击
  * 在实现隐藏弹窗或收起下拉框时，如果你还在一层层判断是否点击了某个元素之外的区域，则可以使用此函数
