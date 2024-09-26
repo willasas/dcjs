@@ -243,6 +243,12 @@ function saveBase64Image(base64ImgContent, saveFileName) {
     aLink.dispatchEvent(evt);
   } else if (aLink.fireEvent) {
     aLink.fireEvent('onclick');
+  }else {
+    // 移动端兼容性处理
+    aLink.style.display = 'none';
+    document.body.appendChild(aLink);
+    aLink.click();
+    document.body.removeChild(aLink);
   }
 
   // 清理资源
