@@ -190,3 +190,67 @@ fetch('http://example.com/api/data')
   .then(response => response.text())
   .then(data => downloadFile('data.txt', data))
   .catch(error => console.error('Error fetching data:', error));
+
+
+
+/**
+ * 浏览器下载base64的图片文件（仅支持pc端）
+ *
+ * @param {string} base64ImgContent 要下载的base64的字符串
+ * @param {string} saveFileName 下载时候的文件名称
+ */
+function saveBase64Image(base64ImgContent, saveFileName) {
+  // 检查输入是否有效
+  if (!base64ImgContent || !saveFileName) {
+    console.error('Invalid input: base64ImgContent or saveFileName is missing.');
+    return;
+  }
+
+  // 内部函数用于将 Base64 字符串转换为 Blob
+  function base64ToBlob(code) {
+    try {
+      var parts = code.split(';base64,');
+      var contentType = parts[0].split(':')[1];
+      var raw = window.atob(parts[1]);
+      var rawLength = raw.length;
+      var uInt8Array = new Uint8Array(rawLength);
+      for (var i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
+      return new Blob([uInt8Array], { type: contentType });
+    } catch (error) {
+      console.error('Error converting Base64 to Blob:', error);
+      return null;
+    }
+  }
+
+  // 转换 Base64 字符串为 Blob
+  var blob = base64ToBlob(base64ImgContent);
+  if (!blob) {
+    console.error('Failed to create Blob from Base64.');
+    return;
+  }
+
+  // 创建下载链接并触发点击事件
+  var aLink = document.createElement('a');
+  aLink.download = saveFileName;
+  aLink.href = URL.createObjectURL(blob);
+
+  // 触发点击事件
+  if (document.createEvent) {
+    var evt = document.createEvent('MouseEvents');
+    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    aLink.dispatchEvent(evt);
+  } else if (aLink.fireEvent) {
+    aLink.fireEvent('onclick');
+  }
+
+  // 清理资源
+  setTimeout(function() {
+    URL.revokeObjectURL(aLink.href);
+  }, 100);
+}
+  
+// 示例调用
+saveBase64Image('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADh...', 'example.png');
+  
