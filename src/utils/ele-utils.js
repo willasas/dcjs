@@ -847,6 +847,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+// 高性能图片懒加载
+const initLazyLoading = () => {
+  const placeholderSrc = 'URL_ADDRESS'; // 占位图地址
+  const realSrcAttr = 'data-src'; // 存储真实地址的属性名
+
+  // 创建 IntersectionObserver 实例
+  const observer = new IntersectionObserver((entries) => {
+    console.log('交叉了');
+    console.log(entries);
+    for (let entry of entries) {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        observer.unobserve(img);
+      }
+    }
+  }, {
+    root: null,
+    rootMargin: '0px 0px 0px 0px',
+    threshold: 0.5
+  });
+
+  // 获取所有的图片元素
+  const imgs = document.querySelectorAll('img');
+
+  // 遍历所有的图片元素
+  imgs.forEach((img) => {
+    // 给图片元素添加一个自定义属性，存储图片的真实地址
+    img.dataset.src = img.src;
+    // 给图片元素添加一个占位地址
+    img.src = placeholderSrc;
+    // 监听图片元素是否进入可视区域
+    observer.observe(img);
+  });
+};
+
+// 初始化懒加载
+initLazyLoading();
+
+
+
 /**
  * 显示页面中的所有图片
  * 该函数没有参数和返回值
