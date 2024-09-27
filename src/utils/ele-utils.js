@@ -1200,6 +1200,47 @@ renderElement(
 );
 
 
+// ================== 封装一个简单的列表渲染函数，用于渲染简单的一维数组数据 ================
+// 1.需要渲染数据
+const roleData2 = [
+  { idx: 1, roleName: '角色1', roleImg: 'path/to/image1.jpg' },
+  { idx: 2, roleName: '角色2', roleImg: 'path/to/image2.jpg' },
+  { idx: 3, roleName: '角色3', roleImg: 'path/to/image3.jpg' }
+];
+
+/**
+ * 2.动态生成列表项函数
+ * 
+ * @param {Object} data 一维数组名
+ * @param {string} container 需要渲染到页面上的元素的类名
+ * @param {Function} template 渲染模板函数
+ */
+function renderDataList(data, container, template) {
+  var renderList = document.querySelector(container);
+  
+  // 使用 map 函数生成列表项
+  var listItems = data.map(function(item) {
+    return template(item); // 将 item 作为参数传递给模板函数
+  }).join('');
+
+  // 设置 HTML 内容
+  renderList.innerHTML = listItems;
+}
+
+// 3.定义模板函数
+function createListItemTemplate(item) {
+  return `
+    <li class="dia-role-item" data-idx="${item.idx}" data-role="${item.roleName}">
+        <img src="${item.roleImg}" alt="${item.roleName}">
+    </li>
+  `;
+}
+
+// 4.调用函数渲染数据
+renderDataList(roleData2, '.dia-role-list', createListItemTemplate);
+// ==============================
+
+
 
 /**
  * 创建并添加一个新的样式表到当前文档中。
