@@ -164,6 +164,86 @@ const loadJs = (u, t) => {
 
 
 /**
+ * 动态添加预加载css和js文件的函数
+ * @param {string} cssFile 要加载的css文件的URL
+ * @param {string} jsFile 要加载的JavaScript文件的URL
+ */
+function preloadResources(cssFile, jsFile) {
+  // CSS 文件预加载
+  const cssLink = document.createElement('link');
+  cssLink.href = cssFile;
+  cssLink.rel = 'preload';
+  cssLink.as = 'style';
+  cssLink.onload = () => {
+    cssLink.rel = 'stylesheet';
+  };
+  
+  // JavaScript 文件预加载
+  const jsLink = document.createElement('link');
+  jsLink.href = jsFile;
+  jsLink.rel = 'preload';
+  jsLink.as = 'script';
+  jsLink.onload = () => {
+    jsLink.rel = 'script';
+  };
+  
+  // 将预加载链接添加到文档头部
+  document.head.appendChild(cssLink);
+  document.head.appendChild(jsLink);
+}
+
+/**
+ * 动态添加预加载多个文件css和js文件的函数(多文件，配合preloadSingleFile函数一起使用)
+ * @param {string} cssFile 要加载的css文件的URL
+ * @param {string} jsFile 要加载的JavaScript文件的URL
+*/
+function preloadResources(cssFiles, jsFiles) {
+  // 处理 CSS 文件
+  if (Array.isArray(cssFiles)) {
+    cssFiles.forEach(cssFile => {
+      preloadSingleFile(cssFile, 'style');
+    });
+  } else {
+    preloadSingleFile(cssFiles, 'style');
+  }
+  // 处理 JS 文件
+  if (Array.isArray(jsFiles)) {
+    jsFiles.forEach(jsFile => {
+      preloadSingleFile(jsFile, 'script');
+    });
+  } else {
+    preloadSingleFile(jsFiles, 'script');
+  }
+}
+
+
+/**
+ * 动态添加预加载单个文件css和js文件的函数
+ * @param {string} cssFile 要加载的css文件的URL
+ * @param {string} jsFile 要加载的JavaScript文件的URL
+*/
+function preloadSingleFile(file, type) {
+  const link = document.createElement('link');
+  link.href = file;
+  link.rel = 'preload';
+  link.as = type;
+  link.onload = () => {
+    link.rel = type === 'style' ? 'stylesheet' : 'script';
+  };
+  document.head.appendChild(link);
+}
+
+// 在文档加载完成后执行预加载函数（preloadResources)
+window.addEventListener('DOMContentLoaded', () => {
+  // 支持单个文件
+  // preloadResources('./css/index.css', './js/index.js');
+  // 或者支持多个文件
+  preloadResources(['./css/index.css', './css/common.css'], ['./js/index.js', './js/qrcode.js']);
+});
+
+
+
+/**
  * 设置指定ID或类名元素的文本内容。
  * 如果提供的ID或类名没有找到任何元素，则抛出一个错误。
  * 
