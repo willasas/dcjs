@@ -2335,3 +2335,79 @@ console.log("Encoded URI:", encodedURI);
 // 解码
 const decodedURI = decodeURIComp(encodedURI);
 console.log("Decoded URI:", decodedURI);
+
+
+
+/**
+ * 打开服务器发送事件（SSE）连接
+ * 此函数尝试与服务器建立一个SSE连接，以接收实时更新
+ */
+const OpenSSE = async () => {
+  // 定义 AbortController 以便在需要时可以中止 fetch 请求
+  const controller = new AbortController();
+  
+  try {
+    // 发起 GET 请求到服务器，以建立 SSE 连接
+    const response = await fetch("http://localhost:5500/index.html", {
+      method: "GET",
+      signal: controller.signal,
+      headers: {
+        "Accept": "text/event-stream",
+        "Cache-Control": "no-cache"
+      }
+    });
+    
+    console.log(response);
+    
+    // 检查响应状态，如果不是成功状态，则抛出错误
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // 获取响应体的读者对象
+    const reader = response.body.getReader();
+    // 创建一个文本解码器，用于将读取的字节数据转换为字符串
+    const decoder = new TextDecoder();
+
+    try {
+      // 无限循环读取响应体的数据
+      while (true) {
+        const { done, value } = await reader.read();
+        // 如果读取操作完成（没有更多数据可读），则退出循环
+        if (done) {
+          break;
+        }
+        // 解码读取到的字节数据，转换为字符串
+        const text = decoder.decode(value);
+        console.log(done, text);
+      }
+    } finally {
+      // 无论是否成功读取数据，最终都需要释放 reader 资源
+      reader.releaseLock();
+    }
+  } catch (error) {
+    // 捕获并打印 fetch 请求或数据读取过程中可能发生的错误
+    console.error('Error fetching SSE:', error);
+  }
+};
+
+/**
+ * 关闭服务器发送事件（SSE）连接
+ * 此函数通过调用 AbortController 的 abort 方法来中止现有的 fetch 请求，从而关闭 SSE 连接
+ */
+const CloseSSE = () => {
+  // 确保调用 abort 方法来中止 fetch 请求
+  controller.abort();
+};
+
+
+// 示例使用
+(async () => {
+  // 打开 SSE 连接
+  await OpenSSE();
+
+  // 假设等待一段时间后关闭 SSE 连接
+  setTimeout(() => {
+    CloseSSE();
+  }, 60000); // 例如，等待 1 分钟后关闭连接
+})();
