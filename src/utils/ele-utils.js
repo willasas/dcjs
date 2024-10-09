@@ -1976,3 +1976,100 @@ function checkStatus(eleId) {
   }
 }
 checkStatus('checkboxId')
+
+
+
+/**
+ * 初始化 hover 效果的通用方法
+ * 不同树级的元素需要 hover 效果时使用
+ * 移入 hover 触发者和 hover 层，给 hover 层添加 .show 样式类。移出时去掉
+ * @param {string} hoverFrom - 触发 hover 层的选择器
+ * @param {string} hoverLayer - 被触发的 hover 层选择器
+ * @param {Function} [hoverFuncBack] - hover 时的回调函数，可选
+ * @param {number} [showDelay=0] - 显示延迟时间（毫秒）
+ */
+function hoverEleShowInit(hoverFrom, hoverLayer, hoverFuncBack, showDelay = 0) {
+  const hoverElement = document.querySelector(hoverLayer);
+  const elements = document.querySelectorAll(hoverFrom + ',' + hoverLayer);
+
+  let timeout;
+  let showTimeout;
+
+  function addShowClass() {
+      if (!hoverElement.classList.contains('show')) {
+          hoverElement.classList.add('show');
+          if (typeof hoverFuncBack === 'function') {
+              hoverFuncBack();
+          }
+      }
+  }
+
+  function removeShowClass() {
+      hoverElement.classList.remove('show');
+  }
+
+  elements.forEach(element => {
+      element.addEventListener('mouseenter', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          clearTimeout(timeout);
+          clearTimeout(showTimeout);
+          showTimeout = setTimeout(addShowClass, showDelay);
+      });
+
+      element.addEventListener('mouseleave', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          clearTimeout(timeout);
+          clearTimeout(showTimeout);
+          timeout = setTimeout(removeShowClass, 100);
+      });
+  });
+}
+
+/**
+ * dom和样式如下：
+<!-- 一级菜单 -->
+<div class="nav-list" id="nav-menu">
+    <a class="nav-item nav-st-home active" href="#1" onclick="" data-menuanchor="sec1">
+        <i class="nav-icon"></i>
+        <span class="txt">菜单1</span>
+    </a>
+    <a class="nav-item nav-st-yyts" href="#2" onclick="" data-menuanchor="sec2">
+        <i class="nav-icon"></i>
+        <span class="txt">菜单2</span>
+    </a>
+    <a class="nav-item nav-st-yylcb" href="#3" onclick="" data-menuanchor="sec3">
+        <i class="nav-icon"></i>
+        <span class="txt">菜单3</span>
+    </a>
+</div>
+<!-- 二级菜单 -->
+<div class="nav-sub-list">
+    <div class="nav-sub-list-inner">
+        
+    </div>
+</div>
+
+<style>
+  .nav-sub-list.show {
+    display: block;
+  }
+
+  .nav-sub-list {
+    display: none;
+  }
+</style>
+*/
+// 初始化 hover 效果
+hoverEleShowInit('.nav-list', '.nav-sub-list');
+
+/**
+* 处理点击事件
+* 点击时给 hover 层添加 .show 类名
+*/
+document.querySelectorAll('.nav-list .nav-item').forEach(item => {
+  item.addEventListener('click', function () {
+      document.querySelector('.nav-sub-list').classList.add('show');
+  });
+});
