@@ -164,11 +164,11 @@ const loadJs = (u, t) => {
 
 
 /**
- * 动态添加预加载css和js文件的函数
+ * 动态添加预加载css和js文件的函数(单个)
  * @param {string} cssFile 要加载的css文件的URL
  * @param {string} jsFile 要加载的JavaScript文件的URL
  */
-function preloadResources(cssFile, jsFile) {
+function preloadResourcesSingle(cssFile, jsFile) {
   // CSS 文件预加载
   const cssLink = document.createElement('link');
   cssLink.href = cssFile;
@@ -191,6 +191,9 @@ function preloadResources(cssFile, jsFile) {
   document.head.appendChild(cssLink);
   document.head.appendChild(jsLink);
 }
+preloadResourcesSingle('./css/index.css', './js/index.js');
+
+
 
 /**
  * 动态添加预加载多个文件css和js文件的函数(多文件，配合preloadSingleFile函数一起使用)
