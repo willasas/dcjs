@@ -9,6 +9,7 @@ class dcPopup {
       this.documentBody = document.body;
       this.currentPopupId = null; // 当前显示的弹窗ID
       this.isBodyScrollDisabled = false; // 页面滚动状态标志
+      this.originalParent = null; // 保存元素的原始父节点
       this.init()
   }
 
@@ -83,13 +84,19 @@ class dcPopup {
    * 显示指定ID的弹窗，并可选设置弹窗背景的颜色和透明度。
    *
    * @param {string} popupId 弹窗元素的ID。
+   * @param {string} content 复制的dom元素
    * @param {string} [bgColor='rgba(0,0,0,.8)'] 弹窗背景的颜色，默认为透明黑色，可包含透明度信息如 'rgba(255,255,255,0.5)' 为半透明白色。
    */
-  showPopup(popupId, bgColor = 'rgba(0,0,0,.8)') {
+  showPopup(popupId, content, bgColor = 'rgba(0,0,0,.8)') {
     const popup = document.getElementById(popupId);
     console.log('当前弹窗ID:', popupId);
 
     if (popup) {
+      if (content) {
+        this.originalParent = content.parentNode; // 保存元素的原始父节点
+        popup.querySelector('.pop-info').appendChild(content); // 将内容添加到弹窗中
+      }
+      
       requestAnimationFrame(() => {
         popup.style.display = 'flex';
         popup.style.backgroundColor = bgColor;
@@ -110,10 +117,15 @@ class dcPopup {
     if (popup) {
       const video = popup.querySelector('video');
       if (video) {
-          video.pause();
+        video.pause();
       }
+
+      const content = popup.querySelector('.pop-info').firstChild;
+      if (content && this.originalParent) {
+        this.originalParent.appendChild(content); // 将内容放回原位置
+      }
+
       popup.style.display = 'none';
-      // this.currentPopupId = null;
       this.enableBodyScroll();
       this.documentBody.removeEventListener('click', this.handleClickOutside.bind(this));
     } else {
