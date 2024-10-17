@@ -907,10 +907,10 @@ function sanitize(strings, ...values) {
     let value = values[i - 1];
     if (typeof value === 'string') {
       value = value.replace(/&/g, '&amp;')
-                   .replace(/</g, '&lt;')
-                   .replace(/>/g, '&gt;')
-                   .replace(/"/g, '&quot;')
-                   .replace(/'/g, '&#39;');
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
     }
     return result + value + string;
   }, '');
