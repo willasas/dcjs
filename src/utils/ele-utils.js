@@ -2076,3 +2076,44 @@ document.querySelectorAll('.nav-list .nav-item').forEach(item => {
       document.querySelector('.nav-sub-list').classList.add('show');
   });
 });
+
+
+
+/**
+ * 动态添加滚动条
+ * 检查指定选择器的元素内容高度是否超过容器高度，并根据结果添加或移除滚动条样式类。
+ *
+ * @param {string|Element} resEle - 要检查的元素的选择器字符串或单个元素。
+ * @param {string} scrollbarClass - 当需要显示滚动条时添加的类名。
+ * @param {boolean} [isSingle=false] - 是否只处理单个元素，默认为 false。
+ * 注意：给当前元素添加`overflow-y: hidden;`先隐藏纵向滚动条，要添加横向滚动条的话则添加`overflow-x: hidden;`
+ */
+function checkScrollbars(resEle, scrollbarClass, isSingle = false) {
+  let elements;
+
+  if (isSingle) {
+    // 如果是单个元素，直接使用传入的元素
+    elements = [resEle];
+  } else {
+    // 否则，使用选择器获取所有匹配的元素
+    elements = document.querySelectorAll(resEle);
+  }
+
+  elements.forEach(Item => {
+    const contentHeight = Item.scrollHeight;
+    const containerHeight = Item.clientHeight;
+
+    if (contentHeight > containerHeight) {
+      Item.classList.add(scrollbarClass);
+    } else {
+      Item.classList.remove(scrollbarClass);
+    }
+  });
+}
+
+// 给所有类名为article-item的元素添加纵向滚动条
+checkScrollbars('.article-item', 'scroll-y');
+
+// 动态添加滚动条到单个元素
+const singleElement = document.querySelector('.article-item');
+checkScrollbars(singleElement, 'scroll-y', true);
