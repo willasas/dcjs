@@ -896,6 +896,36 @@ console.log(sanitizeString(null)); // '', 优雅地处理非字符串输入
 
 
 /**
+ * 对模板字符串中的变量值进行转义，防止 XSS（跨站脚本攻击）。
+ *
+ * @param {TemplateStringsArray} strings - 模板字符串中的静态部分数组。
+ * @param {...any} values - 模板字符串中的表达式值数组。
+ * @returns {string} - 转义后的字符串。
+ */
+function sanitize(strings, ...values) {
+  return strings.reduce((result, string, i) => {
+    let value = values[i - 1];
+    if (typeof value === 'string') {
+      value = value.replace(/&/g, '&amp;')
+                   .replace(/</g, '&lt;')
+                   .replace(/>/g, '&gt;')
+                   .replace(/"/g, '&quot;')
+                   .replace(/'/g, '&#39;');
+    }
+    return result + value + string;
+  }, '');
+}
+
+// 示例用户输入
+const userInput = '<script>alert("xss")</script>';
+// 使用 sanitize 函数处理模板字符串
+const message = sanitize`User input: ${userInput}`;
+// 输出处理后的字符串
+console.log(message); // User input: &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;
+
+
+
+/**
  * 反转给定的字符串。
  * @param {string} str 需要被反转的字符串。
  * @returns {string} 反转后的字符串。如果输入不是字符串，则返回原始输入。
