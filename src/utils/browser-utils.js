@@ -2411,3 +2411,49 @@ const CloseSSE = () => {
     CloseSSE();
   }, 60000); // 例如，等待 1 分钟后关闭连接
 })();
+
+
+
+/**
+ * 显示当前的网络下载速度
+ * 
+ * @function displayDownloadSpeed
+ * @param {string} target - 目标元素的 CSS 选择器
+ * @description 这个函数会查询 Network Information API 以获取当前的下载速度，并将其显示在指定的目标元素中。如果 API 不被支持，则显示一条错误消息。
+ */
+function displayDownloadSpeed(target) {
+  const element = document.querySelector(target);
+
+  if (navigator.connection) {
+      const downlink = navigator.connection.downlink;
+      element.textContent = `当前下载速度: ${downlink} Mbps`;
+  } else {
+      element.textContent = "Network Information API 不被支持";
+  }
+}
+
+// 调用函数，传入目标元素的 ID 或类名
+displayDownloadSpeed('.down-speed');
+
+
+
+/**
+ * 在支持 Vibrate API 的设备上触发振动
+ * 
+ * @function vibrate
+ * @param {number|number[]} pattern - 振动模式，可以是一个数字表示持续时间（毫秒），或者是一个数字数组表示交替的振动和暂停时间
+ * @description 这个函数会根据传入的参数来触发设备的振动。如果设备不支持 Vibrate API，则会在控制台中输出一条错误消息。
+ */
+function vibrate(pattern) {
+  if (navigator.vibrate) {
+      navigator.vibrate(pattern);
+  } else {
+      console.log("Vibrate API 不被支持");
+  }
+}
+
+// 调用函数，传入振动持续时间（毫秒）
+vibrate(500);
+
+// 调用函数，传入振动和暂停的模式
+vibrate([200, 100, 200, 100, 200]);
