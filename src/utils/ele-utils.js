@@ -1578,6 +1578,45 @@ toggleClass(document.querySelector('p.special'), 'special');
 
 
 /**
+ * 设置选项卡切换功能(tab切换)
+ * @param {string} headSelector - 头部选项卡选择器
+ * @param {string} bodySelector - 主体内容选择器
+ */
+function setupTabSwitching(headSelector, bodySelector) {
+  // 获取所有头部选项卡元素
+  const headItems = document.querySelectorAll(headSelector);
+  // 获取所有主体内容元素
+  const bodyLists = document.querySelectorAll(bodySelector);
+
+  // 默认激活第一个项
+  if (headItems.length > 0) {
+    headItems[0].classList.add('active');
+    bodyLists[0].style.display = 'block';
+  }
+
+  // 为每个头部选项卡添加点击事件监听器
+  headItems.forEach((item, index) => {
+    item.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      // 移除所有头部选项卡的 active 类名
+      headItems.forEach(headItem => headItem.classList.remove('active'));
+      // 隐藏所有主体内容
+      bodyLists.forEach(bodyList => bodyList.style.display = 'none');
+
+      // 为当前点击的头部选项卡添加 active 类名
+      item.classList.add('active');
+      // 显示当前点击的头部选项卡对应的主体内容
+      bodyLists[index].style.display = 'block';
+    });
+  });
+}
+// 调用tab切换函数
+setupTabSwitching('.sec2-info-head .sec2-info-head-item', '.sec2-info-body .sec2-info-list');
+
+
+
+/**
  * 解码HTML字符实体。
  * 注意：如果直接在不可信输入上使用此函数，它并不能完全防止XSS攻击。
  * 请确保输入被清理或在安全上下文中使用。
