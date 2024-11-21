@@ -1591,7 +1591,7 @@ function setupTabSwitching(headSelector, bodySelector) {
   // 默认激活第一个项
   if (headItems.length > 0) {
     headItems[0].classList.add('active');
-    bodyLists[0].style.display = 'block';
+    bodyLists[0].style.display = 'flex';
   }
 
   // 为每个头部选项卡添加点击事件监听器
@@ -1607,7 +1607,7 @@ function setupTabSwitching(headSelector, bodySelector) {
       // 为当前点击的头部选项卡添加 active 类名
       item.classList.add('active');
       // 显示当前点击的头部选项卡对应的主体内容
-      bodyLists[index].style.display = 'block';
+      bodyLists[index].style.display = 'flex';
     });
   });
 }
