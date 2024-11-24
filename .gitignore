@@ -72,3 +72,6 @@ _site
 template/
 config.json
 .parcel-cache
+.history
+.cache
+.cursorrules
