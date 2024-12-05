@@ -10,7 +10,7 @@ const LOG_LEVELS = {
  * 定义一个prettyLog函数，用于在控制台中进行格式化的日志记录。
  * 提供了多种日志记录方法（info、error、warning、success）及特殊日志记录方法（table、picture、environment）。
  */
-const prettyLog = () => {
+const dprettylog = () => {
     /**
      * 检查给定值是否为空（null、undefined或空字符串）。
      * @param {*} value - 需要检查的值。
@@ -181,4 +181,4 @@ const prettyLog = () => {
 };
 
 // 创建prettyLog实例
-const log = prettyLog();
+const dplog = dprettylog();
