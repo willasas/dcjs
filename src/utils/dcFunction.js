@@ -500,4 +500,6 @@ class dcFunction {
         };
     }
 }
-window.dcFunction = new dcFunction();
+
+window.DC = window.DC || {};
+window.DC.Function = dcFunction;

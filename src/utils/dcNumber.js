@@ -124,6 +124,18 @@ class dcNumber {
     }
 
     /**
+     * 计算平方根
+     * @param {number} num - 要计算平方根的数字
+     * @returns {number} 平方根
+     */
+    static sqrt(num) {
+        if (typeof num !== 'number' || num < 0) {
+            throw new Error('Input must be a non-negative number');
+        }
+        return Math.sqrt(num);
+    }
+
+    /**
      * 生成指定范围内的随机数
      * @param {number} min - 最小值
      * @param {number} max - 最大值
@@ -252,4 +264,6 @@ class dcNumber {
         return result;
     }
 }
-window.dcNumber = new dcNumber();
+
+window.DC = window.DC || {};
+window.DC.Number = dcNumber;

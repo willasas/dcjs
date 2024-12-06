@@ -334,4 +334,6 @@ class dcFiles {
         }
     };
 }
-window.dcFiles = new dcFiles();
+
+window.DC = window.DC || {};
+window.DC.Files = dcFiles;

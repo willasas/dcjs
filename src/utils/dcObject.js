@@ -33,6 +33,18 @@ class dcObject {
     }
 
     /**
+     * 获取对象的键值对
+     * @param {Object} obj - 要处理的对象
+     * @returns {Array} 键值对数组
+     */
+    static entries(obj) {
+        if (typeof obj !== 'object' || obj === null) {
+            throw new Error('Input must be a non-null object');
+        }
+        return Object.entries(obj);
+    }
+
+    /**
      * 合并对象
      * @param {...Object} objects - 要合并的对象列表
      * @returns {Object} 合并后的对象
@@ -347,4 +359,6 @@ class dcObject {
         }, {});
     }
 }
-window.dcObject = new dcObject();
+
+window.DC = window.DC || {};
+window.DC.Object = dcObject;

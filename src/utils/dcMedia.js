@@ -2,7 +2,9 @@
  * 媒体工具类
  */
 class dcMedia {
-    constructor() {}
+    constructor() {
+        this.isPlaying = false;
+    }
 
     /**
      * 渐进式加载图片
@@ -427,6 +429,35 @@ class dcMedia {
     }
 
     /**
+     * 播放媒体
+     * @param {string} url - 媒体文件的URL
+     */
+    play(url) {
+        if (!url) {
+            console.error('URL must be provided');
+            return;
+        }
+        console.log(`Playing media from: ${url}`);
+        this.isPlaying = true;
+    }
+
+    /**
+     * 停止媒体
+     */
+    stop() {
+        console.log('Stopping media');
+        this.isPlaying = false;
+    }
+
+    /**
+     * 检查媒体是否正在播放
+     * @returns {boolean} 如果正在播放，则为true
+     */
+    isPlaying() {
+        return this.isPlaying;
+    }
+
+    /**
      * 转换视频格式
      * @param {Blob} videoBlob - 视频Blob
      * @param {string} targetFormat - 目标格式
@@ -481,4 +512,6 @@ class dcMedia {
         });
     }
 }
-window.dcMedia = new dcMedia();
+
+window.DC = window.DC || {};
+window.DC.Media = dcMedia;

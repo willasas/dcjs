@@ -69,6 +69,18 @@ class dcString {
     }
 
     /**
+     * 将字符串转换为大写
+     * @param {string} str - 要转换的字符串
+     * @returns {string} 转换后的字符串
+     */
+    static toUpperCase(str) {
+        if (typeof str !== 'string') {
+            throw new Error('Input must be a string');
+        }
+        return str.toUpperCase();
+    }
+
+    /**
      * 反转字符串
      * @param {string} str - 输入字符串
      * @returns {string} 反转后的字符串
@@ -293,4 +305,5 @@ class dcString {
     }
 }
 
-window.dcString = new dcString();
+window.DC = window.DC || {};
+window.DC.String = dcString;

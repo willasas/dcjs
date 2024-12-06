@@ -10,19 +10,19 @@ class dcUrl {
      * @returns {Object} 解析后的URL对象
      */
     static parse(url) {
-        const parser = document.createElement('a');
-        parser.href = url;
-
-        return {
-            protocol: parser.protocol.replace(':', ''),
-            host: parser.host,
-            hostname: parser.hostname,
-            port: parser.port,
-            pathname: parser.pathname,
-            search: parser.search,
-            hash: parser.hash,
-            query: this.parseQuery(parser.search)
-        };
+        try {
+            const parsedUrl = new URL(url);
+            return {
+                protocol: parsedUrl.protocol,
+                host: parsedUrl.host,
+                pathname: parsedUrl.pathname,
+                search: parsedUrl.search,
+                hash: parsedUrl.hash,
+            };
+        } catch (error) {
+            console.error('Invalid URL:', error);
+            return null;
+        }
     }
 
     /**
@@ -51,21 +51,15 @@ class dcUrl {
     }
 
     /**
-     * 构建URL
-     * @param {string} baseUrl - 基础URL
-     * @param {Object} params - 查询参数
-     * @returns {string} 完整URL
+     * 构建 URL
+     * @param {Object} options - URL 组件
+     * @returns {string} 构建的 URL
      */
-    static build(baseUrl, params = {}) {
-        const url = new URL(baseUrl);
-        Object.entries(params).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-                value.forEach(v => url.searchParams.append(key, v));
-            } else if (value !== null && value !== undefined) {
-                url.searchParams.set(key, value);
-            }
-        });
-        return url.toString();
+    static build({ protocol, host, path }) {
+        if (!protocol || !host) {
+            throw new Error('Protocol and host are required to build a URL');
+        }
+        return `${protocol}://${host}${path || ''}`;
     }
 
     /**
@@ -239,4 +233,6 @@ class dcUrl {
         return relativeParts.join('/');
     }
 }
-window.dcUrl = new dcUrl();
+
+window.DC = window.DC || {};
+window.DC.Url = dcUrl;

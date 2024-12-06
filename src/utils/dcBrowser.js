@@ -641,4 +641,6 @@ class dcBrowser {
         return api in window;
     }
 }
-window.dcBrowser = new dcBrowser();
+
+window.DC = window.DC || {};
+window.DC.Browser = dcBrowser;

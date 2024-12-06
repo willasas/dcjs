@@ -150,15 +150,36 @@ class dcEle {
     // 样式操作
     /**
      * 添加类名
-     * @param {Element} element - 目标元素
+     * @param {Element} element - 元素ID或类名
      * @param {...string} classNames - 要添加的类名
      */
     static addClass(element, ...classNames) {
-        if (!(element instanceof Element)) {
-            console.error('无效的元素');
-            return;
+        // if (!(element instanceof Element)) {
+        //     console.error('无效的元素');
+        //     return;
+        // }
+        // element.classList.add(...classNames);
+
+        if (!element || !classNames.length) {
+            throw new Error('Element identifier and class names must be provided');
         }
-        element.classList.add(...classNames);
+        const elements = document.querySelectorAll(`#${element}, .${element}`);
+        if (elements.length === 0) {
+            throw new Error(`No elements found with identifier: ${element}`);
+        }
+        elements.forEach(element => {
+            if (element.classList) {
+                element.classList.add(...classNames);
+            } else {
+                const currentClasses = element.className.split(' ');
+                classNames.forEach(className => {
+                    if (!currentClasses.includes(className)) {
+                        currentClasses.push(className);
+                    }
+                });
+                element.className = currentClasses.join(' ');
+            }
+        });
     }
 
     /**
@@ -635,4 +656,6 @@ class dcEle {
         });
     }
 }
-window.dcEle = new dcEle();
+
+window.DC = window.DC || {};
+window.DC.Ele = dcEle;

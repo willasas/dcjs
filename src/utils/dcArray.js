@@ -178,6 +178,18 @@ class dcArray {
     }
 
     /**
+     * 反转数组
+     * @param {Array} arr - 要反转的数组
+     * @returns {Array} 反转后的数组
+     */
+    static reverse(arr) {
+        if (!Array.isArray(arr)) {
+            throw new Error('Input must be an array');
+        }
+        return arr.reverse();
+    }
+
+    /**
      * 数组求和
      * @param {Array} arr - 输入数组
      * @param {string|Function} [key] - 对象数组求和的键名或函数
@@ -303,4 +315,6 @@ class dcArray {
         return result;
     }
 }
-window.dcArray = new dcArray();
+
+window.DC = window.DC || {};
+window.DC.Array = dcArray;

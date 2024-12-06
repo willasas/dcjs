@@ -197,26 +197,39 @@ class dcDate {
      * @returns {number} 差异值
      */
     static diff(date1, date2, unit) {
-        const d1 = this.parseDate(date1);
-        const d2 = this.parseDate(date2);
-        if (!d1 || !d2) return null;
+        // 验证日期参数
+        if (!(date1 instanceof Date) || !(date2 instanceof Date)) {
+            console.error('无效的日期参数');
+            return 0;
+        }
 
-        const diffMs = d2.getTime() - d1.getTime();
-        switch (unit.toLowerCase()) {
+        // 验证单位参数
+        const validUnits = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
+        const normalizedUnit = (unit || 'days').toLowerCase();
+        
+        if (!validUnits.includes(normalizedUnit)) {
+            console.warn(`无效的单位: ${unit}, 使用默认单位: days`);
+            unit = 'days';
+        }
+
+        const diffMs = date2 - date1;
+        
+        switch (normalizedUnit) {
             case 'years':
-                return d2.getFullYear() - d1.getFullYear();
+                return date2.getFullYear() - date1.getFullYear();
             case 'months':
-                return (d2.getFullYear() - d1.getFullYear()) * 12 + d2.getMonth() - d1.getMonth();
+                return (date2.getFullYear() - date1.getFullYear()) * 12 
+                    + date2.getMonth() - date1.getMonth();
             case 'days':
-                return Math.floor(diffMs / (24 * 60 * 60 * 1000));
+                return Math.floor(diffMs / (1000 * 60 * 60 * 24));
             case 'hours':
-                return Math.floor(diffMs / (60 * 60 * 1000));
+                return Math.floor(diffMs / (1000 * 60 * 60));
             case 'minutes':
-                return Math.floor(diffMs / (60 * 1000));
+                return Math.floor(diffMs / (1000 * 60));
             case 'seconds':
                 return Math.floor(diffMs / 1000);
             default:
-                return diffMs;
+                return Math.floor(diffMs / (1000 * 60 * 60 * 24)); // 默认返回天数
         }
     }
 
@@ -324,4 +337,6 @@ class dcDate {
         };
     }
 }
-window.dcDate = new dcDate();
+
+window.DC = window.DC || {};
+window.DC.Date = dcDate;
