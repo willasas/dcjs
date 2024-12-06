@@ -641,4 +641,4 @@ class dcBrowser {
         return api in window;
     }
 }
-const dcBrowser = new dcBrowser();
+window.dcBrowser = new dcBrowser();

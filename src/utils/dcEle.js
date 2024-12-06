@@ -635,4 +635,4 @@ class dcEle {
         });
     }
 }
-const dcEle = new dcEle();
+window.dcEle = new dcEle();

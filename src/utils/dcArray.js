@@ -303,4 +303,4 @@ class dcArray {
         return result;
     }
 }
-const dcArray = new dcArray();
+window.dcArray = new dcArray();

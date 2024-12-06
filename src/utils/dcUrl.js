@@ -239,4 +239,4 @@ class dcUrl {
         return relativeParts.join('/');
     }
 }
-const dcUrl = new dcUrl();
+window.dcUrl = new dcUrl();

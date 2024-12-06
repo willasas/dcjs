@@ -347,4 +347,4 @@ class dcObject {
         }, {});
     }
 }
-const dcObject = new dcObject();
+window.dcObject = new dcObject();

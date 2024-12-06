@@ -334,4 +334,4 @@ class dcFiles {
         }
     };
 }
-const dcFiles = new dcFiles();
+window.dcFiles = new dcFiles();

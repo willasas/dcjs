@@ -481,4 +481,4 @@ class dcMedia {
         });
     }
 }
-const dcMedia = new dcMedia();
+window.dcMedia = new dcMedia();

@@ -324,4 +324,4 @@ class dcDate {
         };
     }
 }
-const dcDate = new dcDate();
+window.dcDate = new dcDate();

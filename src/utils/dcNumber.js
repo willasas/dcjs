@@ -252,4 +252,4 @@ class dcNumber {
         return result;
     }
 }
-const dcNumber = new dcNumber();
+window.dcNumber = new dcNumber();

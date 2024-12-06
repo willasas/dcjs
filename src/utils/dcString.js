@@ -293,4 +293,4 @@ class dcString {
     }
 }
 
-const dcString = new DcString();
+window.dcString = new dcString();

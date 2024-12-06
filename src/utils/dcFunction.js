@@ -500,4 +500,4 @@ class dcFunction {
         };
     }
 }
-const dcFunction = new dcFunction();
+window.dcFunction = new dcFunction();

@@ -247,4 +247,4 @@ class dcCrypto {
         }
     }
 }
-const dcCrypto = new dcCrypto();
+window.dcCrypto = new dcCrypto();
