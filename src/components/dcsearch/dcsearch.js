@@ -36,8 +36,62 @@ class DCSearch {
      * @private
      */
     init() {
+        this.createStyle();
         this.createElements();
         this.bindEvents();
+    }
+
+    /**
+     * 创建样式
+     * @private
+     */
+    createStyle() {
+      const cssRules = `
+        .dc-search { width: 100%; position: relative; display: flex; align-items: center; padding: 10px; box-sizing: border-box; }
+        .dc-search .dc-search-input-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+        .dc-search .dc-search-input { width: 100%; height: 40px; padding: 0 40px 0 15px; font-size: 14px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; transition: all 0.3s; }
+        .dc-search .dc-search-input:focus { outline: none; border-color: #409eff; box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2); }
+        .dc-search .dc-search-input:focus + .dc-search-icon .icon_search path { stroke: #409eff; }
+        .dc-search .dc-search-input::placeholder { color: #909399; }
+        .dc-search .dc-search-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; pointer-events: none; }
+        .dc-search .dc-search-icon .icon_search path { transition: stroke 0.3s; }
+        .dc-search .dc-search-mode { margin-left: 10px; height: 40px; padding: 0 15px; font-size: 14px; color: #409eff; background: transparent; border: 1px solid #409eff; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+        .dc-search .dc-search-mode:hover { color: #fff; background: #409eff; }
+        .dc-search .dc-search-results { position: absolute; top: 100%; left: 0; right: 0; max-height: 400px; margin-top: 5px; background: #fff; border: 1px solid #dcdfe6; border-radius: 4px; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); overflow-y: auto; z-index: 100; }
+        .dc-search .dc-search-results::-webkit-scrollbar { width: 6px; height: 6px; }
+        .dc-search .dc-search-results::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .dc-search .dc-search-results::-webkit-scrollbar-thumb:hover { background: #999; }
+        .dc-search .dc-search-results .dc-search-result-item { display: block; padding: 10px 15px; cursor: pointer; transition: background 0.3s; text-decoration: none; color: inherit; }
+        .dc-search .dc-search-results .dc-search-result-item:hover { background: #f5f7fa; }
+        .dc-search .dc-search-results .dc-search-result-item .dc-search-result-title { font-size: 16px; color: #303133; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dc-search .dc-search-results .dc-search-result-item .dc-search-result-content { font-size: 14px; color: #606266; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
+        .dc-search .dc-search-results .dc-search-no-result { padding: 20px; text-align: center; color: #909399; font-size: 14px; }
+        .dc-search .dc-search-highlight { color: #409eff; font-weight: bold; }
+
+        @media screen and (max-width: 1024px) { .dc-search .dc-search-icon { width: 16px; height: 16px; right: 10px; }
+          .dc-search .dc-search-input { padding-right: 35px; }
+          .dc-search .dc-search-input { height: 36px; font-size: 14px; }
+          .dc-search .dc-search-mode { height: 36px; padding: 0 12px; font-size: 14px; }
+          .dc-search .dc-search-results .dc-search-result-item { padding: 8px 12px; }
+          .dc-search .dc-search-results .dc-search-result-item .dc-search-result-title { font-size: 14px; }
+          .dc-search .dc-search-results .dc-search-result-item .dc-search-result-content { font-size: 12px; } 
+        }
+      `;
+      /**
+       * 动态向文档头部添加样式
+       * 
+       * 该函数创建了一个新的<style>元素，并将其插入到<head>标签内，位于第一个<title>元素之前
+       * 主要用途是在运行时向页面添加自定义样式，而无需手动编辑HTML文档
+       * 
+       * @param {string} eleStyleInit - 要添加的CSS样式字符串
+       */
+      const addStyle = (eleStyleInit) => {
+        const fa = document.querySelector('title');
+        const eleStyle = document.createElement('style');
+        eleStyle.innerHTML = eleStyleInit;
+        document.head.insertBefore(eleStyle, fa);
+      };
+      addStyle(cssRules);
     }
 
     /**
