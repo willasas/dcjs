@@ -38,9 +38,62 @@ class DCFilter {
      * @private
      */
     init() {
-        this.createElements();
-        this.bindEvents();
-        this.initDefaultFilters();
+      this.createStyle();
+      this.createElements();
+      this.bindEvents();
+      this.initDefaultFilters();
+    }
+
+    /**
+     * 创建样式
+     * @private
+     */
+    createStyle() {
+      const cssRules = `
+        .dc-filter { width: 100%; background: #fff; border-radius: 4px; padding: 15px; box-sizing: border-box; }
+        .dc-filter .dc-filter-group { display: flex; justify-content: flex-start; align-items: flex-start; }
+        .dc-filter .dc-filter-group:not(:last-child) { padding-bottom: 15px; }
+        .dc-filter .dc-filter-group .dc-filter-parent { font-size: 16px; color: #303133; font-weight: bold; line-height: 32px; cursor: default; min-width: 60px; }
+        .dc-filter .dc-filter-group .dc-filter-parent .icon { display: none; }
+        .dc-filter .dc-filter-group .dc-filter-children { display: flex; flex-wrap: wrap; gap: 10px; min-height: 32px; flex: 1; }
+        .dc-filter .dc-filter-group .dc-filter-item { display: flex; justify-content: center; align-items: center; padding: 6px 12px; font-size: 14px; line-height: 1.2; color: #303133; background: #fff; border: 1px solid #dcdfe6; border-radius: 4px; cursor: pointer; transition: all 0.3s; box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1); outline: none; }
+        .dc-filter .dc-filter-group .dc-filter-item:hover { color: #000; background: #f5f7fa; }
+        .dc-filter .dc-filter-group .dc-filter-item.active { color: #ffa704; border-color: #ffa704; background: rgba(255, 167, 4, 0.1); }
+        .dc-filter-results { margin-top: 20px; }
+        .dc-filter-results .dc-filter-result-item { padding: 10px; margin-bottom: 10px; background: #fff; border: 1px solid #dcdfe6; border-radius: 4px; }
+        .dc-filter-results .dc-filter-result-item:hover { background: #f5f7fa; }
+        .dc-filter-results .dc-filter-no-result { text-align: center; padding: 20px; color: #909399; font-size: 14px; }
+        @media screen and (max-width: 1024px) { .dc-filter { padding: 10px; }
+          .dc-filter.dc-filter-mobile { display: flex; justify-content: flex-start; align-items: flex-start; flex-wrap: wrap; flex-direction: row; }
+          .dc-filter.dc-filter-mobile .dc-filter-group { position: relative; flex-wrap: wrap; flex-direction: column; min-width: 78px; min-height: 44px; }
+          .dc-filter.dc-filter-mobile .dc-filter-group:not(:last-child) { margin-right: 20px; }
+          .dc-filter.dc-filter-mobile .dc-filter-group.expanded .dc-filter-children { display: flex; justify-content: flex-start; align-items: flex-start; flex-wrap: wrap; flex-direction: column; opacity: 1; transform: translateY(0); }
+          .dc-filter.dc-filter-mobile .dc-filter-group.expanded .dc-filter-parent .icon.icon_down { display: none; }
+          .dc-filter.dc-filter-mobile .dc-filter-group.expanded .dc-filter-parent .icon.icon_up { display: block; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-parent { width: 100%; position: relative; padding: 0; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-parent .icon { display: block; position: absolute; right: 0; top: 18px; transform: translateY(-50%); width: 20px; height: 20px; transition: transform 0.3s ease; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-parent .icon.icon_up { display: none; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-parent .icon path { stroke: #303133; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-parent .selected-count { margin-left: 5px; font-size: 14px; color: #ffa704; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-children { position: absolute; top: 34px; display: none; padding: 0; background: #f5f7fa; opacity: 0; line-height: 1.2; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease; gap: 8px; flex-wrap: wrap; }
+          .dc-filter.dc-filter-mobile .dc-filter-group .dc-filter-children .dc-filter-item { padding: 4px 8px; font-size: 14px; min-width: 60px; text-align: center; } 
+        }
+      `;
+      /**
+       * 动态向文档头部添加样式
+       * 
+       * 该函数创建了一个新的<style>元素，并将其插入到<head>标签内，位于第一个<title>元素之前
+       * 主要用途是在运行时向页面添加自定义样式，而无需手动编辑HTML文档
+       * 
+       * @param {string} eleStyleInit - 要添加的CSS样式字符串
+       */
+      const addStyle = (eleStyleInit) => {
+        const fa = document.querySelector('title');
+        const eleStyle = document.createElement('style');
+        eleStyle.innerHTML = eleStyleInit;
+        document.head.insertBefore(eleStyle, fa);
+      };
+      addStyle(cssRules);
     }
 
     /**

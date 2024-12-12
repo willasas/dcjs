@@ -1,7 +1,7 @@
 // 变量定义
 $filter-bg: #fff;
 $filter-border-color: #dcdfe6;
-$filter-active-color: #409eff;
+$filter-active-color: #ffa704;
 $filter-hover-bg: #f5f7fa;
 $filter-text-color: #303133;
 $filter-font-size: 14px;
@@ -65,15 +65,20 @@ $filter-font-size: 14px;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.3s;
+      box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+        7px 7px 20px 0px rgba(0,0,0,.1),
+        4px 4px 5px 0px rgba(0,0,0,.1);
+      outline: none;
 
       &:hover {
-          background: $filter-hover-bg;
+        color: #000;
+        background: $filter-hover-bg;
       }
 
       &.active {
-          color: $filter-active-color;
-          border-color: $filter-active-color;
-          background: rgba($filter-active-color, 0.1);
+        color: $filter-active-color;
+        border-color: $filter-active-color;
+        background: rgba($filter-active-color, 0.1);
       }
     }
   }
