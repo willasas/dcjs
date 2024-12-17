@@ -1,0 +1,923 @@
+{
+  "languages": [
+    {
+      "region": "CN",
+      "langCode": "zh-CN",
+      "langName": "中文(简体)",
+      "langCNName": "中文(简体)"
+    },
+    {
+      "region": "CN",
+      "langCode": "bai-CN",
+      "langName": "白语",
+      "langCNName": "白语"
+    },
+    {
+      "region": "CN",
+      "langCode": "bo-CN",
+      "langName": "བོད་ཡིག",
+      "langCNName": "藏语"
+    },
+    {
+      "region": "CN",
+      "langCode": "ii-CN",
+      "langName": "ꆈꌠꉙ",
+      "langCNName": "彝语"
+    },
+    {
+      "region": "CN",
+      "langCode": "ug-CN",
+      "langName": "ئۇيغۇرچە",
+      "langCNName": "维吾尔语"
+    },
+    {
+      "region": "CN",
+      "langCode": "zha-CN",
+      "langName": "壮语",
+      "langCNName": "壮语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "cjy-CN",
+      "langName": "晋语",
+      "langCNName": "晋语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "czh-CN",
+      "langName": "徽语",
+      "langCNName": "徽语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "cdo-CN",
+      "langName": "闽东语",
+      "langCNName": "闽东语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "gan-CN",
+      "langName": "赣语",
+      "langCNName": "赣语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "hak-CN",
+      "langName": "客家话",
+      "langCNName": "客家语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "hsn-CN",
+      "langName": "湘语",
+      "langCNName": "湘语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "mnp-CN",
+      "langName": "闽北语",
+      "langCNName": "闽北语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "nan-CN",
+      "langName": "闽南语",
+      "langCNName": "闽南语"
+    },
+    {
+      "region": "CN_DIALECT",
+      "langCode": "wuu-CN",
+      "langName": "吴语",
+      "langCNName": "吴语"
+    },
+    {
+      "region": "HK_TW_MO",
+      "langCode": "zh-HK",
+      "langName": "中文(粤语)",
+      "langCNName": "中文(粤语)"
+    },
+    {
+      "region": "HK_TW_MO",
+      "langCode": "zh-MO",
+      "langName": "中文(澳門)",
+      "langCNName": "中文(澳门)"
+    },
+    {
+      "region": "HK_TW_MO",
+      "langCode": "zh-TW",
+      "langName": "中文(繁體)",
+      "langCNName": "中文(繁体)"
+    },
+    {
+      "region": "EA",
+      "langCode": "ja-JP",
+      "langName": "日本語",
+      "langCNName": "日语"
+    },
+    {
+      "region": "EA",
+      "langCode": "ko-KR",
+      "langName": "한국어",
+      "langCNName": "韩语"
+    },
+    {
+      "region": "SA",
+      "langCode": "as-IN",
+      "langName": "অসমীয়া",
+      "langCNName": "阿萨姆语"
+    },
+    {
+      "region": "SA",
+      "langCode": "doi-IN",
+      "langName": "डोगरी",
+      "langCNName": "多格拉语"
+    },
+    {
+      "region": "SA",
+      "langCode": "gu-IN",
+      "langName": "ગુજરાતી",
+      "langCNName": "古吉拉特语"
+    },
+    {
+      "region": "SA",
+      "langCode": "hi-IN",
+      "langName": "हिन्दी",
+      "langCNName": "印地语"
+    },
+    {
+      "region": "SA",
+      "langCode": "kn-IN",
+      "langName": "ಕನ್ನಡ",
+      "langCNName": "卡纳达语"
+    },
+    {
+      "region": "SA",
+      "langCode": "kok-IN",
+      "langName": "कोंकणी",
+      "langCNName": "孔卡尼语"
+    },
+    {
+      "region": "SA",
+      "langCode": "mai-IN",
+      "langName": "मैथिली",
+      "langCNName": "迈蒂利语"
+    },
+    {
+      "region": "SA",
+      "langCode": "ml-IN",
+      "langName": "മലയാളം",
+      "langCNName": "马拉雅拉姆语"
+    },
+    {
+      "region": "SA",
+      "langCode": "mni-IN",
+      "langName": "মৈতৈলোন্",
+      "langCNName": "曼尼普尔语"
+    },
+    {
+      "region": "SA",
+      "langCode": "mr-IN",
+      "langName": "मराठी",
+      "langCNName": "马拉地语"
+    },
+    {
+      "region": "SA",
+      "langCode": "or-IN",
+      "langName": "ଓଡ଼ିଆ",
+      "langCNName": "奥里亚语"
+    },
+    {
+      "region": "SA",
+      "langCode": "pa-IN",
+      "langName": "ਪੰਜਾਬੀ",
+      "langCNName": "旁遮普语"
+    },
+    {
+      "region": "SA",
+      "langCode": "raj-IN",
+      "langName": "राजस्थानी",
+      "langCNName": "拉贾斯坦语"
+    },
+    {
+      "region": "SA",
+      "langCode": "sa-IN",
+      "langName": "संस्कृतम्",
+      "langCNName": "梵语"
+    },
+    {
+      "region": "SA",
+      "langCode": "ta-IN",
+      "langName": "தமிழ்",
+      "langCNName": "泰米尔语"
+    },
+    {
+      "region": "SA",
+      "langCode": "te-IN",
+      "langName": "తెలుగు",
+      "langCNName": "泰卢固语"
+    },
+    {
+      "region": "SA",
+      "langCode": "bn-BD",
+      "langName": "বাংলা",
+      "langCNName": "孟加拉语"
+    },
+    {
+      "region": "SA",
+      "langCode": "sd-PK",
+      "langName": "سنڌي",
+      "langCNName": "信德语"
+    },
+    {
+      "region": "SA",
+      "langCode": "si-LK",
+      "langName": "සිංහල",
+      "langCNName": "僧伽罗语"
+    },
+    {
+      "region": "SA",
+      "langCode": "ne-NP",
+      "langName": "नेपाली",
+      "langCNName": "尼泊尔语"
+    },
+    {
+      "region": "SA",
+      "langCode": "dv-MV",
+      "langName": "ދިވެހި",
+      "langCNName": "迪维希语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "ace-ID",
+      "langName": "Acèh",
+      "langCNName": "亚齐语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "bug-ID",
+      "langName": "ᨅᨔ ᨕᨘᨁᨗ",
+      "langCNName": "布吉语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "id-ID",
+      "langName": "Indonesia",
+      "langCNName": "印度尼西亚语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "jv-ID",
+      "langName": "Basa Jawa",
+      "langCNName": "爪哇语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "mad-ID",
+      "langName": "Madhura",
+      "langCNName": "马都拉语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "min-ID",
+      "langName": "Minangkabau",
+      "langCNName": "米南佳保语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "ms-MY",
+      "langName": "Bahasa Melayu",
+      "langCNName": "马来语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "fil-PH",
+      "langName": "Filipino",
+      "langCNName": "菲律宾语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "th-TH",
+      "langName": "ไทย",
+      "langCNName": "泰语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "vi-VN",
+      "langName": "Tiếng Việt",
+      "langCNName": "越南语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "km-KH",
+      "langName": "ខ្មែរ",
+      "langCNName": "柬埔寨语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "lo-LA",
+      "langName": "ລາວ",
+      "langCNName": "老挝语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "my-MM",
+      "langName": "မြန်မာ",
+      "langCNName": "缅甸语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "ceb-PH",
+      "langName": "Cebuano",
+      "langCNName": "宿务语"
+    },
+    {
+      "region": "SEA",
+      "langCode": "su-ID",
+      "langName": "Basa Sunda",
+      "langCNName": "巽他语"
+    },
+    {
+      "region": "EU",
+      "langCode": "bg-BG",
+      "langName": "Български",
+      "langCNName": "保加利亚语"
+    },
+    {
+      "region": "EU",
+      "langCode": "cs-CZ",
+      "langName": "Čeština",
+      "langCNName": "捷克语"
+    },
+    {
+      "region": "EU",
+      "langCode": "da-DK",
+      "langName": "Dansk",
+      "langCNName": "丹麦语"
+    },
+    {
+      "region": "EU",
+      "langCode": "de-DE",
+      "langName": "Deutsch",
+      "langCNName": "德语"
+    },
+    {
+      "region": "EU",
+      "langCode": "el-GR",
+      "langName": "Ελληνικά",
+      "langCNName": "希腊语"
+    },
+    {
+      "region": "EU",
+      "langCode": "en-GB",
+      "langName": "English (UK)",
+      "langCNName": "英语(英国)"
+    },
+    {
+      "region": "EU",
+      "langCode": "es-ES",
+      "langName": "Español",
+      "langCNName": "西班牙语"
+    },
+    {
+      "region": "EU",
+      "langCode": "et-EE",
+      "langName": "Eesti",
+      "langCNName": "爱沙尼亚语"
+    },
+    {
+      "region": "EU",
+      "langCode": "fi-FI",
+      "langName": "Suomi",
+      "langCNName": "芬兰语"
+    },
+    {
+      "region": "EU",
+      "langCode": "fr-FR",
+      "langName": "Français",
+      "langCNName": "法语"
+    },
+    {
+      "region": "EU",
+      "langCode": "hu-HU",
+      "langName": "Magyar",
+      "langCNName": "匈牙利语"
+    },
+    {
+      "region": "EU",
+      "langCode": "it-IT",
+      "langName": "Italiano",
+      "langCNName": "意大利语"
+    },
+    {
+      "region": "EU",
+      "langCode": "lt-LT",
+      "langName": "Lietuvių",
+      "langCNName": "立陶宛语"
+    },
+    {
+      "region": "EU",
+      "langCode": "lv-LV",
+      "langName": "Latviešu",
+      "langCNName": "拉脱维亚语"
+    },
+    {
+      "region": "EU",
+      "langCode": "nl-NL",
+      "langName": "Nederlands",
+      "langCNName": "荷兰语"
+    },
+    {
+      "region": "EU",
+      "langCode": "no-NO",
+      "langName": "Norsk",
+      "langCNName": "挪威语"
+    },
+    {
+      "region": "EU",
+      "langCode": "pl-PL",
+      "langName": "Polski",
+      "langCNName": "波兰语"
+    },
+    {
+      "region": "EU",
+      "langCode": "pt-PT",
+      "langName": "Português",
+      "langCNName": "葡萄牙语"
+    },
+    {
+      "region": "EU",
+      "langCode": "ro-RO",
+      "langName": "Română",
+      "langCNName": "罗马尼亚语"
+    },
+    {
+      "region": "EU",
+      "langCode": "sk-SK",
+      "langName": "Slovenčina",
+      "langCNName": "斯洛伐克语"
+    },
+    {
+      "region": "EU",
+      "langCode": "sl-SI",
+      "langName": "Slovenščina",
+      "langCNName": "斯洛文尼亚语"
+    },
+    {
+      "region": "EU",
+      "langCode": "sv-SE",
+      "langName": "Svenska",
+      "langCNName": "瑞典语"
+    },
+    {
+      "region": "EU",
+      "langCode": "sr-RS",
+      "langName": "Српски",
+      "langCNName": "塞尔维亚语"
+    },
+    {
+      "region": "AM",
+      "langCode": "en-US",
+      "langName": "English (US)",
+      "langCNName": "英语(美国)"
+    },
+    {
+      "region": "AM",
+      "langCode": "es-419",
+      "langName": "Español (Latinoamérica)",
+      "langCNName": "西班牙语(拉丁美洲)"
+    },
+    {
+      "region": "AM",
+      "langCode": "pt-BR",
+      "langName": "Português (Brasil)",
+      "langCNName": "葡萄牙语(巴西)"
+    },
+    {
+      "region": "ME",
+      "langCode": "ar-SA",
+      "langName": "العربية",
+      "langCNName": "阿拉伯语"
+    },
+    {
+      "region": "ME",
+      "langCode": "fa-IR",
+      "langName": "فارسی",
+      "langCNName": "波斯语"
+    },
+    {
+      "region": "ME",
+      "langCode": "he-IL",
+      "langName": "עברית",
+      "langCNName": "希伯来语"
+    },
+    {
+      "region": "ME",
+      "langCode": "tr-TR",
+      "langName": "Türkçe",
+      "langCNName": "土耳其语"
+    },
+    {
+      "region": "ME",
+      "langCode": "ur-PK",
+      "langName": "اردو",
+      "langCNName": "乌尔都语"
+    },
+    {
+      "region": "ME",
+      "langCode": "ku-TR",
+      "langName": "Kurdî",
+      "langCNName": "库尔德语"
+    },
+    {
+      "region": "ME",
+      "langCode": "yi-DE",
+      "langName": "ייִדיש",
+      "langCNName": "意第绪语"
+    },
+    {
+      "region": "AF",
+      "langCode": "am-ET",
+      "langName": "አማርኛ",
+      "langCNName": "阿姆哈拉语"
+    },
+    {
+      "region": "AF",
+      "langCode": "ha-NG",
+      "langName": "Hausa",
+      "langCNName": "豪萨语"
+    },
+    {
+      "region": "AF",
+      "langCode": "ig-NG",
+      "langName": "Igbo",
+      "langCNName": "伊博语"
+    },
+    {
+      "region": "AF",
+      "langCode": "ln-CD",
+      "langName": "Lingála",
+      "langCNName": "林加拉语"
+    },
+    {
+      "region": "AF",
+      "langCode": "mg-MG",
+      "langName": "Malagasy",
+      "langCNName": "马达加斯加语"
+    },
+    {
+      "region": "AF",
+      "langCode": "ny-MW",
+      "langName": "Chichewa",
+      "langCNName": "齐切瓦语"
+    },
+    {
+      "region": "AF",
+      "langCode": "rw-RW",
+      "langName": "Kinyarwanda",
+      "langCNName": "卢旺达语"
+    },
+    {
+      "region": "AF",
+      "langCode": "so-SO",
+      "langName": "Soomaaliga",
+      "langCNName": "索马里语"
+    },
+    {
+      "region": "AF",
+      "langCode": "sw-KE",
+      "langName": "Kiswahili",
+      "langCNName": "斯瓦希里语"
+    },
+    {
+      "region": "AF",
+      "langCode": "wo-SN",
+      "langName": "Wolof",
+      "langCNName": "沃洛夫语"
+    },
+    {
+      "region": "AF",
+      "langCode": "st-ZA",
+      "langName": "Sesotho",
+      "langCNName": "南索托语"
+    },
+    {
+      "region": "AF",
+      "langCode": "sn-ZW",
+      "langName": "ChiShona",
+      "langCNName": "绍纳语"
+    },
+    {
+      "region": "AF",
+      "langCode": "ss-SZ",
+      "langName": "SiSwati",
+      "langCNName": "斯瓦特语"
+    },
+    {
+      "region": "AF",
+      "langCode": "tn-BW",
+      "langName": "Setswana",
+      "langCNName": "茨瓦纳语"
+    },
+    {
+      "region": "AF",
+      "langCode": "xh-ZA",
+      "langName": "isiXhosa",
+      "langCNName": "科萨语"
+    },
+    {
+      "region": "AF",
+      "langCode": "yo-NG",
+      "langName": "Yorùbá",
+      "langCNName": "约鲁巴语"
+    },
+    {
+      "region": "AF",
+      "langCode": "zu-ZA",
+      "langName": "isiZulu",
+      "langCNName": "祖鲁语"
+    },
+    {
+      "region": "OC",
+      "langCode": "mi-NZ",
+      "langName": "Māori",
+      "langCNName": "毛利语"
+    },
+    {
+      "region": "OC",
+      "langCode": "mh-MH",
+      "langName": "Kajin M̧ajeļ",
+      "langCNName": "马绍尔语"
+    },
+    {
+      "region": "OC",
+      "langCode": "na-NR",
+      "langName": "Dorerin Naoero",
+      "langCNName": "瑙鲁语"
+    },
+    {
+      "region": "OC",
+      "langCode": "ty-PF",
+      "langName": "Reo Tahiti",
+      "langCNName": "塔希提语"
+    },
+    {
+      "region": "RU",
+      "langCode": "ba-RU",
+      "langName": "Башҡортса",
+      "langCNName": "巴什基尔语"
+    },
+    {
+      "region": "RU",
+      "langCode": "ce-RU",
+      "langName": "Нохчийн",
+      "langCNName": "车臣语"
+    },
+    {
+      "region": "RU",
+      "langCode": "kk-KZ",
+      "langName": "Қазақ",
+      "langCNName": "哈萨克语"
+    },
+    {
+      "region": "RU",
+      "langCode": "tt-RU",
+      "langName": "Татарча",
+      "langCNName": "鞑靼语"
+    },
+    {
+      "region": "RU",
+      "langCode": "uk-UA",
+      "langName": "Українська",
+      "langCNName": "乌克兰语"
+    },
+    
+    {
+      "region": "EU_MINORITY",
+      "langCode": "br-FR",
+      "langName": "Brezhoneg",
+      "langCNName": "布列塔尼语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "co-FR",
+      "langName": "Corsu",
+      "langCNName": "科西嘉语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "cy-GB",
+      "langName": "Cymraeg",
+      "langCNName": "威尔士语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "eu-ES",
+      "langName": "Euskara",
+      "langCNName": "巴斯克语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "fo-FO",
+      "langName": "Føroyskt",
+      "langCNName": "法罗语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "ga-IE",
+      "langName": "Gaeilge",
+      "langCNName": "爱尔兰语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "gd-GB",
+      "langName": "Gàidhlig",
+      "langCNName": "苏格兰盖尔语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "gl-ES",
+      "langName": "Galego",
+      "langCNName": "加利西亚语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "lb-LU",
+      "langName": "Lëtzebuergesch",
+      "langCNName": "卢森堡语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "oc-FR",
+      "langName": "Occitan",
+      "langCNName": "奥克语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "rm-CH",
+      "langName": "Rumantsch",
+      "langCNName": "罗曼什语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "is-IS",
+      "langName": "Íslenska",
+      "langCNName": "冰岛语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "mt-MT",
+      "langName": "Malti",
+      "langCNName": "马耳他语"
+    },
+    {
+      "region": "EU_MINORITY",
+      "langCode": "fy-NL",
+      "langName": "Frysk",
+      "langCNName": "弗里西语"
+    },
+    {
+      "region": "AM_INDIGENOUS",
+      "langCode": "ay-BO",
+      "langName": "Aymar aru",
+      "langCNName": "艾马拉语"
+    },
+    {
+      "region": "AM_INDIGENOUS",
+      "langCode": "gn-PY",
+      "langName": "Avañe'ẽ",
+      "langCNName": "瓜拉尼语"
+    },
+    {
+      "region": "AM_INDIGENOUS",
+      "langCode": "qu-PE",
+      "langName": "Runa Simi",
+      "langCNName": "克丘亚语"
+    },
+    {
+      "region": "ARCTIC",
+      "langCode": "iu-CA",
+      "langName": "ᐃᓄᒃᑎᑐᑦ",
+      "langCNName": "因纽特语"
+    },
+    {
+      "region": "ARCTIC",
+      "langCode": "kl-GL",
+      "langName": "Kalaallisut",
+      "langCNName": "格陵兰语"
+    },
+    {
+      "region": "ARCTIC",
+      "langCode": "se-NO",
+      "langName": "Davvisámegiella",
+      "langCNName": "北萨米语"
+    },
+    {
+      "region": "SIGN",
+      "langCode": "ase-US",
+      "langName": "American Sign Language",
+      "langCNName": "美国手语"
+    },
+    {
+      "region": "SIGN",
+      "langCode": "bfi-GB",
+      "langName": "British Sign Language",
+      "langCNName": "英国手语"
+    },
+    {
+      "region": "SIGN",
+      "langCode": "csl-CN",
+      "langName": "中国手语",
+      "langCNName": "中国手语"
+    },
+    {
+      "region": "SIGN",
+      "langCode": "jsl-JP",
+      "langName": "日本手話",
+      "langCNName": "日本手语"
+    },
+    {
+      "region": "SIGN",
+      "langCode": "fsl-FR",
+      "langName": "Langue des Signes Française",
+      "langCNName": "法国手语"
+    },
+    {
+      "region": "SIGN",
+      "langCode": "dgs-DE",
+      "langName": "Deutsche Gebärdensprache",
+      "langCNName": "德国手语"
+    },
+    {
+      "region": "ANCIENT",
+      "langCode": "grc-GR",
+      "langName": "Ἑλληνική",
+      "langCNName": "古希腊语"
+    },
+    {
+      "region": "ANCIENT",
+      "langCode": "lat-VA",
+      "langName": "Latina",
+      "langCNName": "拉丁语"
+    },
+    {
+      "region": "ANCIENT",
+      "langCode": "egy-EG",
+      "langName": "𓂋𓏺𓈖𓆎𓅓𓏏𓊖",
+      "langCNName": "古埃及语"
+    },
+    {
+      "region": "CONSTRUCTED",
+      "langCode": "eo-001",
+      "langName": "Esperanto",
+      "langCNName": "世界语"
+    },
+    {
+      "region": "CONSTRUCTED",
+      "langCode": "ia-001",
+      "langName": "Interlingua",
+      "langCNName": "国际语"
+    },
+    {
+      "region": "CONSTRUCTED",
+      "langCode": "jbo-001",
+      "langName": "Lojban",
+      "langCNName": "逻辑语"
+    },
+    {
+      "region": "CONSTRUCTED",
+      "langCode": "tlh-001",
+      "langName": "tlhIngan Hol",
+      "langCNName": "克林贡语"
+    },
+    {
+      "region": "CONSTRUCTED",
+      "langCode": "qya-001",
+      "langName": "Quenya",
+      "langCNName": "昆雅语"
+    },
+    {
+      "region": "CA",
+      "langCode": "ky-KG",
+      "langName": "Кыргызча",
+      "langCNName": "吉尔吉斯语"
+    },
+    {
+      "region": "CA",
+      "langCode": "tg-TJ",
+      "langName": "Тоҷикӣ",
+      "langCNName": "塔吉克语"
+    },
+    {
+      "region": "CA",
+      "langCode": "tk-TM",
+      "langName": "Türkmen",
+      "langCNName": "土库曼语"
+    },
+    {
+      "region": "CA",
+      "langCode": "uz-UZ",
+      "langName": "O'zbek",
+      "langCNName": "乌兹别克语"
+    }
+  ]
+}
