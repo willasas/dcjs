@@ -3,6 +3,38 @@
     "version": "1.1.0",
     "description": "A simple setting for website.",
     "homepage": "URL_ADDRESS",
+    "urlList": [
+        {
+            "name": "DCOfficial",
+            "link": "javascript:;",
+            "logo": "icon_official",
+            "text": "DC官网"
+        },
+        {
+            "name": "DCGamimg",
+            "link": "javascript:;",
+            "logo": "icon_official_gaming",
+            "text": "DC 游戏"
+        },
+        {
+            "name": "DCLib",
+            "link": "javascript:;",
+            "logo": "icon_official_lib",
+            "text": "DC 资源站"
+        },
+        {
+            "name": "DCShop",
+            "link": "javascript:;",
+            "logo": "icon_official_shop",
+            "text": "DC 商城"
+        },
+        {
+            "name": "DCProducts",
+            "link": "javascript:;",
+            "logo": "icon_official_products",
+            "text": "DC 产品站"
+        }
+    ],
     "license": "MIT",
     "languages": [
         {
@@ -153,10 +185,22 @@
         { "name": "colorful-theme", "value": "colorful" }
     ],
     "header": {
-
+        "name": "DCSites Header",
+        "description": "A simple header for website.",
+        "official": [],
+        "games": [],
+        "lib": [],
+        "products": [],
+        "shop": []
     },
     "footer": {
-
+        "name": "DCSites Footer",
+        "description": "A simple footer for website.",
+        "official": [],
+        "games": [],
+        "lib": [],
+        "products": [],
+        "shop": []
     },
     "sidebar": [
         { "link": "javascript:;", "title": "Theme", "hoverText": "主题", "icon": "icon_theme"},
@@ -205,4 +249,28 @@
             { "link": "javascript:;", "text": "Google", "hoverText": "Google", "icon": "icon_google"}
         ]
     },
+    "copyright": {
+        "text": "Copyright © 2023 DCSites. All rights reserved.",
+        "link": "javascript:;",
+        "icon": "icon_copyright",
+        "CNText": "版权所有"
+    },
+    "privacyPolicy": {
+        "text": "Privacy Policy",
+        "link": "javascript:;",
+        "icon": "icon_privacy",
+        "CNText": "隐私政策"
+    },
+    "termsOfUse": {
+        "text": "Terms of Use",
+        "link": "javascript:;",
+        "icon": "icon_terms",
+        "CNText": "使用条款"
+    },
+    "cookie": {
+        "text": "Cookie Policy",
+        "link": "javascript:;",
+        "icon": "icon_cookie",
+        "CNText": "Cookie政策"
+    }
 }
