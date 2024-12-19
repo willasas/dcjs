@@ -1,0 +1,208 @@
+{
+    "name": "DCSites",
+    "version": "1.1.0",
+    "description": "A simple setting for website.",
+    "homepage": "URL_ADDRESS",
+    "license": "MIT",
+    "languages": [
+        {
+            "region": "CN",
+            "langCode": "zh-CN",
+            "langName": "中文(简体)",
+            "langCNName": "中文(简体)"
+        },
+        {
+            "region": "HK_TW_MO",
+            "langCode": "zh-TW",
+            "langName": "中文(繁體)",
+            "langCNName": "中文(繁体)"
+        },
+        {
+            "region": "EA",
+            "langCode": "ja-JP",
+            "langName": "日本語",
+            "langCNName": "日语"
+        },
+        {
+            "region": "EA",
+            "langCode": "ko-KR",
+            "langName": "한국어",
+            "langCNName": "韩语"
+        },
+        {
+            "region": "SA",
+            "langCode": "si-LK",
+            "langName": "සිංහල",
+            "langCNName": "僧伽罗语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "ms-MY",
+            "langName": "Bahasa Melayu",
+            "langCNName": "马来语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "fil-PH",
+            "langName": "Filipino",
+            "langCNName": "菲律宾语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "th-TH",
+            "langName": "ไทย",
+            "langCNName": "泰语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "vi-VN",
+            "langName": "Tiếng Việt",
+            "langCNName": "越南语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "km-KH",
+            "langName": "ខ្មែរ",
+            "langCNName": "柬埔寨语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "lo-LA",
+            "langName": "ລາວ",
+            "langCNName": "老挝语"
+        },
+        {
+            "region": "SEA",
+            "langCode": "my-MM",
+            "langName": "မြန်မာ",
+            "langCNName": "缅甸语"
+        },
+        {
+            "region": "EU",
+            "langCode": "de-DE",
+            "langName": "Deutsch",
+            "langCNName": "德语"
+        },
+        {
+            "region": "EU",
+            "langCode": "es-ES",
+            "langName": "Español",
+            "langCNName": "西班牙语"
+        },
+        {
+            "region": "EU",
+            "langCode": "fr-FR",
+            "langName": "Français",
+            "langCNName": "法语"
+        },
+        {
+            "region": "EU",
+            "langCode": "it-IT",
+            "langName": "Italiano",
+            "langCNName": "意大利语"
+        },
+        {
+            "region": "EU",
+            "langCode": "pt-PT",
+            "langName": "Português",
+            "langCNName": "葡萄牙语"
+        },
+        {
+            "region": "AM",
+            "langCode": "en-US",
+            "langName": "English (US)",
+            "langCNName": "英语(美国)"
+        },
+        {
+            "region": "AM",
+            "langCode": "pt-BR",
+            "langName": "Português (Brasil)",
+            "langCNName": "葡萄牙语(巴西)"
+        },
+        {
+            "region": "ME",
+            "langCode": "ar-SA",
+            "langName": "العربية",
+            "langCNName": "阿拉伯语"
+        },
+        {
+            "region": "ME",
+            "langCode": "tr-TR",
+            "langName": "Türkçe",
+            "langCNName": "土耳其语"
+        },
+        {
+            "region": "AF",
+            "langCode": "zu-ZA",
+            "langName": "isiZulu",
+            "langCNName": "祖鲁语"
+        }
+    ],
+    "themes": [
+        { "name": "light-theme", "value": "light" },
+        { "name": "dark-theme", "value": "dark" },
+        { "name": "grey-theme", "value": "grey" },
+        { "name": "red-theme", "value": "red" },
+        { "name": "pink-theme", "value": "pink" },
+        { "name": "orange-theme", "value": "orange" },
+        { "name": "yellow-theme", "value": "yellow" },
+        { "name": "green-theme", "value": "green" },
+        { "name": "indigo-theme", "value": "indigo" },
+        { "name": "blue-theme", "value": "blue" },
+        { "name": "purple-theme", "value": "purple" },
+        { "name": "colorful-theme", "value": "colorful" }
+    ],
+    "header": {
+
+    },
+    "footer": {
+
+    },
+    "sidebar": [
+        { "link": "javascript:;", "title": "Theme", "hoverText": "主题", "icon": "icon_theme"},
+        { "link": "javascript:;", "title": "Setting", "hoverText": "设置", "icon": "icon_setting"},
+        { "link": "javascript:;", "title": "Help", "hoverText": "帮助", "icon": "icon_help"},
+        { "link": "javascript:;", "title": "Customer", "hoverText": "客服", "icon": "icon_customer"},
+    ],
+    "top": {
+        "link": "javascript:;",
+        "title": "Top",
+        "hoverText": "返回顶部",
+        "icon": "icon_top"
+    },
+    "sideNav": [
+        { "link": "javascript:;", "title": "Module1", "hoverText": "模块1", "icon": "icon_module1"},
+        { "link": "javascript:;", "title": "Module2", "hoverText": "模块2", "icon": "icon_module2"},
+        { "link": "javascript:;", "title": "Module3", "hoverText": "模块3", "icon": "icon_module3"},
+        { "link": "javascript:;", "title": "Module4", "hoverText": "模块4", "icon": "icon_module4"},
+        { "link": "javascript:;", "title": "Module3", "hoverText": "模块5", "icon": "icon_module5"},
+        { "link": "javascript:;", "title": "Module4", "hoverText": "模块6", "icon": "icon_module6"},
+    ],
+    "setting": {
+
+    },
+    "follow": {
+        "title": "Follow Us",
+        "desc": "Follow us on social media",
+        "local": [
+            { "link": "javascript:;", "text": "QQ", "hoverText": "官方QQ群", "icon": "icon_qq"},
+            { "link": "javascript:;", "text": "WeChat", "hoverText": "官网微信公众", "icon": "icon_wechat"},
+            { "link": "javascript:;", "text": "Weibo", "hoverText": "官方微博", "icon": "icon_weibo"},
+            { "link": "javascript:;", "text": "TikTok", "hoverText": "官方抖音账号", "icon": "icon_tiktok"},
+            { "link": "javascript:;", "text": "Bilibili", "hoverText": "官网B站账号", "icon": "icon_bilibili"},
+            { "link": "javascript:;", "text": "Xiaohongshu", "hoverText": "官方小红书账号", "icon": "icon_xiaohongshu"},
+            { "link": "javascript:;", "text": "Douyin", "hoverText": "官方抖音账号", "icon": "icon_douyin"},
+            { "link": "javascript:;", "text": "Zhihu", "hoverText": "官方知乎账号", "icon": "icon_zhihu"},
+            { "link": "javascript:;", "text": "Douban", "hoverText": "官方豆瓣账号", "icon": "icon_douban"},
+            { "link": "javascript:;", "text": "WeChat", "hoverText": "官网微信公众", "icon": "icon_wechat"},
+            { "link": "javascript:;", "text": "Weibo", "hoverText": "官方微博", "icon": "icon_weibo"},
+        ],
+        "abroad": [
+            { "link": "javascript:;", "text": "Facebook", "hoverText": "Facebook", "icon": "icon_facebook"},
+            { "link": "javascript:;", "text": "Twitter", "hoverText": "Twitter", "icon": "icon_twitter"},
+            { "link": "javascript:;", "text": "Instagram", "hoverText": "Instagram", "icon": "icon_instagram"},
+            { "link": "javascript:;", "text": "YouTube", "hoverText": "YouTube", "icon": "icon_youtobe"},
+            { "link": "javascript:;", "text": "Google", "hoverText": "Google", "icon": "icon_google"}
+        ]
+    },
+}
