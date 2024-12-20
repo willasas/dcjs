@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light-theme">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer</title>
+  <!-- 图标组件库 -->
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="./footer.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/c/font_4345811_9es4s0rnrqf.css">
+</head>
+
+<body>
+  <!-- 页脚基础类 -->
+  <script src="./dcfooter.js"></script>
+
+  <script>
+    // 创建官网页脚
+    const officialFooter = new DC.Footer({
+          container: 'official-footer',
+          type: 'official',
+          defaultTheme: 'light-theme',
+          defaultLang: 'zh-CN',
+          onThemeChange: (theme) => {
+            console.log('Theme changed:', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+          },
+          onLangChange: (lang) => {
+            console.log('Language changed:', lang);
+            document.documentElement.setAttribute('lang', lang);
+          }
+        });
+
+        // 创建游戏页脚
+        const gamingFooter = new DC.Footer({
+          container: 'gaming-footer',
+          type: 'gaming',
+          defaultTheme: 'dark-theme',
+          defaultLang: 'en-US'
+        });
+
+        // 创建资源站页脚
+        const libFooter = new DC.Footer({
+          container: 'lib-footer',
+          type: 'lib'
+        });
+
+        // 创建商城页脚
+        const shopFooter = new DC.Footer({
+          container: 'shop-footer',
+          type: 'shop'
+        });
+
+        // 创建产品站页脚
+        const productFooter = new DC.Footer({
+          container: 'product-footer',
+          type: 'product'
+        });
+  </script>
+</body>
+
+</html>

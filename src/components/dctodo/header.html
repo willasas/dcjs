@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light-theme">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header Demo</title>
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="./header.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg-theme-100);
+      color: var(--font-theme-900);
+    }
+    .demo-section {
+      margin: 20px;
+    }
+    .demo-title {
+      margin: 20px 0;
+      color: var(--font-theme-900);
+    }
+  </style>
+</head>
+<body>
+  <!-- 官网头部 -->
+  <div id="official-header"></div>
+
+  <!-- 游戏头部 -->
+  <div id="gaming-header"></div>
+
+  <!-- 资源站头部 -->
+  <div id="lib-header"></div>
+
+  <!-- 商城头部 -->
+  <div id="shop-header"></div>
+
+  <!-- 产品站头部 -->
+  <div id="product-header"></div>
+
+  <script src="./dcheader.js"></script>
+  <script>
+    // 创建官网头部
+    const officialHeader = new DC.Header({
+      selector: '#official-header',
+      type: 'official'
+    });
+
+    // 创建游戏头部
+    const gamingHeader = new DC.Header({
+      selector: '#gaming-header',
+      type: 'gaming'
+    });
+
+    // 创建资源站头部
+    const libHeader = new DC.Header({
+      selector: '#lib-header',
+      type: 'lib'
+    });
+
+    // 创建商城头部
+    const shopHeader = new DC.Header({
+      selector: '#shop-header',
+      type: 'shop'
+    });
+
+    // 创建产品站头部
+    const productHeader = new DC.Header({
+      selector: '#product-header',
+      type: 'product'
+    });
+  </script>
+</body>
+</html>
