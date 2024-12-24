@@ -20,7 +20,7 @@ class DCFooter {
     // 创建容器元素
     this.container = document.createElement('footer');
     this.container.id = containerId;
-    this.container.className = containerId;
+    this.container.classList.add(containerId, 'dc-footer');
     // 插入到body结束标签前
     document.body.appendChild(this.container);
 
