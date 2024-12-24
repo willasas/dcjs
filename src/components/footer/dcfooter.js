@@ -46,36 +46,173 @@ class DCFooter {
     });
   }
 
+  /**
+   * 异步初始化方法
+   *
+   * 该方法用于初始化脚注组件它包括加载配置、创建样式和元素、绑定事件以及设置主题和语言
+   * 使用async/await语法确保所有异步操作在继续执行后续代码之前完成
+   *
+   * @throws {Error} 如果初始化过程中出现错误，将抛出错误
+   */
   async init() {
     try {
+      // 等待加载配置完成loadConfig是一个异步方法
       await this.loadConfig();
+
+      // 创建脚注组件的样式
+      this.createStyle();
+
+      // 创建脚注组件所需的元素
       this.createElements();
+
+      // 绑定必要的事件处理函数
       this.bindEvents();
+
+      // 设置默认主题true表示强制应用该主题，即使已有主题存在
       this.setTheme(this.defaultTheme, true);
+
+      // 设置默认语言true表示强制应用该语言，即使已有语言设置存在
       this.setLanguage(this.defaultLang, true);
     } catch (error) {
+      // 捕获初始化过程中可能发生的错误
       console.error('Error initializing footer:', error);
       throw error;
     }
   }
 
+  /**
+   * 异步加载配置方法
+   * 此方法首先检查全局变量DC中是否存在config配置，如果存在，则直接使用该配置
+   * 如果不存在，则尝试从服务器加载配置文件dcsites.json，并将其内容设置为配置
+   * 在加载配置过程中，如果fetch操作失败或响应状态不是成功状态，则抛出错误
+   */
   async loadConfig() {
     try {
+      // 检查全局变量DC中是否存在config配置
       if (window.DC && window.DC.config) {
         this.config = window.DC.config;
       } else {
+        // 从服务器加载配置文件
         const response = await fetch('./dcsites.json');
+        // 检查响应状态
         if (!response.ok) {
           throw new Error('Failed to load config');
         }
+        // 解析响应内容为JSON格式并设置为配置
         this.config = await response.json();
+        // 在全局变量DC中设置config配置
         window.DC = window.DC || {};
         window.DC.config = this.config;
       }
     } catch (error) {
+      // 捕获并处理加载配置过程中发生的错误
       console.error('Error loading config:', error);
       throw error;
     }
+  }
+
+  /**
+   * 创建样式
+   *
+   * 该方法用于创建脚注组件的样式，包括设置背景色、字体颜色、字体大小、字体样式等
+   * 这些样式通过CSS变量的方式定义，以便在主题切换时动态修改
+   *
+   * @throws {Error} 如果创建样式过程中出现错误，将抛出错误
+   */
+  createStyle() {
+    const cssRules = `
+      .dc-footer { position: relative; width: 100%; height: auto; display: flex; justify-content: center; align-items: center; }
+      .dc-footer .common-footer { position: relative; width: 100%; background-color: var(--bg-theme-50); color: var(--bg-theme-800); padding: 40px 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+      .dc-footer .common-footer .footer-normal { min-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 0 120px; }
+      .dc-footer .common-footer .footer-group { display: flex; justify-content: space-between; padding-bottom: 30px; border-bottom: 1px solid var(--font-theme-900); }
+      .dc-footer .common-footer .footer-group .social, .dc-footer .common-footer .footer-group .themes, .dc-footer .common-footer .footer-group .languages { flex: 1; margin-right: 20px; display: flex; justify-content: flex-start; align-items: center; }
+      .dc-footer .common-footer .footer-group .social:last-child, .dc-footer .common-footer .footer-group .themes:last-child, .dc-footer .common-footer .footer-group .languages:last-child { margin-right: 0; }
+      .dc-footer .common-footer .footer-group .themes { justify-content: center; }
+      .dc-footer .common-footer .footer-group .languages { justify-content: flex-end; }
+      .dc-footer .common-footer .footer-label { font-size: 22px; font-weight: bold; text-align: left; line-height: 1.2; color: var(--font-theme-950); margin-right: 18px; margin-bottom: 0; }
+      .dc-footer .common-footer .social-inner { list-style: none; padding: 0; margin: 0; display: flex; justify-content: flex-start; align-items: center; }
+      .dc-footer .common-footer .social-inner .social-item { position: relative; width: 56px; height: 56px; }
+      .dc-footer .common-footer .social-inner .social-item:not(:last-child) { margin-right: 12px; }
+      .dc-footer .common-footer .social-inner .social-item:last-child { display: none; margin-right: 0; }
+      .dc-footer .common-footer .social-inner .social-item .social-link { position: relative; width: 56px; height: 56px; display: flex; justify-content: center; align-items: center; text-decoration: none; position: relative; background: var(--color-primary-bg); border: 2px solid var(--bg-theme-700); border-radius: 50%; box-sizing: border-box; padding: 12px 12px; box-shadow: -4px -2px 16px 0px var(--bg-theme-50), 4px 2px 16px 0px var(--bg-theme-500); }
+      .dc-footer .common-footer .social-inner .social-item .social-link:hover { background: var(--bg-theme-50); box-shadow: -2px -1px 8px 0px var(--bg-theme-50), 2px 1px 8px 0px var(--bg-theme-500); }
+      .dc-footer .common-footer .social-inner .social-item .social-link:hover span { display: block; opacity: 1; visibility: visible; top: -30px; }
+      .dc-footer .common-footer .social-inner .social-item .social-link .icon { display: block; width: 32px; height: 32px; }
+      .dc-footer .common-footer .social-inner .social-item .social-link .icon path { stroke: var(--bg-current); }
+      .dc-footer .common-footer .social-inner .social-item .social-link span { display: none; font-size: 14px; line-height: 20px; font-weight: 400; background: var(--bg-theme-500); color: var(--font-theme-50); position: absolute; top: 0px; left: 50%; transform: translateX(-50%); z-index: 99; white-space: nowrap; padding: 2px 8px; border-radius: 4px; box-shadow: var(--bg-theme-300); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1) 0.2s; transition-property: opacity,transform; }
+      .dc-footer .common-footer .dc-dropdown { position: relative; width: 120px; }
+      .dc-footer .common-footer .dc-dropdown.lang-dropdown { width: 180px; }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-trigger { padding: 8px 12px; background-color: var(--bg-theme-600); border: 1px solid var(--bg-theme-300); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: var(--font-theme-50); }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-trigger::after { content: ''; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid currentColor; margin-left: 10px; transition: transform 0.2s; }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-trigger span { font-size: 18px; line-height: 1.2; text-align: left; color: var(--font-theme-50); }
+      .dc-footer .common-footer .dc-dropdown.active .dc-dropdown-trigger::after { transform: rotate(180deg); }
+      .dc-footer .common-footer .dc-dropdown.active .dc-dropdown-menu { display: block; animation: dropdownFadeIn 0.2s ease-out; }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--bg-theme-600); border: 1px solid var(--bg-theme-300); border-radius: 4px; margin-top: 4px; max-height: 300px; overflow-y: auto; z-index: 1000; box-shadow: 0 2px 8px var(--bg-theme-900); }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-menu::-webkit-scrollbar { width: 4px; }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-menu::-webkit-scrollbar-track { width: 4px; border-radius: 2px; background-color: var(--bg-theme-600); }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-menu::-webkit-scrollbar-thumb { width: 4px; border-radius: 2px; background-color: var(--bg-theme-50); }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-item { font-size: 18px; line-height: 1.2; text-align: left; color: var(--font-theme-50); padding: 10px 12px; cursor: pointer; transition: all 0.2s; }
+      .dc-footer .common-footer .dc-dropdown .dc-dropdown-item:hover, .dc-footer .common-footer .dc-dropdown .dc-dropdown-item.active { background-color: var(--bg-theme-800); }
+      .dc-footer .common-footer .footer-column-lists { display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 30px; list-style: none; padding-top: 30px; margin: 0 0 30px 0; }
+      .dc-footer .common-footer .footer-column-lists .column { position: relative; width: 100%; list-style: none; }
+      .dc-footer .common-footer .footer-column-lists .column .footer-label { font-size: 22px; font-weight: bold; text-align: left; line-height: 1.2; color: var(--font-theme-950); margin-right: 0; margin-bottom: 10px; }
+      .dc-footer .common-footer .footer-column-lists .column ul { list-style: none; padding: 0; margin: 0; }
+      .dc-footer .common-footer .footer-column-lists .column ul li { margin-bottom: 8px; }
+      .dc-footer .common-footer .footer-column-lists .column ul li a { text-decoration: none; font-size: 16px; line-height: 1.2; text-align: left; color: var(--font-theme-800); transition: color 0.2s; }
+      .dc-footer .common-footer .footer-column-lists .column ul li a:hover { color: var(--font-theme-950); }
+      .dc-footer .common-footer .privacy-and-copyright { position: relative; padding-top: 30px; width: 100%; border-top: 1px solid var(--font-theme-900); text-align: center; font-size: 16px; }
+      .dc-footer .common-footer .privacy-and-copyright .links-privacy { margin-bottom: 12px; }
+      .dc-footer .common-footer .privacy-and-copyright .links-privacy a { text-decoration: none; font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-800); margin: 0 12px; transition: color 0.2s; }
+      .dc-footer .common-footer .privacy-and-copyright .links-privacy a:hover { color: var(--font-theme-950); }
+      .dc-footer .common-footer .privacy-and-copyright .copyright { font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-950); }
+      .dc-footer .common-footer .privacy-and-copyright .copyright span { font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-950); }
+
+      @media screen and (max-width: 1024px) { .common-footer { padding: 30px 0; }
+        .common-footer .footer-normal { min-width: 660px; padding: 0 30px; }
+        .common-footer .footer-group { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; flex-direction: column; padding-bottom: 30px; border-bottom: 1px solid var(--font-theme-900); }
+        .common-footer .footer-group .social, .common-footer .footer-group .themes, .common-footer .footer-group .languages { display: flex; justify-content: center; align-items: center; margin-right: 0; }
+        .common-footer .footer-group .social:last-child, .common-footer .footer-group .themes:last-child, .common-footer .footer-group .languages:last-child { margin-right: 0; }
+        .common-footer .footer-group .themes { justify-content: center; margin-top: 20px; }
+        .common-footer .footer-group .languages { justify-content: center; margin-top: 20px; }
+        .common-footer .footer-label { font-size: 20px; margin-right: 12px; }
+        .common-footer .social-inner .social-item { position: relative; width: 36px; height: 36px; }
+        .common-footer .social-inner .social-item:not(:last-child) { margin-right: 12px; }
+        .common-footer .social-inner .social-item:last-child { display: none; margin-right: 0; }
+        .common-footer .social-inner .social-item .social-link { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-decoration: none; position: relative; background: var(--color-primary-bg); border: 2px solid var(--bg-theme-700); border-radius: 50%; box-sizing: border-box; padding: 6px 6px; box-shadow: -4px -2px 16px 0px var(--bg-theme-50), 4px 2px 16px 0px var(--bg-theme-500); }
+        .common-footer .social-inner .social-item .social-link:hover { background: var(--bg-theme-50); box-shadow: -2px -1px 8px 0px var(--bg-theme-50), 2px 1px 8px 0px var(--bg-theme-500); }
+        .common-footer .social-inner .social-item .social-link:hover span { display: block; opacity: 1; }
+        .common-footer .social-inner .social-item .social-link .icon { display: block; width: 22px; height: 22px; }
+        .common-footer .social-inner .social-item .social-link .icon path { stroke: var(--bg-current); }
+        .common-footer .social-inner .social-item .social-link span { display: none; font-size: 14px; line-height: 20px; font-weight: 400; background: var(--bg-theme-500); color: var(--font-theme-50); position: absolute; top: -28px; left: 50%; transform: translateX(-50%); z-index: 99; white-space: nowrap; padding: 2px 8px; border-radius: 4px; box-shadow: var(--bg-theme-300); opacity: 0; pointer-events: none; transition: cubic-bezier(0.19, 1, 0.22, 1) 0.2s; transition-property: opacity,transform; }
+        .common-footer .footer-column-lists { width: 100%; gap: 16px; list-style: none; box-sizing: border-box; padding-top: 16px; margin: 0 0 30px 0; }
+        .common-footer .footer-column-lists .column { position: relative; width: 100%; list-style: none; }
+        .common-footer .footer-column-lists .column .footer-label { font-size: 20px; font-weight: bold; text-align: left; line-height: 1.2; color: var(--font-theme-950); margin-right: 0; margin-bottom: 10px; }
+        .common-footer .privacy-and-copyright { position: relative; padding-top: 30px; width: 100%; border-top: 1px solid var(--font-theme-900); text-align: center; font-size: 16px; }
+        .common-footer .privacy-and-copyright .links-privacy { margin-bottom: 12px; }
+        .common-footer .privacy-and-copyright .links-privacy a { text-decoration: none; font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-800); margin: 0 12px; transition: color 0.2s; }
+        .common-footer .privacy-and-copyright .links-privacy a:hover { color: var(--font-theme-950); }
+        .common-footer .privacy-and-copyright .copyright { font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-950); }
+        .common-footer .privacy-and-copyright .copyright span { font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-950); }
+      }
+
+      @keyframes dropdownFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    const addStyle = eleStyleInit => {
+      const fa = document.querySelector('title')
+      const eleStyle = document.createElement('style')
+      eleStyle.innerHTML = eleStyleInit
+      document.head.insertBefore(eleStyle, fa)
+    }
+    addStyle(cssRules)
   }
 
   /**
@@ -83,13 +220,16 @@ class DCFooter {
    * @private
    */
   createElements() {
+    // 从配置对象中解构获取语言和主题数组
     const { languages, themes } = this.config;
 
+    // 检查语言或主题数组的有效性，如果无效则抛出错误
     if (!languages?.length || !themes?.length) {
       console.error('Invalid configuration:', this.config);
       throw new Error('Invalid configuration data');
     }
 
+    // 使用模板字符串构建HTML字符串并设置为容器的innerHTML
     this.container.innerHTML = `
       <div class="common-footer">
         <div class="footer-normal">
@@ -132,6 +272,7 @@ class DCFooter {
       </div>
     `;
 
+    // 日志输出，确认元素已创建
     console.log('Elements created');
   }
 
@@ -141,16 +282,20 @@ class DCFooter {
    * @returns {string} HTML字符串
    */
   renderLanguageSelector() {
+    // 获取配置中的语言列表，如果没有则默认为空数组
     const languages = this.config.languages || [];
+    // 查找默认语言
     const defaultLang = languages.find(l => l.langCode === this.defaultLang);
-
+    // 如果没有找到默认语言，输出错误信息并返回空字符串
     if (!defaultLang) {
       console.error('Default language not found:', this.defaultLang);
       return '';
     }
 
+    // 日志输出语言选择器的渲染信息
     console.log('Rendering language selector with:', { languages, defaultLang });
 
+    // 构造语言选择器的HTML字符串
     return `
       <div class="dc-dropdown lang-dropdown">
         <div class="dc-dropdown-trigger">
@@ -177,20 +322,28 @@ class DCFooter {
    * @returns {string} HTML字符串
    */
   renderFooterColumns() {
+    // 获取页脚配置
     const config = this.config.footer;
 
+    // 根据不同的类型渲染对应的页脚栏目
     switch (this.type) {
       case 'official':
+        // 渲染官方类型的页脚栏目
         return this.renderOfficialColumns(config.official);
       case 'gaming':
+        // 渲染游戏类型的页脚栏目
         return this.renderGamingColumns(config.gaming);
       case 'lib':
+        // 渲染资源库类型的页脚栏目
         return this.renderLibColumns(config.lib);
       case 'shop':
+        // 渲染商店类型的页脚栏目
         return this.renderShopColumns(config.shop);
       case 'product':
+        // 渲染产品类型的页脚栏目
         return this.renderProductColumns(config.product);
       default:
+        // 如果类型未知，输出警告并返回空字符串
         console.warn('Unknown footer type:', this.type);
         return '';
     }
@@ -517,9 +670,14 @@ class DCFooter {
    * @private
    */
   closeAllDropdowns() {
+    // 获取当前容器内所有处于激活状态的下拉菜单
     const activeDropdowns = this.container.querySelectorAll('.dc-dropdown.active');
+
+    // 遍历每个激活的下拉菜单并关闭它们
     activeDropdowns.forEach(dropdown => {
+      // 移除激活类，以关闭下拉菜单
       dropdown.classList.remove('active');
+      // 打印关闭的下拉菜单的类名，用于调试目的
       console.log('Closed dropdown:', dropdown.className);
     });
   }
@@ -604,16 +762,21 @@ class DCFooter {
    * @returns {string} HTML字符串
    */
   renderThemeSelector() {
+    // 获取主题配置，如果没有定义，则默认为空数组
     const themes = this.config.themes || [];
+    // 查找默认主题
     const defaultTheme = themes.find(t => t.name === this.defaultTheme);
 
+    // 如果没有找到默认主题，则输出错误信息并返回空字符串
     if (!defaultTheme) {
       console.error('Default theme not found:', this.defaultTheme);
       return '';
     }
 
+    // 输出日志信息，包含所有主题和默认主题
     console.log('Rendering theme selector with:', { themes, defaultTheme });
 
+    // 构造并返回主题选择器的HTML字符串
     return `
       <div class="dc-dropdown theme-dropdown">
         <div class="dc-dropdown-trigger">
@@ -665,5 +828,9 @@ class DCFooter {
 }
 
 // 导出模块
-window.DC = window.DC || {};
-window.DC.Footer = DCFooter;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCFooter;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Footer = DCFooter;
+}
