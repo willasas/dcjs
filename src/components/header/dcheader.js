@@ -13,7 +13,7 @@ class DCHeader {
     this.type = type; // 设置用户类型
     this.selector = selector; // 设置用户选择器
     // 设置用户登录状态，如果options中未提供，则默认为false
-    this.isLoggedIn = options.isLoggedIn || true;
+    this.isLoggedIn = options.isLoggedIn || false;
     // 设置用户信息，如果options中未提供，则默认为null
     this.userInfo = options.userInfo || null;
     this.config = null; // 初始化配置，设置为null
