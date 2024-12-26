@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to JSON Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+        }
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+        .preview-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .preview-content {
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .svg-display {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SVG to JSON Converter</h1>
+        <div class="input-group">
+            <label for="svgFile">选择SVG文件：</label>
+            <input type="file" id="svgFile" accept=".svg" class="file-input">
+            <button onclick="convertSvg()">转换</button>
+        </div>
+        <div class="preview">
+            <div class="preview-label">JSON格式预览：</div>
+            <div id="jsonPreview" class="preview-content"></div>
+        </div>
+        <div class="svg-display">
+            <div class="preview-label">SVG预览：</div>
+            <div id="svgPreview"></div>
+        </div>
+    </div>
+
+    <script>
+        function convertSvg() {
+            const fileInput = document.getElementById('svgFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('请选择一个SVG文件');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let svgContent = e.target.result;
+                
+                // 清理SVG内容
+                svgContent = svgContent
+                    .replace(/[\n\r\t]/g, '') // 移除换行和制表符
+                    .replace(/>\s+</g, '><')  // 移除标签间的空白
+                    .replace(/\s{2,}/g, ' ')  // 将多个空格替换为单个空格
+                    .replace(/"/g, "'");      // 将双引号替换为单引号
+
+                // 创建JSON对象
+                const jsonObj = {
+                    icon: svgContent
+                };
+
+                // 显示JSON
+                document.getElementById('jsonPreview').textContent = 
+                    JSON.stringify(jsonObj, null, 2);
+
+                // 预览SVG
+                document.getElementById('svgPreview').innerHTML = svgContent;
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
