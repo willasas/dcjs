@@ -1,0 +1,150 @@
+.dc-pricing-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1290px;
+  margin: 0 auto;
+
+  .dc-card {
+    background-color: var(--bg-theme-100);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+    max-width: 416px;
+    width: 100%;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+
+    &.dc-card-popular {
+      border: 2px solid var(--bg-theme-500);
+    }
+
+    .dc-card-header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
+
+      .dc-card-title {
+        font-size: 24px;
+        line-height: 1.2;
+        text-align: left;
+        color: var(--font-theme-950);
+        margin: 0;
+      }
+
+      .dc-card-tag {
+        background-color: var(--bg-theme-100);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        text-align: center;
+        line-height: 1.2;
+        color: var(--font-theme-900);
+        border: 1px solid var(--bg-theme-500);
+      }
+    }
+
+    .dc-card-price {
+      margin: 20px 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-end;
+
+      .dc-card-price-value{
+        font-size: 56px;
+        font-weight: bold;
+        text-align: left;
+        color: var(--font-theme-950);
+        margin-right: 6px;
+        line-height: 1.1;
+      }
+
+      .dc-card-price-unit {
+        font-size: 20px;
+        color: var(--font-theme-600);
+        text-align: left;
+        line-height: 1.4;
+      }
+    }
+
+    .dc-card-buy {
+      display: block;
+      box-sizing: border-box;
+      padding: 12px 30px;
+      background-color: var(--bg-theme-50);
+      font-size: 18px;
+      color: var(--font-theme-900);
+      line-height: 1.2;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+      min-width: 142px;
+      border: 1px solid var(--bg-theme-800);
+
+      &:hover {
+        background-color: var(--bg-theme-200);
+      }
+    }
+
+    .dc-card-features-list {
+      position: relative;
+      text-align: left;
+      margin: 20px auto 0;
+      border-top: 1px solid var(--bg-theme-200);
+
+      .dc-card-feature {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+      }
+
+      .dc-card-feature-icon {
+        margin-right: 10px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon {
+          width: 100%;
+          height: 100%;
+
+          path {
+            fill: $theme-green-color;
+            stroke: var(--bg-theme-50);
+          }
+        }
+      }
+
+      .dc-card-feature-icon-disabled{
+        .icon {
+          path {
+            fill: $theme-red-color;
+            stroke: var(--bg-theme-50);
+          }
+        }
+      }
+
+      .dc-card-feature-desc {
+        font-size: 16px;
+        line-height: 1.2;
+        text-align: left;
+        color: var(--font-theme-800);
+      }
+
+      .dc-card-feature-desc-disabled {
+        text-decoration: line-through;
+        color: var(--font-theme-600);
+      }
+    }
+  }
+}
