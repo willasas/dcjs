@@ -421,6 +421,10 @@ class DCity {
   }
 }
 
-// 导出
-window.DC = window.DC || {};
-window.DC.DCity = DCity;
+// 导出收获地址
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCity;
+} else {
+  window.DC = window.DC || {};
+  window.DC.DCity = DCity;
+}
