@@ -1,7 +1,7 @@
 // 常见问题FAQ组件
-class DCCourseAccordion {
+class DCourseAccordion {
   /**
-   * 创建一个 DCCourseAccordion 实例
+   * 创建一个 DCourseAccordion 实例
    * @param {Object} config - 配置对象
    * @param {string} config.title - 标题
    * @param {string} config.text - 文本
@@ -26,7 +26,7 @@ class DCCourseAccordion {
    * 创建样式
    * 该方法用于创建并添加样式到页面中
    * @method createStyles
-   * @memberof DCCourseAccordion
+   * @memberof DCourseAccordion
    * @param {string} eleStyleInit - 样式字符串
    * @returns {void} - 该方法不返回任何值
    */
@@ -75,7 +75,7 @@ class DCCourseAccordion {
    * 初始化组件
    * 该方法用于查找并设置组件的容器元素
    * @method init
-   * @memberof DCCourseAccordion
+   * @memberof DCourseAccordion
    * @returns {void} - 该方法不返回任何值
    */
   init() {
@@ -87,7 +87,7 @@ class DCCourseAccordion {
    * 渲染组件
    * 该方法用于创建并返回一个包含课程详细信息的 details 元素
    * @method render
-   * @memberof DCCourseAccordion
+   * @memberof DCourseAccordion
    * @returns {HTMLElement} - 渲染后的 details 元素
    */
   render() {
@@ -147,7 +147,7 @@ class DCCourseAccordion {
    * 该方法用于根据提供的配置项数组，批量创建并渲染课程详情组件
    * @static
    * @method renderItems
-   * @memberof DCCourseAccordion
+   * @memberof DCourseAccordion
    * @param {Array} items - 包含课程详情配置项的数组
    * @param {string} [containerSelector='body'] - 容器选择器，默认为 'body'
    * @returns {void} - 该方法不返回任何值
@@ -155,10 +155,10 @@ class DCCourseAccordion {
   static renderItems(items, containerSelector = 'body') {
     const container = document.querySelector(containerSelector) || document.body;
     items.forEach(item => {
-      const accordionItem = new DCCourseAccordion(item, containerSelector);
+      const accordionItem = new DCourseAccordion(item, containerSelector);
       container.appendChild(accordionItem.render());
     });
-    DCCourseAccordion.addToggleEventListeners(container);
+    DCourseAccordion.addToggleEventListeners(container);
   }
 
   /**
@@ -166,7 +166,7 @@ class DCCourseAccordion {
    * 该方法用于为指定容器内的所有 details 元素添加事件监听器，以实现当一个 details 元素被打开时，自动关闭其他已打开的 details 元素的功能
    * @static
    * @method addToggleEventListeners
-   * @memberof DCCourseAccordion
+   * @memberof DCourseAccordion
    * @param {HTMLElement} container - 要添加事件监听器的容器元素
    * @returns {void} - 该方法不返回任何值
    */
@@ -193,7 +193,7 @@ class DCCourseAccordion {
    * 该方法用于根据提供的名称和布尔值来切换指定 details 元素的打开或关闭状态
    * @static
    * @method toggle
-   * @memberof DCCourseAccordion
+   * @memberof DCourseAccordion
    * @param {string} name - 要切换的 details 元素的名称
    * @param {boolean} isOpen - 是否打开 details 元素
    * @returns {void} - 该方法不返回任何值
@@ -204,4 +204,12 @@ class DCCourseAccordion {
       details.open = isOpen;
     }
   }
+}
+
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCourseAccordion;
+} else {
+  window.DC = window.DC || {};
+  window.DC.CourseAccordion = DCourseAccordion;
 }
