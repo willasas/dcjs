@@ -285,6 +285,14 @@ class DCSampleBGM {
   }
 }
 
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCSampleBGM;
+} else {
+  window.DC = window.DC || {};
+  window.DC.SampleBGM = DCSampleBGM;
+}
+
 // 单bgm
 // const bgmPlayer1 = new DCSampleBGM('bgm-audio-container', 'bgm-audio-btn', 'bgm-icon', './bgm1.mp3');
 // 多bgm随机播放,最后一个参数为需要将bgm元素插入到那个元素中,不传则默认是body
