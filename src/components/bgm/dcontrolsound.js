@@ -232,6 +232,15 @@ class DControlSound {
     }
 }
 
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DControlSound;
+} else {
+  window.DC = window.DC || {};
+  window.DC.ControlSound = DControlSound;
+}
+
+// 使用示例
 // 初始化 DControlSound 实例
 const controlSound = new DControlSound({
     // 创建 BGM 元素和 URL 的映射关系
