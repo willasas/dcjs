@@ -76,8 +76,10 @@ const SearchData = {
     ...utils
 };
 
-// 为了兼容全局变量方式
-window.DC = window.DC || {};
-window.DC.SearchData = SearchData;
-
-// export default SearchData; 
+// 全局导出
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = SearchData;
+} else {
+  window.DC = window.DC || {};
+  window.DC.SearchData = SearchData;
+}
