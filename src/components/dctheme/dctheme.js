@@ -312,5 +312,9 @@ class DCTheme {
 }
 
 // 导出到全局
-window.DC = window.DC || {};
-window.DC.Theme = DCTheme;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCTheme;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Theme = DCTheme;
+}
