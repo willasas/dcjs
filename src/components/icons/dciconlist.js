@@ -223,7 +223,15 @@ class DCIconList {
     }
 }
 
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCIconList;
+} else {
+  window.DC = window.DC || {};
+  window.DC.IconList = DCIconList;
+}
 
+// 示例
 // 图标列表数据
 // const iconList = {
 //     browser: [
