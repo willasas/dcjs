@@ -318,7 +318,10 @@ class DCLang {
   }
 }
 
-
-window.DC = window.DC || {};
-window.DC.Lang = DCLang; 
-// export default DCLang; 
+// 全局导出
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCLang;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Lang = DCLang;
+}
