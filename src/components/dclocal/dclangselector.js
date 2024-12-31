@@ -221,5 +221,10 @@ class DCLanguageSelector {
   }
 }
 
-window.DC = window.DC || {};
-window.DC.LanguageSelector = DCLanguageSelector; 
+// 全局导出
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCLanguageSelector;
+} else {
+  window.DC = window.DC || {};
+  window.DC.LanguageSelector = DCLanguageSelector;
+}
