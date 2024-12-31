@@ -178,8 +178,10 @@ const FilterAllData = {
   shop: shopData,
 }
 
-// 为了兼容全局变量方式
-window.DC = window.DC || {}
-window.DC.FilterAllData = FilterAllData
-
-// export default FilterAllData;
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = FilterAllData;
+} else {
+  window.DC = window.DC || {};
+  window.DC.FilterAllData = FilterAllData;
+}
