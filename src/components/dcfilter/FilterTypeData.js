@@ -1392,8 +1392,10 @@ const FilterTypeData = {
   shop: shopCategories,
 }
 
-// 为了兼容全局变量方式
-window.DC = window.DC || {}
-window.DC.FilterTypeData = FilterTypeData
-
-// export default FilterTypeData;
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = FilterTypeData;
+} else {
+  window.DC = window.DC || {};
+  window.DC.FilterTypeData = FilterTypeData;
+}
