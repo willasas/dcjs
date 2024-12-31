@@ -1,5 +1,5 @@
 // followUs.js
-class FollowUsSDK {
+class DCFollowUs {
   constructor(config) {
     this.config = config;
     this.insertStyles();
@@ -269,6 +269,15 @@ class FollowUsSDK {
     this.addEventListeners();
   }
 }
+
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCFollowUs;
+} else {
+  window.DC = window.DC || {};
+  window.DC.FollowUs = DCFollowUs;
+}
+
 // 配置对象
 // const config = {
 //   items: [
@@ -286,4 +295,4 @@ class FollowUsSDK {
 //   ]
 // };
 // 初始化 SDK
-// const followUsSDK = new FollowUsSDK(config);
+// const followUs = new DCFollowUs(config);
