@@ -167,5 +167,10 @@ class DCLocalSelector {
   }
 }
 
-window.DC = window.DC || {};
-window.DC.LocalSelector = DCLocalSelector; 
+// 全局导出语言选择
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCLocalSelector;
+} else {
+  window.DC = window.DC || {};
+  window.DC.LocalSelector = DCLocalSelector;
+}
