@@ -388,5 +388,9 @@ class DCSearch {
 }
 
 // 导出到全局
-window.DC = window.DC || {};
-window.DC.Search = DCSearch;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCSearch;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Search = DCSearch;
+}
