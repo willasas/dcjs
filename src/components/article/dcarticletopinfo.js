@@ -2,7 +2,7 @@
  * 文章顶部信息类
  * 包含发布时间,更新日期,文章字数,阅读时间和浏览量
 */
-class ArticleTopInfo {
+class DCArticleTopInfo {
     /**
      * 构造函数
      * @param {string} postDateText - 发布日期文本
@@ -160,9 +160,17 @@ class ArticleTopInfo {
     }
 }
 
+// 导出全局变量
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCArticleTopInfo;
+} else {
+  window.DC = window.DC || {};
+  window.DC.ArticleTopInfo = DCArticleTopInfo;
+}
 
 // 使用示例
-// const articleInfo = new ArticleTopInfo(
+// const articleInfo = new DCArticleTopInfo(
 //   '2023-10-01',
 //   '2023-10-10',
 //   '1000 字',
