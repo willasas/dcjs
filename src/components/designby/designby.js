@@ -1,4 +1,4 @@
-class DesignBy {
+class DCDesignBy {
   /**
    * 构造函数，用于初始化组件
    *
@@ -30,8 +30,9 @@ class DesignBy {
 
   createCss(){
     // 添加CSS样式
-    const style = document.createElement('style');
-    style.innerHTML = `
+    const fa = document.querySelector('title');
+    const eleStyle = document.createElement('style');
+    eleStyle.innerHTML = `
       .designby-list { margin: 0 auto; min-width: 600px; height: auto; display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
       .designby-list .designby-item { display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; flex-direction: column; width: 120px; height: 140px; }
       .designby-list .designby-item:hover .designby-icon { box-shadow: 0px 0px 0px var(--bg-theme-200), 0px 0px 0px var(--bg-theme-50), inset 18px 18px 30px var(--bg-theme-100), inset -18px -18px 30px var(--bg-theme-50); transition: box-shadow .2s ease-out; }
@@ -40,7 +41,7 @@ class DesignBy {
       .designby-list .designby-item .designby-icon svg path { stroke: var(--bg-theme-950); }
       .designby-list .designby-item .designby-text { margin: 0 auto; width: 100%; font-size: 16px; line-height: 1.2; text-align: center; color: var(--font-theme-950); }
     `;
-    document.head.appendChild(style);
+    document.head.insertBefore(eleStyle, fa);
   }
 
   /**
@@ -77,4 +78,12 @@ class DesignBy {
       designByList.appendChild(designByItem);
     });
   }
+}
+
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCDesignBy;
+} else {
+  window.DC = window.DC || {};
+  window.DC.DesignBy = DCDesignBy;
 }
