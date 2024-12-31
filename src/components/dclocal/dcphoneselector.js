@@ -415,5 +415,10 @@ class DCPhoneSelector {
   }
 }
 
-window.DC = window.DC || {};
-window.DC.PhoneSelector = DCPhoneSelector; 
+// 全局导出手机号区域选择
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCPhoneSelector;
+} else {
+  window.DC = window.DC || {};
+  window.DC.PhoneSelector = DCPhoneSelector;
+}
