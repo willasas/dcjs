@@ -436,5 +436,9 @@ class DCFilter {
 }
 
 // 导出到全局
-window.DC = window.DC || {}
-window.DC.Filter = DCFilter
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCFilter;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Filter = DCFilter;
+}
