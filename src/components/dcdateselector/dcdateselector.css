@@ -1,0 +1,10 @@
+/* dcdateselector.scss */
+.dc-date-selector { position: relative; width: 100%; height: auto; box-sizing: border-box; padding: 10px 4px; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+
+.dc-date-selector .picker-wrapper { display: flex; gap: 10px; justify-content: space-between; }
+
+.dc-date-selector .picker-select { flex: 1; height: 40px; padding: 5px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px; outline: none; transition: border-color 0.3s, box-shadow 0.3s; }
+
+.dc-date-selector .picker-select:focus { border-color: #1890ff; box-shadow: 0 0 4px rgba(24, 144, 255, 0.3); }
+
+.dc-date-selector .picker-select option { padding: 5px; }

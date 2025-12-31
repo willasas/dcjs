@@ -1,5 +1,4 @@
 // 处理页面的动画
-// 处理页面的动画
 class DCAnimator {
   /**
    * 创建一个动画实例
@@ -270,4 +269,12 @@ class DCAnimator {
       });
     }
   }
+}
+
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCAnimator;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Animator = DCAnimator;
 }

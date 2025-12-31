@@ -263,6 +263,96 @@ class dcNumber {
 
         return result;
     }
+
+    /**
+     * 计算两个数字的和
+     *
+     * 该方法接收两个参数，并返回它们的和使用parseInt确保参数被转换为整数
+     * 这对于确保数学运算的准确性至关重要，尤其是在处理可能不是数字类型的输入时
+     *
+     * @param {string|number} a - 第一个加数，可以是字符串或数字
+     * @param {string|number} b - 第二个加数，可以是字符串或数字
+     * @returns {number} 返回两个参数的和作为整数
+     */
+    static sum(a, b){
+        return parseInt(a) + parseInt(b);
+    }
+
+    /**
+     * subtract函数用于计算两个数值的差
+     * 它接受两个参数，将它们转换为整数，然后返回它们的差值
+     * 这个函数的核心功能是执行减法操作，因此命名为subtract
+     *
+     * @param {string|number} a - 要减去的数值或可以转换为数值的字符串
+     * @param {string|number} b - 要被减去的数值或可以转换为数值的字符串
+     * @returns {number} 返回两个参数转换为整数后的差值
+     */
+    static subtract(a, b) {
+        return parseInt(a) - parseInt(b);
+    }
+
+    /**
+     * 静态方法: multiply
+     * 该方法用于计算两个数字的乘积
+     *
+     * @param {string} a - 第一个乘数，以字符串形式传入
+     * @param {string} b - 第二个乘数，以字符串形式传入
+     * @returns {number} - 返回两个数字的乘积
+     */
+    static multiply(a, b) {
+        // 将输入的字符串转换为整数并计算乘积
+        return parseInt(a) * parseInt(b);
+    }
+
+    /**
+     * 计算两个数字的商
+     *
+     * 该方法接收两个参数，并返回它们的商。使用parseInt确保参数被转换为整数
+     * 这对于确保数学运算的准确性至关重要，尤其是在处理可能不是数字类型的输入时
+     *
+     * @param {string|number} a - 被除数，可以是字符串或数字
+     * @param {string|number} b - 除数，可以是字符串或数字
+     * @returns {number} 返回两个参数的商作为整数
+     */
+    static divide(a, b) {
+        return parseInt(a) / parseInt(b);
+    }
+
+    /**
+     * 执行两个数字之间的算术运算
+     *
+     * @param {string} a - 第一个数字
+     * @param {string} b - 第二个数字
+     * @param {string} operator - 运算符，可以是 "+", "-", "*" 或 "/"
+     * @returns {number} 两个数字进行指定算术运算后的结果
+     */
+    static count(a, b, operator) {
+        var sum = 0;
+        // 根据提供的运算符执行相应的算术运算
+        switch (operator) {
+          case "+":
+            sum = parseInt(a) + parseInt(b);
+            // 打印计算结果
+            document.write(sum);
+            break;
+          case "-":
+            sum = parseInt(a) - parseInt(b);
+            // 打印计算结果
+            document.write(sum);
+            break;
+          case "*":
+            sum = parseInt(a) * parseInt(b);
+            // 打印计算结果
+            document.write(sum);
+            break;
+          case "/":
+            sum = parseInt(a) / parseInt(b);
+            // 打印计算结果
+            document.write(sum);
+            break;
+        }
+        return sum;
+    }
 }
 
 window.DC = window.DC || {};

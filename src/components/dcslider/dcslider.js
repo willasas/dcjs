@@ -437,5 +437,9 @@ class DCSlider {
 }
 
 // 导出到全局
-window.DC = window.DC || {};
-window.DC.Slider = DCSlider;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCSlider;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Slider = DCSlider;
+}

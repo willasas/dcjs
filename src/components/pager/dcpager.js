@@ -512,3 +512,11 @@ class DCPager {
     });
   }
 }
+
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCPager;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Pager = DCPager;
+}

@@ -238,5 +238,9 @@ class DCSidenav {
 }
 
 // 导出
-window.DC = window.DC || {};
-window.DC.Sidenav = DCSidenav;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCSidenav;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Sidenav = DCSidenav;
+}

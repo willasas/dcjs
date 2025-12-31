@@ -279,5 +279,9 @@ class DCSidebar {
 }
 
 // 导出
-window.DC = window.DC || {};
-window.DC.Sidebar = DCSidebar;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCSidebar;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Sidebar = DCSidebar;
+}

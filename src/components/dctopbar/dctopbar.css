@@ -1,0 +1,13 @@
+.dc-topbar { position: -webkit-sticky; position: sticky; top: 0; z-index: 200; width: 100%; display: flex; justify-content: center; align-items: center; background-color: var(--bg-theme-50); border-bottom: 1px solid var(--bg-theme-200); }
+
+.dc-topbar .dc-topbar-btn { position: relative; cursor: pointer; padding: 10px 20px; border: none; background: none; font-size: 16px; text-align: center; line-height: 1.2; transition: color 0.3s ease; color: var(--font-theme-800); }
+
+.dc-topbar .dc-topbar-btn.active { color: var(--font-theme-50); }
+
+.dc-topbar .dc-topbar-btn:hover { color: var(--font-theme-600); }
+
+.dc-topbar .dc-topbar-indicator { position: absolute; bottom: 0; height: 100%; border-radius: 20px; background-color: var(--bg-theme-700); transition: left 0.3s ease, width 0.3s ease; }
+
+@media screen and (max-width: 1024px) { .dc-topbar { flex-direction: column; }
+  .dc-topbar .dc-topbar-btn { padding: 15px; font-size: 18px; width: 100%; }
+  .dc-topbar .dc-topbar-indicator { height: 4px; width: 100%; left: 0; bottom: auto; border-radius: 40px; } }

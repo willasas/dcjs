@@ -229,3 +229,11 @@ class DCArticleCard {
     return icon;
   }
 }
+
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCArticleCard;
+} else {
+  window.DC = window.DC || {};
+  window.DC.ArticleCard = DCArticleCard;
+}

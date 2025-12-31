@@ -1,7 +1,7 @@
 /**
  * 弹窗SDK类，用于管理弹窗的显示与隐藏，包括页面滚动的控制和点击外部区域关闭弹窗的功能。
  */
-class dcPopup {
+class DCPopup {
   /**
    * 构造函数初始化基础属性。
    */
@@ -179,8 +179,10 @@ class dcPopup {
   }
 }
 
-/**
- * 创建并返回dcPopup实例。
- * @type {dcPopup}
- */
-window.dcpopup = new dcPopup();
+// 导出全局变量
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCPopup;
+} else {
+  window.DC = window.DC || {};
+  window.DC.Popup = DCPopup;
+}

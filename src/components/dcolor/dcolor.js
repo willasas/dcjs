@@ -486,5 +486,9 @@ class DColor {
 }
 
 // 导出
-window.DC = window.DC || {};
-window.DC.DColor = DColor;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DColor;
+} else {
+  window.DC = window.DC || {};
+  window.DC.DColor = DColor;
+}

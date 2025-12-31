@@ -1,0 +1,43 @@
+@charset "UTF-8";
+/* 白色主题（默认） */
+[data-theme=light-theme] { --color-primary-border: #fdf9f5; --color-primary: #fdf9f5; --color-primary-font: #000; --color-primary-bg: #fdf9f5; --bg-inherit: inherit; --bg-current: #64748b; --bg-transparent: transparent; --bg-black: black; --bg-white: white; --bg-theme-50: #fafafa; --bg-theme-100: #f4f4f5; --bg-theme-200: #e4e4e7; --bg-theme-300: #d4d4d8; --bg-theme-400: #a1a1aa; --bg-theme-500: #71717a; --bg-theme-600: #52525b; --bg-theme-700: #3f3f46; --bg-theme-800: #27272a; --bg-theme-900: #18181b; --bg-theme-950: #09090b; --font-theme-50: #fafafa; --font-theme-100: #f0f0f0; --font-theme-200: gainsboro; --font-theme-300: #c8c8c8; --font-theme-400: #b4b4b4; --font-theme-500: #a0a0a0; --font-theme-600: #8c8c8c; --font-theme-700: #787878; --font-theme-800: #646464; --font-theme-900: #505050; --font-theme-950: #3c3c3c; --bg-theme-gradient: linear-gradient(to left, #FFFFFF, #FFEFBA); }
+
+.dc-pricing-container { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 20px; max-width: 1290px; margin: 0 auto; }
+
+.dc-pricing-container .dc-card { background-color: var(--bg-theme-100); border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); box-sizing: border-box; padding: 20px; text-align: center; transition: transform 0.3s; max-width: 416px; width: 100%; }
+
+.dc-pricing-container .dc-card:hover { transform: translateY(-10px); }
+
+.dc-pricing-container .dc-card.dc-card-popular { border: 2px solid var(--bg-theme-500); }
+
+.dc-pricing-container .dc-card .dc-card-header { display: flex; justify-content: flex-start; align-items: center; gap: 10px; }
+
+.dc-pricing-container .dc-card .dc-card-header .dc-card-title { font-size: 24px; line-height: 1.2; text-align: left; color: var(--font-theme-950); margin: 0; }
+
+.dc-pricing-container .dc-card .dc-card-header .dc-card-tag { background-color: var(--bg-theme-100); padding: 5px 10px; border-radius: 20px; font-size: 14px; text-align: center; line-height: 1.2; color: var(--font-theme-900); border: 1px solid var(--bg-theme-500); }
+
+.dc-pricing-container .dc-card .dc-card-price { margin: 20px 0; display: flex; justify-content: flex-start; align-items: flex-end; }
+
+.dc-pricing-container .dc-card .dc-card-price .dc-card-price-value { font-size: 56px; font-weight: bold; text-align: left; color: var(--font-theme-950); margin-right: 6px; line-height: 1.1; }
+
+.dc-pricing-container .dc-card .dc-card-price .dc-card-price-unit { font-size: 20px; color: var(--font-theme-600); text-align: left; line-height: 1.4; }
+
+.dc-pricing-container .dc-card .dc-card-buy { display: block; box-sizing: border-box; padding: 12px 30px; background-color: var(--bg-theme-50); font-size: 18px; color: var(--font-theme-900); line-height: 1.2; text-decoration: none; border-radius: 8px; transition: background-color 0.3s; min-width: 142px; border: 1px solid var(--bg-theme-800); }
+
+.dc-pricing-container .dc-card .dc-card-buy:hover { background-color: var(--bg-theme-200); }
+
+.dc-pricing-container .dc-card .dc-card-features-list { position: relative; text-align: left; margin: 20px auto 0; border-top: 1px solid var(--bg-theme-200); }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature { display: flex; align-items: center; margin: 10px 0; }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature-icon { margin-right: 10px; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature-icon .icon { width: 100%; height: 100%; }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature-icon .icon path { fill: #03fa41; stroke: var(--bg-theme-50); }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature-icon-disabled .icon path { fill: #ff0000; stroke: var(--bg-theme-50); }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature-desc { font-size: 16px; line-height: 1.2; text-align: left; color: var(--font-theme-800); }
+
+.dc-pricing-container .dc-card .dc-card-features-list .dc-card-feature-desc-disabled { text-decoration: line-through; color: var(--font-theme-600); }
