@@ -1,19 +1,150 @@
-@media screen and (min-width: 1025px) { .popup { width: 100vw; height: 100vh; outline: none; display: none; justify-content: center; align-items: center; position: fixed; z-index: 9999; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.8); }
-  .popup .popup-con { position: relative; margin: 0 auto; }
-  .popup .popup-con .pop-info { margin: 0 auto; width: 96%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; flex-direction: column; }
-  .popup .popup-con .pop-info .popup-title { /* margin: 40px auto 20px; */ font-family: "Microsoft YaHei"; font-size: 48px; font-weight: bold; font-style: normal; line-height: 48px; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
-  .popup .popup-con .pop-info .popup-desc { margin: 20px auto 0; width: 100%; height: auto; font-family: "Microsoft YaHei"; font-size: 20px; font-weight: normal; font-style: normal; line-height: 20px; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
-  .popup .popup-con .pop-info video { width: 100%; height: 100%; }
-  .popup .popup-bg { background-color: #000; width: 860px; height: 600px; }
-  .popup .popup-close { display: block; position: absolute; top: -20px; right: -20px; background: #006155; color: #12ded2; width: 40px; height: 40px; border-radius: 50%; line-height: 40px; text-align: center; font-size: 30px; padding: 1px; text-decoration: none; }
-  .popup .popup-close::before { content: '\2716'; } }
+/* pc */
+@media screen and (min-width: 1025px) {
+  .popup {
+    width: 100vw;
+    height: 100vh;
+    outline: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    
+    .popup-con {
+      position: relative;
+      margin: 0 auto;
 
-@media screen and (max-width: 1024px) { .popup { width: 100vw; height: 100vh; outline: none; display: none; justify-content: center; align-items: center; position: fixed; z-index: 9999; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.8); }
-  .popup .popup-con { position: relative; margin: 0 auto; }
-  .popup .popup-con .pop-info { margin: 0 auto; width: 96%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; flex-direction: column; }
-  .popup .popup-con .pop-info .popup-title { font-family: "Microsoft YaHei"; font-size: 48px; font-weight: bold; font-style: normal; line-height: 48px; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
-  .popup .popup-con .pop-info .popup-desc { margin: 20px auto 0; width: 100%; height: auto; font-family: "Microsoft YaHei"; font-size: 20px; font-weight: normal; font-style: normal; line-height: 20px; color: #fff; text-align: center; letter-spacing: normal; text-decoration: none; }
-  .popup .popup-con .pop-info video { width: 100%; height: 100%; }
-  .popup .popup-bg { background-color: #000; width: 90%; height: 60%; }
-  .popup .popup-close { display: block; position: absolute; top: -20px; right: -20px; background: #006155; color: #12ded2; width: 40px; height: 40px; border-radius: 50%; line-height: 40px; text-align: center; font-size: 30px; padding: 1px; text-decoration: none; }
-  .popup .popup-close::before { content: '\2716'; } }
+      .pop-info{
+        margin: 0 auto;
+        width: 96%;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        .popup-title {
+          /* margin: 40px auto 20px; */
+          font-family: "Microsoft YaHei";
+          font-size: 48px;
+          font-weight: bold;
+          font-style: normal;
+          line-height: 48px;
+          color: #fff;
+          text-align: center;
+          letter-spacing: normal;
+          text-decoration: none;}.popup-desc {
+          margin: 20px auto 0;
+          width: 100%;
+          height: auto;
+          font-family: "Microsoft YaHei";
+          font-size: 20px;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 20px;
+          color: #fff;
+          text-align: center;
+          letter-spacing: normal;
+          text-decoration: none;}video { 
+          width: 100%;
+          height: 100%;}}}.popup-bg{
+      background-color: #000;
+      width: 860px;
+      height: 600px;}.popup-close{
+      display: block;
+      position: absolute;
+      top: -20px;
+      right: -20px;
+    
+      background: #006155;
+      color: #12ded2;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      line-height: 40px;
+      text-align: center;
+      font-size: 30px;
+      padding: 1px;
+      text-decoration: none;
+      
+      &::before {
+        content: '\2716';}}}}/* mobile */
+@media screen and (max-width: 1024px) {
+  .popup {
+    width: 100vw;
+    height: 100vh;
+    outline: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    
+    .popup-con {
+      position: relative;
+      margin: 0 auto;
+
+      .pop-info{
+        margin: 0 auto;
+        width: 96%;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        .popup-title {
+          font-family: "Microsoft YaHei";
+          font-size: 48px;
+          font-weight: bold;
+          font-style: normal;
+          line-height: 48px;
+          color: #fff;
+          text-align: center;
+          letter-spacing: normal;
+          text-decoration: none;}.popup-desc {
+          margin: 20px auto 0;
+          width: 100%;
+          height: auto;
+          font-family: "Microsoft YaHei";
+          font-size: 20px;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 20px;
+          color: #fff;
+          text-align: center;
+          letter-spacing: normal;
+          text-decoration: none;}video { 
+          width: 100%;
+          height: 100%;}}}.popup-bg{
+      background-color: #000;
+      width: 90%;
+      height: 60%;}.popup-close{
+      display: block;
+      position: absolute;
+      top: -20px;
+      right: -20px;
+    
+      background: #006155;
+      color: #12ded2;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      line-height: 40px;
+      text-align: center;
+      font-size: 30px;
+      padding: 1px;
+      text-decoration: none;
+      
+      &::before {
+        content: '\2716';}}}}

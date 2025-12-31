@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCProductivitySlider 综合演示</title>
+
+    <!-- 引入组件样式 -->
+    <!-- <link rel="stylesheet" href="dcproductivityslider.css"> -->
+
+    <!-- 演示页面样式 -->
+    <style>
+        /**
+         * 全局样式重置
+         */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /**
+         * 页面主体样式
+         * - 渐变背景
+         * - 深色主题配色
+         */
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e6e6e6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /**
+         * 头部区域样式
+         * - 毛玻璃效果背景
+         * - 渐变标题文字
+         */
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        /**
+         * 主容器样式
+         * - 限制最大宽度
+         * - 居中显示
+         */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /**
+         * 演示区域样式
+         * - 毛玻璃效果
+         * - 圆角边框
+         */
+        .demo-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /**
+         * 演示标题样式
+         * - 带图标的标题
+         */
+        .demo-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-title::before {
+            content: '▶';
+            color: #ff6b35;
+            font-size: 1.2rem;
+        }
+
+        /**
+         * 演示描述文本样式
+         */
+        .demo-description {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        /**
+         * 滑块容器样式
+         */
+        .slider-container {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /**
+         * 代码块样式
+         * - 深色背景
+         * - 左侧强调色边框
+         */
+        .code-block {
+            background: #1a1d24;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #ff6b35;
+        }
+
+        code {
+            color: #e6e6e6;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /**
+         * 控制按钮容器样式
+         */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        /**
+         * 按钮基础样式
+         */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        /**
+         * 次要按钮样式
+         */
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /**
+         * 特性网格布局
+         */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /**
+         * 特性卡片样式
+         */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card h3 {
+            color: #ff6b35;
+            margin-bottom: 0.5rem;
+        }
+
+        /**
+         * 日志区域样式
+         */
+        .log {
+            background: #1a1d24;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .log-entry {
+            margin: 0.25rem 0;
+            color: #a0a0a0;
+        }
+
+        .log-entry.info { color: #4ecdc4; }
+        .log-entry.success { color: #45b7d1; }
+        .log-entry.warning { color: #f9a602; }
+        .log-entry.error { color: #ff6b6b; }
+
+        /**
+         * 移动端响应式样式
+         */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .demo-section {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <div class="header">
+        <div class="container">
+            <h1>DCProductivitySlider</h1>
+            <p>现代化生产力滑块组件 - 综合演示</p>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="container">
+        <!-- 功能特性介绍 -->
+        <div class="demo-section">
+            <h2 class="demo-title">功能特性</h2>
+            <p class="demo-description">DCProductivitySlider 是一个功能丰富的现代化滑块组件，专为展示产品、项目或内容而设计。</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 智能交互</h3>
+                    <p>支持触摸滑动、键盘导航、悬停效果，提供流畅的用户体验。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📱 响应式设计</h3>
+                    <p>完美适配桌面、平板和移动设备，自动调整布局和交互方式。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎨 高度可定制</h3>
+                    <p>丰富的配置选项和主题系统，轻松匹配任何设计风格。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ 性能优化</h3>
+                    <p>轻量级设计，平滑的动画效果，确保最佳性能表现。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 基本用法演示 -->
+        <div class="demo-section">
+            <h2 class="demo-title">基本用法</h2>
+            <p class="demo-description">快速上手，只需几行代码即可创建功能完整的滑块。</p>
+
+            <div class="slider-container" id="demo-basic"></div>
+
+            <div class="code-block">
+                <code>
+// 基本配置
+const slider = new DC.ProductivitySlider({
+    container: '#demo-basic',
+    items: [
+        {
+            title: '设计工具',
+            description: '专业的设计软件套件',
+            backgroundImage: 'https://picsum.photos/800/600?random=1',
+            thumbnail: 'https://picsum.photos/400/600?random=1',
+            buttonText: '了解更多',
+            link: 'https://example.com/design-tools', // 添加链接字段
+            target: '_blank' // 在新窗口打开
+        }
+    ]
+});
+                </code>
+            </div>
+        </div>
+
+        <!-- 自定义配置演示 -->
+        <div class="demo-section">
+            <h2 class="demo-title">自定义配置</h2>
+            <p class="demo-description">丰富的配置选项，满足各种定制需求。</p>
+
+            <div class="slider-container" id="demo-custom"></div>
+
+            <div class="controls">
+                <button class="btn" onclick="window.demoCustom.play()">开始自动播放</button>
+                <button class="btn btn-secondary" onclick="window.demoCustom.pause()">暂停播放</button>
+                <button class="btn btn-secondary" onclick="window.demoCustom.go(-1)">上一个</button>
+                <button class="btn btn-secondary" onclick="window.demoCustom.go(1)">下一个</button>
+            </div>
+
+            <div class="code-block">
+                <code>
+// 自定义配置
+const slider = new DC.ProductivitySlider({
+    container: '#demo-custom',
+    items: [...],
+    gap: '2rem',
+    closedWidth: '4rem',
+    openWidth: '35rem',
+    accentColor: '#4CAF50',
+    autoPlay: true,
+    autoPlayInterval: 3000,
+    showDots: true,
+    showNavigation: true
+});
+                </code>
+            </div>
+        </div>
+
+        <!-- 事件回调演示 -->
+        <div class="demo-section">
+            <h2 class="demo-title">事件回调</h2>
+            <p class="demo-description">完整的事件系统，实时监控组件状态变化。</p>
+
+            <div class="slider-container" id="demo-events"></div>
+
+            <div class="log" id="event-log">
+                <div class="log-entry info">事件日志区域 - 与滑块交互查看事件触发</div>
+            </div>
+
+            <div class="code-block">
+                <code>
+// 事件回调配置
+const slider = new DC.ProductivitySlider({
+    container: '#demo-events',
+    items: [...],
+    onItemClick: (item, index) => {
+        console.log('点击了项目:', item.title);
+    },
+    onItemActivate: (item, index) => {
+        console.log('激活了项目:', item.title);
+    },
+    onChange: (item, index) => {
+        console.log('切换到项目:', item.title);
+    }
+});
+                </code>
+            </div>
+        </div>
+
+        <!-- 功能测试区域 -->
+        <div class="demo-section">
+            <h2 class="demo-title">功能测试</h2>
+            <p class="demo-description">测试组件的各项功能是否正常工作。</p>
+
+            <div class="controls">
+                <button class="btn" onclick="testBasic()">基本功能测试</button>
+                <button class="btn btn-secondary" onclick="testNavigation()">导航测试</button>
+                <button class="btn btn-secondary" onclick="testUpdateItems()">数据更新测试</button>
+                <button class="btn btn-secondary" onclick="testWithoutDots()">无分页点测试</button>
+                <button class="btn btn-secondary" onclick="testWithoutNav()">无导航按钮测试</button>
+                <button class="btn" onclick="clearLogs()">清空日志</button>
+            </div>
+
+            <div class="slider-container" id="demo-test"></div>
+
+            <div class="log" id="test-log">
+                <div class="log-entry info">测试日志区域 - 点击上方按钮开始测试</div>
+            </div>
+        </div>
+
+        <!-- API 文档链接 -->
+        <div class="demo-section">
+            <h2 class="demo-title">文档与资源</h2>
+            <p class="demo-description">获取完整的使用文档和开发资源。</p>
+
+            <div class="controls">
+                <a href="README.md" class="btn" target="_blank">查看完整文档</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="dcproductivityslider.js"></script>
+    <script>
+        // 日志功能
+        function logEvent(message, type = 'info') {
+            const logElement = document.getElementById('event-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logElement.appendChild(entry);
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function logTest(message, type = 'info') {
+            const logElement = document.getElementById('test-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logElement.appendChild(entry);
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('event-log').innerHTML = '<div class="log-entry info">日志已清空</div>';
+            document.getElementById('test-log').innerHTML = '<div class="log-entry info">日志已清空</div>';
+        }
+
+        // 测试数据
+        const testItems = [
+            {
+                title: '项目 1',
+                description: '这是第一个项目的详细描述，包含了一些重要的信息。',
+                backgroundImage: 'https://picsum.photos/800/600?random=1',
+                thumbnail: 'https://picsum.photos/400/600?random=1',
+                buttonText: '了解更多',
+                link: 'https://example.com/project1', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            },
+            {
+                title: '项目 2',
+                description: '第二个项目的描述，展示了不同的功能和特性。',
+                backgroundImage: 'https://picsum.photos/800/600?random=2',
+                thumbnail: 'https://picsum.photos/400/600?random=2',
+                buttonText: '查看详情',
+                link: 'https://example.com/project2', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            },
+            {
+                title: '项目 3',
+                description: '第三个项目的介绍，包含了更多的技术细节。',
+                backgroundImage: 'https://picsum.photos/800/600?random=3',
+                thumbnail: 'https://picsum.photos/400/600?random=3',
+                buttonText: '开始使用',
+                link: 'https://example.com/project3', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            },
+            {
+                title: '项目 4',
+                description: '这是第一个项目的详细描述，包含了一些重要的信息。',
+                backgroundImage: 'https://picsum.photos/800/600?random=1',
+                thumbnail: 'https://picsum.photos/400/600?random=1',
+                buttonText: '了解更多',
+                link: 'https://example.com/project4', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            },
+            {
+                title: '项目 5',
+                description: '第二个项目的描述，展示了不同的功能和特性。',
+                backgroundImage: 'https://picsum.photos/800/600?random=2',
+                thumbnail: 'https://picsum.photos/400/600?random=2',
+                buttonText: '查看详情',
+                link: 'https://example.com/project5', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            },
+            {
+                title: '项目 6',
+                description: '第三个项目的介绍，包含了更多的技术细节。',
+                backgroundImage: 'https://picsum.photos/800/600?random=3',
+                thumbnail: 'https://picsum.photos/400/600?random=3',
+                buttonText: '开始使用',
+                link: 'https://example.com/project6', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            }
+        ];
+
+        const moreItems = [
+            {
+                title: '新项目 A',
+                description: '这是新增的第一个项目，测试数据更新功能。',
+                backgroundImage: 'https://picsum.photos/800/600?random=4',
+                thumbnail: 'https://picsum.photos/400/600?random=4',
+                buttonText: '探索',
+                link: 'https://example.com/new-project-a', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            },
+            {
+                title: '新项目 B',
+                description: '新增的第二个项目，验证组件稳定性。',
+                backgroundImage: 'https://picsum.photos/800/600?random=5',
+                thumbnail: 'https://picsum.photos/400/600?random=5',
+                buttonText: '了解更多',
+                link: 'https://example.com/new-project-b', // 添加链接字段
+                target: '_blank' // 在新窗口打开
+            }
+        ];
+
+        // 示例1：基本用法
+        const demoBasic = new DC.ProductivitySlider({
+            container: '#demo-basic',
+            items: testItems
+        });
+
+        // 示例2：自定义配置
+        window.demoCustom = new DC.ProductivitySlider({
+            container: '#demo-custom',
+            items: testItems,
+            gap: '2rem',
+            closedWidth: '4rem',
+            openWidth: '35rem',
+            accentColor: '#4CAF50',
+            autoPlay: true,
+            loop: true, // 显式启用循环播放
+            autoPlayInterval: 3000,
+            showDots: true,
+            showNavigation: true,
+            onAutoPlayStart: () => {
+                logEvent('自动播放已开始', 'success');
+            },
+            onAutoPlayPause: () => {
+                logEvent('自动播放已暂停', 'warning');
+            },
+            onLinkClick: (item, index, event) => {
+                console.log('链接被点击:', item.title, item.link);
+                // 可以在这里添加自定义的链接处理逻辑
+            }
+        });
+
+        // 示例3：事件回调
+        new DC.ProductivitySlider({
+            container: '#demo-events',
+            items: testItems,
+            onItemClick: (item, index) => {
+                logEvent(`点击了项目: ${item.title} (索引: ${index})`, 'success');
+            },
+            onItemActivate: (item, index) => {
+                logEvent(`激活了项目: ${item.title} (索引: ${index})`, 'info');
+            },
+            onItemDeactivate: (item, index) => {
+                logEvent(`失活了项目: ${item.title} (索引: ${index})`, 'warning');
+            },
+            onChange: (item, index) => {
+                logEvent(`切换到项目: ${item.title} (索引: ${index})`, 'info');
+            }
+        });
+
+        // 测试功能
+        let testSlider = null;
+
+        function testBasic() {
+            logTest('开始测试基本功能...', 'info');
+
+            if (testSlider) {
+                testSlider.destroy();
+            }
+
+            testSlider = new DC.ProductivitySlider({
+                container: '#demo-test',
+                items: testItems,
+                showDots: true,
+                showNavigation: true,
+                enableKeyboard: true,
+                enableTouch: true,
+                onItemClick: (item, index) => {
+                    logTest(`项目点击: ${item.title} (索引: ${index})`, 'success');
+                },
+                onItemActivate: (item, index) => {
+                    logTest(`项目激活: ${item.title} (索引: ${index})`, 'info');
+                },
+                onInit: () => {
+                    logTest('组件初始化完成', 'success');
+                }
+            });
+
+            logTest('基本功能测试完成', 'success');
+        }
+
+        function testNavigation() {
+            logTest('开始测试导航功能...', 'info');
+
+            if (!testSlider) {
+                logTest('错误: 请先运行基本功能测试', 'error');
+                return;
+            }
+
+            setTimeout(() => {
+                logTest('模拟点击下一个按钮...', 'info');
+                testSlider.go(1);
+            }, 500);
+
+            setTimeout(() => {
+                logTest('模拟点击上一个按钮...', 'info');
+                testSlider.go(-1);
+            }, 1500);
+
+            logTest('导航功能测试完成', 'success');
+        }
+
+        function testUpdateItems() {
+            logTest('开始测试数据更新功能...', 'info');
+
+            if (!testSlider) {
+                logTest('错误: 请先运行基本功能测试', 'error');
+                return;
+            }
+
+            testSlider.updateItems(moreItems);
+            logTest('数据已更新为新的项目列表', 'success');
+        }
+
+        function testWithoutDots() {
+            logTest('开始测试无分页点功能...', 'info');
+
+            if (testSlider) {
+                testSlider.destroy();
+            }
+
+            testSlider = new DC.ProductivitySlider({
+                container: '#demo-test',
+                items: testItems,
+                showDots: false,
+                showNavigation: true,
+                onInit: () => {
+                    logTest('无分页点组件初始化完成', 'success');
+                }
+            });
+
+            logTest('无分页点功能测试完成', 'success');
+        }
+
+        function testWithoutNav() {
+            logTest('开始测试无导航按钮功能...', 'info');
+
+            if (testSlider) {
+                testSlider.destroy();
+            }
+
+            testSlider = new DC.ProductivitySlider({
+                container: '#demo-test',
+                items: testItems,
+                showDots: true,
+                showNavigation: false,
+                onInit: () => {
+                    logTest('无导航按钮组件初始化完成', 'success');
+                }
+            });
+
+            logTest('无导航按钮功能测试完成', 'success');
+        }
+
+        // 初始化第一个测试
+        testBasic();
+    </script>
+</body>
+</html>

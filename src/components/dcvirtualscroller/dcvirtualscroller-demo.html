@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DCVirtualScroller 示例</title>
+  <style>
+    #container {
+      height: 400px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script src="dcvirtualscroller.js"></script>
+  <script>
+    // 基本使用方式
+    // const scroller = new DCVirtualScroller(
+    //   document.getElementById('container'),  // 容器元素
+    //   10000,                               // 数据总数
+    //   50                                   // 每项的高度（像素）
+    // );
+
+    // 自定义渲染函数
+    const customRenderItem = (index) => {
+      const item = document.createElement('div');
+      item.textContent = `自定义商品 ${index + 1}`;
+      item.style.height = '50px';
+      item.style.position = 'absolute';
+      item.style.top = `${index * 50}px`;
+      item.style.borderBottom = '1px solid #eee';
+      item.style.padding = '10px';
+      item.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#fff';
+      return item;
+    };
+
+    const scroller = new DCVirtualScroller(
+      document.getElementById('container'),
+      5000,
+      50,
+      customRenderItem  // 传递自定义渲染函数
+    );
+
+    // 假设你有一些真实数据
+    // const products = [
+    //   { id: 1, name: '商品1', price: 100 },
+    //   { id: 2, name: '商品2', price: 200 },
+    //   // ... 更多数据
+    // ];
+
+    // const renderProduct = (index) => {
+    //   const product = products[index];
+    //   const item = document.createElement('div');
+    //   item.style.height = '60px';
+    //   item.style.position = 'absolute';
+    //   item.style.top = `${index * 60}px`;
+    //   item.style.borderBottom = '1px solid #ddd';
+    //   item.style.padding = '10px';
+
+    //   item.innerHTML = `
+    //     <div><strong>${product.name}</strong></div>
+    //     <div>价格: ¥${product.price}</div>
+    //   `;
+
+    //   return item;
+    // };
+
+    // const scroller = new DCVirtualScroller(
+    //   document.getElementById('container'),
+    //   products.length,
+    //   60,
+    //   renderProduct
+    // );
+  </script>
+</body>
+</html>

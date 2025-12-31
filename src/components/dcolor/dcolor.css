@@ -1,46 +1,146 @@
-.dc-color-picker { position: relative; width: 100%; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; }
+.dc-color-picker {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, sans-serif;
 
-.dc-color-picker .dc-color-search { width: 100%; box-sizing: border-box; margin: 20px 0; padding: 0 20px; }
+  .dc-color-search {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 20px 0;
+    padding: 0 20px;
+  
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+  
+      &:focus {
+        border-color: #000;}}}.dc-color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
 
-.dc-color-picker .dc-color-search input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; }
+    .dc-color-item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
 
-.dc-color-picker .dc-color-search input:focus { border-color: #000; }
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);}.dc-color-swatch {
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;}.dc-color-info {
+        flex: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-.dc-color-picker .dc-color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 0 20px; }
+        .dc-color-name {
+          font-size: 18px;
+          font-weight: 500;
+          margin-bottom: 4px;}.dc-color-value {
+          font-size: 14px;
+          color: #666;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          transition: color 0.2s;
+        
+          &:hover {
+            color: #000;}.dc-color-text {
+            flex: 1;}.dc-copy-btn {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+          
+            &:hover {
+              opacity: 1;}svg {
+              width: 100%;
+              height: 100%;}}}}}}.dc-copy-tips {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(255, 255, 255);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: opacity 0.3s, box-shadow 0.2s;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
 
-.dc-color-picker .dc-color-grid .dc-color-item { display: flex; justify-content: flex-start; align-items: center; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    &.show {
+      color: #000;}}}/* mobile */
+@media screen and (max-width: 1024px) {
+  .dc-color-picker {
 
-.dc-color-picker .dc-color-grid .dc-color-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    .dc-color-search {
+      margin: 10px 0;
+      padding: 0 10px;
+    
+      input {
+        padding: 8px 4px;
+        border-radius: 4px;
+        font-size: 14px;
+    
+        &:focus {
+          border-color: #000;}}}.dc-color-grid {
+      display: grid;
+      grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
+      gap: 8px;
+      padding: 0 10px;
+  
+      .dc-color-item {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+  
+        .dc-color-swatch {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;}.dc-color-info {
+          position: relative;
+          z-index: 2;
+          flex: 1;
+          padding: 8px 4px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+  
+          .dc-color-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;}.dc-color-value {
+            font-size: 14px;
 
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-swatch { width: 120px; height: 120px; border-radius: 8px; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value { font-size: 14px; color: #666; display: flex; align-items: center; justify-content: space-between; transition: color 0.2s; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value:hover { color: #000; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value .dc-color-text { flex: 1; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value .dc-copy-btn { width: 16px; height: 16px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value .dc-copy-btn:hover { opacity: 1; }
-
-.dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value .dc-copy-btn svg { width: 100%; height: 100%; }
-
-.dc-color-picker .dc-copy-tips { position: fixed; top: 0; left: 50%; transform: translateX(-50%); background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: opacity 0.3s, box-shadow 0.2s; color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 14px; pointer-events: none; opacity: 0; }
-
-.dc-color-picker .dc-copy-tips.show { color: #000; }
-
-@media screen and (max-width: 1024px) { .dc-color-picker .dc-color-search { margin: 10px 0; padding: 0 10px; }
-  .dc-color-picker .dc-color-search input { padding: 8px 4px; border-radius: 4px; font-size: 14px; }
-  .dc-color-picker .dc-color-search input:focus { border-color: #000; }
-  .dc-color-picker .dc-color-grid { display: grid; grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr); gap: 8px; padding: 0 10px; }
-  .dc-color-picker .dc-color-grid .dc-color-item { position: relative; display: flex; justify-content: flex-start; align-items: center; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-  .dc-color-picker .dc-color-grid .dc-color-item .dc-color-swatch { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 4px; }
-  .dc-color-picker .dc-color-grid .dc-color-item .dc-color-info { position: relative; z-index: 2; flex: 1; padding: 8px 4px; display: flex; flex-direction: column; gap: 4px; }
-  .dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-  .dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value { font-size: 14px; }
-  .dc-color-picker .dc-color-grid .dc-color-item .dc-color-info .dc-color-value .dc-color-text { flex: 1; font-size: 12px; } }
+            .dc-color-text {
+              flex: 1;
+              font-size: 12px;}}}}}}}

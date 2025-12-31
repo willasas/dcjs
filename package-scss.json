@@ -1,0 +1,11 @@
+{
+  "name": "dcjs-scss-compiler",
+  "version": "1.0.0",
+  "description": "SCSS compiler for DCJS project",
+  "scripts": {
+    "compile-scss": "node compile-scss-sass.js"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

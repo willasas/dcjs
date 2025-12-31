@@ -1,68 +1,133 @@
-@keyframes wave { 0% { transform: scaleY(1); }
-  10% { transform: scaleY(0.2); }
-  20% { transform: scaleY(1); }
-  30% { transform: scaleY(0.2); }
-  40% { height: 40px;
-    transform: scaleY(1); }
-  50% { transform: scaleY(0.2); }
-  60% { transform: scaleY(1); }
-  70% { transform: scaleY(0.2); }
-  80% { transform: scaleY(1); }
-  90% { transform: scaleY(0.2); }
-  100% { transform: scaleY(1); } }
 
-@media screen and (min-width: 1025px) { .dc-smp-bgm { position: relative; width: 100%; height: 60px; display: flex; justify-content: center; align-items: center; }
-  .dc-smp-bgm .bgm-btn { display: block; position: relative; width: 28px; height: 28px; }
-  .dc-smp-bgm .bgm-btn.active .bgm-icon { background: none; background-size: 100% 100%; width: 100%; height: 100%; }
-  .dc-smp-bgm .bgm-btn .bgm-icon { display: block; background-size: 100% 100%; width: 100%; height: 100%; }
-  .dc-smp-bgm .bgm-btn .bgm-icon svg { fill: #000; }
-  .dc-smp-bgm .voice-wave { display: flex; align-items: center; position: relative; width: 68px; margin-left: 10px; }
-  .dc-smp-bgm .voice-wave.play .wave-line { animation: wave 3s linear infinite; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-1 { animation-delay: 0.1s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-2 { animation-delay: 0.14s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-3 { animation-delay: 0.18s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-4 { animation-delay: 0.22s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-5 { animation-delay: 0.26s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-6 { animation-delay: 0.3s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-7 { animation-delay: 0.34s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-8 { animation-delay: 0.38s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-9 { animation-delay: 0.42s; }
-  .dc-smp-bgm .wave-line { position: relative; width: 4px; height: 24px; background-color: #000; transform-origin: center center; }
-  .dc-smp-bgm .wave-line:not(:first-of-type) { margin-left: 4px; }
-  .dc-smp-bgm .wave-line.line-1 { height: 24px; }
-  .dc-smp-bgm .wave-line.line-2 { height: 18px; }
-  .dc-smp-bgm .wave-line.line-3 { height: 12px; }
-  .dc-smp-bgm .wave-line.line-4 { height: 8px; }
-  .dc-smp-bgm .wave-line.line-5 { height: 12px; }
-  .dc-smp-bgm .wave-line.line-6 { height: 18px; }
-  .dc-smp-bgm .wave-line.line-7 { height: 24px; }
-  .dc-smp-bgm .wave-line.line-8 { height: 16px; }
-  .dc-smp-bgm .wave-line.line-9 { height: 20px; } }
-
-@media screen and (max-width: 1024px) { .dc-smp-bgm { position: relative; width: 100%; height: 60px; display: flex; justify-content: center; align-items: center; }
-  .dc-smp-bgm .bgm-btn { display: block; position: relative; width: 28px; height: 28px; }
-  .dc-smp-bgm .bgm-btn.active .bgm-icon { background: none; background-size: 100% 100%; width: 100%; height: 100%; }
-  .dc-smp-bgm .bgm-btn .bgm-icon { display: block; background-size: 100% 100%; width: 100%; height: 100%; }
-  .dc-smp-bgm .bgm-btn .bgm-icon svg { fill: #000; }
-  .dc-smp-bgm .voice-wave { display: flex; align-items: center; position: relative; width: 68px; margin-left: 10px; }
-  .dc-smp-bgm .voice-wave.play .wave-line { animation: wave 3s linear infinite; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-1 { animation-delay: 0.1s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-2 { animation-delay: 0.14s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-3 { animation-delay: 0.18s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-4 { animation-delay: 0.22s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-5 { animation-delay: 0.26s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-6 { animation-delay: 0.3s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-7 { animation-delay: 0.34s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-8 { animation-delay: 0.38s; }
-  .dc-smp-bgm .voice-wave.play .wave-line.delay-9 { animation-delay: 0.42s; }
-  .dc-smp-bgm .wave-line { position: relative; width: 4px; height: 24px; background-color: #000; transform-origin: center center; }
-  .dc-smp-bgm .wave-line:not(:first-of-type) { margin-left: 4px; }
-  .dc-smp-bgm .wave-line.line-1 { height: 24px; }
-  .dc-smp-bgm .wave-line.line-2 { height: 18px; }
-  .dc-smp-bgm .wave-line.line-3 { height: 12px; }
-  .dc-smp-bgm .wave-line.line-4 { height: 8px; }
-  .dc-smp-bgm .wave-line.line-5 { height: 12px; }
-  .dc-smp-bgm .wave-line.line-6 { height: 18px; }
-  .dc-smp-bgm .wave-line.line-7 { height: 24px; }
-  .dc-smp-bgm .wave-line.line-8 { height: 16px; }
-  .dc-smp-bgm .wave-line.line-9 { height: 20px; } }
+@keyframes wave {
+  0% {
+    transform: scaleY(1);}10% {
+    transform: scaleY(0.2);}20% {
+    transform: scaleY(1);}30% {
+    transform: scaleY(0.2);}40% {
+    height: 40px;
+    transform: scaleY(1);}50% {
+    transform: scaleY(0.2);}60% {
+    transform: scaleY(1);}70% {
+    transform: scaleY(0.2);}80% {
+    transform: scaleY(1);}90% {
+    transform: scaleY(0.2);}100% {
+    transform: scaleY(1);}}/* pc */
+@media screen and (min-width: 1025px) {
+  .dc-smp-bgm {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    .bgm-btn {
+      display: block;
+      position: relative;
+      width: 28px;
+      height: 28px;
+  
+      &.active{
+        .bgm-icon {
+          background: none;
+          background-size: 100% 100%;
+          width: 100%;
+          height: 100%;}}.bgm-icon {
+        display: block;
+        background-size: 100% 100%;
+        width: 100%;
+        height: 100%;
+  
+        svg{
+          fill: #000;}}}.voice-wave {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 68px;
+      margin-left: 10px;
+  
+      &.play {
+        .wave-line {
+          animation: wave 3s linear infinite;
+  
+          @for $i from 1 through 9 {
+            &.delay-#{$i}{
+              animation-delay: #{ 0.1 + (0.04 * $i) - 0.04}s;}}}}}.wave-line {
+      position: relative;
+      width: 4px;
+      height: 24px;
+      background-color: #000;
+      transform-origin: center center;
+  
+      &:not(:first-of-type) {
+        margin-left: 4px;}$heights: 24 18 12 8 12 18 24 16 20;
+      $total: length($heights);
+      $repeatCount: 9;
+  
+      @for $i from 1 through $repeatCount {
+        $index: ($i - 1) % $total;
+        $height: nth($heights, $index + 1);
+        $class-name: "line-#{$i}";
+  
+        &.#{$class-name}{
+          height: #{$height}px;}}}}}/* mobile */
+@media screen and (max-width: 1024px) {
+  .dc-smp-bgm {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    .bgm-btn {
+      display: block;
+      position: relative;
+      width: 28px;
+      height: 28px;
+  
+      &.active{
+        .bgm-icon {
+          background: none;
+          background-size: 100% 100%;
+          width: 100%;
+          height: 100%;}}.bgm-icon {
+        display: block;
+        background-size: 100% 100%;
+        width: 100%;
+        height: 100%;
+  
+        svg{
+          fill: #000;}}}.voice-wave {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 68px;
+      margin-left: 10px;
+  
+      &.play {
+        .wave-line {
+          animation: wave 3s linear infinite;
+  
+          @for $i from 1 through 9 {
+            &.delay-#{$i}{
+              animation-delay: #{ 0.1 + (0.04 * $i) - 0.04}s;}}}}}.wave-line {
+      position: relative;
+      width: 4px;
+      height: 24px;
+      background-color: #000;
+      transform-origin: center center;
+  
+      &:not(:first-of-type) {
+        margin-left: 4px;}$heights: 24 18 12 8 12 18 24 16 20;
+      $total: length($heights);
+      $repeatCount: 9;
+  
+      @for $i from 1 through $repeatCount {
+        $index: ($i - 1) % $total;
+        $height: nth($heights, $index + 1);
+        $class-name: "line-#{$i}";
+  
+        &.#{$class-name}{
+          height: #{$height}px;}}}}}

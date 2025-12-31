@@ -1,0 +1,89 @@
+@charset "UTF-8";
+/** DCProductivitySlider SCSS样式文件 生产力滑块组件的SCSS样式定义 功能特性： - 响应式设计，支持桌面端和移动端 - 水平滚动布局，支持左右切换 - 卡片激活/失活动画效果 - 自动播放功能 - 触摸滑动支持 - 键盘导航支持 */
+/** 组件间距 @default 1.25rem */
+/** 动画速度 @default 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) */
+/** 卡片关闭状态宽度 @default 5rem */
+/** 卡片打开状态宽度 @default 30rem */
+/** 强调色 @default #ff6b35 */
+/** 最大宽度限制 @default 1400px */
+/** 最大高度限制 @default 540px */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/** 组件根容器样式 */
+.dc-productivity-slider { --gap: 10px; --speed: 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94); --closed: 96px; --open: 580px; --accent: #ff6b35; position: relative; width: 100%; height: 540px; }
+
+.dc-productivity-slider .productivity-controls { margin: 0 auto; padding: 0; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0; pointer-events: none; }
+
+.dc-productivity-slider .productivity-controls .nav-controls { position: relative; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%; z-index: 10; }
+
+.dc-productivity-slider .productivity-controls .nav-controls .nav-btn { width: 60px; height: 60px; border: none; border-radius: 50%; background: #fff; color: #fff; font-size: 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); cursor: pointer; transition: 0.3s; pointer-events: all; position: absolute; top: 50%; transform: translateY(-50%); }
+
+.dc-productivity-slider .productivity-controls .nav-controls .nav-btn:hover { background: var(--accent); }
+
+.dc-productivity-slider .productivity-controls .nav-controls .nav-btn:disabled { cursor: default; opacity: 0.5; }
+
+.dc-productivity-slider .productivity-controls .nav-controls .nav-btn.prev { left: 10px; }
+
+.dc-productivity-slider .productivity-controls .nav-controls .nav-btn.next { right: 10px; }
+
+.dc-productivity-slider .productivity-controls .nav-controls .nav-btn .icon { width: 32px; height: 32px; }
+
+.dc-productivity-slider .productivity-slider { width: 100%; margin: 0 auto; position: relative; overflow: hidden; height: 100%; }
+
+.dc-productivity-slider .productivity-slider .track { display: flex; gap: var(--gap); scroll-snap-type: x mandatory; align-items: flex-start; justify-content: center; scroll-behavior: smooth; padding: 0; }
+
+.dc-productivity-slider .productivity-slider .track::-webkit-scrollbar { display: none; }
+
+.dc-productivity-slider .productivity-slider .track .project-card { position: relative; flex: 0 0 var(--closed); height: 500px; border-radius: 12px; overflow: hidden; cursor: pointer; transition: flex-basis var(--speed), transform var(--speed); scroll-snap-align: center; }
+
+.dc-productivity-slider .productivity-slider .track .project-card.active { flex-basis: var(--open); box-shadow: 0 18px 55px rgba(0, 0, 0, 0.45); }
+
+.dc-productivity-slider .productivity-slider .track .project-card.active .project-card-content { justify-content: flex-start; align-items: flex-start; padding: 20px 12px; }
+
+.dc-productivity-slider .productivity-slider .track .project-card.active .project-card-content .project-card-title { writing-mode: horizontal-tb; transform: none; }
+
+.dc-productivity-slider .productivity-slider .track .project-card.active .project-card-content .project-card-thumb, .dc-productivity-slider .productivity-slider .track .project-card.active .project-card-content .project-card-desc, .dc-productivity-slider .productivity-slider .track .project-card.active .project-card-content .project-card-btn { display: block !important; }
+
+.dc-productivity-slider .productivity-slider .track .project-card:hover .project-card-bg { filter: brightness(0.9) saturate(100%); transform: scale(1.06); }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75) saturate(75%); transition: filter 0.3s, transform var(--speed); }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 0; background: linear-gradient(transparent 40%, rgba(0, 0, 0, 0.85) 100%); z-index: 2; }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-title { color: #fff; font-weight: 700; font-size: 28px; text-align: center; writing-mode: vertical-rl; transform: rotate(0deg); }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-thumb { display: none !important; width: 90%; height: 62%; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-desc { display: none !important; color: #ddd; font-size: 16px; line-height: 1.2; max-width: 100%; text-align: left; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-btn { display: none !important; padding: 8px 12px; border: none; border-radius: 9999px; background: #fff; color: #000; font-size: 18px; font-weight: 600; cursor: pointer; line-height: 1.2; text-decoration: none; /* 移除a标签下划线 */ text-align: center; /* 确保文本居中 */ }
+
+.dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-btn:hover { background: var(--accent); color: #fff; /* 悬停时文字颜色变为白色 */ text-decoration: none; /* 确保悬停时没有下划线 */ }
+
+.dc-productivity-slider .productivity-dots { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 0; height: 40px; width: 100%; position: absolute; bottom: 0; }
+
+.dc-productivity-slider .productivity-dots .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255, 255, 255, 0.8); cursor: pointer; transition: 0.3s; }
+
+.dc-productivity-slider .productivity-dots .dot.active { background: var(--accent); transform: scale(1.2); }
+
+/** 平板和移动设备样式 - 1024px及以下屏幕 - 调整卡片尺寸和布局 */
+@media screen and (max-width: 1024px) { .dc-productivity-slider { height: 340px; --closed: 96px; --open: 580px; }
+  .dc-productivity-slider .productivity-controls .nav-controls .nav-btn { width: 24px; height: 24px; }
+  .dc-productivity-slider .productivity-controls .nav-controls .nav-btn:hover { background: var(--accent); }
+  .dc-productivity-slider .productivity-controls .nav-controls .nav-btn:disabled { cursor: default; opacity: 0.5; }
+  .dc-productivity-slider .productivity-controls .nav-controls .nav-btn.prev { left: 4px; }
+  .dc-productivity-slider .productivity-controls .nav-controls .nav-btn.next { right: 4px; }
+  .dc-productivity-slider .productivity-controls .nav-controls .nav-btn .icon { width: 12px; height: 12px; }
+  .dc-productivity-slider .productivity-slider .track { gap: 6px; }
+  .dc-productivity-slider .productivity-slider .track::-webkit-scrollbar { display: none; }
+  .dc-productivity-slider .productivity-slider .track .project-card { flex: 0 0 22px; height: 300px; border-radius: 8px; }
+  .dc-productivity-slider .productivity-slider .track .project-card.active { flex-basis: 200px; transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45); }
+  .dc-productivity-slider .productivity-slider .track .project-card.active .project-card-content { padding: 16px 8px; }
+  .dc-productivity-slider .productivity-slider .track .project-card .project-card-content { gap: 6px; }
+  .dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-title { font-size: 20px; }
+  .dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-thumb { width: 90%; height: 42%; border-radius: 8px; }
+  .dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-desc { font-size: 14px; }
+  .dc-productivity-slider .productivity-slider .track .project-card .project-card-content .project-card-btn { padding: 4px 8px; font-size: 16px; }
+  .dc-productivity-slider .productivity-dots { gap: 6px; height: 20px; }
+  .dc-productivity-slider .productivity-dots .dot { width: 10px; height: 10px; }
+}
