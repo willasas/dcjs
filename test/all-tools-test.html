@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCJS 所有工具类测试页面</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    
+    .test-section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    
+    .btn:hover {
+      background-color: #45a049;
+    }
+    
+    .btn-run-all {
+      background-color: #2196F3;
+    }
+    
+    .btn-run-all:hover {
+      background-color: #0b7dda;
+    }
+    
+    .input-group {
+      margin: 10px 0;
+    }
+    
+    .input-group label {
+      display: inline-block;
+      width: 150px;
+      font-weight: bold;
+    }
+    
+    .input-group input, .input-group select {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      width: 250px;
+    }
+    
+    .result {
+      margin-top: 15px;
+      word-wrap: break-word;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DCJS 所有工具类测试页面</h1>
+    
+    <div class="test-section">
+      <h2>测试选项</h2>
+      <button class="btn btn-run-all" onclick="runAllTests()">运行所有测试</button>
+      <button class="btn" onclick="testQRCode()">测试二维码功能</button>
+      <button class="btn" onclick="testNetworkChecker()">测试网络检测</button>
+    </div>
+    
+    <div class="test-section">
+      <h2>特定工具类测试</h2>
+      <div class="input-group">
+        <label>测试内容:</label>
+        <input type="text" id="testInput" value="https://www.example.com" placeholder="输入要测试的内容">
+      </div>
+      <button class="btn" onclick="testArray()">测试数组工具</button>
+      <button class="btn" onclick="testString()">测试字符串工具</button>
+      <button class="btn" onclick="testValidate()">测试验证工具</button>
+      <button class="btn" onclick="testUrl()">测试URL工具</button>
+    </div>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <!-- 引入构建后的库文件 -->
+  <script src="../dist/dc.js"></script>
+  <script>
+    // 测试函数
+    function runAllTests() {
+      document.getElementById('result').innerHTML = '正在运行所有测试...请查看浏览器控制台获取详细结果';
+      
+      // 创建测试脚本并执行
+      const script = document.createElement('script');
+      script.src = 'all-tools-browser.test.js';
+      document.head.appendChild(script);
+    }
+    
+    function testQRCode() {
+      try {
+        const text = document.getElementById('testInput').value;
+        if (!text) {
+          alert('请输入测试内容');
+          return;
+        }
+        
+        const qrCode = new window.DC.QRCode();
+        const dataUrl = qrCode.generate(text);
+        
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+          <h3>二维码测试结果</h3>
+          <p>生成成功，Data URL长度: ${dataUrl.length}</p>
+          <img src="${dataUrl}" alt="二维码" style="width: 200px; height: 200px;" />
+        `;
+      } catch (error) {
+        document.getElementById('result').innerHTML = `二维码测试失败: ${error.message}`;
+        console.error('二维码测试出错:', error);
+      }
+    }
+    
+    function testNetworkChecker() {
+      try {
+        const networkChecker = new window.DC.NetworkChecker();
+        document.getElementById('result').innerHTML = '网络检测器创建成功，开始测试连接...';
+        
+        networkChecker.testConnection().then(result => {
+          document.getElementById('result').innerHTML = `
+            <h3>网络检测测试结果</h3>
+            <p>在线状态: ${result.online ? '是' : '否'}</p>
+            <p>平均响应时间: ${result.avgResponseTime}ms</p>
+            <p>测试详情: ${JSON.stringify(result.details, null, 2)}</p>
+          `;
+        }).catch(error => {
+          document.getElementById('result').innerHTML = `网络检测测试失败: ${error.message}`;
+        });
+      } catch (error) {
+        document.getElementById('result').innerHTML = `网络检测测试失败: ${error.message}`;
+        console.error('网络检测测试出错:', error);
+      }
+    }
+    
+    function testArray() {
+      try {
+        // 测试数组去重
+        const originalArr = [1, 2, 2, 3, 4, 4, 5];
+        const uniqueArr = window.DC.Array.unique(originalArr);
+        
+        // 测试数组扁平化
+        const nestedArr = [1, [2, [3, 4]]];
+        const flatArr = window.DC.Array.flatten(nestedArr);
+        
+        document.getElementById('result').innerHTML = `
+          <h3>数组工具测试结果</h3>
+          <p>原数组: [${originalArr.join(', ')}]</p>
+          <p>去重后: [${uniqueArr.join(', ')}]</p>
+          <p>嵌套数组: [1, [2, [3, 4]]]</p>
+          <p>扁平化后: [${flatArr.join(', ')}]</p>
+        `;
+      } catch (error) {
+        document.getElementById('result').innerHTML = `数组工具测试失败: ${error.message}`;
+        console.error('数组工具测试出错:', error);
+      }
+    }
+    
+    function testString() {
+      try {
+        const input = document.getElementById('testInput').value;
+        if (!input) {
+          alert('请输入测试内容');
+          return;
+        }
+        
+        const trimmed = window.DC.String.trim(`  ${input}  `);
+        const capitalized = window.DC.String.capitalize(input);
+        const reversed = window.DC.String.reverse(input);
+        
+        document.getElementById('result').innerHTML = `
+          <h3>字符串工具测试结果</h3>
+          <p>原字符串: "${input}"</p>
+          <p>去空格后: "${trimmed}"</p>
+          <p>首字母大写: "${capitalized}"</p>
+          <p>反转后: "${reversed}"</p>
+        `;
+      } catch (error) {
+        document.getElementById('result').innerHTML = `字符串工具测试失败: ${error.message}`;
+        console.error('字符串工具测试出错:', error);
+      }
+    }
+    
+    function testValidate() {
+      try {
+        const email = 'test@example.com';
+        const phone = '13812345678';
+        const invalidEmail = 'invalid-email';
+        const invalidPhone = '12345';
+        
+        const emailValid = window.DC.Validate.isEmail(email);
+        const phoneValid = window.DC.Validate.isPhone(phone);
+        const invalidEmailValid = window.DC.Validate.isEmail(invalidEmail);
+        const invalidPhoneValid = window.DC.Validate.isPhone(invalidPhone);
+        
+        document.getElementById('result').innerHTML = `
+          <h3>验证工具测试结果</h3>
+          <p>邮箱 "${email}" 验证: ${emailValid ? '有效' : '无效'}</p>
+          <p>手机 "${phone}" 验证: ${phoneValid ? '有效' : '无效'}</p>
+          <p>无效邮箱 "${invalidEmail}" 验证: ${invalidEmailValid ? '有效' : '无效'}</p>
+          <p>无效手机 "${invalidPhone}" 验证: ${invalidPhoneValid ? '有效' : '无效'}</p>
+        `;
+      } catch (error) {
+        document.getElementById('result').innerHTML = `验证工具测试失败: ${error.message}`;
+        console.error('验证工具测试出错:', error);
+      }
+    }
+    
+    function testUrl() {
+      try {
+        const url = document.getElementById('testInput').value || 'https://example.com/path?a=1&b=2#section';
+        
+        const parsed = window.DC.Url.parse(url);
+        
+        document.getElementById('result').innerHTML = `
+          <h3>URL工具测试结果</h3>
+          <p>原URL: ${url}</p>
+          <p>解析结果:</p>
+          <pre>${JSON.stringify(parsed, null, 2)}</pre>
+        `;
+      } catch (error) {
+        document.getElementById('result').innerHTML = `URL工具测试失败: ${error.message}`;
+        console.error('URL工具测试出错:', error);
+      }
+    }
+    
+    // 页面加载时显示初始信息
+    window.onload = function() {
+      document.getElementById('result').innerHTML = 'DCJS 所有工具类测试页面已加载，可以开始测试';
+    };
+  </script>
+</body>
+</html>

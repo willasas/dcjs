@@ -1,36 +1,57 @@
-// index.js
-import initGoogleAnalytics from './utils/ga';
-import WebSocketClient from './utils/websocket-utils';
+// index.js - dcjs 库的统一入口文件
+// 导入所有工具模块，它们会自动注册到 window.DC 对象
+import './utils/dcArray'
+import './utils/dcBrowser'
+import './utils/dcCrypto'
+import './utils/dcDate'
+import './utils/dcEle'
+import './utils/dcFiles'
+import './utils/dcFunction'
+import './utils/dcMedia'
+import './utils/dcNetworkChecker'
+import './utils/dcNumber'
+import './utils/dcObject'
+import './utils/dcString'
+import './utils/dcUrl'
+import './utils/dcValidate'
+import './utils/dcadapt'
+import './utils/dchttps'
+import './utils/dcinfinitescroller'
+import './utils/dcjson'
+import './utils/dclottery'
+import './utils/dcplatform'
+import './utils/dcqrcode'
+import './utils/dcregexp'
+import './utils/dcwaterfall'
+import './utils/dprettylog'
+import './utils/ga'
+import './utils/sampleadapt'
 
-// Replace 'UA-190966-1' with your actual Google Analytics account ID
-initGoogleAnalytics('UA-190966-1');
+// 各个工具类已在各自文件中注册到 window.DC 对象
+// 此文件提供跨环境（浏览器、CommonJS、AMD）的兼容性支持
+;(function (global, factory) {
+  // 浏览器环境检查
+  var isBrowser = typeof window !== 'undefined'
 
-// 使用websocket
-// 创建 WebSocketClient 实例
-const wsClient = new WebSocketClient('wss://your-websocket-url');
+  if (typeof exports === 'object' && typeof module !== 'undefined' && !isBrowser) {
+    // CommonJS 环境（非浏览器）
+    module.exports = factory()
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD 环境
+    define(factory)
+  } else {
+    // 浏览器全局环境
+    global.DC = global.DC || factory()
+  }
+})(typeof window !== 'undefined' ? window : this, function () {
+  // 确保 window.DC 对象存在
+  if (typeof window !== 'undefined') {
+    window.DC = window.DC || {}
+  }
 
-// 添加事件监听器
-wsClient.onopen = (event) => {
-  console.log('WebSocket 连接已打开:', event);
-};
+  // 获取已注册的 DC 对象
+  var DC = typeof window !== 'undefined' ? window.DC : {}
 
-wsClient.onmessage = (event) => {
-  console.log('收到消息:', event.data);
-};
-
-wsClient.onclose = (event) => {
-  console.log('WebSocket 连接已关闭:', event);
-};
-
-wsClient.onerror = (event) => {
-  console.error('WebSocket 错误:', event);
-};
-
-// 初始化连接
-wsClient.connect();
-
-// 发送消息
-wsClient.send('Hello, Server!');
-
-// 关闭websocket连接
-wsClient.close();
+  // 返回 DC 对象
+  return DC
+})

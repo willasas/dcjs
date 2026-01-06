@@ -17,10 +17,11 @@
   },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "watch": "parcel watch src/index.js",
-    "build": "parcel bulid src/index.js",
-    "test": "node test/test.js | tap-spec",
-    "testdom": "jest"
+    "watch": "parcel src/index.js --dist-dir dist --no-source-maps",
+    "build": "parcel build src/index.js --dist-dir dist --no-source-maps --no-cache",
+    "test": "jest test/all-tools.test.js",
+    "testdom": "jest",
+    "test:all": "jest test/all-tools.test.js && node test/test.js | tap-spec"
   },
   "jest": {
     "testEnvironment": "jest-environment-jsdom"
@@ -35,9 +36,5 @@
     "jest-environment-jsdom": "^29.7.0",
     "live-server": "^1.2.1",
     "parcel": "^2.12.0"
-  },
-  "dependencies": {
-    "@parcel/reporter-bundle-analyzer": "^2.12.0",
-    "@parcel/source-map": "^2.1.1"
   }
 }
