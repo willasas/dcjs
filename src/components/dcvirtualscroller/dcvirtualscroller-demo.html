@@ -9,19 +9,57 @@
       overflow-y: scroll;
       border: 1px solid #ccc;
     }
+
+    .controls {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+    }
+
+    .controls button {
+      margin-right: 10px;
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background-color: #45a049;
+    }
+
+    .stats {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e9f7ef;
+      border-radius: 4px;
+      font-family: monospace;
+    }
   </style>
 </head>
 <body>
+  <h1>DCVirtualScroller 示例</h1>
+
+  <div class="controls">
+    <button id="updateDataBtn">更新数据 (10000 项)</button>
+    <button id="updateHeightBtn">更新高度 (60px)</button>
+    <button id="scrollToBtn">滚动到第 500 项</button>
+    <button id="showStatsBtn">显示性能统计</button>
+    <button id="resetStatsBtn">重置统计</button>
+    <button id="destroyBtn">销毁虚拟滚动器</button>
+    <button id="recreateBtn">重新创建</button>
+
+    <div id="stats" class="stats" style="display: none;"></div>
+  </div>
+
   <div id="container"></div>
 
   <script src="dcvirtualscroller.js"></script>
   <script>
-    // 基本使用方式
-    // const scroller = new DCVirtualScroller(
-    //   document.getElementById('container'),  // 容器元素
-    //   10000,                               // 数据总数
-    //   50                                   // 每项的高度（像素）
-    // );
+    let scroller;
 
     // 自定义渲染函数
     const customRenderItem = (index) => {
@@ -33,15 +71,114 @@
       item.style.borderBottom = '1px solid #eee';
       item.style.padding = '10px';
       item.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#fff';
+      item.style.boxSizing = 'border-box';
       return item;
     };
 
-    const scroller = new DCVirtualScroller(
-      document.getElementById('container'),
-      5000,
-      50,
-      customRenderItem  // 传递自定义渲染函数
-    );
+    // 初始化虚拟滚动器
+    function createScroller() {
+      scroller = new DCVirtualScroller(
+        document.getElementById('container'),
+        5000,
+        50,
+        customRenderItem  // 传递自定义渲染函数
+      );
+
+      console.log('虚拟滚动器已创建');
+    }
+
+    // 更新数据
+    document.getElementById('updateDataBtn').addEventListener('click', () => {
+      if (scroller) {
+        scroller.updateData(10000, 50);
+        console.log('数据已更新为 10000 项');
+      }
+    });
+
+    // 更新高度
+    document.getElementById('updateHeightBtn').addEventListener('click', () => {
+      if (scroller) {
+        // 更新高度时也需要更新渲染函数
+        const newRenderItem = (index) => {
+          const item = document.createElement('div');
+          item.textContent = `自定义商品 ${index + 1}`;
+          item.style.height = '60px';
+          item.style.position = 'absolute';
+          item.style.top = `${index * 60}px`;
+          item.style.borderBottom = '1px solid #eee';
+          item.style.padding = '10px';
+          item.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#fff';
+          item.style.boxSizing = 'border-box';
+          return item;
+        };
+
+        scroller.updateData(null, 60);
+        scroller.renderItem = newRenderItem;
+        scroller.refresh();
+        console.log('高度已更新为 60px');
+      }
+    });
+
+    // 滚动到指定项
+    document.getElementById('scrollToBtn').addEventListener('click', () => {
+      if (scroller) {
+        scroller.scrollToIndex(500);
+        console.log('已滚动到第 500 项');
+      }
+    });
+
+    // 显示性能统计
+    document.getElementById('showStatsBtn').addEventListener('click', () => {
+      if (scroller) {
+        const stats = scroller.getPerformanceStats();
+        const scrollState = scroller.getScrollState();
+
+        const statsHtml = `
+          <h3>性能统计</h3>
+          <div>渲染次数: ${stats.renderCount}</div>
+          <div>最近渲染时间: ${stats.lastRenderTime.toFixed(2)}ms</div>
+          <div>平均渲染时间: ${stats.averageRenderTime.toFixed(2)}ms</div>
+          <div>总项目数: ${stats.totalItems}</div>
+          <div>可见项目数: ${stats.visibleItems}</div>
+          <div>缓冲区大小: ${stats.bufferSize}</div>
+
+          <h3>滚动状态</h3>
+          <div>滚动位置: ${scrollState.scrollTop}px</div>
+          <div>起始索引: ${scrollState.startIndex}</div>
+          <div>可见项目数: ${scrollState.visibleCount}</div>
+        `;
+
+        document.getElementById('stats').innerHTML = statsHtml;
+        document.getElementById('stats').style.display = 'block';
+      }
+    });
+
+    // 重置统计
+    document.getElementById('resetStatsBtn').addEventListener('click', () => {
+      if (scroller) {
+        scroller.resetPerformanceStats();
+        console.log('性能统计已重置');
+      }
+    });
+
+    // 销毁虚拟滚动器
+    document.getElementById('destroyBtn').addEventListener('click', () => {
+      if (scroller) {
+        scroller.destroy();
+        scroller = null;
+        console.log('虚拟滚动器已销毁');
+      }
+    });
+
+    // 重新创建虚拟滚动器
+    document.getElementById('recreateBtn').addEventListener('click', () => {
+      if (!scroller) {
+        createScroller();
+      }
+    });
+
+    // 初始化
+    createScroller();
 
     // 假设你有一些真实数据
     // const products = [

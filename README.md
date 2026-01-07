@@ -54,25 +54,26 @@ DCJS 是一个前端工具库，提供通用的 JavaScript 工具函数和可复
 │       ├─ dcBrowser.js        // 浏览器工具类
 │       ├─ dcCrypto.js         // 加密工具类
 │       ├─ dcDate.js           // 日期工具类
-│       ├─ dcEle.js            // DOM元素工具类
-│       ├─ dcFiles.js          // 文件工具类
-│       ├─ dcFunction.js       // 函数工具类
-│       ├─ dcMedia.js          // 媒体工具类
+│       ├─ dcEle.js           // DOM元素工具类
+│       ├─ dcFiles.js         // 文件工具类
+│       ├─ dcFunction.js      // 函数工具类
+│       ├─ dcMedia.js         // 媒体工具类
 │       ├─ dcNetworkChecker.js // 网络检测工具类
-│       ├─ dcNumber.js         // 数字工具类
-│       ├─ dcObject.js         // 对象工具类
-│       ├─ dcPlatform.js       // 平台检测工具类
-│       ├─ dcQRCode.js         // 二维码生成工具类
-│       ├─ dcString.js         // 字符串工具类
-│       ├─ dcUrl.js            // URL工具类
-│       ├─ dcValidate.js       // 验证工具类
-│       └─ ...                 // 其他工具类
+│       ├─ dcNumber.js        // 数字工具类
+│       ├─ dcObject.js        // 对象工具类
+│       ├─ dcPlatform.js      // 平台检测工具类
+│       ├─ dcQRCode.js        // 二维码生成工具类
+│       ├─ dcString.js        // 字符串工具类
+│       ├─ dcUrl.js           // URL工具类
+│       ├─ dcValidate.js      // 验证工具类
+│       └─ ...                // 其他工具类
 ├─ test/                       // 测试文件目录
 │   ├─ dcqrcode-test.html      // 二维码测试页面
 │   ├─ dcqrcode.test.js        // 二维码浏览器测试
 │   └─ dcqrcode-node.test.js   // 二维码Node.js测试
 ├─ .parcelrc                   // Parcel构建配置
 ├─ package.json                // 项目配置文件
+├─ build-bundle.js             // 自定义构建脚本
 └─ README.md                   // 项目说明文件
 ```
 
@@ -213,7 +214,7 @@ dcjs库提供多种测试方式：
 
 使用提供的测试HTML页面进行功能测试：
 
-1. 打开 `test/dcqrcode-test.html` 文件
+1. 打开 `test/all-tools-test.html` 文件
 2. 在浏览器中测试各项功能
 
 ### Node.js测试
@@ -226,6 +227,10 @@ npm run test
 # 或者运行DOM相关的测试
 npm run testdom
 ```
+
+## 构建系统
+
+我们使用自定义构建脚本替代了Parcel，以避免模块系统冲突问题。构建脚本将所有工具类文件合并成一个库文件，确保在浏览器环境中不会出现重复声明错误。
 
 ## 贡献
 

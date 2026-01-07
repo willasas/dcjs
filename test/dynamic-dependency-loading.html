@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态加载依赖资源示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .info {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+        #log {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>动态加载依赖资源示例</h1>
+
+    <div class="container">
+        <h2>什么是 document.currentScript？</h2>
+        <p><code>document.currentScript</code> 是一个只读属性，返回当前正在执行的 <code>&lt;script&gt;</code> 元素。这对于需要知道自身脚本路径的脚本非常有用，尤其是在动态加载依赖资源时。</p>
+
+        <div class="code-block">
+document.currentScript // 返回当前正在执行的脚本元素
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>使用场景</h2>
+        <ul>
+            <li>动态加载与当前脚本相关的其他资源（CSS、JS等）</li>
+            <li>获取脚本所在目录，加载相对路径的依赖</li>
+            <li>在模块化系统中解析依赖路径</li>
+            <li>创建可重用的组件库，自动加载所需资源</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h2>示例演示</h2>
+        <button id="loadDependency">加载依赖资源</button>
+        <button id="clearLog">清空日志</button>
+        <div id="status" class="status info">准备就绪</div>
+
+        <h3>操作日志：</h3>
+        <div id="log"></div>
+    </div>
+
+    <div class="container">
+        <h2>实现代码</h2>
+        <div class="code-block">
+// 获取当前脚本路径
+function getScriptPath() {
+    const script = document.currentScript;
+    if (!script) return null;
+
+    return script.src.substring(0, script.src.lastIndexOf('/') + 1);
+}
+
+// 动态加载CSS
+function loadCSS(url) {
+    return new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+
+        link.onload = () => resolve(link);
+        link.onerror = () => reject(new Error(`Failed to load CSS: ${url}`));
+
+        // 安全地添加到head
+        if (document.head) {
+            document.head.appendChild(link);
+        } else {
+            reject(new Error('document.head is not available'));
+        }
+    });
+}
+
+// 动态加载JavaScript
+function loadScript(url) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+
+        script.onload = () => resolve(script);
+        script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+
+        // 安全地添加到head
+        if (document.head) {
+            document.head.appendChild(script);
+        } else {
+            reject(new Error('document.head is not available'));
+        }
+    });
+}
+
+// 加载依赖
+async function loadDependencies() {
+    const basePath = getScriptPath();
+    if (!basePath) {
+        throw new Error('无法获取当前脚本路径');
+    }
+
+    try {
+        // 加载CSS依赖
+        await loadCSS(basePath + 'dependency.css');
+        log('CSS依赖加载成功');
+
+        // 加载JS依赖
+        await loadScript(basePath + 'dependency.js');
+        log('JS依赖加载成功');
+
+        return true;
+    } catch (error) {
+        log(`加载依赖失败: ${error.message}`, 'error');
+        return false;
+    }
+}
+        </div>
+    </div>
+
+    <script>
+        // 日志函数
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.textContent += `[${timestamp}] ${message}\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+
+            // 更新状态
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+        }
+
+        // 获取当前脚本路径
+        function getScriptPath() {
+            const script = document.currentScript;
+            if (!script) return null;
+
+            return script.src.substring(0, script.src.lastIndexOf('/') + 1);
+        }
+
+        // 动态加载CSS
+        function loadCSS(url) {
+            return new Promise((resolve, reject) => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = url;
+
+                link.onload = () => resolve(link);
+                link.onerror = () => reject(new Error(`Failed to load CSS: ${url}`));
+
+                // 安全地添加到head
+                if (document.head) {
+                    document.head.appendChild(link);
+                } else {
+                    reject(new Error('document.head is not available'));
+                }
+            });
+        }
+
+        // 动态加载JavaScript
+        function loadScript(url) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+
+                script.onload = () => resolve(script);
+                script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+
+                // 安全地添加到head
+                if (document.head) {
+                    document.head.appendChild(script);
+                } else {
+                    reject(new Error('document.head is not available'));
+                }
+            });
+        }
+
+        // 模拟加载依赖
+        async function loadDependencies() {
+            try {
+                log('开始加载依赖资源...');
+
+                // 模拟加载CSS
+                log('正在加载CSS依赖...');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                log('CSS依赖加载成功');
+
+                // 模拟加载JS
+                log('正在加载JS依赖...');
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                log('JS依赖加载成功');
+
+                // 创建一个简单的样式来演示效果
+                const style = document.createElement('style');
+                style.textContent = `
+                    .demo-effect {
+                        background-color: #e7f3fe;
+                        border-left: 6px solid #2196F3;
+                        padding: 10px;
+                        margin: 10px 0;
+                    }
+                `;
+
+                // 安全地添加样式到head
+                if (document.head) {
+                    document.head.appendChild(style);
+                } else {
+                    log('无法添加样式到head', 'error');
+                }
+
+                // 添加演示效果
+                const demoDiv = document.createElement('div');
+                demoDiv.className = 'demo-effect';
+                demoDiv.textContent = '这是通过动态加载CSS创建的样式效果！';
+
+                // 安全地添加演示效果
+                const container = document.querySelector('.container:last-of-type');
+                if (container) {
+                    container.appendChild(demoDiv);
+                } else {
+                    // 如果找不到容器，添加到body末尾
+                    document.body.appendChild(demoDiv);
+                }
+
+                log('所有依赖资源加载完成！', 'success');
+                return true;
+            } catch (error) {
+                log(`加载依赖失败: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // 事件监听
+        document.getElementById('loadDependency').addEventListener('click', loadDependencies);
+        document.getElementById('clearLog').addEventListener('click', () => {
+            document.getElementById('log').textContent = '';
+            document.getElementById('status').textContent = '日志已清空';
+            document.getElementById('status').className = 'status info';
+        });
+
+        // 初始化
+        log('页面加载完成，准备演示动态依赖加载');
+    </script>
+</body>
+</html>

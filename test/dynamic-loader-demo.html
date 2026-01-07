@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态依赖加载器示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .info {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+        #log {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 12px;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            outline: none;
+        }
+        .tab.active {
+            border-bottom: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .demo-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>动态依赖加载器示例</h1>
+
+    <div class="container">
+        <h2>概述</h2>
+        <p>这个示例展示了如何使用 <code>DC.DynamicDependencyLoader</code> 类来动态加载依赖资源，该类利用 <code>document.currentScript</code> 获取当前脚本路径，实现基于相对路径的依赖加载。</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('basic')">基本用法</button>
+        <button class="tab" onclick="showTab('advanced')">高级用法</button>
+        <button class="tab" onclick="showTab('realworld')">实际应用</button>
+    </div>
+
+    <!-- 基本用法标签页 -->
+    <div id="basic" class="tab-content active">
+        <div class="container">
+            <h2>基本用法</h2>
+            <button id="loadSingleCSS">加载单个CSS</button>
+            <button id="loadSingleJS">加载单个JS</button>
+            <button id="checkLoaded">检查已加载</button>
+            <button id="clearLog">清空日志</button>
+
+            <div class="code-block">
+// 创建加载器实例
+const loader = new DC.DynamicDependencyLoader({
+    timeout: 5000,
+    retryCount: 2,
+    verbose: true
+});
+
+// 加载单个CSS
+loader.loadCSS('styles.css');
+
+// 加载单个JS
+loader.loadScript('script.js');
+
+// 检查是否已加载
+if (loader.isLoaded('styles.css')) {
+    console.log('CSS已加载');
+}
+            </div>
+
+            <div id="basic-status" class="status info">准备就绪</div>
+            <h3>操作日志：</h3>
+            <div id="basic-log"></div>
+        </div>
+    </div>
+
+    <!-- 高级用法标签页 -->
+    <div id="advanced" class="tab-content">
+        <div class="container">
+            <h2>高级用法</h2>
+            <button id="loadBatch">批量加载</button>
+            <button id="loadWithRetry">带重试加载</button>
+            <button id="unloadDependency">卸载依赖</button>
+
+            <div class="code-block">
+// 批量加载依赖
+loader.loadDependencies([
+    'styles.css',
+    'script.js',
+    { type: 'css', url: 'theme.css', options: { id: 'theme-style' } },
+    { type: 'js', url: 'module.js', options: { async: true } }
+]);
+
+// 带重试加载
+loader.loadScript('unreliable-script.js', { timeout: 3000 });
+
+// 卸载依赖
+loader.unload('styles.css');
+            </div>
+
+            <div id="advanced-status" class="status info">准备就绪</div>
+            <h3>操作日志：</h3>
+            <div id="advanced-log"></div>
+        </div>
+    </div>
+
+    <!-- 实际应用标签页 -->
+    <div id="realworld" class="tab-content">
+        <div class="container">
+            <h2>实际应用：组件库加载器</h2>
+            <p>这个示例展示了如何创建一个组件库加载器，根据需要动态加载组件相关的CSS和JS资源。</p>
+
+            <button id="loadQRCode">加载二维码组件</button>
+            <button id="loadDatePicker">加载日期选择器组件</button>
+            <button id="loadChart">加载图表组件</button>
+            <button id="useComponent">使用组件</button>
+
+            <div class="code-block">
+// 组件库加载器
+class ComponentLoader extends DC.DynamicDependencyLoader {
+    async loadComponent(name) {
+        try {
+            await this.loadDependencies([
+                `components/${name}/${name}.css`,
+                `components/${name}/${name}.js`
+            ]);
+            console.log(`组件 ${name} 加载成功`);
+            return true;
+        } catch (error) {
+            console.error(`组件 ${name} 加载失败:`, error);
+            return false;
+        }
+    }
+}
+
+// 使用组件加载器
+const componentLoader = new ComponentLoader();
+componentLoader.loadComponent('qrcode');
+            </div>
+
+            <div id="realworld-status" class="status info">准备就绪</div>
+            <div id="component-container" class="demo-result">
+                <p>组件将在这里显示...</p>
+            </div>
+            <h3>操作日志：</h3>
+            <div id="realworld-log"></div>
+        </div>
+    </div>
+
+    <!-- 引入动态依赖加载器 -->
+    <script src="../src/utils/dcDynamicLoader.js"></script>
+
+    <script>
+        // 日志函数
+        function log(logId, message, type = 'info') {
+            const logElement = document.getElementById(logId);
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.textContent += `[${timestamp}] ${message}\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+
+            // 更新状态
+            const statusId = logId.replace('-log', '-status');
+            const statusElement = document.getElementById(statusId);
+            if (statusElement) {
+                statusElement.textContent = message;
+                statusElement.className = `status ${type}`;
+            }
+        }
+
+        // 标签页切换
+        function showTab(tabName) {
+            // 隐藏所有标签内容
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // 移除所有标签的active类
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // 显示选中的标签内容
+            document.getElementById(tabName).classList.add('active');
+
+            // 设置选中的标签为active
+            event.target.classList.add('active');
+        }
+
+        // 初始化加载器
+        const loader = new DC.DynamicDependencyLoader({
+            timeout: 5000,
+            retryCount: 2,
+            verbose: true
+        });
+
+        // 基本用法事件
+        document.getElementById('loadSingleCSS').addEventListener('click', () => {
+            log('basic-log', '开始加载单个CSS文件...');
+
+            // 创建一个模拟的CSS内容
+            const style = document.createElement('style');
+            style.id = 'demo-css';
+            style.textContent = `
+                .demo-style {
+                    background-color: #e7f3fe;
+                    border-left: 6px solid #2196F3;
+                    padding: 10px;
+                    margin: 10px 0;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // 模拟加载完成
+            setTimeout(() => {
+                loader.loadedDependencies.add('demo.css');
+                log('basic-log', 'CSS文件加载成功', 'success');
+
+                // 添加演示效果
+                const demoDiv = document.createElement('div');
+                demoDiv.className = 'demo-style';
+                demoDiv.textContent = '这是通过动态加载CSS创建的样式效果！';
+                document.querySelector('#basic .container').appendChild(demoDiv);
+            }, 1000);
+        });
+
+        document.getElementById('loadSingleJS').addEventListener('click', () => {
+            log('basic-log', '开始加载单个JS文件...');
+
+            // 模拟加载JS
+            setTimeout(() => {
+                // 创建一个模拟的全局函数
+                window.demoFunction = function() {
+                    alert('这是通过动态加载JS创建的函数！');
+                };
+
+                loader.loadedDependencies.add('demo.js');
+                log('basic-log', 'JS文件加载成功', 'success');
+
+                // 添加演示按钮
+                const demoButton = document.createElement('button');
+                demoButton.textContent = '调用动态加载的函数';
+                demoButton.onclick = window.demoFunction;
+                document.querySelector('#basic .container').appendChild(demoButton);
+            }, 1500);
+        });
+
+        document.getElementById('checkLoaded').addEventListener('click', () => {
+            const loaded = loader.getLoadedDependencies();
+            log('basic-log', `已加载的依赖: ${loaded.length > 0 ? loaded.join(', ') : '无'}`);
+        });
+
+        // 高级用法事件
+        document.getElementById('loadBatch').addEventListener('click', () => {
+            log('advanced-log', '开始批量加载依赖...');
+
+            // 模拟批量加载
+            setTimeout(() => {
+                loader.loadedDependencies.add('styles.css');
+                loader.loadedDependencies.add('script.js');
+                loader.loadedDependencies.add('theme.css');
+                loader.loadedDependencies.add('module.js');
+                log('advanced-log', '批量加载完成', 'success');
+            }, 2000);
+        });
+
+        document.getElementById('loadWithRetry').addEventListener('click', () => {
+            log('advanced-log', '开始带重试机制的加载...');
+
+            let retryCount = 0;
+            const maxRetries = 3;
+
+            const attemptLoad = () => {
+                retryCount++;
+                log('advanced-log', `尝试第 ${retryCount} 次加载...`);
+
+                // 模拟失败，然后重试
+                if (retryCount < maxRetries) {
+                    setTimeout(attemptLoad, 1000);
+                } else {
+                    // 最后一次成功
+                    loader.loadedDependencies.add('unreliable-script.js');
+                    log('advanced-log', '带重试加载成功', 'success');
+                }
+            };
+
+            attemptLoad();
+        });
+
+        document.getElementById('unloadDependency').addEventListener('click', () => {
+            if (loader.loadedDependencies.size > 0) {
+                const firstDep = Array.from(loader.loadedDependencies)[0];
+                loader.unload(firstDep);
+                log('advanced-log', `已卸载依赖: ${firstDep}`);
+            } else {
+                log('advanced-log', '没有可卸载的依赖');
+            }
+        });
+
+        // 实际应用事件
+        let loadedComponent = null;
+
+        document.getElementById('loadQRCode').addEventListener('click', () => {
+            log('realworld-log', '开始加载二维码组件...');
+
+            // 模拟加载二维码组件
+            setTimeout(() => {
+                loadedComponent = 'qrcode';
+                loader.loadedDependencies.add('components/qrcode/qrcode.css');
+                loader.loadedDependencies.add('components/qrcode/qrcode.js');
+                log('realworld-log', '二维码组件加载成功', 'success');
+
+                // 添加二维码样式
+                const style = document.createElement('style');
+                style.id = 'qrcode-style';
+                style.textContent = `
+                    .qrcode-demo {
+                        display: inline-block;
+                        padding: 10px;
+                        background-color: #f0f0f0;
+                        border: 1px solid #ddd;
+                        text-align: center;
+                        font-family: monospace;
+                        margin: 10px 0;
+                    }
+                `;
+                document.head.appendChild(style);
+            }, 1500);
+        });
+
+        document.getElementById('loadDatePicker').addEventListener('click', () => {
+            log('realworld-log', '开始加载日期选择器组件...');
+
+            // 模拟加载日期选择器组件
+            setTimeout(() => {
+                loadedComponent = 'datepicker';
+                loader.loadedDependencies.add('components/datepicker/datepicker.css');
+                loader.loadedDependencies.add('components/datepicker/datepicker.js');
+                log('realworld-log', '日期选择器组件加载成功', 'success');
+
+                // 添加日期选择器样式
+                const style = document.createElement('style');
+                style.id = 'datepicker-style';
+                style.textContent = `
+                    .datepicker-demo {
+                        display: inline-block;
+                        padding: 10px;
+                        background-color: #f0f0f0;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        margin: 10px 0;
+                    }
+                    .datepicker-demo input {
+                        padding: 5px;
+                        border: 1px solid #ccc;
+                        border-radius: 3px;
+                    }
+                `;
+                document.head.appendChild(style);
+            }, 1500);
+        });
+
+        document.getElementById('loadChart').addEventListener('click', () => {
+            log('realworld-log', '开始加载图表组件...');
+
+            // 模拟加载图表组件
+            setTimeout(() => {
+                loadedComponent = 'chart';
+                loader.loadedDependencies.add('components/chart/chart.css');
+                loader.loadedDependencies.add('components/chart/chart.js');
+                log('realworld-log', '图表组件加载成功', 'success');
+
+                // 添加图表样式
+                const style = document.createElement('style');
+                style.id = 'chart-style';
+                style.textContent = `
+                    .chart-demo {
+                        width: 300px;
+                        height: 200px;
+                        background-color: #f0f0f0;
+                        border: 1px solid #ddd;
+                        margin: 10px 0;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .chart-bar {
+                        position: absolute;
+                        bottom: 0;
+                        width: 30px;
+                        background-color: #4CAF50;
+                        margin: 0 5px;
+                    }
+                `;
+                document.head.appendChild(style);
+            }, 1500);
+        });
+
+        document.getElementById('useComponent').addEventListener('click', () => {
+            if (!loadedComponent) {
+                log('realworld-log', '请先加载一个组件', 'error');
+                return;
+            }
+
+            const container = document.getElementById('component-container');
+            container.innerHTML = '';
+
+            switch (loadedComponent) {
+                case 'qrcode':
+                    container.innerHTML = `
+                        <h3>二维码组件</h3>
+                        <div class="qrcode-demo">
+                            ██████╗ ██╗   ██╗███████╗████████╗<br>
+                            ██╔══██╗╚██╗ ██╔╝██╔════╝╚══██╔══╝<br>
+                            ██████╔╝ ╚████╔╝ █████╗     ██║   <br>
+                            ██╔══██╗  ╚██╔╝  ██╔══╝     ██║   <br>
+                            ██║  ██║   ██║   ███████╗   ██║   <br>
+                            ╚═╝  ╚═╝   ╚═╝   ╚══════╝   ╚═╝   <br>
+                            <small>示例二维码</small>
+                        </div>
+                    `;
+                    break;
+
+                case 'datepicker':
+                    container.innerHTML = `
+                        <h3>日期选择器组件</h3>
+                        <div class="datepicker-demo">
+                            <label>选择日期：</label>
+                            <input type="date" value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                    `;
+                    break;
+
+                case 'chart':
+                    container.innerHTML = `
+                        <h3>图表组件</h3>
+                        <div class="chart-demo">
+                            <div class="chart-bar" style="height: 60%; left: 10px;"></div>
+                            <div class="chart-bar" style="height: 80%; left: 50px;"></div>
+                            <div class="chart-bar" style="height: 40%; left: 90px;"></div>
+                            <div class="chart-bar" style="height: 90%; left: 130px;"></div>
+                            <div class="chart-bar" style="height: 70%; left: 170px;"></div>
+                            <div class="chart-bar" style="height: 50%; left: 210px;"></div>
+                            <div class="chart-bar" style="height: 85%; left: 250px;"></div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            log('realworld-log', `已使用 ${loadedComponent} 组件`, 'success');
+        });
+
+        // 清空日志按钮
+        document.getElementById('clearLog').addEventListener('click', () => {
+            document.getElementById('basic-log').textContent = '';
+            document.getElementById('basic-status').textContent = '日志已清空';
+            document.getElementById('basic-status').className = 'status info';
+        });
+
+        // 初始化
+        log('basic-log', '页面加载完成，准备演示动态依赖加载');
+        log('advanced-log', '页面加载完成，准备演示高级用法');
+        log('realworld-log', '页面加载完成，准备演示实际应用');
+    </script>
+</body>
+</html>
