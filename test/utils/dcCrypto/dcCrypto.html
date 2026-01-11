@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcCrypto 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="password"], 
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcCrypto 工具类交互式测试</h1>
+    
+    <!-- 安全提示 -->
+    <div class="warning">
+        <p><strong>安全提示:</strong> 此加密工具仅用于演示和学习目的。在生产环境中，请使用经过充分验证的加密库（如Web Crypto API）来处理敏感数据。</p>
+    </div>
+
+    <!-- 基本加密解密测试 -->
+    <div class="test-container">
+        <div class="test-title">基本加密解密功能</div>
+        
+        <label for="plaintext">明文:</label>
+        <textarea id="plaintext" rows="3">Hello World</textarea>
+        
+        <label for="password">密码:</label>
+        <input type="password" id="password" value="secret123">
+        
+        <button onclick="encryptText()">加密</button>
+        <button onclick="decryptText()">解密</button>
+        <button onclick="clearAll()">清空</button>
+        
+        <div class="result" id="cryptoResult"></div>
+    </div>
+
+    <!-- 复杂文本测试 -->
+    <div class="test-container">
+        <div class="test-title">复杂文本测试</div>
+        
+        <label for="complexPlaintext">包含中文、数字和特殊字符的文本:</label>
+        <textarea id="complexPlaintext" rows="3">这是一段包含中文、数字123和特殊字符!@#的文本</textarea>
+        
+        <label for="complexPassword">密码:</label>
+        <input type="password" id="complexPassword" value="complexPassword!@#">
+        
+        <button onclick="encryptComplexText()">加密</button>
+        <button onclick="decryptComplexText()">解密</button>
+        
+        <div class="result" id="complexResult"></div>
+    </div>
+
+    <!-- 密码强度测试 -->
+    <div class="test-container">
+        <div class="test-title">不同密码强度测试</div>
+        
+        <label for="testPlaintext">测试文本:</label>
+        <textarea id="testPlaintext" rows="2">测试内容</textarea>
+        
+        <div>
+            <label><input type="radio" name="passwordStrength" value="weak" checked> 弱密码 (短且简单)</label>
+            <label><input type="radio" name="passwordStrength" value="medium"> 中等密码 (较长)</label>
+            <label><input type="radio" name="passwordStrength" value="strong"> 强密码 (复杂)</label>
+        </div>
+        
+        <button onclick="testPasswordStrength()">测试不同密码</button>
+        
+        <div class="result" id="passwordResult"></div>
+    </div>
+
+    <!-- 错误处理测试 -->
+    <div class="test-container">
+        <div class="test-title">错误处理测试</div>
+        
+        <button onclick="testEmptyPlaintext()">测试空明文</button>
+        <button onclick="testEmptyPassword()">测试空密码</button>
+        <button onclick="testWrongPassword()">测试错误密码</button>
+        <button onclick="testInvalidCiphertext()">测试无效密文</button>
+        
+        <div class="result" id="errorResult"></div>
+    </div>
+
+    <!-- 安全性测试 -->
+    <div class="test-container">
+        <div class="test-title">安全性测试</div>
+        
+        <button onclick="testSameTextDifferentPasswords()">相同文本不同密码</button>
+        <button onclick="testDifferentTextSamePassword()">不同文本相同密码</button>
+        
+        <div class="result" id="securityResult"></div>
+    </div>
+
+    <!-- 批量操作 -->
+    <div class="test-container">
+        <div class="test-title">批量操作</div>
+        
+        <button onclick="runAllTests()">运行所有测试</button>
+        <div class="result" id="allTestsResult"></div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="info-box">
+        <h3>使用说明</h3>
+        <ul>
+            <li>输入要加密的明文和密码，点击“加密”按钮进行加密</li>
+            <li>将加密后的密文粘贴到“明文”框中，输入正确的密码，点击“解密”按钮进行解密</li>
+            <li>密码是加密解密的关键，请妥善保管</li>
+            <li>此工具使用对称加密算法，相同的密码可以解密由其加密的内容</li>
+        </ul>
+    </div>
+
+    <script src="../../../src/utils/dcCrypto.js"></script>
+    <script>
+        // 加密功能
+        function encryptText() {
+            try {
+                const plaintext = document.getElementById('plaintext').value;
+                const password = document.getElementById('password').value;
+                
+                if (!plaintext) {
+                    throw new Error('明文不能为空');
+                }
+                
+                if (!password) {
+                    throw new Error('密码不能为空');
+                }
+                
+                const encrypted = dcCrypto.encrypt(plaintext, password);
+                
+                document.getElementById('cryptoResult').innerHTML = `
+                    <p><strong>加密成功！</strong></p>
+                    <p><strong>明文:</strong></p>
+                    <pre>${plaintext}</pre>
+                    <p><strong>密文:</strong></p>
+                    <pre>${encrypted}</pre>
+                    <p><em>已复制到剪贴板</em></p>
+                `;
+                
+                // 复制到剪贴板
+                navigator.clipboard.writeText(encrypted).catch(err => {
+                    console.warn('无法复制到剪贴板: ', err);
+                });
+                
+            } catch (error) {
+                document.getElementById('cryptoResult').innerHTML = `
+                    <p><strong style="color: red">加密失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 解密功能
+        function decryptText() {
+            try {
+                const ciphertext = document.getElementById('plaintext').value;
+                const password = document.getElementById('password').value;
+                
+                if (!ciphertext) {
+                    throw new Error('密文不能为空');
+                }
+                
+                if (!password) {
+                    throw new Error('密码不能为空');
+                }
+                
+                const decrypted = dcCrypto.decrypt(ciphertext, password);
+                
+                document.getElementById('cryptoResult').innerHTML = `
+                    <p><strong>解密成功！</strong></p>
+                    <p><strong>密文:</strong></p>
+                    <pre>${ciphertext}</pre>
+                    <p><strong>明文:</strong></p>
+                    <pre>${decrypted}</pre>
+                    <p><em>已复制到剪贴板</em></p>
+                `;
+                
+                // 复制到剪贴板
+                navigator.clipboard.writeText(decrypted).catch(err => {
+                    console.warn('无法复制到剪贴板: ', err);
+                });
+                
+            } catch (error) {
+                document.getElementById('cryptoResult').innerHTML = `
+                    <p><strong style="color: red">解密失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 清空功能
+        function clearAll() {
+            document.getElementById('plaintext').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('cryptoResult').innerHTML = '';
+        }
+
+        // 加密复杂文本
+        function encryptComplexText() {
+            try {
+                const plaintext = document.getElementById('complexPlaintext').value;
+                const password = document.getElementById('complexPassword').value;
+                
+                const encrypted = dcCrypto.encrypt(plaintext, password);
+                
+                document.getElementById('complexResult').innerHTML = `
+                    <p><strong>复杂文本加密成功！</strong></p>
+                    <p><strong>原文:</strong></p>
+                    <pre>${plaintext}</pre>
+                    <p><strong>密文:</strong></p>
+                    <pre>${encrypted}</pre>
+                `;
+                
+            } catch (error) {
+                document.getElementById('complexResult').innerHTML = `
+                    <p><strong style="color: red">加密失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 解密复杂文本
+        function decryptComplexText() {
+            try {
+                const ciphertext = document.getElementById('complexPlaintext').value;
+                const password = document.getElementById('complexPassword').value;
+                
+                const decrypted = dcCrypto.decrypt(ciphertext, password);
+                
+                document.getElementById('complexResult').innerHTML = `
+                    <p><strong>复杂文本解密成功！</strong></p>
+                    <p><strong>密文:</strong></p>
+                    <pre>${ciphertext}</pre>
+                    <p><strong>原文:</strong></p>
+                    <pre>${decrypted}</pre>
+                `;
+                
+            } catch (error) {
+                document.getElementById('complexResult').innerHTML = `
+                    <p><strong style="color: red">解密失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试不同密码强度
+        function testPasswordStrength() {
+            try {
+                const plaintext = document.getElementById('testPlaintext').value;
+                const strength = document.querySelector('input[name="passwordStrength"]:checked').value;
+                let password = '';
+                
+                switch(strength) {
+                    case 'weak':
+                        password = '123';
+                        break;
+                    case 'medium':
+                        password = 'mysecretpassword';
+                        break;
+                    case 'strong':
+                        password = 'MyS3cr3tP@ssw0rd!2024';
+                        break;
+                }
+                
+                const encrypted = dcCrypto.encrypt(plaintext, password);
+                const decrypted = dcCrypto.decrypt(encrypted, password);
+                
+                document.getElementById('passwordResult').innerHTML = `
+                    <p><strong>密码强度测试结果</strong></p>
+                    <p><strong>密码强度:</strong> ${strength}</p>
+                    <p><strong>密码:</strong> ${password}</p>
+                    <p><strong>加密解密:</strong> <span style="color: green; font-weight: bold;">成功</span></p>
+                    <p><strong>验证:</strong> ${decrypted === plaintext ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('passwordResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试空明文
+        function testEmptyPlaintext() {
+            try {
+                const result = dcCrypto.encrypt('', 'password');
+                const decrypted = dcCrypto.decrypt(result, 'password');
+                
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong>空明文测试:</strong> <span style="color: green; font-weight: bold;">通过</span></p>
+                    <p><strong>加密结果:</strong> ${result}</p>
+                    <p><strong>解密验证:</strong> ${decrypted === '' ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</p>
+                `;
+            } catch (error) {
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong style="color: red">空明文测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试空密码
+        function testEmptyPassword() {
+            try {
+                const result = dcCrypto.encrypt('Hello', '');
+                const decrypted = dcCrypto.decrypt(result, '');
+                
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong>空密码测试:</strong> <span style="color: green; font-weight: bold;">通过</span></p>
+                    <p><strong>加密结果:</strong> ${result}</p>
+                    <p><strong>解密验证:</strong> ${decrypted === 'Hello' ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</p>
+                `;
+            } catch (error) {
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong style="color: red">空密码测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试错误密码
+        function testWrongPassword() {
+            try {
+                const plaintext = 'Secret Message';
+                const correctPassword = 'correct123';
+                const wrongPassword = 'wrong123';
+                
+                const encrypted = dcCrypto.encrypt(plaintext, correctPassword);
+                
+                // 尝试用错误密码解密
+                dcCrypto.decrypt(encrypted, wrongPassword);
+                
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong style="color: red">错误密码测试失败：应该抛出异常但没有抛出</strong></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong>错误密码测试:</strong> <span style="color: green; font-weight: bold;">通过</span></p>
+                    <p><strong>错误信息:</strong> ${error.message}</p>
+                    <p><em>正确的行为：使用错误密码无法解密</em></p>
+                `;
+            }
+        }
+
+        // 测试无效密文
+        function testInvalidCiphertext() {
+            try {
+                dcCrypto.decrypt('invalid-cipher-text', 'password');
+                
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong style="color: red">无效密文测试失败：应该抛出异常但没有抛出</strong></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('errorResult').innerHTML = `
+                    <p><strong>无效密文测试:</strong> <span style="color: green; font-weight: bold;">通过</span></p>
+                    <p><strong>错误信息:</strong> ${error.message}</p>
+                    <p><em>正确的行为：无效密文无法解密</em></p>
+                `;
+            }
+        }
+
+        // 测试相同文本不同密码
+        function testSameTextDifferentPasswords() {
+            try {
+                const plaintext = 'Hello World';
+                const password1 = 'password1';
+                const password2 = 'password2';
+                
+                const encrypted1 = dcCrypto.encrypt(plaintext, password1);
+                const encrypted2 = dcCrypto.encrypt(plaintext, password2);
+                
+                document.getElementById('securityResult').innerHTML = `
+                    <p><strong>相同文本不同密码测试:</strong> <span style="color: ${encrypted1 !== encrypted2 ? 'green' : 'red'}; font-weight: bold;">${encrypted1 !== encrypted2 ? '通过' : '失败'}</span></p>
+                    <p><strong>文本:</strong> ${plaintext}</p>
+                    <p><strong>密码1加密结果:</strong> ${encrypted1}</p>
+                    <p><strong>密码2加密结果:</strong> ${encrypted2}</p>
+                    <p><em>期望：不同密码产生不同的密文</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('securityResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试不同文本相同密码
+        function testDifferentTextSamePassword() {
+            try {
+                const text1 = 'Hello World';
+                const text2 = 'Goodbye World';
+                const password = 'samepassword';
+                
+                const encrypted1 = dcCrypto.encrypt(text1, password);
+                const encrypted2 = dcCrypto.encrypt(text2, password);
+                
+                document.getElementById('securityResult').innerHTML = `
+                    <p><strong>不同文本相同密码测试:</strong> <span style="color: ${encrypted1 !== encrypted2 ? 'green' : 'red'}; font-weight: bold;">${encrypted1 !== encrypted2 ? '通过' : '失败'}</span></p>
+                    <p><strong>文本1:</strong> ${text1} -> ${encrypted1}</p>
+                    <p><strong>文本2:</strong> ${text2} -> ${encrypted2}</p>
+                    <p><em>期望：不同文本即使使用相同密码也产生不同的密文</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('securityResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            const results = [];
+            
+            // 存储原始console.log方法
+            const originalLog = console.log;
+            let capturedOutput = '';
+            
+            // 重写console.log以捕获输出
+            console.log = function(message) {
+                capturedOutput += message + '\n';
+                originalLog.apply(console, arguments);
+            };
+            
+            try {
+                // 运行Node.js测试
+                const nodeTestPassed = require('../../../test/utils/dcCrypto/dcCrypto.test.js');
+                results.push(`<p><strong>Node.js环境测试:</strong> <span style="color: ${nodeTestPassed ? 'green' : 'red'}; font-weight: bold;">${nodeTestPassed ? '通过' : '失败'}</span></p>`);
+                
+                // 运行浏览器环境测试
+                const browserTestPassed = require('../../../test/utils/dcCrypto/dcCrypto-browser.test.js');
+                results.push(`<p><strong>浏览器环境测试:</strong> <span style="color: ${browserTestPassed ? 'green' : 'red'}; font-weight: bold;">${browserTestPassed ? '通过' : '失败'}</span></p>`);
+                
+            } catch (error) {
+                results.push(`<p><strong style="color: red">自动化测试运行失败: ${error.message}</strong></p>`);
+            } finally {
+                // 恢复原始console.log方法
+                console.log = originalLog;
+            }
+            
+            // 运行手动测试用例
+            testEmptyPlaintext();
+            testEmptyPassword();
+            testWrongPassword();
+            testInvalidCiphertext();
+            testSameTextDifferentPasswords();
+            testDifferentTextSamePassword();
+            
+            document.getElementById('allTestsResult').innerHTML = `
+                <h3>自动化测试结果</h3>
+                ${results.join('')}
+                <h3>手动测试结果</h3>
+                <p>请查看各个测试部分的结果</p>
+                <p><em>完整测试日志:</em></p>
+                <pre>${capturedOutput}</pre>
+            `;
+        }
+    </script>
+</body>
+</html>

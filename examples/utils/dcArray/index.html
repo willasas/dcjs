@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC.Array 工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .example {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+        .example h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>DC.Array 工具类示例</h1>
+
+    <div class="container">
+        <div class="example">
+            <h3>数组去重 (unique)</h3>
+            <button onclick="testUnique()">测试去重</button>
+            <div id="unique-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组扁平化 (flatten)</h3>
+            <button onclick="testFlatten()">测试扁平化</button>
+            <div id="flatten-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组分组 (groupBy)</h3>
+            <button onclick="testGroupBy()">测试分组</button>
+            <div id="groupby-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组排序 (sort)</h3>
+            <button onclick="testSort()">测试排序</button>
+            <div id="sort-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组交集 (intersection)</h3>
+            <button onclick="testIntersection()">测试交集</button>
+            <div id="intersection-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组差集 (difference)</h3>
+            <button onclick="testDifference()">测试差集</button>
+            <div id="difference-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组合并 (union)</h3>
+            <button onclick="testUnion()">测试合并</button>
+            <div id="union-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组切片 (chunk)</h3>
+            <button onclick="testChunk()">测试切片</button>
+            <div id="chunk-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组洗牌 (shuffle)</h3>
+            <button onclick="testShuffle()">测试洗牌</button>
+            <div id="shuffle-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>随机元素 (random)</h3>
+            <button onclick="testRandom()">测试随机元素</button>
+            <div id="random-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组求和 (sum)</h3>
+            <button onclick="testSum()">测试求和</button>
+            <div id="sum-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组平均值 (average)</h3>
+            <button onclick="testAverage()">测试平均值</button>
+            <div id="average-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组最大值 (max)</h3>
+            <button onclick="testMax()">测试最大值</button>
+            <div id="max-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组最小值 (min)</h3>
+            <button onclick="testMin()">测试最小值</button>
+            <div id="min-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>数组转树形结构 (toTree)</h3>
+            <button onclick="testToTree()">测试转树形结构</button>
+            <div id="totree-result" class="result"></div>
+        </div>
+
+        <div class="example">
+            <h3>树形结构转数组 (fromTree)</h3>
+            <button onclick="testFromTree()">测试树形结构转数组</button>
+            <div id="fromtree-result" class="result"></div>
+        </div>
+    </div>
+
+    <script src="../../../dist/dc.js"></script>
+    <script>
+        // 测试数组去重
+        function testUnique() {
+            const arr = [1, 2, 2, 3, 4, 4, 5];
+            const result = DC.Array.unique(arr);
+            document.getElementById('unique-result').textContent = `原始数组: [${arr.join(', ')}]\n去重后: [${result.join(', ')}]`;
+        }
+
+        // 测试数组扁平化
+        function testFlatten() {
+            const arr = [1, [2, [3, [4]], 5]];
+            const result = DC.Array.flatten(arr);
+            document.getElementById('flatten-result').textContent = `原始数组: ${JSON.stringify(arr)}\n扁平化后: [${result.join(', ')}]`;
+        }
+
+        // 测试数组分组
+        function testGroupBy() {
+            const arr = [
+                { name: 'Alice', age: 25 },
+                { name: 'Bob', age: 30 },
+                { name: 'Charlie', age: 25 }
+            ];
+            const result = DC.Array.groupBy(arr, 'age');
+            document.getElementById('groupby-result').textContent = `原始数组: ${JSON.stringify(arr)}\n按年龄分组: ${JSON.stringify(result)}`;
+        }
+
+        // 测试数组排序
+        function testSort() {
+            const arr = [3, 1, 4, 1, 5, 9, 2, 6];
+            const result = DC.Array.sort(arr);
+            document.getElementById('sort-result').textContent = `原始数组: [${arr.join(', ')}]\n排序后: [${result.join(', ')}]`;
+        }
+
+        // 测试数组交集
+        function testIntersection() {
+            const arr1 = [1, 2, 3, 4, 5];
+            const arr2 = [4, 5, 6, 7, 8];
+            const result = DC.Array.intersection(arr1, arr2);
+            document.getElementById('intersection-result').textContent = `数组1: [${arr1.join(', ')}]\n数组2: [${arr2.join(', ')}]\n交集: [${result.join(', ')}]`;
+        }
+
+        // 测试数组差集
+        function testDifference() {
+            const arr1 = [1, 2, 3, 4, 5];
+            const arr2 = [4, 5, 6, 7, 8];
+            const result = DC.Array.difference(arr1, arr2);
+            document.getElementById('difference-result').textContent = `数组1: [${arr1.join(', ')}]\n数组2: [${arr2.join(', ')}]\n差集: [${result.join(', ')}]`;
+        }
+
+        // 测试数组合并
+        function testUnion() {
+            const arr1 = [1, 2, 3, 4, 5];
+            const arr2 = [4, 5, 6, 7, 8];
+            const result = DC.Array.union(arr1, arr2);
+            document.getElementById('union-result').textContent = `数组1: [${arr1.join(', ')}]\n数组2: [${arr2.join(', ')}]\n并集: [${result.join(', ')}]`;
+        }
+
+        // 测试数组切片
+        function testChunk() {
+            const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const result = DC.Array.chunk(arr, 3);
+            document.getElementById('chunk-result').textContent = `原始数组: [${arr.join(', ')}]\n切片(大小为3): ${JSON.stringify(result)}`;
+        }
+
+        // 测试数组洗牌
+        function testShuffle() {
+            const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const result = DC.Array.shuffle(arr);
+            document.getElementById('shuffle-result').textContent = `原始数组: [${arr.join(', ')}]\n洗牌后: [${result.join(', ')}]`;
+        }
+
+        // 测试随机元素
+        function testRandom() {
+            const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const result1 = DC.Array.random(arr);
+            const result3 = DC.Array.random(arr, 3);
+            document.getElementById('random-result').textContent = `原始数组: [${arr.join(', ')}]\n随机1个元素: ${result1}\n随机3个元素: [${result3.join(', ')}]`;
+        }
+
+        // 测试数组求和
+        function testSum() {
+            const arr = [1, 2, 3, 4, 5];
+            const result = DC.Array.sum(arr);
+            document.getElementById('sum-result').textContent = `数组: [${arr.join(', ')}]\n求和: ${result}`;
+        }
+
+        // 测试数组平均值
+        function testAverage() {
+            const arr = [1, 2, 3, 4, 5];
+            const result = DC.Array.average(arr);
+            document.getElementById('average-result').textContent = `数组: [${arr.join(', ')}]\n平均值: ${result}`;
+        }
+
+        // 测试数组最大值
+        function testMax() {
+            const arr = [1, 2, 3, 4, 5];
+            const result = DC.Array.max(arr);
+            document.getElementById('max-result').textContent = `数组: [${arr.join(', ')}]\n最大值: ${result}`;
+        }
+
+        // 测试数组最小值
+        function testMin() {
+            const arr = [1, 2, 3, 4, 5];
+            const result = DC.Array.min(arr);
+            document.getElementById('min-result').textContent = `数组: [${arr.join(', ')}]\n最小值: ${result}`;
+        }
+
+        // 测试数组转树形结构
+        function testToTree() {
+            const arr = [
+                { id: 1, name: '节点1', parentId: null },
+                { id: 2, name: '节点1.1', parentId: 1 },
+                { id: 3, name: '节点1.2', parentId: 1 },
+                { id: 4, name: '节点2', parentId: null },
+                { id: 5, name: '节点2.1', parentId: 4 }
+            ];
+            const result = DC.Array.toTree(arr);
+            document.getElementById('totree-result').textContent = `原始数组: ${JSON.stringify(arr, null, 2)}\n树形结构: ${JSON.stringify(result, null, 2)}`;
+        }
+
+        // 测试树形结构转数组
+        function testFromTree() {
+            const tree = [
+                {
+                    id: 1,
+                    name: '节点1',
+                    children: [
+                        { id: 2, name: '节点1.1', children: [] },
+                        { id: 3, name: '节点1.2', children: [] }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: '节点2',
+                    children: [
+                        { id: 5, name: '节点2.1', children: [] }
+                    ]
+                }
+            ];
+            const result = DC.Array.fromTree(tree);
+            document.getElementById('fromtree-result').textContent = `树形结构: ${JSON.stringify(tree, null, 2)}\n扁平数组: ${JSON.stringify(result, null, 2)}`;
+        }
+
+        // 页面加载完成后执行一次测试
+        window.onload = function() {
+            testUnique();
+            testFlatten();
+            testGroupBy();
+            testSort();
+            testIntersection();
+            testDifference();
+            testUnion();
+            testChunk();
+            testShuffle();
+            testRandom();
+            testSum();
+            testAverage();
+            testMax();
+            testMin();
+            testToTree();
+            testFromTree();
+        };
+    </script>
+</body>
+</html>

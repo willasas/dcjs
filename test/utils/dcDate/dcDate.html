@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcDate 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .tabs {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            transition: 0.3s;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        .tab-button.active {
+            background-color: #ccc;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcDate 工具类交互式测试</h1>
+
+    <!-- 当前日期时间 -->
+    <div class="info-box">
+        <p><strong>当前时间:</strong> <span id="currentTime"></span></p>
+    </div>
+
+    <!-- 标签页容器 -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'format')">格式化</button>
+        <button class="tab-button" onclick="openTab(event, 'parse')">解析</button>
+        <button class="tab-button" onclick="openTab(event, 'calculate')">计算</button>
+        <button class="tab-button" onclick="openTab(event, 'advanced')">高级功能</button>
+        <button class="tab-button" onclick="openTab(event, 'allTests')">运行所有测试</button>
+    </div>
+
+    <!-- 格式化标签页 -->
+    <div id="format" class="tab-content active">
+        <div class="test-container">
+            <div class="test-title">日期格式化</div>
+            
+            <label for="formatDate">选择日期:</label>
+            <input type="datetime-local" id="formatDate" value="2023-12-25T10:30:00">
+            
+            <label for="formatPattern">格式模式:</label>
+            <select id="formatPattern" onchange="updatePreview()">
+                <option value="yyyy-MM-dd HH:mm:ss">标准格式 (yyyy-MM-dd HH:mm:ss)</option>
+                <option value="yyyy年MM月dd日 HH时mm分ss秒">中文格式 (yyyy年MM月dd日 HH时mm分ss秒)</option>
+                <option value="yyyy/MM/dd">斜杠分隔 (yyyy/MM/dd)</option>
+                <option value="yyyyMMdd">无分隔 (yyyyMMdd)</option>
+                <option value="HH:mm">仅时间 (HH:mm)</option>
+                <option value="custom">自定义</option>
+            </select>
+            
+            <div id="customFormatContainer" style="display: none;">
+                <label for="customFormat">自定义格式:</label>
+                <input type="text" id="customFormat" placeholder="输入自定义格式，如: yyyy年MM月dd日">
+            </div>
+            
+            <label>预览:</label>
+            <div class="result" id="formatPreview"></div>
+            
+            <button onclick="formatDate()">格式化</button>
+            <button onclick="updatePreview()">更新预览</button>
+            <button onclick="clearResults()">清空</button>
+            
+            <div class="result" id="formatResult"></div>
+        </div>
+    </div>
+
+    <!-- 解析标签页 -->
+    <div id="parse" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">日期解析</div>
+            
+            <label for="parseString">日期字符串:</label>
+            <input type="text" id="parseString" placeholder="输入日期字符串">
+            
+            <label for="parsePattern">解析格式:</label>
+            <select id="parsePattern">
+                <option value="iso">ISO格式 (自动识别)</option>
+                <option value="yyyy-MM-dd HH:mm:ss">标准格式</option>
+                <option value="yyyy年MM月dd日 HH时mm分ss秒">中文格式</option>
+                <option value="yyyy/MM/dd">斜杠分隔</option>
+                <option value="yyyyMMdd">无分隔</option>
+                <option value="custom">自定义</option>
+            </select>
+            
+            <div id="customParseContainer" style="display: none;">
+                <label for="customParseFormat">自定义格式:</label>
+                <input type="text" id="customParseFormat" placeholder="输入自定义格式">
+            </div>
+            
+            <button onclick="parseDate()">解析</button>
+            <button onclick="clearResults()">清空</button>
+            
+            <div class="result" id="parseResult"></div>
+        </div>
+    </div>
+
+    <!-- 计算标签页 -->
+    <div id="calculate" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">日期计算</div>
+            
+            <label for="calcDate">基准日期:</label>
+            <input type="datetime-local" id="calcDate" value="2023-12-25T10:30:00">
+            
+            <div>
+                <label>添加:</label>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <input type="number" id="days" value="0" min="0" style="width: 60px;"> 天
+                    <input type="number" id="months" value="0" min="0" style="width: 60px;"> 个月
+                    <input type="number" id="years" value="0" min="0" style="width: 60px;"> 年
+                </div>
+            </div>
+            
+            <button onclick="calculateDate()">计算</button>
+            <button onclick="clearResults()">清空</button>
+            
+            <div class="result" id="calcResult"></div>
+        </div>
+    </div>
+
+    <!-- 高级功能标签页 -->
+    <div id="advanced" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">高级功能测试</div>
+            
+            <button onclick="testLeapYear()">闰年计算测试</button>
+            <button onclick="testEdgeCases()">边界情况测试</button>
+            <button onclick="testTimezone()">时区处理测试</button>
+            <button onclick="testPerformance()">性能测试</button>
+            
+            <div class="result" id="advancedResult"></div>
+        </div>
+    </div>
+
+    <!-- 运行所有测试标签页 -->
+    <div id="allTests" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">运行所有测试</div>
+            
+            <button onclick="runAllTests()">执行全部测试</button>
+            
+            <div class="result" id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <script src="../../../src/utils/dcDate.js"></script>
+    <script>
+        // 页面加载时初始化
+        window.onload = function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            updatePreview();
+        };
+
+        // 更新当前时间显示
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                dcDate.format(now, 'yyyy-MM-dd HH:mm:ss');
+        }
+
+        // 切换标签页
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+            
+            // 特殊处理自定义格式显示
+            if (tabName === 'format' || tabName === 'parse') {
+                updateCustomFormatVisibility();
+            }
+        }
+
+        // 格式化日期
+        function formatDate() {
+            try {
+                const dateString = document.getElementById('formatDate').value;
+                if (!dateString) {
+                    throw new Error('请选择日期');
+                }
+                
+                const date = new Date(dateString);
+                let pattern = document.getElementById('formatPattern').value;
+                
+                if (pattern === 'custom') {
+                    pattern = document.getElementById('customFormat').value;
+                    if (!pattern) {
+                        throw new Error('请输入自定义格式');
+                    }
+                }
+                
+                const formatted = dcDate.format(date, pattern);
+                
+                document.getElementById('formatResult').innerHTML = `
+                    <p><strong>原始日期:</strong> ${dateString}</p>
+                    <p><strong>格式模式:</strong> ${pattern}</p>
+                    <p><strong>格式化结果:</strong> <code>${formatted}</code></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('formatResult').innerHTML = `
+                    <p><strong style="color: red">格式化失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 更新预览
+        function updatePreview() {
+            try {
+                const dateString = document.getElementById('formatDate').value || '2023-12-25T10:30:00';
+                const date = new Date(dateString);
+                let pattern = document.getElementById('formatPattern').value;
+                
+                if (pattern === 'custom') {
+                    pattern = document.getElementById('customFormat').value;
+                    if (!pattern) {
+                        document.getElementById('formatPreview').innerHTML = '';
+                        return;
+                    }
+                }
+                
+                const formatted = dcDate.format(date, pattern);
+                document.getElementById('formatPreview').innerHTML = `<code>${formatted}</code>`;
+                
+            } catch (error) {
+                document.getElementById('formatPreview').innerHTML = `<p style="color: red">${error.message}</p>`;
+            }
+        }
+
+        // 解析日期
+        function parseDate() {
+            try {
+                const dateString = document.getElementById('parseString').value;
+                if (!dateString) {
+                    throw new Error('请输入日期字符串');
+                }
+                
+                let pattern = document.getElementById('parsePattern').value;
+                let parsed;
+                
+                if (pattern === 'iso') {
+                    // 自动解析
+                    parsed = dcDate.parse(dateString);
+                } else if (pattern === 'custom') {
+                    const customPattern = document.getElementById('customParseFormat').value;
+                    if (!customPattern) {
+                        throw new Error('请输入自定义格式');
+                    }
+                    parsed = dcDate.parse(dateString, customPattern);
+                } else {
+                    parsed = dcDate.parse(dateString, pattern);
+                }
+                
+                if (!(parsed instanceof Date) || isNaN(parsed.getTime())) {
+                    throw new Error('无法解析为有效日期');
+                }
+                
+                document.getElementById('parseResult').innerHTML = `
+                    <p><strong>输入字符串:</strong> ${dateString}</p>
+                    <p><strong>解析结果:</strong> ${dcDate.format(parsed, 'yyyy-MM-dd HH:mm:ss')}</p>
+                    <p><strong>时间戳:</strong> ${parsed.getTime()}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('parseResult').innerHTML = `
+                    <p><strong style="color: red">解析失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 计算日期
+        function calculateDate() {
+            try {
+                const dateString = document.getElementById('calcDate').value;
+                if (!dateString) {
+                    throw new Error('请选择基准日期');
+                }
+                
+                const baseDate = new Date(dateString);
+                const days = parseInt(document.getElementById('days').value) || 0;
+                const months = parseInt(document.getElementById('months').value) || 0;
+                const years = parseInt(document.getElementById('years').value) || 0;
+                
+                let resultDate = new Date(baseDate);
+                
+                // 按顺序添加
+                if (days > 0) {
+                    resultDate = dcDate.addDays(resultDate, days);
+                }
+                if (months > 0) {
+                    resultDate = dcDate.addMonths(resultDate, months);
+                }
+                if (years > 0) {
+                    resultDate = dcDate.addYears(resultDate, years);
+                }
+                
+                document.getElementById('calcResult').innerHTML = `
+                    <p><strong>基准日期:</strong> ${dcDate.format(baseDate, 'yyyy-MM-dd HH:mm:ss')}</p>
+                    <p><strong>添加:</strong> ${days}天, ${months}个月, ${years}年</p>
+                    <p><strong>计算结果:</strong> ${dcDate.format(resultDate, 'yyyy-MM-dd HH:mm:ss')}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('calcResult').innerHTML = `
+                    <p><strong style="color: red">计算失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试闰年计算
+        function testLeapYear() {
+            try {
+                // 测试2024年（闰年）2月28日加2天
+                const leapDate = new Date('2024-02-28');
+                const result = dcDate.addDays(leapDate, 2);
+                const expected = new Date('2024-03-01');
+                
+                const passed = result.getFullYear() === expected.getFullYear() &&
+                             result.getMonth() === expected.getMonth() &&
+                             result.getDate() === expected.getDate();
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>闰年计算测试:</strong> <span style="color: ${passed ? 'green' : 'red'}; font-weight: bold;">${passed ? '通过' : '失败'}</span></p>
+                    <p><strong>输入:</strong> 2024-02-28 + 2天</p>
+                    <p><strong>期望:</strong> 2024-03-01</p>
+                    <p><strong>实际:</strong> ${dcDate.format(result, 'yyyy-MM-dd')}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 测试边界情况
+        function testEdgeCases() {
+            let results = [];
+            
+            // 空值测试
+            try {
+                const emptyFormat = dcDate.format(null, 'yyyy-MM-dd');
+                results.push(`<p><strong>空日期格式化:</strong> ${emptyFormat === '' ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</p>`);
+            } catch (error) {
+                results.push(`<p><strong style="color: red">空日期格式化异常: ${error.message}</strong></p>`);
+            }
+            
+            // 无效日期测试
+            try {
+                const invalidFormat = dcDate.format(new Date('invalid'), 'yyyy-MM-dd');
+                results.push(`<p><strong>无效日期格式化:</strong> ${invalidFormat === '' ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</p>`);
+            } catch (error) {
+                results.push(`<p><strong style="color: red">无效日期格式化异常: ${error.message}</strong></p>`);
+            }
+            
+            // 空字符串解析
+            try {
+                const parsed = dcDate.parse('');
+                const failed = !(parsed instanceof Date) || isNaN(parsed.getTime());
+                results.push(`<p><strong>空字符串解析:</strong> ${failed ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</p>`);
+            } catch (error) {
+                results.push(`<p><strong style="color: red">空字符串解析异常: ${error.message}</strong></p>`);
+            }
+            
+            document.getElementById('advancedResult').innerHTML = `<h3>边界情况测试结果</h3>` + results.join('');
+        }
+
+        // 测试时区处理
+        function testTimezone() {
+            try {
+                // 获取当前时区偏移
+                const now = new Date();
+                const timezoneOffset = now.getTimezoneOffset();
+                const hoursOffset = Math.abs(Math.floor(timezoneOffset / 60));
+                const minutesOffset = Math.abs(timezoneOffset % 60);
+                const sign = timezoneOffset > 0 ? '-' : '+';
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>时区信息:</strong></p>
+                    <p><strong>当前时区偏移:</strong> ${sign}${hoursOffset.toString().padStart(2, '0')}:${minutesOffset.toString().padStart(2, '0')} (${timezoneOffset}分钟)</p>
+                    <p><strong>本地时间:</strong> ${now.toLocaleString()}</p>
+                    <p><strong>UTC时间:</strong> ${now.toISOString()}</p>
+                    <p><em>dcDate工具主要基于本地时间进行操作</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">时区测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 性能测试
+        function testPerformance() {
+            try {
+                const iterations = 10000;
+                const start = performance.now();
+                
+                for (let i = 0; i < iterations; i++) {
+                    const date = new Date(Date.now() + i * 1000);
+                    dcDate.format(date, 'yyyy-MM-dd HH:mm:ss');
+                }
+                
+                const end = performance.now();
+                const duration = end - start;
+                const opsPerSecond = Math.round(iterations / (duration / 1000));
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>性能测试结果:</strong></p>
+                    <p><strong>迭代次数:</strong> ${iterations}</p>
+                    <p><strong>耗时:</strong> ${duration.toFixed(2)}ms</p>
+                    <p><strong>每秒操作数:</strong> ${opsPerSecond.toLocaleString()} ops/s</p>
+                    <p><em>测试在当前浏览器环境下进行</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">性能测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            const results = [];
+            
+            // 存储原始console.log方法
+            const originalLog = console.log;
+            let capturedOutput = '';
+            
+            // 重写console.log以捕获输出
+            console.log = function(message) {
+                capturedOutput += message + '\n';
+                originalLog.apply(console, arguments);
+            };
+            
+            try {
+                // 运行Node.js测试
+                const nodeTestPassed = require('../../../test/utils/dcDate/dcDate.test.js');
+                results.push(`<p><strong>Node.js环境测试:</strong> <span style="color: ${nodeTestPassed ? 'green' : 'red'}; font-weight: bold;">${nodeTestPassed ? '通过' : '失败'}</span></p>`);
+                
+                // 运行浏览器环境测试
+                const browserTestPassed = require('../../../test/utils/dcDate/dcDate-browser.test.js');
+                results.push(`<p><strong>浏览器环境测试:</strong> <span style="color: ${browserTestPassed ? 'green' : 'red'}; font-weight: bold;">${browserTestPassed ? '通过' : '失败'}</span></p>`);
+                
+            } catch (error) {
+                results.push(`<p><strong style="color: red">自动化测试运行失败: ${error.message}</strong></p>`);
+            } finally {
+                // 恢复原始console.log方法
+                console.log = originalLog;
+            }
+            
+            // 运行手动测试用例
+            testLeapYear();
+            testEdgeCases();
+            
+            document.getElementById('allTestsResult').innerHTML = `
+                <h3>自动化测试结果</h3>
+                ${results.join('')}
+                <h3>手动测试结果</h3>
+                <p>请查看"高级功能"标签页中的测试结果</p>
+                <p><em>完整测试日志:</em></p>
+                <pre>${capturedOutput}</pre>
+            `;
+        }
+
+        // 清空结果
+        function clearResults() {
+            document.getElementById('formatResult').innerHTML = '';
+            document.getElementById('parseResult').innerHTML = '';
+            document.getElementById('calcResult').innerHTML = '';
+            document.getElementById('advancedResult').innerHTML = '';
+        }
+
+        // 更新自定义格式显示
+        function updateCustomFormatVisibility() {
+            const formatPattern = document.getElementById('formatPattern');
+            const customFormatContainer = document.getElementById('customFormatContainer');
+            
+            if (formatPattern && formatPattern.value === 'custom') {
+                customFormatContainer.style.display = 'block';
+            } else {
+                customFormatContainer.style.display = 'none';
+            }
+            
+            // 同样处理解析部分的自定义格式
+            const parsePattern = document.getElementById('parsePattern');
+            const customParseContainer = document.getElementById('customParseContainer');
+            
+            if (parsePattern && parsePattern.value === 'custom') {
+                customParseContainer.style.display = 'block';
+            } else {
+                customParseContainer.style.display = 'none';
+            }
+        }
+
+        // 监听格式选择变化
+        document.getElementById('formatPattern').addEventListener('change', updateCustomFormatVisibility);
+        document.getElementById('parsePattern').addEventListener('change', updateCustomFormatVisibility);
+    </script>
+</body>
+</html>

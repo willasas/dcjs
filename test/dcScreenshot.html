@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC.Screenshot 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-suite {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .test-suite h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .pass {
+            background-color: #e8f5e9;
+            border-left: 6px solid #4CAF50;
+        }
+        .fail {
+            background-color: #fdecea;
+            border-left: 6px solid #f44336;
+        }
+        .info {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+        .test-target {
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+        .test-summary {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>DC.Screenshot 工具类测试</h1>
+
+    <div class="test-suite">
+        <h3>测试1: 基本功能测试</h3>
+        <button onclick="runBasicTests()">运行基本测试</button>
+        <div id="basic-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试2: 格式支持测试</h3>
+        <button onclick="runFormatTests()">运行格式测试</button>
+        <div id="format-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试3: 元素截图测试</h3>
+        <div id="test-element" class="test-target">测试元素</div>
+        <button onclick="runElementTests()">运行元素测试</button>
+        <div id="element-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试4: 区域截图测试</h3>
+        <button onclick="runRegionTests()">运行区域测试</button>
+        <div id="region-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试5: 水印功能测试</h3>
+        <button onclick="runWatermarkTests()">运行水印测试</button>
+        <div id="watermark-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试6: 错误处理测试</h3>
+        <button onclick="runErrorTests()">运行错误处理测试</button>
+        <div id="error-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试7: 性能测试</h3>
+        <button onclick="runPerformanceTests()">运行性能测试</button>
+        <div id="performance-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-summary">
+        <h3>测试总结</h3>
+        <div>总测试数: <span id="total-tests">0</span></div>
+        <div>通过测试: <span id="passed-tests">0</span></div>
+        <div>失败测试: <span id="failed-tests">0</span></div>
+        <div>通过率: <span id="pass-rate">0%</span></div>
+    </div>
+
+    <script src="../../../dist/dc.js"></script>
+    <script>
+        // 测试统计
+        let testStats = {
+            total: 0,
+            passed: 0,
+            failed: 0
+        };
+
+        // 更新测试统计
+        function updateStats() {
+            document.getElementById('total-tests').textContent = testStats.total;
+            document.getElementById('passed-tests').textContent = testStats.passed;
+            document.getElementById('failed-tests').textContent = testStats.failed;
+            document.getElementById('pass-rate').textContent = testStats.total > 0
+                ? Math.round((testStats.passed / testStats.total) * 100) + '%'
+                : '0%';
+        }
+
+        // 显示测试结果
+        function showTestResult(containerId, testName, passed, message) {
+            const container = document.getElementById(containerId);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = passed ? 'pass' : 'fail';
+            resultDiv.innerHTML = `<strong>${testName}:</strong> ${passed ? '通过' : '失败'} - ${message}`;
+            container.appendChild(resultDiv);
+
+            // 更新统计
+            testStats.total++;
+            if (passed) {
+                testStats.passed++;
+            } else {
+                testStats.failed++;
+            }
+            updateStats();
+        }
+
+        // 显示测试信息
+        function showTestInfo(containerId, message) {
+            const container = document.getElementById(containerId);
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info';
+            infoDiv.innerHTML = `<strong>信息:</strong> ${message}`;
+            container.appendChild(infoDiv);
+        }
+
+        // 清除测试结果
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        // 基本功能测试
+        async function runBasicTests() {
+            clearResults('basic-test-results');
+            showTestInfo('basic-test-results', '开始基本功能测试...');
+
+            try {
+                // 测试默认构造函数
+                const screenshot1 = new DC.Screenshot();
+                showTestResult('basic-test-results', '默认构造函数',
+                    screenshot1 !== undefined && screenshot1.options !== undefined,
+                    '默认构造函数创建成功');
+
+                // 测试自定义选项构造函数
+                const screenshot2 = new DC.Screenshot({
+                    format: 'png',
+                    quality: 0.9
+                });
+                showTestResult('basic-test-results', '自定义选项构造函数',
+                    screenshot2.options.format === 'png' && screenshot2.options.quality === 0.9,
+                    '自定义选项构造函数创建成功');
+
+                // 测试全页面截图
+                const fullPageResult = await screenshot1.captureFullPage();
+                showTestResult('basic-test-results', '全页面截图',
+                    fullPageResult.success && fullPageResult.dataUrl && fullPageResult.width > 0 && fullPageResult.height > 0,
+                    '全页面截图成功');
+
+                // 测试结果对象结构
+                const hasRequiredFields = fullPageResult.success !== undefined &&
+                                         fullPageResult.dataUrl !== undefined &&
+                                         fullPageResult.width !== undefined &&
+                                         fullPageResult.height !== undefined;
+                showTestResult('basic-test-results', '结果对象结构',
+                    hasRequiredFields,
+                    '结果对象包含必需字段');
+
+            } catch (error) {
+                showTestResult('basic-test-results', '基本功能测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 格式支持测试
+        async function runFormatTests() {
+            clearResults('format-test-results');
+            showTestInfo('format-test-results', '开始格式支持测试...');
+
+            try {
+                // 测试PNG格式
+                const pngScreenshot = new DC.Screenshot({ format: 'png' });
+                const pngResult = await pngScreenshot.captureFullPage();
+                showTestResult('format-test-results', 'PNG格式截图',
+                    pngResult.success && pngResult.dataUrl.startsWith('data:image/png'),
+                    'PNG格式截图成功');
+
+                // 测试JPEG格式
+                const jpegScreenshot = new DC.Screenshot({ format: 'jpeg' });
+                const jpegResult = await jpegScreenshot.captureFullPage();
+                showTestResult('format-test-results', 'JPEG格式截图',
+                    jpegResult.success && jpegResult.dataUrl.startsWith('data:image/jpeg'),
+                    'JPEG格式截图成功');
+
+                // 测试WebP格式（如果浏览器支持）
+                const webpSupported = document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
+                if (webpSupported) {
+                    const webpScreenshot = new DC.Screenshot({ format: 'webp' });
+                    const webpResult = await webpScreenshot.captureFullPage();
+                    showTestResult('format-test-results', 'WebP格式截图',
+                        webpResult.success && webpResult.dataUrl.startsWith('data:image/webp'),
+                        'WebP格式截图成功');
+                } else {
+                    showTestResult('format-test-results', 'WebP格式截图', true, '浏览器不支持WebP格式，跳过测试');
+                }
+
+            } catch (error) {
+                showTestResult('format-test-results', '格式支持测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 元素截图测试
+        async function runElementTests() {
+            clearResults('element-test-results');
+            showTestInfo('element-test-results', '开始元素截图测试...');
+
+            try {
+                const screenshot = new DC.Screenshot();
+                const element = document.getElementById('test-element');
+
+                // 测试元素截图
+                const elementResult = await screenshot.captureElement(element);
+                showTestResult('element-test-results', '元素截图',
+                    elementResult.success && elementResult.dataUrl && elementResult.width > 0 && elementResult.height > 0,
+                    '元素截图成功');
+
+                // 测试元素尺寸
+                const elementRect = element.getBoundingClientRect();
+                const sizeMatch = Math.abs(elementResult.width - elementRect.width) < 5 &&
+                                 Math.abs(elementResult.height - elementRect.height) < 5;
+                showTestResult('element-test-results', '元素尺寸匹配',
+                    sizeMatch,
+                    `元素尺寸匹配: 实际(${elementRect.width}x${elementRect.height}) vs 截图(${elementResult.width}x${elementResult.height})`);
+
+            } catch (error) {
+                showTestResult('element-test-results', '元素截图测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 区域截图测试
+        async function runRegionTests() {
+            clearResults('region-test-results');
+            showTestInfo('region-test-results', '开始区域截图测试...');
+
+            try {
+                const screenshot = new DC.Screenshot();
+
+                // 测试区域截图
+                const regionResult = await screenshot.captureRegion(100, 100, 400, 300);
+                showTestResult('region-test-results', '区域截图',
+                    regionResult.success && regionResult.dataUrl && regionResult.width === 400 && regionResult.height === 300,
+                    '区域截图成功');
+
+                // 测试小区域截图
+                const smallRegionResult = await screenshot.captureRegion(50, 50, 10, 10);
+                showTestResult('region-test-results', '小区域截图',
+                    smallRegionResult.success && smallRegionResult.dataUrl && smallRegionResult.width === 10 && smallRegionResult.height === 10,
+                    '小区域截图成功');
+
+            } catch (error) {
+                showTestResult('region-test-results', '区域截图测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 水印功能测试
+        async function runWatermarkTests() {
+            clearResults('watermark-test-results');
+            showTestInfo('watermark-test-results', '开始水印功能测试...');
+
+            try {
+                // 测试默认水印
+                const watermarkScreenshot1 = new DC.Screenshot({
+                    watermark: {
+                        text: 'Test Watermark'
+                    }
+                });
+                const watermarkResult1 = await watermarkScreenshot1.captureFullPage();
+                showTestResult('watermark-test-results', '默认水印',
+                    watermarkResult1.success && watermarkResult1.dataUrl,
+                    '默认水印截图成功');
+
+                // 测试自定义水印
+                const watermarkScreenshot2 = new DC.Screenshot({
+                    watermark: {
+                        text: 'Custom Watermark',
+                        position: 'top-left',
+                        color: 'rgba(255, 0, 0, 0.7)',
+                        fontSize: 20
+                    }
+                });
+                const watermarkResult2 = await watermarkScreenshot2.captureFullPage();
+                showTestResult('watermark-test-results', '自定义水印',
+                    watermarkResult2.success && watermarkResult2.dataUrl,
+                    '自定义水印截图成功');
+
+            } catch (error) {
+                showTestResult('watermark-test-results', '水印功能测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 错误处理测试
+        async function runErrorTests() {
+            clearResults('error-test-results');
+            showTestInfo('error-test-results', '开始错误处理测试...');
+
+            try {
+                const screenshot = new DC.Screenshot();
+
+                // 测试无效元素
+                try {
+                    const invalidElementResult = await screenshot.captureElement(null);
+                    showTestResult('error-test-results', '无效元素处理',
+                        !invalidElementResult.success && invalidElementResult.error,
+                        `正确处理无效元素: ${invalidElementResult.error}`);
+                } catch (error) {
+                    showTestResult('error-test-results', '无效元素处理', true, '正确抛出异常');
+                }
+
+                // 测试无效区域
+                try {
+                    const invalidRegionResult = await screenshot.captureRegion(-10, -10, -5, -5);
+                    showTestResult('error-test-results', '无效区域处理',
+                        !invalidRegionResult.success && invalidRegionResult.error,
+                        `正确处理无效区域: ${invalidRegionResult.error}`);
+                } catch (error) {
+                    showTestResult('error-test-results', '无效区域处理', true, '正确抛出异常');
+                }
+
+                // 测试无效格式
+                try {
+                    const invalidFormatScreenshot = new DC.Screenshot({ format: 'invalid-format' });
+                    const invalidFormatResult = await invalidFormatScreenshot.captureFullPage();
+                    showTestResult('error-test-results', '无效格式处理',
+                        !invalidFormatResult.success && invalidFormatResult.error,
+                        `正确处理无效格式: ${invalidFormatResult.error}`);
+                } catch (error) {
+                    showTestResult('error-test-results', '无效格式处理', true, '正确抛出异常');
+                }
+
+            } catch (error) {
+                showTestResult('error-test-results', '错误处理测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 性能测试
+        async function runPerformanceTests() {
+            clearResults('performance-test-results');
+            showTestInfo('performance-test-results', '开始性能测试...');
+
+            try {
+                const screenshot = new DC.Screenshot();
+
+                // 测试全页面截图性能
+                const fullPageStartTime = performance.now();
+                const fullPageResult = await screenshot.captureFullPage();
+                const fullPageEndTime = performance.now();
+                const fullPageTime = fullPageEndTime - fullPageStartTime;
+
+                showTestResult('performance-test-results', '全页面截图性能',
+                    fullPageResult.success && fullPageTime < 5000,
+                    `全页面截图耗时: ${fullPageTime.toFixed(2)}ms`);
+
+                // 测试元素截图性能
+                const element = document.getElementById('test-element');
+                const elementStartTime = performance.now();
+                const elementResult = await screenshot.captureElement(element);
+                const elementEndTime = performance.now();
+                const elementTime = elementEndTime - elementStartTime;
+
+                showTestResult('performance-test-results', '元素截图性能',
+                    elementResult.success && elementTime < 1000,
+                    `元素截图耗时: ${elementTime.toFixed(2)}ms`);
+
+                // 测试区域截图性能
+                const regionStartTime = performance.now();
+                const regionResult = await screenshot.captureRegion(100, 100, 400, 300);
+                const regionEndTime = performance.now();
+                const regionTime = regionEndTime - regionStartTime;
+
+                showTestResult('performance-test-results', '区域截图性能',
+                    regionResult.success && regionTime < 1000,
+                    `区域截图耗时: ${regionTime.toFixed(2)}ms`);
+
+            } catch (error) {
+                showTestResult('performance-test-results', '性能测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            updateStats();
+        };
+    </script>
+</body>
+</html>

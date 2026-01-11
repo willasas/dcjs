@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcProgressBar 组件测试</title>
+    <link rel="stylesheet" href="../../dist/dc-1.0.0-2026-01-07.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .pass {
+            color: green;
+        }
+        .fail {
+            color: red;
+        }
+        .progress-container {
+            margin: 20px 0;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        .demo-container {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcProgressBar 组件测试</h1>
+
+    <div class="test-section">
+        <h2>基本功能测试</h2>
+        <p>测试dcProgressBar组件的基本功能</p>
+        <button onclick="testBasicFunction()">测试基本功能</button>
+        <div id="basic-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>进度条属性测试</h2>
+        <p>测试进度条的各种属性设置</p>
+        <button onclick="testProgressProperties()">测试进度条属性</button>
+        <div id="properties-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>进度条方法测试</h2>
+        <p>测试进度条的各种方法</p>
+        <button onclick="testProgressMethods()">测试进度条方法</button>
+        <div id="methods-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>交互式测试</h2>
+        <p>通过控制按钮测试进度条</p>
+        <div class="demo-container">
+            <div id="interactive-progress-container"></div>
+            <div class="controls">
+                <button onclick="setProgress(0)">0%</button>
+                <button onclick="setProgress(25)">25%</button>
+                <button onclick="setProgress(50)">50%</button>
+                <button onclick="setProgress(75)">75%</button>
+                <button onclick="setProgress(100)">100%</button>
+                <button onclick="incrementProgress(10)">+10%</button>
+                <button onclick="decrementProgress(10)">-10%</button>
+                <button onclick="animateProgress()">动画到100%</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>自定义样式测试</h2>
+        <p>测试不同样式的进度条</p>
+        <div class="demo-container">
+            <h3>默认样式</h3>
+            <div id="default-progress-container"></div>
+
+            <h3>自定义颜色</h3>
+            <div id="custom-color-progress-container"></div>
+
+            <h3>自定义尺寸</h3>
+            <div id="custom-size-progress-container"></div>
+
+            <h3>显示百分比</h3>
+            <div id="show-percentage-progress-container"></div>
+        </div>
+    </div>
+
+    <script src="../../dist/dc-1.0.0-2026-01-07.js"></script>
+    <script>
+        let interactiveProgressBar = null;
+        let defaultProgressBar = null;
+        let customColorProgressBar = null;
+        let customSizeProgressBar = null;
+        let showPercentageProgressBar = null;
+
+        // 初始化交互式进度条
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('dcProgressBar 测试页面已加载');
+
+            // 创建交互式进度条
+            interactiveProgressBar = new DC.ProgressBar({
+                container: '#interactive-progress-container',
+                value: 0,
+                showPercentage: true
+            });
+
+            // 创建默认样式进度条
+            defaultProgressBar = new DC.ProgressBar({
+                container: '#default-progress-container',
+                value: 30
+            });
+
+            // 创建自定义颜色进度条
+            customColorProgressBar = new DC.ProgressBar({
+                container: '#custom-color-progress-container',
+                value: 60,
+                backgroundColor: '#ffcccc',
+                progressColor: '#ff6666'
+            });
+
+            // 创建自定义尺寸进度条
+            customSizeProgressBar = new DC.ProgressBar({
+                container: '#custom-size-progress-container',
+                value: 45,
+                height: '10px'
+            });
+
+            // 创建显示百分比进度条
+            showPercentageProgressBar = new DC.ProgressBar({
+                container: '#show-percentage-progress-container',
+                value: 75,
+                showPercentage: true
+            });
+        });
+
+        // 测试基本功能
+        function testBasicFunction() {
+            try {
+                const results = [];
+
+                // 测试组件是否存在
+                results.push({
+                    test: 'DC.ProgressBar 组件存在',
+                    pass: !!DC.ProgressBar,
+                    actual: !!DC.ProgressBar,
+                    expected: true
+                });
+
+                // 测试组件是否可以实例化
+                let progressBar = null;
+                try {
+                    progressBar = new DC.ProgressBar({
+                        container: document.createElement('div'),
+                        value: 50
+                    });
+                    results.push({
+                        test: 'DC.ProgressBar 可以实例化',
+                        pass: !!progressBar,
+                        actual: !!progressBar,
+                        expected: true
+                    });
+                } catch (error) {
+                    results.push({
+                        test: 'DC.ProgressBar 可以实例化',
+                        pass: false,
+                        actual: error.message,
+                        expected: '无错误'
+                    });
+                }
+
+                // 测试基本方法是否存在
+                if (progressBar) {
+                    const methods = ['getValue', 'setValue', 'increment', 'decrement', 'getPercentage'];
+
+                    methods.forEach(method => {
+                        results.push({
+                            test: `progressBar.${method} 方法存在`,
+                            pass: typeof progressBar[method] === 'function',
+                            actual: typeof progressBar[method],
+                            expected: 'function'
+                        });
+                    });
+                }
+
+                // 显示结果
+                let html = '<h3>测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: ${result.actual}, 期望: ${result.expected})
+                    </p>`;
+                });
+
+                document.getElementById('basic-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('basic-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 测试进度条属性
+        function testProgressProperties() {
+            try {
+                const results = [];
+
+                // 创建测试进度条
+                const testContainer = document.createElement('div');
+                document.body.appendChild(testContainer);
+
+                const progressBar = new DC.ProgressBar({
+                    container: testContainer,
+                    value: 30,
+                    backgroundColor: '#f0f0f0',
+                    progressColor: '#4CAF50',
+                    height: '20px',
+                    showPercentage: true,
+                    animated: true
+                });
+
+                // 测试初始值
+                results.push({
+                    test: '初始值为 30',
+                    pass: progressBar.getValue() === 30,
+                    actual: progressBar.getValue(),
+                    expected: 30
+                });
+
+                // 测试设置值
+                progressBar.setValue(60);
+                results.push({
+                    test: '设置值为 60',
+                    pass: progressBar.getValue() === 60,
+                    actual: progressBar.getValue(),
+                    expected: 60
+                });
+
+                // 测试增加值
+                progressBar.increment(20);
+                results.push({
+                    test: '增加 20 后值为 80',
+                    pass: progressBar.getValue() === 80,
+                    actual: progressBar.getValue(),
+                    expected: 80
+                });
+
+                // 测试减少值
+                progressBar.decrement(30);
+                results.push({
+                    test: '减少 30 后值为 50',
+                    pass: progressBar.getValue() === 50,
+                    actual: progressBar.getValue(),
+                    expected: 50
+                });
+
+                // 测试边界值
+                progressBar.setValue(150);
+                results.push({
+                    test: '设置超出最大值 (150) 应为 100',
+                    pass: progressBar.getValue() === 100,
+                    actual: progressBar.getValue(),
+                    expected: 100
+                });
+
+                progressBar.setValue(-10);
+                results.push({
+                    test: '设置低于最小值 (-10) 应为 0',
+                    pass: progressBar.getValue() === 0,
+                    actual: progressBar.getValue(),
+                    expected: 0
+                });
+
+                // 清理测试元素
+                document.body.removeChild(testContainer);
+
+                // 显示结果
+                let html = '<h3>进度条属性测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: ${result.actual}, 期望: ${result.expected})
+                    </p>`;
+                });
+
+                document.getElementById('properties-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('properties-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 测试进度条方法
+        function testProgressMethods() {
+            try {
+                const results = [];
+
+                // 创建测试进度条
+                const testContainer = document.createElement('div');
+                document.body.appendChild(testContainer);
+
+                const progressBar = new DC.ProgressBar({
+                    container: testContainer,
+                    value: 50
+                });
+
+                // 测试 getValue 方法
+                results.push({
+                    test: 'getValue() 返回当前值',
+                    pass: progressBar.getValue() === 50,
+                    actual: progressBar.getValue(),
+                    expected: 50
+                });
+
+                // 测试 getPercentage 方法
+                results.push({
+                    test: 'getPercentage() 返回百分比',
+                    pass: progressBar.getPercentage() === 50,
+                    actual: progressBar.getPercentage(),
+                    expected: 50
+                });
+
+                // 测试 setValue 方法
+                progressBar.setValue(75);
+                results.push({
+                    test: 'setValue(75) 更新值',
+                    pass: progressBar.getValue() === 75,
+                    actual: progressBar.getValue(),
+                    expected: 75
+                });
+
+                // 测试 increment 方法
+                progressBar.increment(10);
+                results.push({
+                    test: 'increment(10) 增加值',
+                    pass: progressBar.getValue() === 85,
+                    actual: progressBar.getValue(),
+                    expected: 85
+                });
+
+                // 测试 decrement 方法
+                progressBar.decrement(20);
+                results.push({
+                    test: 'decrement(20) 减少值',
+                    pass: progressBar.getValue() === 65,
+                    actual: progressBar.getValue(),
+                    expected: 65
+                });
+
+                // 测试 reset 方法（如果存在）
+                if (typeof progressBar.reset === 'function') {
+                    progressBar.reset();
+                    results.push({
+                        test: 'reset() 重置值',
+                        pass: progressBar.getValue() === 0,
+                        actual: progressBar.getValue(),
+                        expected: 0
+                    });
+                }
+
+                // 清理测试元素
+                document.body.removeChild(testContainer);
+
+                // 显示结果
+                let html = '<h3>进度条方法测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: ${result.actual}, 期望: ${result.expected})
+                    </p>`;
+                });
+
+                document.getElementById('methods-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('methods-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 交互式测试函数
+        function setProgress(value) {
+            if (interactiveProgressBar) {
+                interactiveProgressBar.setValue(value);
+            }
+        }
+
+        function incrementProgress(value) {
+            if (interactiveProgressBar) {
+                interactiveProgressBar.increment(value);
+            }
+        }
+
+        function decrementProgress(value) {
+            if (interactiveProgressBar) {
+                interactiveProgressBar.decrement(value);
+            }
+        }
+
+        function animateProgress() {
+            if (interactiveProgressBar) {
+                interactiveProgressBar.setValue(0);
+                let current = 0;
+                const interval = setInterval(() => {
+                    current += 2;
+                    interactiveProgressBar.setValue(current);
+                    if (current >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 20);
+            }
+        }
+    </script>
+</body>
+</html>

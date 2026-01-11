@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC.ProgressBar 组件测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-suite {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .test-suite h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .pass {
+            background-color: #e8f5e9;
+            border-left: 6px solid #4CAF50;
+        }
+        .fail {
+            background-color: #fdecea;
+            border-left: 6px solid #f44336;
+        }
+        .info {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+        .test-container {
+            width: 100%;
+            height: 50px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #fff;
+        }
+        .test-summary {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>DC.ProgressBar 组件测试</h1>
+
+    <div class="test-suite">
+        <h3>测试1: 基本功能测试</h3>
+        <button onclick="runBasicTests()">运行基本测试</button>
+        <div id="basic-test-container" class="test-container"></div>
+        <div id="basic-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试2: 配置选项测试</h3>
+        <button onclick="runConfigTests()">运行配置测试</button>
+        <div id="config-test-container" class="test-container"></div>
+        <div id="config-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试3: 事件测试</h3>
+        <button onclick="runEventTests()">运行事件测试</button>
+        <div id="event-test-container" class="test-container"></div>
+        <div id="event-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试4: 方法测试</h3>
+        <button onclick="runMethodTests()">运行方法测试</button>
+        <div id="method-test-container" class="test-container"></div>
+        <div id="method-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试5: 边界条件测试</h3>
+        <button onclick="runBoundaryTests()">运行边界测试</button>
+        <div id="boundary-test-container" class="test-container"></div>
+        <div id="boundary-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-suite">
+        <h3>测试6: 错误处理测试</h3>
+        <button onclick="runErrorTests()">运行错误处理测试</button>
+        <div id="error-test-container" class="test-container"></div>
+        <div id="error-test-results" class="test-result"></div>
+    </div>
+
+    <div class="test-summary">
+        <h3>测试总结</h3>
+        <div>总测试数: <span id="total-tests">0</span></div>
+        <div>通过测试: <span id="passed-tests">0</span></div>
+        <div>失败测试: <span id="failed-tests">0</span></div>
+        <div>通过率: <span id="pass-rate">0%</span></div>
+    </div>
+
+    <script src="../../../dist/dc.js"></script>
+    <script>
+        // 测试统计
+        let testStats = {
+            total: 0,
+            passed: 0,
+            failed: 0
+        };
+
+        // 更新测试统计
+        function updateStats() {
+            document.getElementById('total-tests').textContent = testStats.total;
+            document.getElementById('passed-tests').textContent = testStats.passed;
+            document.getElementById('failed-tests').textContent = testStats.failed;
+            document.getElementById('pass-rate').textContent = testStats.total > 0
+                ? Math.round((testStats.passed / testStats.total) * 100) + '%'
+                : '0%';
+        }
+
+        // 显示测试结果
+        function showTestResult(containerId, testName, passed, message) {
+            const container = document.getElementById(containerId);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = passed ? 'pass' : 'fail';
+            resultDiv.innerHTML = `<strong>${testName}:</strong> ${passed ? '通过' : '失败'} - ${message}`;
+            container.appendChild(resultDiv);
+
+            // 更新统计
+            testStats.total++;
+            if (passed) {
+                testStats.passed++;
+            } else {
+                testStats.failed++;
+            }
+            updateStats();
+        }
+
+        // 显示测试信息
+        function showTestInfo(containerId, message) {
+            const container = document.getElementById(containerId);
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info';
+            infoDiv.innerHTML = `<strong>信息:</strong> ${message}`;
+            container.appendChild(infoDiv);
+        }
+
+        // 清除测试结果
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        // 清除测试容器
+        function clearContainer(containerId) {
+            const container = document.getElementById(containerId);
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+        }
+
+        // 基本功能测试
+        function runBasicTests() {
+            clearResults('basic-test-results');
+            clearContainer('basic-test-container');
+            showTestInfo('basic-test-results', '开始基本功能测试...');
+
+            try {
+                // 测试默认构造函数
+                const progressBar1 = new DC.ProgressBar({
+                    container: '#basic-test-container'
+                });
+                showTestResult('basic-test-results', '默认构造函数',
+                    progressBar1 !== undefined && progressBar1.options !== undefined,
+                    '默认构造函数创建成功');
+
+                // 测试自定义值构造函数
+                const progressBar2 = new DC.ProgressBar({
+                    container: '#basic-test-container',
+                    value: 50
+                });
+                showTestResult('basic-test-results', '自定义值构造函数',
+                    progressBar2.getValue() === 50,
+                    '自定义值构造函数创建成功');
+
+                // 测试getValue方法
+                const value = progressBar1.getValue();
+                showTestResult('basic-test-results', 'getValue方法',
+                    typeof value === 'number',
+                    `getValue返回值: ${value}`);
+
+                // 测试setValue方法
+                progressBar1.setValue(75);
+                const newValue = progressBar1.getValue();
+                showTestResult('basic-test-results', 'setValue方法',
+                    newValue === 75,
+                    `setValue设置值: ${newValue}`);
+
+                // 测试getPercentage方法
+                const percentage = progressBar1.getPercentage();
+                showTestResult('basic-test-results', 'getPercentage方法',
+                    typeof percentage === 'number' && percentage >= 0 && percentage <= 100,
+                    `getPercentage返回值: ${percentage}%`);
+
+            } catch (error) {
+                showTestResult('basic-test-results', '基本功能测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 配置选项测试
+        function runConfigTests() {
+            clearResults('config-test-results');
+            clearContainer('config-test-container');
+            showTestInfo('config-test-results', '开始配置选项测试...');
+
+            try {
+                // 测试自定义颜色
+                const progressBar1 = new DC.ProgressBar({
+                    container: '#config-test-container',
+                    value: 60,
+                    color: '#FF5722'
+                });
+                const color = progressBar1.options.color;
+                showTestResult('config-test-results', '自定义颜色',
+                    color === '#FF5722',
+                    `自定义颜色设置: ${color}`);
+
+                // 测试自定义范围
+                const progressBar2 = new DC.ProgressBar({
+                    container: '#config-test-container',
+                    value: 50,
+                    min: 0,
+                    max: 200
+                });
+                const min = progressBar2.options.min;
+                const max = progressBar2.options.max;
+                showTestResult('config-test-results', '自定义范围',
+                    min === 0 && max === 200,
+                    `自定义范围设置: ${min}-${max}`);
+
+                // 测试自定义步长
+                const progressBar3 = new DC.ProgressBar({
+                    container: '#config-test-container',
+                    value: 30,
+                    step: 5
+                });
+                const step = progressBar3.options.step;
+                showTestResult('config-test-results', '自定义步长',
+                    step === 5,
+                    `自定义步长设置: ${step}`);
+
+                // 测试自定义高度
+                const progressBar4 = new DC.ProgressBar({
+                    container: '#config-test-container',
+                    value: 40,
+                    height: 20
+                });
+                const height = progressBar4.options.height;
+                showTestResult('config-test-results', '自定义高度',
+                    height === 20,
+                    `自定义高度设置: ${height}`);
+
+                // 测试显示文本
+                const progressBar5 = new DC.ProgressBar({
+                    container: '#config-test-container',
+                    value: 70,
+                    showText: true
+                });
+                const showText = progressBar5.options.showText;
+                showTestResult('config-test-results', '显示文本',
+                    showText === true,
+                    `显示文本设置: ${showText}`);
+
+            } catch (error) {
+                showTestResult('config-test-results', '配置选项测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 事件测试
+        function runEventTests() {
+            clearResults('event-test-results');
+            clearContainer('event-test-container');
+            showTestInfo('event-test-results', '开始事件测试...');
+
+            try {
+                let onChangeCalled = false;
+                let onChangeValue = null;
+                let onChangeOldValue = null;
+
+                // 测试onChange事件
+                const progressBar = new DC.ProgressBar({
+                    container: '#event-test-container',
+                    value: 30,
+                    onChange: function(value, oldValue) {
+                        onChangeCalled = true;
+                        onChangeValue = value;
+                        onChangeOldValue = oldValue;
+                    }
+                });
+
+                progressBar.setValue(60);
+
+                showTestResult('event-test-results', 'onChange事件',
+                    onChangeCalled && onChangeValue === 60 && onChangeOldValue === 30,
+                    `onChange事件触发: ${onChangeOldValue} → ${onChangeValue}`);
+
+                // 测试onComplete事件
+                let onCompleteCalled = false;
+
+                progressBar.updateConfig({
+                    onComplete: function() {
+                        onCompleteCalled = true;
+                    }
+                });
+
+                progressBar.setValue(100);
+
+                showTestResult('event-test-results', 'onComplete事件',
+                    onCompleteCalled,
+                    'onComplete事件触发');
+
+            } catch (error) {
+                showTestResult('event-test-results', '事件测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 方法测试
+        function runMethodTests() {
+            clearResults('method-test-results');
+            clearContainer('method-test-container');
+            showTestInfo('method-test-results', '开始方法测试...');
+
+            try {
+                const progressBar = new DC.ProgressBar({
+                    container: '#method-test-container',
+                    value: 40
+                });
+
+                // 测试increase方法
+                const originalValue = progressBar.getValue();
+                progressBar.increase();
+                const increasedValue = progressBar.getValue();
+                showTestResult('method-test-results', 'increase方法',
+                    increasedValue > originalValue,
+                    `increase方法: ${originalValue} → ${increasedValue}`);
+
+                // 测试decrease方法
+                progressBar.decrease();
+                const decreasedValue = progressBar.getValue();
+                showTestResult('method-test-results', 'decrease方法',
+                    decreasedValue < increasedValue,
+                    `decrease方法: ${increasedValue} → ${decreasedValue}`);
+
+                // 测试reset方法
+                progressBar.reset();
+                const resetValue = progressBar.getValue();
+                showTestResult('method-test-results', 'reset方法',
+                    resetValue === progressBar.options.min,
+                    `reset方法值: ${resetValue}`);
+
+                // 测试updateConfig方法
+                progressBar.updateConfig({ color: '#2196F3' });
+                const updatedColor = progressBar.options.color;
+                showTestResult('method-test-results', 'updateConfig方法',
+                    updatedColor === '#2196F3',
+                    `updateConfig方法颜色: ${updatedColor}`);
+
+                // 测试destroy方法
+                progressBar.destroy();
+                showTestResult('method-test-results', 'destroy方法',
+                    true,
+                    'destroy方法执行成功');
+
+            } catch (error) {
+                showTestResult('method-test-results', '方法测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 边界条件测试
+        function runBoundaryTests() {
+            clearResults('boundary-test-results');
+            clearContainer('boundary-test-container');
+            showTestInfo('boundary-test-results', '开始边界条件测试...');
+
+            try {
+                // 测试超出最大值
+                const progressBar1 = new DC.ProgressBar({
+                    container: '#boundary-test-container',
+                    value: 150
+                });
+                const clampedMaxValue = progressBar1.getValue();
+                showTestResult('boundary-test-results', '超出最大值',
+                    clampedMaxValue === 100,
+                    `超出最大值处理: ${clampedMaxValue}`);
+
+                // 测试低于最小值
+                const progressBar2 = new DC.ProgressBar({
+                    container: '#boundary-test-container',
+                    value: -10
+                });
+                const clampedMinValue = progressBar2.getValue();
+                showTestResult('boundary-test-results', '低于最小值',
+                    clampedMinValue === 0,
+                    `低于最小值处理: ${clampedMinValue}`);
+
+                // 测试自定义范围边界
+                const progressBar3 = new DC.ProgressBar({
+                    container: '#boundary-test-container',
+                    value: 250,
+                    min: 0,
+                    max: 200
+                });
+                const customClampedValue = progressBar3.getValue();
+                showTestResult('boundary-test-results', '自定义范围边界',
+                    customClampedValue === 200,
+                    `自定义范围边界处理: ${customClampedValue}`);
+
+                // 测试步长对齐
+                const progressBar4 = new DC.ProgressBar({
+                    container: '#boundary-test-container',
+                    value: 0,
+                    step: 10
+                });
+                progressBar4.setValue(23); // 应该对齐到20
+                const stepAlignedValue = progressBar4.getValue();
+                showTestResult('boundary-test-results', '步长对齐',
+                    stepAlignedValue === 20,
+                    `步长对齐处理: ${stepAlignedValue}`);
+
+            } catch (error) {
+                showTestResult('boundary-test-results', '边界条件测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 错误处理测试
+        function runErrorTests() {
+            clearResults('error-test-results');
+            clearContainer('error-test-container');
+            showTestInfo('error-test-results', '开始错误处理测试...');
+
+            try {
+                // 测试无效容器
+                try {
+                    const progressBar1 = new DC.ProgressBar({
+                        container: '#non-existent-container'
+                    });
+                    showTestResult('error-test-results', '无效容器', false, '应该抛出错误但没有');
+                } catch (error) {
+                    showTestResult('error-test-results', '无效容器', true, '正确抛出错误');
+                }
+
+                // 测试无效值类型
+                try {
+                    const progressBar2 = new DC.ProgressBar({
+                        container: '#error-test-container',
+                        value: 'invalid'
+                    });
+                    const invalidValue = progressBar2.getValue();
+                    showTestResult('error-test-results', '无效值类型',
+                        typeof invalidValue === 'number',
+                        `无效值类型处理: ${invalidValue}`);
+                } catch (error) {
+                    showTestResult('error-test-results', '无效值类型', true, '正确抛出错误');
+                }
+
+                // 测试无效配置
+                try {
+                    const progressBar3 = new DC.ProgressBar({
+                        container: '#error-test-container',
+                        min: 100,
+                        max: 50  // 最小值大于最大值
+                    });
+                    const min = progressBar3.options.min;
+                    const max = progressBar3.options.max;
+                    showTestResult('error-test-results', '无效配置',
+                        min < max,
+                        `无效配置处理: min=${min}, max=${max}`);
+                } catch (error) {
+                    showTestResult('error-test-results', '无效配置', true, '正确抛出错误');
+                }
+
+            } catch (error) {
+                showTestResult('error-test-results', '错误处理测试', false, `测试过程中发生错误: ${error.message}`);
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            updateStats();
+        };
+    </script>
+</body>
+</html>

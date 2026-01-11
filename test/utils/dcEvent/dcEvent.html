@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcEvent 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .event-log {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            background-color: #f0f0f0;
+        }
+        .log-entry {
+            margin: 2px 0;
+            color: #666;
+        }
+        .log-event {
+            color: #0066cc;
+        }
+        .tabs {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            transition: 0.3s;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        .tab-button.active {
+            background-color: #ccc;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .demo-area {
+            margin-top: 20px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+        }
+        .demo-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .demo-button:hover {
+            background-color: #0056b3;
+        }
+        .demo-button.triggered {
+            background-color: #28a745;
+            animation: pulse 0.5s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <h1>dcEvent 工具类交互式测试</h1>
+
+    <!-- 当前事件统计 -->
+    <div class="info-box">
+        <p><strong>事件监听器数量:</strong> <span id="listenerCount">0</span></p>
+        <p><strong>触发事件次数:</strong> <span id="triggerCount">0</span></p>
+        <p><strong>测试说明:</strong> 此工具用于测试事件绑定、解绑、触发和代理功能。所有操作都会记录在事件日志中。</p>
+    </div>
+
+    <!-- 标签页容器 -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'basic')">基础功能</button>
+        <button class="tab-button" onclick="openTab(event, 'namespace')">命名空间</button>
+        <button class="tab-button" onclick="openTab(event, 'delegate')">事件代理</button>
+        <button class="tab-button" onclick="openTab(event, 'once')">一次性事件</button>
+        <button class="tab-button" onclick="openTab(event, 'data')">数据传递</button>
+        <button class="tab-button" onclick="openTab(event, 'demo')">演示示例</button>
+        <button class="tab-button" onclick="openTab(event, 'presets')">预设测试</button>
+        <button class="tab-button" onclick="openTab(event, 'allTests')">运行所有测试</button>
+    </div>
+
+    <!-- 基础功能标签页 -->
+    <div id="basic" class="tab-content active">
+        <div class="test-container">
+            <div class="test-title">基础事件操作</div>
+            
+            <label for="eventName">事件名称:</label>
+            <input type="text" id="eventName" value="customEvent" placeholder="输入事件名称，如: click, customEvent等">
+            
+            <label for="targetElement">目标元素:</label>
+            <select id="targetElement">
+                <option value="window">window</option>
+                <option value="document">document</option>
+                <option value="body">document.body</option>
+            </select>
+            
+            <button onclick="bindEvent()">绑定事件 (on)</button>
+            <button onclick="unbindEvent()">解绑事件 (off)</button>
+            <button onclick="triggerEvent()">触发事件 (trigger)</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="basicResult"></div>
+        </div>
+    </div>
+
+    <!-- 命名空间标签页 -->
+    <div id="namespace" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">事件命名空间</div>
+            
+            <label for="namespaceName">命名空间:</label>
+            <input type="text" id="namespaceName" value="module" placeholder="输入命名空间，如: module, ui, data等">
+            
+            <label for="namespaceEvent">事件名称:</label>
+            <input type="text" id="namespaceEvent" value="action" placeholder="输入事件名称">
+            
+            <button onclick="bindNamespacedEvent()">绑定命名空间事件</button>
+            <button onclick="unbindNamespace()">按命名空间解绑</button>
+            <button onclick="triggerNamespacedEvent()">触发命名空间事件</button>
+            <button onclick="unbindAllNamespace()">解绑所有命名空间事件</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="namespaceResult"></div>
+        </div>
+    </div>
+
+    <!-- 事件代理标签页 -->
+    <div id="delegate" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">事件代理</div>
+            
+            <label for="containerSelector">容器选择器:</label>
+            <input type="text" id="containerSelector" value="#delegateContainer" placeholder="输入容器选择器">
+            
+            <label for="delegateSelector">代理选择器:</label>
+            <input type="text" id="delegateSelector" value="button" placeholder="输入要代理的元素选择器">
+            
+            <label for="delegateEvent">事件类型:</label>
+            <input type="text" id="delegateEvent" value="click" placeholder="输入事件类型">
+            
+            <button onclick="bindDelegate()">绑定代理事件</button>
+            <button onclick="unbindDelegate()">解绑代理事件</button>
+            <button onclick="addDynamicButton()">添加动态按钮</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="delegateResult"></div>
+            
+            <!-- 代理容器 -->
+            <div id="delegateContainer" style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; text-align: center;">
+                <p>代理容器（动态按钮将添加到这里）</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 一次性事件标签页 -->
+    <div id="once" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">一次性事件</div>
+            
+            <label for="onceEventName">事件名称:</label>
+            <input type="text" id="onceEventName" value="oneTimeEvent" placeholder="输入事件名称">
+            
+            <label for="onceTarget">目标元素:</label>
+            <select id="onceTarget">
+                <option value="window">window</option>
+                <option value="document">document</option>
+            </select>
+            
+            <button onclick="bindOnceEvent()">绑定一次性事件 (once)</button>
+            <button onclick="triggerOnceEvent()">触发事件</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="onceResult"></div>
+        </div>
+    </div>
+
+    <!-- 数据传递标签页 -->
+    <div id="data" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">事件数据传递</div>
+            
+            <label for="dataEventName">事件名称:</label>
+            <input type="text" id="dataEventName" value="dataEvent" placeholder="输入事件名称">
+            
+            <label for="eventData">传递的数据 (JSON格式):</label>
+            <textarea id="eventData" rows="3" placeholder="{\"message\": \"Hello World\", \"value\": 42}">{"message": "Hello World", "value": 42}</textarea>
+            
+            <button onclick="bindDataEvent()">绑定带数据事件</button>
+            <button onclick="triggerDataEvent()">触发带数据事件</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="dataResult"></div>
+        </div>
+    </div>
+
+    <!-- 演示示例标签页 -->
+    <div id="demo" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">事件系统演示</div>
+            
+            <p>以下是一个简单的事件系统演示，展示了如何使用事件进行组件间通信：</p>
+            
+            <div class="demo-area">
+                <h3>用户界面组件</h3>
+                <button class="demo-button" onclick="simulateLogin()">模拟用户登录</button>
+                <button class="demo-button" onclick="simulateLogout()">模拟用户登出</button>
+                <button class="demo-button" onclick="simulateSave()">模拟保存数据</button>
+                <button class="demo-button" onclick="simulateLoad()">模拟加载数据</button>
+            </div>
+            
+            <div class="demo-area">
+                <h3>通知中心</h3>
+                <div id="notificationCenter" style="min-height: 50px; border: 1px solid #ddd; padding: 10px; margin-top: 10px;">
+                    等待事件...
+                </div>
+            </div>
+            
+            <div class="demo-area">
+                <h3>数据状态</h3>
+                <div id="dataStatus" style="min-height: 50px; border: 1px solid #ddd; padding: 10px; margin-top: 10px;">
+                    用户未登录
+                </div>
+            </div>
+            
+            <button onclick="resetDemo()">重置演示</button>
+            <button onclick="clearResults()">清空结果</button>
+        </div>
+    </div>
+
+    <!-- 预设测试标签页 -->
+    <div id="presets" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">预设测试用例</div>
+            
+            <button onclick="runBasicTest()">基础功能测试</button>
+            <button onclick="runNamespaceTest()">命名空间测试</button>
+            <button onclick="runDelegateTest()">事件代理测试</button>
+            <button onclick="runOnceTest()">一次性事件测试</button>
+            <button onclick="runDataTest()">数据传递测试</button>
+            <button onclick="runEdgeCaseTest()">边界情况测试</button>
+            <button onclick="runPerformanceTest()">性能测试</button>
+            
+            <div class="result" id="presetResult"></div>
+        </div>
+    </div>
+
+    <!-- 运行所有测试标签页 -->
+    <div id="allTests" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">运行所有测试</div>
+            
+            <button onclick="runAllTests()">执行全部自动化测试</button>
+            
+            <div class="result" id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="info-box">
+        <h3>使用说明</h3>
+        <ul>
+            <li><strong>基础功能</strong>: 测试基本的事件绑定、解绑和触发</li>
+            <li><strong>命名空间</strong>: 测试事件命名空间功能，便于批量管理事件</li>
+            <li><strong>事件代理</strong>: 测试事件委托功能，适用于动态内容</li>
+            <li><strong>一次性事件</strong>: 测试只触发一次的事件</li>
+            <li><strong>数据传递</strong>: 测试事件触发时传递数据</li>
+            <li><strong>演示示例</strong>: 展示事件系统在实际应用中的使用</li>
+            <li><strong>预设测试</strong>: 运行一系列预定义的测试用例</li>
+            <li><strong>运行所有测试</strong>: 自动运行所有测试用例</li>
+            <li>所有操作都会记录在下方的事件日志中</li>
+        </ul>
+    </div>
+
+    <!-- 事件日志 -->
+    <h3>事件日志</h3>
+    <div class="event-log" id="eventLog"></div>
+
+    <script src="../../../src/utils/dcEvent.js"></script>
+    <script>
+        // 全局变量
+        let eventCounter = 0;
+        let triggerCounter = 0;
+        let demoBound = false;
+
+        // 页面加载时初始化
+        window.onload = function() {
+            openTab(null, 'basic');
+            updateStats();
+            setupDemo();
+        };
+
+        // 切换标签页
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            if (evt) evt.currentTarget.className += " active";
+        }
+
+        // 更新统计数据
+        function updateStats() {
+            document.getElementById('listenerCount').textContent = eventCounter;
+            document.getElementById('triggerCount').textContent = triggerCounter;
+        }
+
+        // 记录事件
+        function logEvent(message, eventType = '') {
+            const log = document.getElementById('eventLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            const now = new Date().toLocaleTimeString();
+            
+            if (eventType) {
+                entry.innerHTML = `<span class="log-time">[${now}]</span> <span class="log-event">${eventType}</span>: ${message}`;
+            } else {
+                entry.innerHTML = `<span class="log-time">[${now}]</span> ${message}`;
+            }
+            
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // 清空结果
+        function clearResults() {
+            const resultContainers = document.getElementsByClassName('result');
+            for (let i = 0; i < resultContainers.length; i++) {
+                resultContainers[i].innerHTML = '';
+            }
+        }
+
+        // 获取目标元素
+        function getTargetElement(selector) {
+            switch(selector) {
+                case 'window': return window;
+                case 'document': return document;
+                case 'body': return document.body;
+                default: return document.querySelector(selector);
+            }
+        }
+
+        // 绑定事件
+        function bindEvent() {
+            try {
+                const eventName = document.getElementById('eventName').value.trim();
+                const targetSelector = document.getElementById('targetElement').value;
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const target = getTargetElement(targetSelector);
+                if (!target) {
+                    throw new Error(`找不到目标元素: ${targetSelector}`);
+                }
+                
+                // 创建唯一标识符
+                const eventId = `bound-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                // 创建事件处理器
+                const handler = function(e) {
+                    logEvent(`事件被触发: ${eventName} (${eventId})`, 'event-trigger');
+                };
+                
+                // 保存引用以便后续移除
+                target._eventHandlers = target._eventHandlers || {};
+                target._eventHandlers[eventId] = {
+                    event: eventName,
+                    handler: handler,
+                    element: target
+                };
+                
+                // 绑定事件
+                dcEvent.on(target, eventName, handler);
+                
+                eventCounter++;
+                updateStats();
+                
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: green">✓ 事件绑定成功！</strong></p>
+                    <p><strong>事件名称:</strong> ${eventName}</p>
+                    <p><strong>目标元素:</strong> ${targetSelector}</p>
+                    <p><strong>事件ID:</strong> ${eventId}</p>
+                    <p><em>现在可以使用"触发事件"按钮来测试</em></p>
+                `;
+                
+                logEvent(`事件绑定成功: ${targetSelector}.${eventName} (${eventId})`, 'event-bind');
+                
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+                logEvent(`事件绑定失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 解绑事件
+        function unbindEvent() {
+            try {
+                const eventName = document.getElementById('eventName').value.trim();
+                const targetSelector = document.getElementById('targetElement').value;
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const target = getTargetElement(targetSelector);
+                if (!target) {
+                    throw new Error(`找不到目标元素: ${targetSelector}`);
+                }
+                
+                // 查找已绑定的处理器
+                if (!target._eventHandlers) {
+                    throw new Error('没有找到可解绑的事件');
+                }
+                
+                let removedCount = 0;
+                for (const eventId in target._eventHandlers) {
+                    const record = target._eventHandlers[eventId];
+                    if (record.event === eventName) {
+                        // 移除事件
+                        dcEvent.off(record.element, record.event, record.handler);
+                        delete target._eventHandlers[eventId];
+                        removedCount++;
+                        logEvent(`事件已解绑: ${targetSelector}.${eventName} (${eventId})`, 'event-unbind');
+                    }
+                }
+                
+                eventCounter -= removedCount;
+                updateStats();
+                
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: green">✓ 事件解绑成功！</strong></p>
+                    <p><strong>事件名称:</strong> ${eventName}</p>
+                    <p><strong>目标元素:</strong> ${targetSelector}</p>
+                    <p><strong>解绑数量:</strong> ${removedCount}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: red">✗ 解绑失败: ${error.message}</strong></p>
+                `;
+                logEvent(`事件解绑失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 触发事件
+        function triggerEvent() {
+            try {
+                const eventName = document.getElementById('eventName').value.trim();
+                const targetSelector = document.getElementById('targetElement').value;
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const target = getTargetElement(targetSelector);
+                if (!target) {
+                    throw new Error(`找不到目标元素: ${targetSelector}`);
+                }
+                
+                // 触发事件
+                dcEvent.trigger(target, eventName);
+                
+                triggerCounter++;
+                updateStats();
+                
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 事件已触发</strong></p>
+                    <p><strong>事件名称:</strong> ${eventName}</p>
+                    <p><strong>目标元素:</strong> ${targetSelector}</p>
+                `;
+                
+                logEvent(`事件被触发: ${targetSelector}.${eventName}`, 'event-trigger');
+                
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: red">✗ 触发失败: ${error.message}</strong></p>
+                `;
+                logEvent(`事件触发失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 绑定命名空间事件
+        function bindNamespacedEvent() {
+            try {
+                const namespace = document.getElementById('namespaceName').value.trim();
+                const event = document.getElementById('namespaceEvent').value.trim();
+                
+                if (!namespace) {
+                    throw new Error('命名空间不能为空');
+                }
+                
+                if (!event) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const eventName = `${event}.${namespace}`;
+                const target = window; // 固定使用window作为目标
+                
+                // 创建唯一标识符
+                const eventId = `ns-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                // 创建事件处理器
+                const handler = function(e) {
+                    logEvent(`命名空间事件被触发: ${eventName} (${eventId})`, 'event-trigger');
+                };
+                
+                // 保存引用
+                target._nsHandlers = target._nsHandlers || {};
+                target._nsHandlers[eventId] = {
+                    event: eventName,
+                    handler: handler,
+                    element: target
+                };
+                
+                // 绑定事件
+                dcEvent.on(target, eventName, handler);
+                
+                eventCounter++;
+                updateStats();
+                
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: green">✓ 命名空间事件绑定成功！</strong></p>
+                    <p><strong>完整事件名:</strong> ${eventName}</p>
+                    <p><strong>事件ID:</strong> ${eventId}</p>
+                    <p><em>可以使用"触发命名空间事件"或"按命名空间解绑"来测试</em></p>
+                `;
+                
+                logEvent(`命名空间事件绑定成功: ${eventName} (${eventId})`, 'event-bind');
+                
+            } catch (error) {
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+                logEvent(`命名空间事件绑定失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 按命名空间解绑
+        function unbindNamespace() {
+            try {
+                const namespace = document.getElementById('namespaceName').value.trim();
+                
+                if (!namespace) {
+                    throw new Error('命名空间不能为空');
+                }
+                
+                const target = window;
+                const pattern = new RegExp(`\\.${namespace}$`);
+                
+                if (!target._nsHandlers) {
+                    throw new Error('没有找到可解绑的命名空间事件');
+                }
+                
+                let removedCount = 0;
+                for (const eventId in target._nsHandlers) {
+                    const record = target._nsHandlers[eventId];
+                    if (pattern.test(record.event)) {
+                        // 移除事件
+                        dcEvent.off(record.element, record.event, record.handler);
+                        delete target._nsHandlers[eventId];
+                        removedCount++;
+                        logEvent(`命名空间事件已解绑: ${record.event} (${eventId})`, 'event-unbind');
+                    }
+                }
+                
+                eventCounter -= removedCount;
+                updateStats();
+                
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: green">✓ 按命名空间解绑成功！</strong></p>
+                    <p><strong>命名空间:</strong> ${namespace}</p>
+                    <p><strong>解绑数量:</strong> ${removedCount}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: red">✗ 解绑失败: ${error.message}</strong></p>
+                `;
+                logEvent(`命名空间事件解绑失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 触发命名空间事件
+        function triggerNamespacedEvent() {
+            try {
+                const namespace = document.getElementById('namespaceName').value.trim();
+                const event = document.getElementById('namespaceEvent').value.trim();
+                
+                if (!namespace) {
+                    throw new Error('命名空间不能为空');
+                }
+                
+                if (!event) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const eventName = `${event}.${namespace}`;
+                const target = window;
+                
+                // 触发事件
+                dcEvent.trigger(target, eventName);
+                
+                triggerCounter++;
+                updateStats();
+                
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 命名空间事件已触发</strong></p>
+                    <p><strong>完整事件名:</strong> ${eventName}</p>
+                `;
+                
+                logEvent(`命名空间事件被触发: ${eventName}`, 'event-trigger');
+                
+            } catch (error) {
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: red">✗ 触发失败: ${error.message}</strong></p>
+                `;
+                logEvent(`命名空间事件触发失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 解绑所有命名空间事件
+        function unbindAllNamespace() {
+            try {
+                const namespace = document.getElementById('namespaceName').value.trim();
+                
+                if (!namespace) {
+                    throw new Error('命名空间不能为空');
+                }
+                
+                const target = window;
+                const fullPattern = `*.${namespace}`;
+                
+                // 直接使用dcEvent.off解绑所有命名空间事件
+                dcEvent.off(target, fullPattern);
+                
+                // 清理保存的引用
+                if (target._nsHandlers) {
+                    let removedCount = 0;
+                    for (const eventId in target._nsHandlers) {
+                        const record = target._nsHandlers[eventId];
+                        if (record.event.endsWith(`.${namespace}`)) {
+                            removedCount++;
+                            logEvent(`命名空间事件已解绑: ${record.event} (${eventId})`, 'event-unbind');
+                        }
+                    }
+                    delete target._nsHandlers;
+                    
+                    eventCounter -= removedCount;
+                    updateStats();
+                }
+                
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: green">✓ 所有命名空间事件已解绑！</strong></p>
+                    <p><strong>命名空间:</strong> ${namespace}</p>
+                `;
+                
+                logEvent(`所有命名空间事件已解绑: *.${namespace}`, 'event-unbind');
+                
+            } catch (error) {
+                document.getElementById('namespaceResult').innerHTML = `
+                    <p><strong style="color: red">✗ 解绑失败: ${error.message}</strong></p>
+                `;
+                logEvent(`所有命名空间事件解绑失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 绑定代理事件
+        function bindDelegate() {
+            try {
+                const containerSelector = document.getElementById('containerSelector').value.trim();
+                const delegateSelector = document.getElementById('delegateSelector').value.trim();
+                const event = document.getElementById('delegateEvent').value.trim();
+                
+                if (!containerSelector) {
+                    throw new Error('容器选择器不能为空');
+                }
+                
+                if (!delegateSelector) {
+                    throw new Error('代理选择器不能为空');
+                }
+                
+                if (!event) {
+                    throw new Error('事件类型不能为空');
+                }
+                
+                const container = document.querySelector(containerSelector);
+                if (!container) {
+                    throw new Error(`找不到容器元素: ${containerSelector}`);
+                }
+                
+                // 创建唯一标识符
+                const delegateId = `delegate-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                // 创建事件处理器
+                const handler = function(e) {
+                    logEvent(`代理事件被触发: ${containerSelector} -> ${delegateSelector}.${event} (target: ${e.target.tagName})`, 'event-trigger');
+                    e.target.classList.add('triggered');
+                    setTimeout(() => {
+                        e.target.classList.remove('triggered');
+                    }, 500);
+                };
+                
+                // 保存引用
+                container._delegates = container._delegates || {};
+                container._delegates[delegateId] = {
+                    selector: delegateSelector,
+                    event: event,
+                    handler: handler
+                };
+                
+                // 绑定代理事件
+                dcEvent.delegate(container, delegateSelector, event, handler);
+                
+                eventCounter++;
+                updateStats();
+                
+                document.getElementById('delegateResult').innerHTML = `
+                    <p><strong style="color: green">✓ 代理事件绑定成功！</strong></p>
+                    <p><strong>容器:</strong> ${containerSelector}</p>
+                    <p><strong>代理选择器:</strong> ${delegateSelector}</p>
+                    <p><strong>事件类型:</strong> ${event}</p>
+                    <p><strong>代理ID:</strong> ${delegateId}</p>
+                    <p><em>现在可以点击动态添加的按钮来测试代理功能</em></p>
+                `;
+                
+                logEvent(`代理事件绑定成功: ${containerSelector} -> ${delegateSelector}.${event} (${delegateId})`, 'event-bind');
+                
+            } catch (error) {
+                document.getElementById('delegateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+                logEvent(`代理事件绑定失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 解绑代理事件
+        function unbindDelegate() {
+            try {
+                const containerSelector = document.getElementById('containerSelector').value.trim();
+                const delegateSelector = document.getElementById('delegateSelector').value.trim();
+                const event = document.getElementById('delegateEvent').value.trim();
+                
+                if (!containerSelector) {
+                    throw new Error('容器选择器不能为空');
+                }
+                
+                if (!delegateSelector) {
+                    throw new Error('代理选择器不能为空');
+                }
+                
+                if (!event) {
+                    throw new Error('事件类型不能为空');
+                }
+                
+                const container = document.querySelector(containerSelector);
+                if (!container) {
+                    throw new Error(`找不到容器元素: ${containerSelector}`);
+                }
+                
+                if (!container._delegates) {
+                    throw new Error('没有找到可解绑的代理事件');
+                }
+                
+                let removedCount = 0;
+                for (const delegateId in container._delegates) {
+                    const record = container._delegates[delegateId];
+                    if (record.selector === delegateSelector && record.event === event) {
+                        // 移除代理事件
+                        dcEvent.undelegate(container, delegateSelector, event, record.handler);
+                        delete container._delegates[delegateId];
+                        removedCount++;
+                        logEvent(`代理事件已解绑: ${containerSelector} -> ${delegateSelector}.${event} (${delegateId})`, 'event-unbind');
+                    }
+                }
+                
+                eventCounter -= removedCount;
+                updateStats();
+                
+                document.getElementById('delegateResult').innerHTML = `
+                    <p><strong style="color: green">✓ 代理事件解绑成功！</strong></p>
+                    <p><strong>容器:</strong> ${containerSelector}</p>
+                    <p><strong>代理选择器:</strong> ${delegateSelector}</p>
+                    <p><strong>事件类型:</strong> ${event}</p>
+                    <p><strong>解绑数量:</strong> ${removedCount}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('delegateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 解绑失败: ${error.message}</strong></p>
+                `;
+                logEvent(`代理事件解绑失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 添加动态按钮
+        function addDynamicButton() {
+            try {
+                const containerSelector = document.getElementById('containerSelector').value.trim();
+                const container = document.querySelector(containerSelector);
+                
+                if (!container) {
+                    throw new Error(`找不到容器元素: ${containerSelector}`);
+                }
+                
+                const button = document.createElement('button');
+                button.textContent = `动态按钮 ${container.querySelectorAll('button').length + 1}`;
+                button.style.margin = '5px';
+                
+                container.appendChild(button);
+                
+                document.getElementById('delegateResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 动态按钮已添加</strong></p>
+                    <p><strong>容器:</strong> ${containerSelector}</p>
+                    <p><strong>当前按钮数:</strong> ${container.querySelectorAll('button').length}</p>
+                    <p><em>如果已绑定代理事件，点击这些按钮应该会触发事件</em></p>
+                `;
+                
+                logEvent(`动态按钮已添加到: ${containerSelector}`, 'element-create');
+                
+            } catch (error) {
+                document.getElementById('delegateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 添加失败: ${error.message}</strong></p>
+                `;
+                logEvent(`动态按钮添加失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 绑定一次性事件
+        function bindOnceEvent() {
+            try {
+                const eventName = document.getElementById('onceEventName').value.trim();
+                const targetSelector = document.getElementById('onceTarget').value;
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const target = getTargetElement(targetSelector);
+                if (!target) {
+                    throw new Error(`找不到目标元素: ${targetSelector}`);
+                }
+                
+                // 创建唯一标识符
+                const onceId = `once-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                // 创建事件处理器
+                const handler = function(e) {
+                    logEvent(`一次性事件被触发: ${eventName} (${onceId})`, 'event-trigger');
+                    
+                    // 显示在结果区域
+                    document.getElementById('onceResult').innerHTML = `
+                        <p><strong style="color: purple">✨ 一次性事件已触发！</strong></p>
+                        <p><strong>事件名称:</strong> ${eventName}</p>
+                        <p><strong>事件ID:</strong> ${onceId}</p>
+                        <p><em>此事件只会触发一次，再次尝试将不会有任何效果</em></p>
+                    `;
+                };
+                
+                // 保存引用
+                target._onceHandlers = target._onceHandlers || {};
+                target._onceHandlers[onceId] = {
+                    event: eventName,
+                    handler: handler,
+                    element: target
+                };
+                
+                // 绑定一次性事件
+                dcEvent.once(target, eventName, handler);
+                
+                eventCounter++;
+                updateStats();
+                
+                document.getElementById('onceResult').innerHTML = `
+                    <p><strong style="color: green">✓ 一次性事件绑定成功！</strong></p>
+                    <p><strong>事件名称:</strong> ${eventName}</p>
+                    <p><strong>目标元素:</strong> ${targetSelector}</p>
+                    <p><strong>事件ID:</strong> ${onceId}</p>
+                    <p><em>可以使用"触发事件"按钮来测试，但只能触发一次</em></p>
+                `;
+                
+                logEvent(`一次性事件绑定成功: ${targetSelector}.${eventName} (${onceId})`, 'event-bind');
+                
+            } catch (error) {
+                document.getElementById('onceResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+                logEvent(`一次性事件绑定失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 触发一次性事件
+        function triggerOnceEvent() {
+            try {
+                const eventName = document.getElementById('onceEventName').value.trim();
+                const targetSelector = document.getElementById('onceTarget').value;
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                const target = getTargetElement(targetSelector);
+                if (!target) {
+                    throw new Error(`找不到目标元素: ${targetSelector}`);
+                }
+                
+                // 触发事件
+                dcEvent.trigger(target, eventName);
+                
+                triggerCounter++;
+                updateStats();
+                
+                // 注意：结果会在事件处理器中更新
+                logEvent(`一次性事件被触发: ${targetSelector}.${eventName}`, 'event-trigger');
+                
+            } catch (error) {
+                document.getElementById('onceResult').innerHTML = `
+                    <p><strong style="color: red">✗ 触发失败: ${error.message}</strong></p>
+                `;
+                logEvent(`一次性事件触发失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 绑定带数据事件
+        function bindDataEvent() {
+            try {
+                const eventName = document.getElementById('dataEventName').value.trim();
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                // 创建唯一标识符
+                const dataId = `data-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                // 创建事件处理器
+                const handler = function(e, data) {
+                    logEvent(`带数据事件被触发: ${eventName} (${dataId})`, 'event-trigger');
+                    
+                    // 显示在结果区域
+                    document.getElementById('dataResult').innerHTML = `
+                        <p><strong style="color: blue">ℹ 事件已触发并收到数据</strong></p>
+                        <p><strong>事件名称:</strong> ${eventName}</p>
+                        <p><strong>事件ID:</strong> ${dataId}</p>
+                        <p><strong>接收到的数据:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                };
+                
+                // 保存引用
+                window._dataHandlers = window._dataHandlers || {};
+                window._dataHandlers[dataId] = {
+                    event: eventName,
+                    handler: handler,
+                    element: window
+                };
+                
+                // 绑定事件
+                dcEvent.on(window, eventName, handler);
+                
+                eventCounter++;
+                updateStats();
+                
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: green">✓ 带数据事件绑定成功！</strong></p>
+                    <p><strong>事件名称:</strong> ${eventName}</p>
+                    <p><strong>事件ID:</strong> ${dataId}</p>
+                    <p><em>可以使用"触发带数据事件"按钮来测试数据传递</em></p>
+                `;
+                
+                logEvent(`带数据事件绑定成功: ${eventName} (${dataId})`, 'event-bind');
+                
+            } catch (error) {
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+                logEvent(`带数据事件绑定失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 触发带数据事件
+        function triggerDataEvent() {
+            try {
+                const eventName = document.getElementById('dataEventName').value.trim();
+                const dataText = document.getElementById('eventData').value.trim();
+                
+                if (!eventName) {
+                    throw new Error('事件名称不能为空');
+                }
+                
+                if (!dataText) {
+                    throw new Error('传递的数据不能为空');
+                }
+                
+                let data;
+                try {
+                    data = JSON.parse(dataText);
+                } catch (e) {
+                    throw new Error('数据必须是有效的JSON格式');
+                }
+                
+                // 触发事件并传递数据
+                dcEvent.trigger(window, eventName, data);
+                
+                triggerCounter++;
+                updateStats();
+                
+                // 注意：结果会在事件处理器中更新
+                logEvent(`带数据事件被触发: ${eventName}`, 'event-trigger');
+                
+            } catch (error) {
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: red">✗ 触发失败: ${error.message}</strong></p>
+                `;
+                logEvent(`带数据事件触发失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 设置演示示例
+        function setupDemo() {
+            if (demoBound) return;
+            
+            // 绑定登录事件
+            dcEvent.on(window, 'user.login', function(e, user) {
+                const statusDiv = document.getElementById('dataStatus');
+                statusDiv.innerHTML = `用户已登录: <strong>${user.name}</strong>`;
+                
+                const notification = document.getElementById('notificationCenter');
+                notification.innerHTML = `<strong>欢迎回来, ${user.name}!</strong><br>登录时间: ${new Date().toLocaleString()}`;
+                
+                logEvent(`用户登录: ${user.name}`, 'demo');
+            });
+            
+            // 绑定登出事件
+            dcEvent.on(window, 'user.logout', function() {
+                const statusDiv = document.getElementById('dataStatus');
+                statusDiv.innerHTML = '用户未登录';
+                
+                const notification = document.getElementById('notificationCenter');
+                notification.innerHTML = '<strong>您已安全登出</strong><br>下次再见！';
+                
+                logEvent('用户登出', 'demo');
+            });
+            
+            // 绑定保存事件
+            dcEvent.on(window, 'data.save', function(e, data) {
+                const notification = document.getElementById('notificationCenter');
+                notification.innerHTML = `<strong>数据已保存</strong><br>保存项: ${data.items.length} 个<br>时间: ${new Date().toLocaleString()}`;
+                
+                logEvent(`数据保存: ${data.items.length} 个项目`, 'demo');
+            });
+            
+            // 绑定加载事件
+            dcEvent.on(window, 'data.load', function(e, data) {
+                const notification = document.getElementById('notificationCenter');
+                notification.innerHTML = `<strong>数据已加载</strong><br>加载项: ${data.items.length} 个<br>时间: ${new Date().toLocaleString()}`;
+                
+                logEvent(`数据加载: ${data.items.length} 个项目`, 'demo');
+            });
+            
+            demoBound = true;
+            logEvent('演示示例已设置完成', 'demo-setup');
+        }
+
+        // 模拟用户登录
+        function simulateLogin() {
+            dcEvent.trigger(window, 'user.login', {
+                id: 1,
+                name: 'Alice',
+                email: 'alice@example.com'
+            });
+            
+            logEvent('模拟用户登录', 'demo-action');
+        }
+
+        // 模拟用户登出
+        function simulateLogout() {
+            dcEvent.trigger(window, 'user.logout');
+            
+            logEvent('模拟用户登出', 'demo-action');
+        }
+
+        // 模拟保存数据
+        function simulateSave() {
+            dcEvent.trigger(window, 'data.save', {
+                items: ['项目1', '项目2', '项目3']
+            });
+            
+            logEvent('模拟保存数据', 'demo-action');
+        }
+
+        // 模拟加载数据
+        function simulateLoad() {
+            dcEvent.trigger(window, 'data.load', {
+                items: ['已加载项目1', '已加载项目2']
+            });
+            
+            logEvent('模拟加载数据', 'demo-action');
+        }
+
+        // 重置演示
+        function resetDemo() {
+            if (demoBound) {
+                // 移除所有事件监听器
+                dcEvent.off(window, 'user.login');
+                dcEvent.off(window, 'user.logout');
+                dcEvent.off(window, 'data.save');
+                dcEvent.off(window, 'data.load');
+                
+                demoBound = false;
+            }
+            
+            // 重置UI
+            document.getElementById('dataStatus').innerHTML = '用户未登录';
+            document.getElementById('notificationCenter').innerHTML = '等待事件...';
+            
+            // 重新设置演示
+            setupDemo();
+            
+            logEvent('演示已重置', 'demo-reset');
+        }
+
+        // 基础功能测试
+        function runBasicTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 测试绑定
+                let triggered = false;
+                const handler = () => { triggered = true; };
+                dcEvent.on(window, 'basicTest', handler);
+                dcEvent.trigger(window, 'basicTest');
+                const test1 = triggered;
+                
+                // 测试解绑
+                let count = 0;
+                const handler2 = () => { count++; };
+                dcEvent.on(window, 'unbindTest', handler2);
+                dcEvent.off(window, 'unbindTest', handler2);
+                dcEvent.trigger(window, 'unbindTest');
+                const test2 = count === 0;
+                
+                // 测试触发
+                let triggerCount = 0;
+                dcEvent.on(window, 'triggerTest', () => { triggerCount++; });
+                dcEvent.trigger(window, 'triggerTest');
+                const test3 = triggerCount === 1;
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>基础功能测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试基本的事件绑定、解绑和触发功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>事件绑定与触发: ${test1 ? '✓' : '✗'}</li>
+                        <li>事件解绑: ${test2 ? '✓' : '✗'}</li>
+                        <li>事件触发: ${test3 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 命名空间测试
+        function runNamespaceTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 测试命名空间绑定
+                let nsTriggered = false;
+                const handler = () => { nsTriggered = true; };
+                dcEvent.on(window, 'test.ns1', handler);
+                dcEvent.on(window, 'test.ns2', handler);
+                dcEvent.trigger(window, 'test.ns1');
+                const test1 = nsTriggered;
+                
+                // 测试按命名空间解绑
+                let count1 = 0;
+                let count2 = 0;
+                const handler1 = () => { count1++; };
+                const handler2 = () => { count2++; };
+                dcEvent.on(window, 'multi.ns1', handler1);
+                dcEvent.on(window, 'multi.ns2', handler2);
+                dcEvent.off(window, '.ns1');
+                dcEvent.trigger(window, 'multi.ns1');
+                dcEvent.trigger(window, 'multi.ns2');
+                const test2 = count1 === 0 && count2 === 1;
+                
+                // 测试解绑所有命名空间
+                let count3 = 0;
+                const handler3 = () => { count3++; };
+                dcEvent.on(window, 'all.ns', handler3);
+                dcEvent.off(window, '*.ns');
+                dcEvent.trigger(window, 'all.ns');
+                const test3 = count3 === 0;
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>命名空间测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试事件命名空间功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>命名空间绑定: ${test1 ? '✓' : '✗'}</li>
+                        <li>按命名空间解绑: ${test2 ? '✓' : '✗'}</li>
+                        <li>解绑所有命名空间: ${test3 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 事件代理测试
+        function runDelegateTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 创建测试容器
+                const container = document.createElement('div');
+                container.id = 'delegate-test-container';
+                document.body.appendChild(container);
+                
+                // 创建代理处理函数
+                let delegateCount = 0;
+                const handler = () => { delegateCount++; };
+                
+                // 绑定代理事件
+                dcEvent.delegate(container, 'button', 'click', handler);
+                
+                // 创建多个按钮
+                for (let i = 0; i < 3; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = `测试按钮${i+1}`;
+                    container.appendChild(button);
+                }
+                
+                // 模拟点击所有按钮
+                Array.from(container.querySelectorAll('button')).forEach(btn => {
+                    btn.dispatchEvent(new Event('click'));
+                });
+                
+                // 验证
+                const test1 = delegateCount === 3;
+                
+                // 移除代理事件
+                dcEvent.undelegate(container, 'button', 'click', handler);
+                
+                // 再次点击，应该不再增加计数
+                Array.from(container.querySelectorAll('button')).forEach(btn => {
+                    btn.dispatchEvent(new Event('click'));
+                });
+                
+                const test2 = delegateCount === 3;
+                
+                // 清理
+                document.body.removeChild(container);
+                
+                const allPassed = test1 && test2;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>事件代理测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试事件代理功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>正确触发: ${test1 ? '✓' : '✗'}</li>
+                        <li>正确解绑: ${test2 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 一次性事件测试
+        function runOnceTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 测试一次性事件
+                let onceCount = 0;
+                const handler = () => { onceCount++; };
+                
+                dcEvent.once(window, 'onceTest', handler);
+                
+                // 触发两次
+                dcEvent.trigger(window, 'onceTest');
+                dcEvent.trigger(window, 'onceTest');
+                
+                const test1 = onceCount === 1;
+                
+                // 再次触发，应该不再增加
+                dcEvent.trigger(window, 'onceTest');
+                const test2 = onceCount === 1;
+                
+                const allPassed = test1 && test2;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>一次性事件测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试一次性事件功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>只触发一次: ${test1 ? '✓' : '✗'}</li>
+                        <li>不会重复触发: ${test2 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 数据传递测试
+        function runDataTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 测试数据传递
+                let receivedData = null;
+                const testData = { message: 'Hello World', value: 42 };
+                
+                const handler = (e, data) => { receivedData = data; };
+                
+                dcEvent.on(window, 'dataTest', handler);
+                dcEvent.trigger(window, 'dataTest', testData);
+                
+                const test1 = receivedData !== null;
+                const test2 = receivedData.message === testData.message;
+                const test3 = receivedData.value === testData.value;
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>数据传递测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试事件数据传递功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>收到数据: ${test1 ? '✓' : '✗'}</li>
+                        <li>消息匹配: ${test2 ? '✓' : '✗'}</li>
+                        <li>数值匹配: ${test3 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 边界情况测试
+        function runEdgeCaseTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                let results = [];
+                
+                // 无效事件名
+                try {
+                    dcEvent.on(window, '', () => {});
+                    results.push('<li>空事件名: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>空事件名: ✓ 正确抛出异常</li>');
+                }
+                
+                try {
+                    dcEvent.on(window, null, () => {});
+                    results.push('<li>null事件名: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>null事件名: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效处理函数
+                try {
+                    dcEvent.on(window, 'invalidHandler', null);
+                    results.push('<li>null处理函数: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>null处理函数: ✓ 正确抛出异常</li>');
+                }
+                
+                try {
+                    dcEvent.on(window, 'invalidHandler', undefined);
+                    results.push('<li>undefined处理函数: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>undefined处理函数: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效触发
+                try {
+                    dcEvent.trigger(window, '');
+                    results.push('<li>空事件名触发: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>空事件名触发: ✓ 正确抛出异常</li>');
+                }
+                
+                try {
+                    dcEvent.trigger(window, null);
+                    results.push('<li>null事件名触发: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>null事件名触发: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效目标
+                try {
+                    dcEvent.on(null, 'event', () => {});
+                    results.push('<li>null目标元素: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>null目标元素: ✓ 正确抛出异常</li>');
+                }
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>边界情况测试结果</strong></p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 性能测试
+        function runPerformanceTest() {
+            try {
+                const iterations = 1000;
+                const start = performance.now();
+                
+                // 绑定大量事件
+                for (let i = 0; i < iterations; i++) {
+                    dcEvent.on(window, `perf-${i}`, () => {});
+                }
+                
+                const bindEnd = performance.now();
+                
+                // 触发事件
+                for (let i = 0; i < iterations; i++) {
+                    dcEvent.trigger(window, `perf-${i}`);
+                }
+                
+                const triggerEnd = performance.now();
+                
+                // 解绑事件
+                for (let i = 0; i < iterations; i++) {
+                    dcEvent.off(window, `perf-${i}`);
+                }
+                
+                const end = performance.now();
+                const bindDuration = bindEnd - start;
+                const triggerDuration = triggerEnd - bindEnd;
+                const offDuration = end - triggerEnd;
+                const totalDuration = end - start;
+                const opsPerSecond = Math.round((iterations * 3) / (totalDuration / 1000));
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>性能测试结果:</strong></p>
+                    <p><strong>迭代次数:</strong> ${iterations}</p>
+                    <p><strong>绑定耗时:</strong> ${bindDuration.toFixed(2)}ms (${(bindDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>触发耗时:</strong> ${triggerDuration.toFixed(2)}ms (${(triggerDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>解绑耗时:</strong> ${offDuration.toFixed(2)}ms (${(offDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>总耗时:</strong> ${totalDuration.toFixed(2)}ms</p>
+                    <p><strong>每秒操作数:</strong> ${opsPerSecond.toLocaleString()} ops/s</p>
+                    <p><em>测试在当前浏览器环境下进行</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">性能测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            const results = [];
+            
+            // 存储原始console.log方法
+            const originalLog = console.log;
+            let capturedOutput = '';
+            
+            // 重写console.log以捕获输出
+            console.log = function(message) {
+                capturedOutput += message + '\n';
+                originalLog.apply(console, arguments);
+            };
+            
+            try {
+                // 运行Node.js测试
+                const nodeTestPassed = require('../../../test/utils/dcEvent/dcEvent.test.js');
+                results.push(`<p><strong>Node.js环境测试:</strong> <span style="color: ${nodeTestPassed ? 'green' : 'red'}; font-weight: bold;">${nodeTestPassed ? '通过' : '失败'}</span></p>`);
+                
+                // 运行浏览器环境测试
+                const browserTestPassed = require('../../../test/utils/dcEvent/dcEvent-browser.test.js');
+                results.push(`<p><strong>浏览器环境测试:</strong> <span style="color: ${browserTestPassed ? 'green' : 'red'}; font-weight: bold;">${browserTestPassed ? '通过' : '失败'}</span></p>`);
+                
+            } catch (error) {
+                results.push(`<p><strong style="color: red">自动化测试运行失败: ${error.message}</strong></p>`);
+            } finally {
+                // 恢复原始console.log方法
+                console.log = originalLog;
+            }
+            
+            // 运行手动测试用例
+            runBasicTest();
+            runNamespaceTest();
+            runDelegateTest();
+            runOnceTest();
+            runDataTest();
+            runEdgeCaseTest();
+            runPerformanceTest();
+            
+            document.getElementById('allTestsResult').innerHTML = `
+                <h3>自动化测试结果</h3>
+                ${results.join('')}
+                <h3>手动测试结果</h3>
+                <p>请查看"预设测试"标签页中的测试结果</p>
+                <p><em>完整测试日志:</em></p>
+                <pre>${capturedOutput}</pre>
+            `;
+        }
+    </script>
+</body>
+</html>

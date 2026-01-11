@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcString 工具类 TypeScript 版本示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .example {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-left: 3px solid #4CAF50;
+            background-color: #f9f9f9;
+        }
+        .code {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .result {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab-button.active {
+            background-color: #4CAF50;
+            color: white;
+            border-bottom: 1px solid #4CAF50;
+        }
+        .tab-content {
+            display: none;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 0 0 4px 4px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .version-info {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcString 工具类 TypeScript 版本示例</h1>
+
+    <div class="version-info">
+        <strong>版本信息:</strong> TypeScript 版本 | 构建时间: <span id="build-time"></span>
+    </div>
+
+    <div class="tab-container">
+        <button class="tab-button active" onclick="openTab(event, 'conversion')">字符串转换</button>
+        <button class="tab-button" onclick="openTab(event, 'processing')">字符串处理</button>
+        <button class="tab-button" onclick="openTab(event, 'validation')">字符串验证</button>
+        <button class="tab-button" onclick="openTab(event, 'interactive')">交互式示例</button>
+    </div>
+
+    <!-- 字符串转换 -->
+    <div id="conversion" class="tab-content active">
+        <div class="container">
+            <div class="title">首字母大写</div>
+            <div class="example">
+                <div class="code">DC.String.capitalize('hello world')</div>
+                <div class="result" id="capitalize-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('capitalize')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">转驼峰命名</div>
+            <div class="example">
+                <div class="code">DC.String.toCamelCase('hello-world')</div>
+                <div class="result" id="camelcase-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('camelcase')">运行示例</button>
+            </div>
+            <div class="example">
+                <div class="code">DC.String.toCamelCase('hello-world', true)</div>
+                <div class="result" id="pascalcase-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('pascalcase')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">转下划线命名</div>
+            <div class="example">
+                <div class="code">DC.String.toSnakeCase('helloWorld')</div>
+                <div class="result" id="snakecase-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('snakecase')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">转短横线命名</div>
+            <div class="example">
+                <div class="code">DC.String.toKebabCase('helloWorld')</div>
+                <div class="result" id="kebabcase-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('kebabcase')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">反转字符串</div>
+            <div class="example">
+                <div class="code">DC.String.reverse('hello')</div>
+                <div class="result" id="reverse-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('reverse')">运行示例</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 字符串处理 -->
+    <div id="processing" class="tab-content">
+        <div class="container">
+            <div class="title">截取字符串</div>
+            <div class="example">
+                <div class="code">DC.String.truncate('hello world', 5)</div>
+                <div class="result" id="truncate-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('truncate')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">去除HTML标签</div>
+            <div class="example">
+                <div class="code">DC.String.stripHtml('&lt;p&gt;hello &lt;b&gt;world&lt;/b&gt;&lt;/p&gt;')</div>
+                <div class="result" id="striphtml-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('striphtml')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">转义HTML</div>
+            <div class="example">
+                <div class="code">DC.String.escapeHtml('&lt;div&gt;hello&lt;/div&gt;')</div>
+                <div class="result" id="escapehtml-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('escapehtml')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">解码HTML</div>
+            <div class="example">
+                <div class="code">DC.String.unescapeHtml('&amp;lt;div&amp;gt;hello&amp;lt;/div&amp;gt;')</div>
+                <div class="result" id="unescapehtml-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('unescapehtml')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">生成随机字符串</div>
+            <div class="example">
+                <div class="code">DC.String.random(10)</div>
+                <div class="result" id="random-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('random')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">计算字节长度</div>
+            <div class="example">
+                <div class="code">DC.String.byteLength('hello')</div>
+                <div class="result" id="bytelength-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('bytelength')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">格式化模板字符串</div>
+            <div class="example">
+                <div class="code">DC.String.template('Hello ${name}, welcome to ${place}!', {name: 'John', place: 'Earth'})</div>
+                <div class="result" id="template-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('template')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">转单词数组</div>
+            <div class="example">
+                <div class="code">DC.String.words('hello world test')</div>
+                <div class="result" id="words-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('words')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">计算单词数</div>
+            <div class="example">
+                <div class="code">DC.String.wordCount('hello world test')</div>
+                <div class="result" id="wordcount-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('wordcount')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">填充字符串</div>
+            <div class="example">
+                <div class="code">DC.String.pad('hello', 10, '*')</div>
+                <div class="result" id="pad-end-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('pad-end')">运行示例</button>
+            </div>
+            <div class="example">
+                <div class="code">DC.String.pad('hello', 10, '*', false)</div>
+                <div class="result" id="pad-start-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('pad-start')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">转URL友好slug</div>
+            <div class="example">
+                <div class="code">DC.String.slug('Hello World!')</div>
+                <div class="result" id="slug-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('slug')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">统计字符出现次数</div>
+            <div class="example">
+                <div class="code">DC.String.countChar('hello world', 'l')</div>
+                <div class="result" id="countchar-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('countchar')">运行示例</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 字符串验证 -->
+    <div id="validation" class="tab-content">
+        <div class="container">
+            <div class="title">检查是否为JSON</div>
+            <div class="example">
+                <div class="code">DC.String.isJSON('{"name": "John"}')</div>
+                <div class="result" id="isjson-valid-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('isjson-valid')">运行示例</button>
+            </div>
+            <div class="example">
+                <div class="code">DC.String.isJSON('not json')</div>
+                <div class="result" id="isjson-invalid-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('isjson-invalid')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">字符串包含检查</div>
+            <div class="example">
+                <div class="code">DC.String.contains('hello world', 'world')</div>
+                <div class="result" id="contains-single-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('contains-single')">运行示例</button>
+            </div>
+            <div class="example">
+                <div class="code">DC.String.contains('hello world', ['hello', 'earth'])</div>
+                <div class="result" id="contains-multiple-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('contains-multiple')">运行示例</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="title">字符串相似度</div>
+            <div class="example">
+                <div class="code">DC.String.similarity('hello', 'hallo')</div>
+                <div class="result" id="similarity-result">点击"运行示例"查看结果</div>
+                <button onclick="runExample('similarity')">运行示例</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交互式示例 -->
+    <div id="interactive" class="tab-content">
+        <div class="container">
+            <div class="title">交互式示例</div>
+            <div class="input-group">
+                <label for="input-string">输入字符串:</label>
+                <input type="text" id="input-string" value="hello world" placeholder="输入要测试的字符串">
+            </div>
+            <div class="input-group">
+                <label for="operation">选择操作:</label>
+                <select id="operation">
+                    <option value="capitalize">首字母大写</option>
+                    <option value="toCamelCase">转驼峰命名</option>
+                    <option value="toSnakeCase">转下划线命名</option>
+                    <option value="toKebabCase">转短横线命名</option>
+                    <option value="truncate">截取字符串</option>
+                    <option value="reverse">反转字符串</option>
+                    <option value="stripHtml">去除HTML标签</option>
+                    <option value="escapeHtml">转义HTML</option>
+                    <option value="unescapeHtml">解码HTML</option>
+                    <option value="random">生成随机字符串</option>
+                    <option value="byteLength">计算字节长度</option>
+                    <option value="template">格式化模板字符串</option>
+                    <option value="contains">字符串包含检查</option>
+                    <option value="similarity">字符串相似度</option>
+                    <option value="words">转单词数组</option>
+                    <option value="wordCount">计算单词数</option>
+                    <option value="pad">填充字符串</option>
+                    <option value="isJSON">检查是否为JSON</option>
+                    <option value="slug">转URL友好slug</option>
+                    <option value="countChar">统计字符出现次数</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="param1">参数1:</label>
+                <input type="text" id="param1" placeholder="根据操作类型输入参数">
+            </div>
+            <div class="input-group">
+                <label for="param2">参数2:</label>
+                <input type="text" id="param2" placeholder="根据操作类型输入参数">
+            </div>
+            <button onclick="runInteractiveExample()">运行示例</button>
+            <div class="example">
+                <div class="code" id="interactive-code">选择操作后点击"运行示例"查看代码</div>
+                <div class="result" id="interactive-result">选择操作后点击"运行示例"查看结果</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../dist/dc-ts.js"></script>
+    <script>
+        // 显示构建时间
+        document.getElementById('build-time').textContent = new Date().toLocaleString();
+
+        // 标签页切换
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+        }
+
+        // 运行示例
+        function runExample(exampleName) {
+            let result;
+            let code;
+
+            switch (exampleName) {
+                case 'capitalize':
+                    result = DC.String.capitalize('hello world');
+                    code = 'DC.String.capitalize("hello world")';
+                    break;
+                case 'camelcase':
+                    result = DC.String.toCamelCase('hello-world');
+                    code = 'DC.String.toCamelCase("hello-world")';
+                    break;
+                case 'pascalcase':
+                    result = DC.String.toCamelCase('hello-world', true);
+                    code = 'DC.String.toCamelCase("hello-world", true)';
+                    break;
+                case 'snakecase':
+                    result = DC.String.toSnakeCase('helloWorld');
+                    code = 'DC.String.toSnakeCase("helloWorld")';
+                    break;
+                case 'kebabcase':
+                    result = DC.String.toKebabCase('helloWorld');
+                    code = 'DC.String.toKebabCase("helloWorld")';
+                    break;
+                case 'reverse':
+                    result = DC.String.reverse('hello');
+                    code = 'DC.String.reverse("hello")';
+                    break;
+                case 'truncate':
+                    result = DC.String.truncate('hello world', 5);
+                    code = 'DC.String.truncate("hello world", 5)';
+                    break;
+                case 'striphtml':
+                    result = DC.String.stripHtml('<p>hello <b>world</b></p>');
+                    code = 'DC.String.stripHtml("<p>hello <b>world</b></p>")';
+                    break;
+                case 'escapehtml':
+                    result = DC.String.escapeHtml('<div>hello</div>');
+                    code = 'DC.String.escapeHtml("<div>hello</div>")';
+                    break;
+                case 'unescapehtml':
+                    result = DC.String.unescapeHtml('&lt;div&gt;hello&lt;/div&gt;');
+                    code = 'DC.String.unescapeHtml("&lt;div&gt;hello&lt;/div&gt;")';
+                    break;
+                case 'random':
+                    result = DC.String.random(10);
+                    code = 'DC.String.random(10)';
+                    break;
+                case 'bytelength':
+                    result = DC.String.byteLength('hello');
+                    code = 'DC.String.byteLength("hello")';
+                    break;
+                case 'template':
+                    result = DC.String.template('Hello ${name}, welcome to ${place}!', {name: 'John', place: 'Earth'});
+                    code = 'DC.String.template("Hello ${name}, welcome to ${place}!", {name: "John", place: "Earth"})';
+                    break;
+                case 'words':
+                    result = DC.String.words('hello world test');
+                    code = 'DC.String.words("hello world test")';
+                    break;
+                case 'wordcount':
+                    result = DC.String.wordCount('hello world test');
+                    code = 'DC.String.wordCount("hello world test")';
+                    break;
+                case 'pad-end':
+                    result = DC.String.pad('hello', 10, '*');
+                    code = 'DC.String.pad("hello", 10, "*")';
+                    break;
+                case 'pad-start':
+                    result = DC.String.pad('hello', 10, '*', false);
+                    code = 'DC.String.pad("hello", 10, "*", false)';
+                    break;
+                case 'slug':
+                    result = DC.String.slug('Hello World!');
+                    code = 'DC.String.slug("Hello World!")';
+                    break;
+                case 'countchar':
+                    result = DC.String.countChar('hello world', 'l');
+                    code = 'DC.String.countChar("hello world", "l")';
+                    break;
+                case 'isjson-valid':
+                    result = DC.String.isJSON('{"name": "John"}');
+                    code = 'DC.String.isJSON(\'{"name": "John"}\')';
+                    break;
+                case 'isjson-invalid':
+                    result = DC.String.isJSON('not json');
+                    code = 'DC.String.isJSON("not json")';
+                    break;
+                case 'contains-single':
+                    result = DC.String.contains('hello world', 'world');
+                    code = 'DC.String.contains("hello world", "world")';
+                    break;
+                case 'contains-multiple':
+                    result = DC.String.contains('hello world', ['hello', 'earth']);
+                    code = 'DC.String.contains("hello world", ["hello", "earth"])';
+                    break;
+                case 'similarity':
+                    result = DC.String.similarity('hello', 'hallo');
+                    code = 'DC.String.similarity("hello", "hallo")';
+                    break;
+            }
+
+            const resultElement = document.getElementById(exampleName + '-result');
+            if (resultElement) {
+                resultElement.textContent = `结果: ${JSON.stringify(result)}`;
+            }
+        }
+
+        // 运行交互式示例
+        function runInteractiveExample() {
+            const inputString = document.getElementById('input-string').value;
+            const operation = document.getElementById('operation').value;
+            const param1 = document.getElementById('param1').value;
+            const param2 = document.getElementById('param2').value;
+            const codeElement = document.getElementById('interactive-code');
+            const resultElement = document.getElementById('interactive-result');
+
+            let result;
+            let code;
+
+            try {
+                switch (operation) {
+                    case 'capitalize':
+                        result = DC.String.capitalize(inputString);
+                        code = `DC.String.capitalize("${inputString}")`;
+                        break;
+                    case 'toCamelCase':
+                        const pascalCase = param1 === 'true';
+                        result = DC.String.toCamelCase(inputString, pascalCase);
+                        code = `DC.String.toCamelCase("${inputString}", ${pascalCase})`;
+                        break;
+                    case 'toSnakeCase':
+                        result = DC.String.toSnakeCase(inputString);
+                        code = `DC.String.toSnakeCase("${inputString}")`;
+                        break;
+                    case 'toKebabCase':
+                        result = DC.String.toKebabCase(inputString);
+                        code = `DC.String.toKebabCase("${inputString}")`;
+                        break;
+                    case 'truncate':
+                        const length = param1 ? parseInt(param1) : 10;
+                        result = DC.String.truncate(inputString, length);
+                        code = `DC.String.truncate("${inputString}", ${length})`;
+                        break;
+                    case 'reverse':
+                        result = DC.String.reverse(inputString);
+                        code = `DC.String.reverse("${inputString}")`;
+                        break;
+                    case 'stripHtml':
+                        result = DC.String.stripHtml(inputString);
+                        code = `DC.String.stripHtml("${inputString}")`;
+                        break;
+                    case 'escapeHtml':
+                        result = DC.String.escapeHtml(inputString);
+                        code = `DC.String.escapeHtml("${inputString}")`;
+                        break;
+                    case 'unescapeHtml':
+                        result = DC.String.unescapeHtml(inputString);
+                        code = `DC.String.unescapeHtml("${inputString}")`;
+                        break;
+                    case 'random':
+                        const randomLength = param1 ? parseInt(param1) : 10;
+                        result = DC.String.random(randomLength);
+                        code = `DC.String.random(${randomLength})`;
+                        break;
+                    case 'byteLength':
+                        result = DC.String.byteLength(inputString);
+                        code = `DC.String.byteLength("${inputString}")`;
+                        break;
+                    case 'template':
+                        let templateData = {};
+                        if (param1) {
+                            try {
+                                templateData = JSON.parse(param1);
+                            } catch (e) {
+                                templateData = {name: "John", place: "Earth"};
+                            }
+                        } else {
+                            templateData = {name: "John", place: "Earth"};
+                        }
+                        result = DC.String.template(inputString, templateData);
+                        code = `DC.String.template("${inputString}", ${JSON.stringify(templateData)})`;
+                        break;
+                    case 'contains':
+                        let searchStr;
+                        if (param1) {
+                            try {
+                                searchStr = JSON.parse(param1);
+                            } catch (e) {
+                                searchStr = param1;
+                            }
+                        } else {
+                            searchStr = "world";
+                        }
+                        result = DC.String.contains(inputString, searchStr);
+                        code = `DC.String.contains("${inputString}", ${JSON.stringify(searchStr)})`;
+                        break;
+                    case 'similarity':
+                        const compareStr = param1 || "hello";
+                        result = DC.String.similarity(inputString, compareStr);
+                        code = `DC.String.similarity("${inputString}", "${compareStr}")`;
+                        break;
+                    case 'words':
+                        result = DC.String.words(inputString);
+                        code = `DC.String.words("${inputString}")`;
+                        break;
+                    case 'wordCount':
+                        result = DC.String.wordCount(inputString);
+                        code = `DC.String.wordCount("${inputString}")`;
+                        break;
+                    case 'pad':
+                        const padLength = param1 ? parseInt(param1) : 10;
+                        const padChar = param2 || "*";
+                        const padEnd = param2 !== "false";
+                        result = DC.String.pad(inputString, padLength, padChar, padEnd);
+                        code = `DC.String.pad("${inputString}", ${padLength}, "${padChar}", ${padEnd})`;
+                        break;
+                    case 'isJSON':
+                        result = DC.String.isJSON(inputString);
+                        code = `DC.String.isJSON("${inputString}")`;
+                        break;
+                    case 'slug':
+                        result = DC.String.slug(inputString);
+                        code = `DC.String.slug("${inputString}")`;
+                        break;
+                    case 'countChar':
+                        const char = param1 || "l";
+                        result = DC.String.countChar(inputString, char);
+                        code = `DC.String.countChar("${inputString}", "${char}")`;
+                        break;
+                    default:
+                        result = '未知操作';
+                        code = '未知操作';
+                }
+
+                codeElement.textContent = code;
+                resultElement.textContent = `结果: ${JSON.stringify(result)}`;
+            } catch (error) {
+                codeElement.textContent = `DC.String.${operation}("${inputString}")`;
+                resultElement.textContent = `错误: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

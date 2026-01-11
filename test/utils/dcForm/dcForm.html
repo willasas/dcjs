@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcForm 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .tabs {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            transition: 0.3s;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        .tab-button.active {
+            background-color: #ccc;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .success {
+            color: green;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .loading {
+            opacity: 0.6;
+            cursor: wait;
+        }
+        .status-indicator {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .status-loading {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .status-success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+        .status-error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .demo-area {
+            margin-top: 20px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 20px;
+        }
+        .validation-messages {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .validation-error {
+            color: red;
+        }
+        .validation-success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcForm 工具类交互式测试</h1>
+
+    <!-- 当前表单统计 -->
+    <div class="info-box">
+        <p><strong>序列化次数:</strong> <span id="serializeCount">0</span></p>
+        <p><strong>验证次数:</strong> <span id="validateCount">0</span></p>
+        <p><strong>提交次数:</strong> <span id="submitCount">0</span></p>
+        <p><strong>测试说明:</strong> 此工具用于测试表单数据处理、验证和提交功能。所有操作都会记录在下方的结果区域。</p>
+    </div>
+
+    <!-- 标签页容器 -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'serialize')">数据序列化</button>
+        <button class="tab-button" onclick="openTab(event, 'validate')">表单验证</button>
+        <button class="tab-button" onclick="openTab(event, 'reset')">重置功能</button>
+        <button class="tab-button" onclick="openTab(event, 'submit')">提交处理</button>
+        <button class="tab-button" onclick="openTab(event, 'state')">状态管理</button>
+        <button class="tab-button" onclick="openTab(event, 'data')">数据操作</button>
+        <button class="tab-button" onclick="openTab(event, 'demo')">演示示例</button>
+        <button class="tab-button" onclick="openTab(event, 'presets')">预设测试</button>
+        <button class="tab-button" onclick="openTab(event, 'allTests')">运行所有测试</button>
+    </div>
+
+    <!-- 数据序列化标签页 -->
+    <div id="serialize" class="tab-content active">
+        <div class="test-container">
+            <div class="test-title">表单数据序列化</div>
+            
+            <form id="serializeForm">
+                <div class="form-group">
+                    <label for="username">用户名:</label>
+                    <input type="text" id="username" name="username" value="testuser">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">邮箱:</label>
+                    <input type="email" name="email" value="test@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码:</label>
+                    <input type="password" name="password" value="secret123">
+                </div>
+                
+                <div class="form-group">
+                    <label>兴趣爱好:</label>
+                    <div>
+                        <label><input type="checkbox" name="hobbies" value="reading"> 阅读</label>
+                        <label><input type="checkbox" name="hobbies" value="sports" checked> 运动</label>
+                        <label><input type="checkbox" name="hobbies" value="music" checked> 音乐</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">国家:</label>
+                    <select name="country">
+                        <option value="us">美国</option>
+                        <option value="ca" selected>加拿大</option>
+                        <option value="uk">英国</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="colors">喜欢的颜色 (多选):</label>
+                    <select name="colors" multiple size="3">
+                        <option value="red">红色</option>
+                        <option value="green" selected>绿色</option>
+                        <option value="blue" selected>蓝色</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bio">个人简介:</label>
+                    <textarea name="bio" rows="3">这是一个测试简介</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="avatar">头像:</label>
+                    <input type="file" name="avatar" accept="image/*">
+                </div>
+                
+                <div class="form-group">
+                    <label for="token">令牌 (隐藏字段):</label>
+                    <input type="hidden" name="token" value="abc123xyz">
+                </div>
+            </form>
+            
+            <button onclick="serializeForm()">序列化表单</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="serializeResult"></div>
+        </div>
+    </div>
+
+    <!-- 表单验证标签页 -->
+    <div id="validate" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">表单验证</div>
+            
+            <form id="validateForm">
+                <div class="form-group">
+                    <label for="vUsername">用户名:</label>
+                    <input type="text" name="username" required minlength="3">
+                    <div class="validation-messages" id="usernameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vEmail">邮箱:</label>
+                    <input type="email" name="email" required>
+                    <div class="validation-messages" id="emailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vPassword">密码:</label>
+                    <input type="password" name="password" required minlength="6">
+                    <div class="validation-messages" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vPhone">电话:</label>
+                    <input type="tel" name="phone" data-validate="phone">
+                    <div class="validation-messages" id="phoneError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vAge">年龄:</label>
+                    <input type="number" name="age" min="18" max="100">
+                    <div class="validation-messages" id="ageError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>同意条款:</label>
+                    <label><input type="checkbox" name="terms" required> 我同意服务条款</label>
+                    <div class="validation-messages" id="termsError"></div>
+                </div>
+            </form>
+            
+            <button onclick="validateForm()">验证表单</button>
+            <button onclick="addCustomRule()">添加自定义规则</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="validateResult"></div>
+        </div>
+    </div>
+
+    <!-- 重置功能标签页 -->
+    <div id="reset" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">表单重置</div>
+            
+            <form id="resetForm">
+                <div class="form-group">
+                    <label for="rUsername">用户名:</label>
+                    <input type="text" name="username" value="initialuser">
+                </div>
+                
+                <div class="form-group">
+                    <label for="rEmail">邮箱:</label>
+                    <input type="email" name="email" value="initial@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>订阅:</label>
+                    <label><input type="checkbox" name="subscribe" checked> 接收邮件通知</label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rCountry">国家:</label>
+                    <select name="country">
+                        <option value="us">美国</option>
+                        <option value="ca" selected>加拿大</option>
+                        <option value="uk">英国</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rSearch">搜索词 (不重置):</label>
+                    <input type="text" name="search" value="keep-search" class="no-reset">
+                </div>
+            </form>
+            
+            <button onclick="resetForm()">重置表单</button>
+            <button onclick="resetFormWithExclusion()">重置但保留搜索词</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="resetResult"></div>
+        </div>
+    </div>
+
+    <!-- 提交处理标签页 -->
+    <div id="submit" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">表单提交处理</div>
+            
+            <form id="submitForm">
+                <div class="form-group">
+                    <label for="sUsername">用户名:</label>
+                    <input type="text" name="username" value="submituser">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sEmail">邮箱:</label>
+                    <input type="email" name="email" value="submit@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sMessage">消息:</label>
+                    <textarea name="message" rows="3">这是一条测试消息</textarea>
+                </div>
+            </form>
+            
+            <button onclick="submitForm()">提交表单</button>
+            <button onclick="setupCustomSubmit()">设置自定义提交</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="submitResult"></div>
+        </div>
+    </div>
+
+    <!-- 状态管理标签页 -->
+    <div id="state" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">表单状态管理</div>
+            
+            <form id="stateForm">
+                <div class="form-group">
+                    <label for="stUsername">用户名:</label>
+                    <input type="text" name="username" value="stateuser">
+                </div>
+                
+                <div class="form-group">
+                    <label for="stStatus">当前状态:</label>
+                    <div class="status-indicator" id="statusIndicator">就绪</div>
+                </div>
+            </form>
+            
+            <button onclick="setLoadingState()">设置加载状态</button>
+            <button onclick="setSuccessState()">设置成功状态</button>
+            <button onclick="setErrorState()">设置错误状态</button>
+            <button onclick="clearState()">清除状态</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="stateResult"></div>
+        </div>
+    </div>
+
+    <!-- 数据操作标签页 -->
+    <div id="data" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">表单数据操作</div>
+            
+            <form id="dataForm">
+                <div class="form-group">
+                    <label for="dUsername">用户名:</label>
+                    <input type="text" name="username" placeholder="输入用户名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dEmail">邮箱:</label>
+                    <input type="email" name="email" placeholder="输入邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dHobbies">兴趣爱好:</label>
+                    <div>
+                        <label><input type="checkbox" name="hobbies" value="reading"> 阅读</label>
+                        <label><input type="checkbox" name="hobbies" value="sports"> 运动</label>
+                        <label><input type="checkbox" name="hobbies" value="music"> 音乐</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dCountry">国家:</label>
+                    <select name="country">
+                        <option value="">请选择</option>
+                        <option value="us">美国</option>
+                        <option value="ca">加拿大</option>
+                        <option value="uk">英国</option>
+                    </select>
+                </div>
+            </form>
+            
+            <button onclick="getData()">获取表单数据</button>
+            <button onclick="setData()">设置表单数据</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="dataResult"></div>
+        </div>
+    </div>
+
+    <!-- 演示示例标签页 -->
+    <div id="demo" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">表单系统演示</div>
+            
+            <p>以下是一个完整的注册表单演示：</p>
+            
+            <div class="demo-area">
+                <h3>用户注册</h3>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="regUsername">用户名:</label>
+                        <input type="text" name="username" required minlength="3">
+                        <div class="validation-messages" id="regUsernameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regEmail">邮箱:</label>
+                        <input type="email" name="email" required>
+                        <div class="validation-messages" id="regEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword">密码:</label>
+                        <input type="password" name="password" required minlength="6">
+                        <div class="validation-messages" id="regPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regConfirmPassword">确认密码:</label>
+                        <input type="password" name="confirmPassword" required>
+                        <div class="validation-messages" id="regConfirmPasswordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>订阅:</label>
+                        <label><input type="checkbox" name="subscribe"> 接收新闻邮件</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regCaptcha">验证码:</label>
+                        <input type="text" name="captcha" required>
+                        <div class="validation-messages" id="regCaptchaError"></div>
+                    </div>
+                    
+                    <button type="submit">注册</button>
+                    <button type="button" onclick="resetRegistrationForm()">重置</button>
+                </form>
+                
+                <div id="registrationStatus" class="status-indicator" style="display: none;">就绪</div>
+            </div>
+            
+            <button onclick="clearResults()">清空结果</button>
+        </div>
+    </div>
+
+    <!-- 预设测试标签页 -->
+    <div id="presets" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">预设测试用例</div>
+            
+            <button onclick="runSerializeTest()">数据序列化测试</button>
+            <button onclick="runValidateTest()">表单验证测试</button>
+            <button onclick="runResetTest()">重置功能测试</button>
+            <button onclick="runSubmitTest()">提交处理测试</button>
+            <button onclick="runStateTest()">状态管理测试</button>
+            <button onclick="runDataTest()">数据操作测试</button>
+            <button onclick="runEdgeCaseTest()">边界情况测试</button>
+            <button onclick="runPerformanceTest()">性能测试</button>
+            
+            <div class="result" id="presetResult"></div>
+        </div>
+    </div>
+
+    <!-- 运行所有测试标签页 -->
+    <div id="allTests" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">运行所有测试</div>
+            
+            <button onclick="runAllTests()">执行全部自动化测试</button>
+            
+            <div class="result" id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="info-box">
+        <h3>使用说明</h3>
+        <ul>
+            <li><strong>数据序列化</strong>: 测试将表单数据转换为JavaScript对象</li>
+            <li><strong>表单验证</strong>: 测试表单字段的验证功能</li>
+            <li><strong>重置功能</strong>: 测试表单重置到初始状态</li>
+            <li><strong>提交处理</strong>: 测试表单提交时的自定义处理</li>
+            <li><strong>状态管理</strong>: 测试表单的不同状态（加载、成功、错误）</li>
+            <li><strong>数据操作</strong>: 测试获取和设置表单数据</li>
+            <li><strong>演示示例</strong>: 展示一个完整的注册表单应用</li>
+            <li><strong>预设测试</strong>: 运行一系列预定义的测试用例</li>
+            <li><strong>运行所有测试</strong>: 自动运行所有测试用例</li>
+            <li>所有操作都会更新上方的统计信息</li>
+        </ul>
+    </div>
+
+    <script src="../../../src/utils/dcForm.js"></script>
+    <script>
+        // 全局变量
+        let serializeCounter = 0;
+        let validateCounter = 0;
+        let submitCounter = 0;
+        let demoBound = false;
+
+        // 页面加载时初始化
+        window.onload = function() {
+            openTab(null, 'serialize');
+            updateStats();
+            setupDemo();
+        };
+
+        // 切换标签页
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            if (evt) evt.currentTarget.className += " active";
+        }
+
+        // 更新统计数据
+        function updateStats() {
+            document.getElementById('serializeCount').textContent = serializeCounter;
+            document.getElementById('validateCount').textContent = validateCounter;
+            document.getElementById('submitCount').textContent = submitCounter;
+        }
+
+        // 清空结果
+        function clearResults() {
+            const resultContainers = document.getElementsByClassName('result');
+            for (let i = 0; i < resultContainers.length; i++) {
+                resultContainers[i].innerHTML = '';
+            }
+        }
+
+        // 数据序列化
+        function serializeForm() {
+            try {
+                const form = document.getElementById('serializeForm');
+                const data = dcForm.serialize(form);
+                
+                serializeCounter++;
+                updateStats();
+                
+                document.getElementById('serializeResult').innerHTML = `
+                    <p><strong style="color: green">✓ 表单序列化成功！</strong></p>
+                    <p><strong>序列化后的数据:</strong></p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                document.getElementById('serializeResult').innerHTML = `
+                    <p><strong style="color: red">✗ 序列化失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 表单验证
+        function validateForm() {
+            try {
+                const form = document.getElementById('validateForm');
+                const result = dcForm.validate(form);
+                
+                validateCounter++;
+                updateStats();
+                
+                // 清除之前的错误信息
+                ['username', 'email', 'password', 'phone', 'age', 'terms'].forEach(field => {
+                    const errorDiv = document.getElementById(`${field}Error`);
+                    if (errorDiv) {
+                        errorDiv.innerHTML = '';
+                    }
+                });
+                
+                if (result.isValid) {
+                    document.getElementById('validateResult').innerHTML = `
+                        <p><strong style="color: green">✓ 表单验证通过！</strong></p>
+                        <p>所有字段都符合要求</p>
+                    `;
+                } else {
+                    // 显示错误信息
+                    Object.keys(result.errors).forEach(fieldName => {
+                        const errorDiv = document.getElementById(`${fieldName}Error`);
+                        if (errorDiv) {
+                            errorDiv.innerHTML = `<span class="validation-error">${result.errors[fieldName]}</span>`;
+                        }
+                    });
+                    
+                    document.getElementById('validateResult').innerHTML = `
+                        <p><strong style="color: red">✗ 表单验证失败！</strong></p>
+                        <p>请修正以下错误:</p>
+                        <ul>
+                            ${Object.entries(result.errors).map(([field, error]) => `<li>${field}: ${error}</li>`).join('')}
+                        </ul>
+                    `;
+                }
+                
+            } catch (error) {
+                document.getElementById('validateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 验证失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 添加自定义验证规则
+        function addCustomRule() {
+            try {
+                // 添加电话号码验证规则
+                dcForm.addValidationRule('phone', (value) => {
+                    if (!value) return '';
+                    return /^\d{10}$/.test(value) ? '' : '电话号码必须是10位数字';
+                });
+                
+                // 添加年龄验证规则
+                dcForm.addValidationRule('age', (value) => {
+                    if (!value) return '';
+                    const age = parseInt(value);
+                    if (isNaN(age)) return '请输入有效的数字';
+                    if (age < 18) return '必须年满18岁';
+                    if (age > 100) return '年龄不能超过100岁';
+                    return '';
+                });
+                
+                document.getElementById('validateResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 自定义验证规则已添加！</strong></p>
+                    <p>现在可以验证电话号码和年龄字段了</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('validateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 添加规则失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 重置表单
+        function resetForm() {
+            try {
+                const form = document.getElementById('resetForm');
+                dcForm.reset(form);
+                
+                document.getElementById('resetResult').innerHTML = `
+                    <p><strong style="color: green">✓ 表单已重置！</strong></p>
+                    <p>所有字段已恢复到初始值</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('resetResult').innerHTML = `
+                    <p><strong style="color: red">✗ 重置失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 重置表单并排除特定字段
+        function resetFormWithExclusion() {
+            try {
+                const form = document.getElementById('resetForm');
+                dcForm.reset(form, { exclude: ['.no-reset'] });
+                
+                document.getElementById('resetResult').innerHTML = `
+                    <p><strong style="color: green">✓ 表单已重置（保留搜索词）！</strong></p>
+                    <p>所有字段已恢复到初始值，但搜索词保持不变</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('resetResult').innerHTML = `
+                    <p><strong style="color: red">✗ 重置失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 提交表单
+        function submitForm() {
+            try {
+                const form = document.getElementById('submitForm');
+                
+                // 阻止默认提交行为
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                });
+                
+                // 触发自定义提交
+                dcForm.submit(form);
+                
+                submitCounter++;
+                updateStats();
+                
+                document.getElementById('submitResult').innerHTML = `
+                    <p><strong style="color: green">✓ 表单提交成功！</strong></p>
+                    <p>默认提交已被阻止，可以进行自定义处理</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('submitResult').innerHTML = `
+                    <p><strong style="color: red">✗ 提交失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 设置自定义提交处理
+        function setupCustomSubmit() {
+            try {
+                const form = document.getElementById('submitForm');
+                
+                // 设置自定义提交处理
+                dcForm.onSubmit(form, async (formData) => {
+                    // 模拟异步提交
+                    document.getElementById('submitResult').innerHTML = `
+                        <p><strong style="color: blue">ℹ 正在提交...</strong></p>
+                        <p>正在向服务器发送数据...</p>
+                    `;
+                    
+                    // 模拟网络延迟
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // 模拟成功响应
+                    document.getElementById('submitResult').innerHTML = `
+                        <p><strong style="color: green">✓ 提交成功！</strong></p>
+                        <p>数据已成功保存</p>
+                        <p><strong>提交的数据:</strong></p>
+                        <pre>${JSON.stringify(formData, null, 2)}</pre>
+                    `;
+                });
+                
+                document.getElementById('submitResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 自定义提交处理已设置！</strong></p>
+                    <p>点击上面的"提交表单"按钮来测试</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('submitResult').innerHTML = `
+                    <p><strong style="color: red">✗ 设置失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 设置加载状态
+        function setLoadingState() {
+            try {
+                const form = document.getElementById('stateForm');
+                dcForm.setState(form, 'loading', '正在处理...');
+                
+                document.getElementById('statusIndicator').className = 'status-indicator status-loading';
+                document.getElementById('statusIndicator').textContent = '正在处理...';
+                
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 加载状态已设置！</strong></p>
+                    <p>表单显示为加载中状态</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 设置状态失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 设置成功状态
+        function setSuccessState() {
+            try {
+                const form = document.getElementById('stateForm');
+                dcForm.setState(form, 'success', '提交成功！');
+                
+                document.getElementById('statusIndicator').className = 'status-indicator status-success';
+                document.getElementById('statusIndicator').textContent = '提交成功！';
+                
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: green">✓ 成功状态已设置！</strong></p>
+                    <p>表单显示为成功状态</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 设置状态失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 设置错误状态
+        function setErrorState() {
+            try {
+                const form = document.getElementById('stateForm');
+                dcForm.setState(form, 'error', '提交失败，请重试');
+                
+                document.getElementById('statusIndicator').className = 'status-indicator status-error';
+                document.getElementById('statusIndicator').textContent = '提交失败，请重试';
+                
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 错误状态已设置！</strong></p>
+                    <p>表单显示为错误状态</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 设置状态失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 清除状态
+        function clearState() {
+            try {
+                const form = document.getElementById('stateForm');
+                dcForm.clearState(form);
+                
+                document.getElementById('statusIndicator').className = 'status-indicator';
+                document.getElementById('statusIndicator').textContent = '就绪';
+                
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 状态已清除！</strong></p>
+                    <p>表单状态已重置</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('stateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 清除状态失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 获取表单数据
+        function getData() {
+            try {
+                const form = document.getElementById('dataForm');
+                const data = dcForm.getData(form);
+                
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: green">✓ 数据获取成功！</strong></p>
+                    <p><strong>当前表单数据:</strong></p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: red">✗ 获取数据失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 设置表单数据
+        function setData() {
+            try {
+                const form = document.getElementById('dataForm');
+                dcForm.setData(form, {
+                    username: 'newuser',
+                    email: 'new@example.com',
+                    hobbies: ['reading', 'music'],
+                    country: 'us'
+                });
+                
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: green">✓ 数据设置成功！</strong></p>
+                    <p>表单字段已更新为指定值</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('dataResult').innerHTML = `
+                    <p><strong style="color: red">✗ 设置数据失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 设置演示示例
+        function setupDemo() {
+            if (demoBound) return;
+            
+            // 绑定注册表单提交事件
+            const form = document.getElementById('registrationForm');
+            
+            // 添加自定义验证规则
+            dcForm.addValidationRule('confirmPassword', (value, formData) => {
+                if (!value || !formData.password) return '';
+                return value === formData.password ? '' : '两次输入的密码不一致';
+            });
+            
+            dcForm.addValidationRule('captcha', (value) => {
+                if (!value) return '';
+                return value.toLowerCase() === 'abcd' ? '' : '验证码错误';
+            });
+            
+            // 设置提交处理
+            dcForm.onSubmit(form, async (formData) => {
+                const statusDiv = document.getElementById('registrationStatus');
+                statusDiv.style.display = 'block';
+                
+                // 显示加载状态
+                dcForm.setState(form, 'loading', '正在注册...');
+                
+                // 模拟异步提交
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // 模拟成功响应
+                dcForm.setState(form, 'success', '注册成功！欢迎加入我们');
+                
+                // 3秒后隐藏状态
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 3000);
+            });
+            
+            demoBound = true;
+        }
+
+        // 重置注册表单
+        function resetRegistrationForm() {
+            try {
+                const form = document.getElementById('registrationForm');
+                dcForm.reset(form);
+                
+                // 清除验证错误
+                ['regUsername', 'regEmail', 'regPassword', 'regConfirmPassword', 'regCaptcha'].forEach(id => {
+                    const errorDiv = document.getElementById(`${id}Error`);
+                    if (errorDiv) {
+                        errorDiv.innerHTML = '';
+                    }
+                });
+                
+                // 清除状态
+                const statusDiv = document.getElementById('registrationStatus');
+                statusDiv.style.display = 'none';
+                
+                dcForm.clearState(form);
+                
+            } catch (error) {
+                console.error('重置表单失败:', error);
+            }
+        }
+
+        // 基础功能测试
+        function runSerializeTest() {
+            try {
+                // 创建测试表单
+                const form = document.createElement('form');
+                form.innerHTML = `
+                    <input type="text" name="username" value="testuser">
+                    <input type="email" name="email" value="test@example.com">
+                    <input type="checkbox" name="terms" value="1" checked>
+                    <select name="country">
+                        <option value="us">United States</option>
+                        <option value="ca" selected>Canada</option>
+                    </select>
+                `;
+                document.body.appendChild(form);
+
+                // 执行序列化
+                const data = dcForm.serialize(form);
+                
+                // 验证结果
+                const test1 = data.username === 'testuser';
+                const test2 = data.email === 'test@example.com';
+                const test3 = data.terms === '1';
+                const test4 = data.country === 'ca';
+                
+                const allPassed = test1 && test2 && test3 && test4;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>数据序列化测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试表单数据序列化功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>用户名: ${test1 ? '✓' : '✗'}</li>
+                        <li>邮箱: ${test2 ? '✓' : '✗'}</li>
+                        <li>条款: ${test3 ? '✓' : '✗'}</li>
+                        <li>国家: ${test4 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 清理
+                document.body.removeChild(form);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 表单验证测试
+        function runValidateTest() {
+            try {
+                // 创建测试表单
+                const form = document.createElement('form');
+                form.innerHTML = `
+                    <input type="text" name="username" required minlength="3">
+                    <input type="email" name="email" required>
+                    <input type="password" name="password" required minlength="6">
+                    <input type="checkbox" name="terms" required>
+                `;
+                document.body.appendChild(form);
+
+                // 有效数据
+                form.username.value = 'testuser';
+                form.email.value = 'test@example.com';
+                form.password.value = 'password123';
+                form.terms.checked = true;
+
+                const validResult = dcForm.validate(form);
+                
+                // 无效数据
+                form.username.value = '';
+                form.email.value = 'invalid-email';
+                form.password.value = 'short';
+                form.terms.checked = false;
+
+                const invalidResult = dcForm.validate(form);
+                
+                const test1 = validResult.isValid;
+                const test2 = !invalidResult.isValid;
+                const test3 = invalidResult.errors.username === '必填字段';
+                const test4 = invalidResult.errors.email === '无效的电子邮件格式';
+                const test5 = invalidResult.errors.password === '密码至少需要6个字符';
+                
+                const allPassed = test1 && test2 && test3 && test4 && test5;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>表单验证测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试表单验证功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>有效数据验证: ${test1 ? '✓' : '✗'}</li>
+                        <li>无效数据验证: ${test2 ? '✓' : '✗'}</li>
+                        <li>用户名错误: ${test3 ? '✓' : '✗'}</li>
+                        <li>邮箱错误: ${test4 ? '✓' : '✗'}</li>
+                        <li>密码错误: ${test5 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 清理
+                document.body.removeChild(form);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 重置功能测试
+        function runResetTest() {
+            try {
+                // 创建测试表单
+                const form = document.createElement('form');
+                form.innerHTML = `
+                    <input type="text" name="username" value="initial">
+                    <input type="text" name="search" value="keep" class="no-reset">
+                `;
+                document.body.appendChild(form);
+
+                // 修改表单值
+                form.username.value = 'modified';
+                form.search.value = 'changed';
+
+                // 重置表单
+                dcForm.reset(form);
+                
+                const test1 = form.username.value === 'initial';
+                
+                // 重置并排除
+                form.username.value = 'modified';
+                form.search.value = 'changed';
+                dcForm.reset(form, { exclude: ['.no-reset'] });
+                
+                const test2 = form.username.value === 'initial';
+                const test3 = form.search.value === 'changed';
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>重置功能测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试表单重置功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>完全重置: ${test1 ? '✓' : '✗'}</li>
+                        <li>排除重置: ${test2 ? '✓' : '✗'}</li>
+                        <li>保留字段: ${test3 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 清理
+                document.body.removeChild(form);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 提交处理测试
+        function runSubmitTest() {
+            try {
+                // 创建测试表单
+                const form = document.createElement('form');
+                form.innerHTML = `
+                    <input type="text" name="username" value="testuser">
+                `;
+                document.body.appendChild(form);
+
+                let submitted = false;
+                let formData = null;
+
+                // 设置自定义提交处理
+                dcForm.onSubmit(form, (data) => {
+                    submitted = true;
+                    formData = data;
+                });
+                
+                // 模拟提交
+                form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                
+                const test1 = submitted;
+                const test2 = formData && formData.username === 'testuser';
+                
+                const allPassed = test1 && test2;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>提交处理测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试表单提交处理功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>触发提交: ${test1 ? '✓' : '✗'}</li>
+                        <li>数据传递: ${test2 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 清理
+                document.body.removeChild(form);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 状态管理测试
+        function runStateTest() {
+            try {
+                // 创建测试表单
+                const form = document.createElement('form');
+                document.body.appendChild(form);
+
+                // 测试加载状态
+                dcForm.setState(form, 'loading');
+                const test1 = form.classList.contains('is-loading');
+                
+                // 测试成功状态
+                dcForm.setState(form, 'success', '操作成功');
+                const test2 = form.classList.contains('is-success');
+                
+                // 测试错误状态
+                dcForm.setState(form, 'error', '操作失败');
+                const test3 = form.classList.contains('is-error');
+                
+                // 清除状态
+                dcForm.clearState(form);
+                const test4 = !form.classList.contains('is-loading') && 
+                           !form.classList.contains('is-success') && 
+                           !form.classList.contains('is-error');
+                
+                const allPassed = test1 && test2 && test3 && test4;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>状态管理测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试表单状态管理功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>加载状态: ${test1 ? '✓' : '✗'}</li>
+                        <li>成功状态: ${test2 ? '✓' : '✗'}</li>
+                        <li>错误状态: ${test3 ? '✓' : '✗'}</li>
+                        <li>清除状态: ${test4 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 清理
+                document.body.removeChild(form);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 数据操作测试
+        function runDataTest() {
+            try {
+                // 创建测试表单
+                const form = document.createElement('form');
+                form.innerHTML = `
+                    <input type="text" name="username" value="testuser">
+                    <input type="email" name="email" value="test@example.com">
+                `;
+                document.body.appendChild(form);
+
+                // 测试获取数据
+                const data1 = dcForm.getData(form);
+                const test1 = data1.username === 'testuser' && data1.email === 'test@example.com';
+                
+                // 测试设置数据
+                dcForm.setData(form, {
+                    username: 'newuser',
+                    email: 'new@example.com'
+                });
+                
+                const data2 = dcForm.getData(form);
+                const test2 = data2.username === 'newuser' && data2.email === 'new@example.com';
+                
+                const allPassed = test1 && test2;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>数据操作测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试表单数据获取和设置功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>获取数据: ${test1 ? '✓' : '✗'}</li>
+                        <li>设置数据: ${test2 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 清理
+                document.body.removeChild(form);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 边界情况测试
+        function runEdgeCaseTest() {
+            try {
+                let results = [];
+                
+                // 空表单序列化
+                try {
+                    const form = document.createElement('form');
+                    const data = dcForm.serialize(form);
+                    if (typeof data === 'object' && Object.keys(data).length === 0) {
+                        results.push('<li>空表单序列化: ✓ 正常返回空对象</li>');
+                    } else {
+                        results.push('<li>空表单序列化: ✗ 返回值不正确</li>');
+                    }
+                } catch (e) {
+                    results.push('<li>空表单序列化: ✗ 抛出异常</li>');
+                }
+                
+                // 无效表单验证
+                try {
+                    dcForm.validate(null);
+                    results.push('<li>无效表单验证: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>无效表单验证: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效表单重置
+                try {
+                    dcForm.reset(null);
+                    results.push('<li>无效表单重置: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>无效表单重置: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效表单提交
+                try {
+                    dcForm.submit(null);
+                    results.push('<li>无效表单提交: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>无效表单提交: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效状态设置
+                try {
+                    dcForm.setState(null, 'invalid-state');
+                    results.push('<li>无效状态设置: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>无效状态设置: ✓ 正确抛出异常</li>');
+                }
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>边界情况测试结果</strong></p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 性能测试
+        function runPerformanceTest() {
+            try {
+                const iterations = 100;
+                const start = performance.now();
+                
+                // 创建包含大量字段的表单
+                const form = document.createElement('form');
+                let html = '';
+                for (let i = 0; i < iterations; i++) {
+                    html += `<input type="text" name="field${i}" value="value${i}">`;
+                }
+                form.innerHTML = html;
+                document.body.appendChild(form);
+                
+                // 测试序列化性能
+                const serializeStart = performance.now();
+                for (let i = 0; i < 100; i++) {
+                    dcForm.serialize(form);
+                }
+                const serializeEnd = performance.now();
+                
+                // 测试验证性能
+                const validateStart = performance.now();
+                for (let i = 0; i < 100; i++) {
+                    dcForm.validate(form);
+                }
+                const validateEnd = performance.now();
+                
+                // 清理
+                document.body.removeChild(form);
+                
+                const totalDuration = performance.now() - start;
+                const opsPerSecond = Math.round((100 * 2) / (totalDuration / 1000));
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>性能测试结果:</strong></p>
+                    <p><strong>测试项目:</strong> 大量表单字段处理</p>
+                    <p><strong>字段数量:</strong> ${iterations}</p>
+                    <p><strong>序列化耗时:</strong> ${(serializeEnd - serializeStart).toFixed(2)}ms (平均 ${(serializeEnd - serializeStart)/100}ms/次)</p>
+                    <p><strong>验证耗时:</strong> ${(validateEnd - validateStart).toFixed(2)}ms (平均 ${(validateEnd - validateStart)/100}ms/次)</p>
+                    <p><strong>总耗时:</strong> ${totalDuration.toFixed(2)}ms</p>
+                    <p><strong>每秒操作数:</strong> ${opsPerSecond.toLocaleString()} ops/s</p>
+                    <p><em>测试在当前浏览器环境下进行</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">性能测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            const results = [];
+            
+            // 存储原始console.log方法
+            const originalLog = console.log;
+            let capturedOutput = '';
+            
+            // 重写console.log以捕获输出
+            console.log = function(message) {
+                capturedOutput += message + '\n';
+                originalLog.apply(console, arguments);
+            };
+            
+            try {
+                // 运行Node.js测试
+                const nodeTestPassed = require('../../../test/utils/dcForm/dcForm.test.js');
+                results.push(`<p><strong>Node.js环境测试:</strong> <span style="color: ${nodeTestPassed ? 'green' : 'red'}; font-weight: bold;">${nodeTestPassed ? '通过' : '失败'}</span></p>`);
+                
+                // 运行浏览器环境测试
+                const browserTestPassed = require('../../../test/utils/dcForm/dcForm-browser.test.js');
+                results.push(`<p><strong>浏览器环境测试:</strong> <span style="color: ${browserTestPassed ? 'green' : 'red'}; font-weight: bold;">${browserTestPassed ? '通过' : '失败'}</span></p>`);
+                
+            } catch (error) {
+                results.push(`<p><strong style="color: red">自动化测试运行失败: ${error.message}</strong></p>`);
+            } finally {
+                // 恢复原始console.log方法
+                console.log = originalLog;
+            }
+            
+            // 运行手动测试用例
+            runSerializeTest();
+            runValidateTest();
+            runResetTest();
+            runSubmitTest();
+            runStateTest();
+            runDataTest();
+            runEdgeCaseTest();
+            runPerformanceTest();
+            
+            document.getElementById('allTestsResult').innerHTML = `
+                <h3>自动化测试结果</h3>
+                ${results.join('')}
+                <h3>手动测试结果</h3>
+                <p>请查看"预设测试"标签页中的测试结果</p>
+                <p><em>完整测试日志:</em></p>
+                <pre>${capturedOutput}</pre>
+            `;
+        }
+    </script>
+</body>
+</html>

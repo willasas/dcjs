@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcbottombar 组件测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        /* 底部栏样式 */
+        #dc-bottombar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            line-height: 60px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcbottombar 组件交互式测试</h1>
+    
+    <!-- 测试容器 -->
+    <div class="test-container">
+        <div class="test-title">基本功能测试</div>
+        <button onclick="initBottomBar()">初始化底部栏</button>
+        <button onclick="showBottomBar()">显示底部栏</button>
+        <button onclick="hideBottomBar()">隐藏底部栏</button>
+        <button onclick="toggleBottomBar()">切换显示状态</button>
+        <div class="result" id="bottombarResult"></div>
+    </div>
+
+    <!-- 配置选项测试 -->
+    <div class="test-container">
+        <div class="test-title">配置选项测试</div>
+        <label>自定义高度: <input type="number" id="heightInput" value="60" min="30" max="200"> px</label>
+        <label>自定义背景色: <input type="color" id="bgColorInput" value="#333"></label>
+        <button onclick="applyConfig()">应用配置</button>
+        <div class="result" id="configResult"></div>
+    </div>
+
+    <!-- 内容更新测试 -->
+    <div class="test-container">
+        <div class="test-title">内容更新测试</div>
+        <label>新内容: <input type="text" id="contentInput" value="这是新的底部栏内容"></label>
+        <button onclick="updateContent()">更新内容</button>
+        <div class="result" id="contentResult"></div>
+    </div>
+
+    <!-- 动态事件监听 -->
+    <div class="test-container">
+        <div class="test-title">动态事件监听</div>
+        <button onclick="addClickListener()">添加点击监听器</button>
+        <button onclick="removeClickListener()">移除点击监听器</button>
+        <div class="result" id="eventResult"></div>
+    </div>
+
+    <!-- 状态检查 -->
+    <div class="test-container">
+        <div class="test-title">状态检查</div>
+        <button onclick="checkStatus()">检查底部栏状态</button>
+        <div class="result" id="statusResult"></div>
+    </div>
+
+    <!-- 底部栏容器 -->
+    <div id="bottom-bar-container"></div>
+
+    <!-- 引入组件代码 -->
+    <script src="../../../src/components/dcbottombar/dcbottombar.js"></script>
+    <script src="../../../src/components/dcbottombar/dcbottombar.css"></script>
+    <script>
+        // 初始化全局DC对象
+        window.DC = window.DC || {};
+
+        function initBottomBar() {
+            try {
+                DC.bottomBar.init();
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: green">✓ 成功初始化底部栏</strong>
+                `;
+            } catch (error) {
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: red">✗ 初始化失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function showBottomBar() {
+            try {
+                DC.bottomBar.show();
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: green">✓ 成功显示底部栏</strong>
+                `;
+            } catch (error) {
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: red">✗ 显示失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function hideBottomBar() {
+            try {
+                DC.bottomBar.hide();
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: green">✓ 成功隐藏底部栏</strong>
+                `;
+            } catch (error) {
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: red">✗ 隐藏失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function toggleBottomBar() {
+            try {
+                DC.bottomBar.toggle();
+                const bottomBar = document.getElementById('dc-bottombar');
+                const status = bottomBar && bottomBar.style.display !== 'none' ? '显示' : '隐藏';
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: blue">✓ 切换成功，当前状态: ${status}</strong>
+                `;
+            } catch (error) {
+                document.getElementById('bottombarResult').innerHTML = `
+                    <strong style="color: red">✗ 切换失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function applyConfig() {
+            try {
+                const height = document.getElementById('heightInput').value;
+                const bgColor = document.getElementById('bgColorInput').value;
+                
+                // 获取底部栏元素
+                let bottomBar = document.getElementById('dc-bottombar');
+                if (!bottomBar) {
+                    // 如果不存在，则先初始化
+                    DC.bottomBar.init();
+                    bottomBar = document.getElementById('dc-bottombar');
+                }
+                
+                // 应用配置
+                bottomBar.style.height = height + 'px';
+                bottomBar.style.backgroundColor = bgColor;
+                bottomBar.style.lineHeight = height + 'px';
+                
+                document.getElementById('configResult').innerHTML = `
+                    <strong style="color: green">✓ 配置已应用: 高度${height}px, 背景色${bgColor}</strong>
+                `;
+            } catch (error) {
+                document.getElementById('configResult').innerHTML = `
+                    <strong style="color: red">✗ 配置应用失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function updateContent() {
+            try {
+                const content = document.getElementById('contentInput').value;
+                
+                // 获取底部栏元素
+                let bottomBar = document.getElementById('dc-bottombar');
+                if (!bottomBar) {
+                    // 如果不存在，则先初始化
+                    DC.bottomBar.init();
+                    bottomBar = document.getElementById('dc-bottombar');
+                }
+                
+                // 更新内容
+                bottomBar.innerHTML = content;
+                
+                document.getElementById('contentResult').innerHTML = `
+                    <strong style="color: green">✓ 内容已更新: ${content}</strong>
+                `;
+            } catch (error) {
+                document.getElementById('contentResult').innerHTML = `
+                    <strong style="color: red">✗ 内容更新失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function addClickListener() {
+            try {
+                const bottomBar = document.getElementById('dc-bottombar');
+                if (bottomBar) {
+                    // 移除可能已存在的监听器
+                    removeClickListener();
+                    
+                    // 添加新的监听器
+                    bottomBar.addEventListener('click', function() {
+                        alert('底部栏被点击了！');
+                    });
+                    
+                    document.getElementById('eventResult').innerHTML = `
+                        <strong style="color: green">✓ 点击监听器已添加</strong>
+                    `;
+                } else {
+                    document.getElementById('eventResult').innerHTML = `
+                        <strong style="color: red">✗ 底部栏元素不存在，请先初始化</strong>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('eventResult').innerHTML = `
+                    <strong style="color: red">✗ 添加监听器失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function removeClickListener() {
+            try {
+                const bottomBar = document.getElementById('dc-bottombar');
+                if (bottomBar) {
+                    // 移除所有事件监听器（简化处理）
+                    const newElement = bottomBar.cloneNode(true);
+                    bottomBar.parentNode.replaceChild(newElement, bottomBar);
+                    
+                    document.getElementById('eventResult').innerHTML = `
+                        <strong style="color: blue">✓ 点击监听器已移除</strong>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('eventResult').innerHTML = `
+                    <strong style="color: red">✗ 移除监听器失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function checkStatus() {
+            try {
+                const bottomBar = document.getElementById('dc-bottombar');
+                let status = '未初始化';
+                let display = '未知';
+                let dimensions = '未知';
+                
+                if (bottomBar) {
+                    status = '已存在';
+                    display = bottomBar.style.display !== 'none' ? '显示' : '隐藏';
+                    dimensions = `${bottomBar.offsetWidth}x${bottomBar.offsetHeight}`;
+                }
+                
+                document.getElementById('statusResult').innerHTML = `
+                    <pre>
+状态: ${status}
+显示状态: ${display}
+尺寸: ${dimensions}
+                    </pre>
+                `;
+            } catch (error) {
+                document.getElementById('statusResult').innerHTML = `
+                    <strong style="color: red">✗ 检查状态失败: ${error.message}</strong>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

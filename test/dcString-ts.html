@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcString 工具类 TypeScript 版本测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .test-case {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-left: 3px solid #4CAF50;
+            background-color: #f9f9f9;
+        }
+        .test-case.fail {
+            border-left-color: #f44336;
+            background-color: #ffebee;
+        }
+        .test-case.pending {
+            border-left-color: #ff9800;
+            background-color: #fff8e1;
+        }
+        .test-case-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .test-case-result {
+            font-family: monospace;
+            margin-top: 5px;
+            white-space: pre-wrap;
+        }
+        .stats {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        input, select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .version-info {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcString 工具类 TypeScript 版本测试</h1>
+
+    <div class="version-info">
+        <strong>版本信息:</strong> TypeScript 版本 | 构建时间: <span id="build-time"></span>
+    </div>
+
+    <div class="stats" id="stats">
+        <h3>测试统计</h3>
+        <p>总测试数: <span id="total-tests">0</span></p>
+        <p>通过: <span id="passed-tests">0</span></p>
+        <p>失败: <span id="failed-tests">0</span></p>
+        <p>待处理: <span id="pending-tests">0</span></p>
+        <p>通过率: <span id="pass-rate">0%</span></p>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">字符串转换测试</div>
+        <div id="conversion-tests"></div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">字符串处理测试</div>
+        <div id="processing-tests"></div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">字符串验证测试</div>
+        <div id="validation-tests"></div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">交互式测试</div>
+        <div class="input-group">
+            <label for="input-string">输入字符串:</label>
+            <input type="text" id="input-string" value="hello world" placeholder="输入要测试的字符串">
+        </div>
+        <div class="input-group">
+            <label for="operation">选择操作:</label>
+            <select id="operation">
+                <option value="capitalize">首字母大写</option>
+                <option value="toCamelCase">转驼峰命名</option>
+                <option value="toSnakeCase">转下划线命名</option>
+                <option value="toKebabCase">转短横线命名</option>
+                <option value="truncate">截取字符串</option>
+                <option value="reverse">反转字符串</option>
+                <option value="stripHtml">去除HTML标签</option>
+                <option value="escapeHtml">转义HTML</option>
+                <option value="unescapeHtml">解码HTML</option>
+                <option value="random">生成随机字符串</option>
+                <option value="byteLength">计算字节长度</option>
+                <option value="words">转单词数组</option>
+                <option value="wordCount">计算单词数</option>
+                <option value="isJSON">检查是否为JSON</option>
+                <option value="slug">转URL友好slug</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="param1">参数1:</label>
+            <input type="text" id="param1" placeholder="根据操作类型输入参数">
+        </div>
+        <button onclick="runInteractiveTest()">运行测试</button>
+        <div class="test-case">
+            <div class="test-case-title">测试结果:</div>
+            <div class="test-case-result" id="interactive-result">点击"运行测试"按钮查看结果</div>
+        </div>
+    </div>
+
+    <button onclick="runAllTests()">运行所有测试</button>
+
+    <script src="../../dist/dc-ts.js"></script>
+    <script>
+        // 显示构建时间
+        document.getElementById('build-time').textContent = new Date().toLocaleString();
+
+        // 测试统计
+        let stats = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            pending: 0
+        };
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('total-tests').textContent = stats.total;
+            document.getElementById('passed-tests').textContent = stats.passed;
+            document.getElementById('failed-tests').textContent = stats.failed;
+            document.getElementById('pending-tests').textContent = stats.pending;
+
+            const passRate = stats.total > 0 ? Math.round((stats.passed / stats.total) * 100) : 0;
+            document.getElementById('pass-rate').textContent = passRate + '%';
+        }
+
+        // 添加测试用例
+        function addTestCase(container, title, testFn, expected) {
+            stats.total++;
+
+            const testCase = document.createElement('div');
+            testCase.className = 'test-case pending';
+
+            const titleElement = document.createElement('div');
+            titleElement.className = 'test-case-title';
+            titleElement.textContent = title;
+            testCase.appendChild(titleElement);
+
+            const resultElement = document.createElement('div');
+            resultElement.className = 'test-case-result';
+            testCase.appendChild(resultElement);
+
+            try {
+                const actual = testFn();
+                const passed = actual === expected;
+
+                if (passed) {
+                    stats.passed++;
+                    testCase.className = 'test-case';
+                    resultElement.textContent = `✓ 通过\n实际结果: ${JSON.stringify(actual)}\n期望结果: ${JSON.stringify(expected)}`;
+                } else {
+                    stats.failed++;
+                    testCase.className = 'test-case fail';
+                    resultElement.textContent = `✗ 失败\n实际结果: ${JSON.stringify(actual)}\n期望结果: ${JSON.stringify(expected)}`;
+                }
+            } catch (error) {
+                stats.failed++;
+                testCase.className = 'test-case fail';
+                resultElement.textContent = `✗ 错误\n错误信息: ${error.message}`;
+            }
+
+            container.appendChild(testCase);
+            updateStats();
+        }
+
+        // 字符串转换测试
+        function runConversionTests() {
+            const container = document.getElementById('conversion-tests');
+            container.innerHTML = '';
+
+            // 首字母大写测试
+            addTestCase(container, '首字母大写 - 正常字符串',
+                () => DC.String.capitalize('hello world'), 'Hello world');
+
+            addTestCase(container, '首字母大写 - 空字符串',
+                () => DC.String.capitalize(''), '');
+
+            // 驼峰命名测试
+            addTestCase(container, '转驼峰命名 - 小驼峰',
+                () => DC.String.toCamelCase('hello-world'), 'helloWorld');
+
+            addTestCase(container, '转驼峰命名 - 大驼峰',
+                () => DC.String.toCamelCase('hello-world', true), 'HelloWorld');
+
+            // 下划线命名测试
+            addTestCase(container, '转下划线命名',
+                () => DC.String.toSnakeCase('helloWorld'), 'hello_world');
+
+            // 短横线命名测试
+            addTestCase(container, '转短横线命名',
+                () => DC.String.toKebabCase('helloWorld'), 'hello-world');
+
+            // 转大写测试
+            addTestCase(container, '转大写',
+                () => DC.String.toUpperCase('hello world'), 'HELLO WORLD');
+
+            // 反转字符串测试
+            addTestCase(container, '反转字符串',
+                () => DC.String.reverse('hello'), 'olleh');
+        }
+
+        // 字符串处理测试
+        function runProcessingTests() {
+            const container = document.getElementById('processing-tests');
+            container.innerHTML = '';
+
+            // 截取字符串测试
+            addTestCase(container, '截取字符串 - 正常情况',
+                () => DC.String.truncate('hello world', 5), 'hello...');
+
+            addTestCase(container, '截取字符串 - 不需要截取',
+                () => DC.String.truncate('hello', 10), 'hello');
+
+            // 去除HTML标签测试
+            addTestCase(container, '去除HTML标签',
+                () => DC.String.stripHtml('<p>hello <b>world</b></p>'), 'hello world');
+
+            // 转义HTML测试
+            addTestCase(container, '转义HTML',
+                () => DC.String.escapeHtml('<div>hello</div>'), '&lt;div&gt;hello&lt;/div&gt;');
+
+            // 解码HTML测试
+            addTestCase(container, '解码HTML',
+                () => DC.String.unescapeHtml('&lt;div&gt;hello&lt;/div&gt;'), '<div>hello</div>');
+
+            // 生成随机字符串测试
+            addTestCase(container, '生成随机字符串',
+                () => {
+                    const randomStr = DC.String.random(10);
+                    return randomStr.length === 10 && /^[A-Za-z0-9]+$/.test(randomStr);
+                }, true);
+
+            // 计算字节长度测试
+            addTestCase(container, '计算字节长度',
+                () => DC.String.byteLength('hello'), 5);
+
+            // 格式化模板字符串测试
+            addTestCase(container, '格式化模板字符串',
+                () => DC.String.template('Hello ${name}, welcome to ${place}!', {name: 'John', place: 'Earth'}),
+                'Hello John, welcome to Earth!');
+
+            // 字符串包含测试
+            addTestCase(container, '字符串包含 - 单个字符串',
+                () => DC.String.contains('hello world', 'world'), true);
+
+            addTestCase(container, '字符串包含 - 多个字符串',
+                () => DC.String.contains('hello world', ['hello', 'earth']), true);
+
+            // 字符串相似度测试
+            addTestCase(container, '字符串相似度',
+                () => {
+                    const similarity = DC.String.similarity('hello', 'hallo');
+                    return typeof similarity === 'number' && similarity >= 0 && similarity <= 1;
+                }, true);
+
+            // 转单词数组测试
+            addTestCase(container, '转单词数组',
+                () => DC.String.words('hello world test'), ['hello', 'world', 'test']);
+
+            // 计算单词数测试
+            addTestCase(container, '计算单词数',
+                () => DC.String.wordCount('hello world test'), 3);
+
+            // 填充字符串测试
+            addTestCase(container, '填充字符串 - 末尾填充',
+                () => DC.String.pad('hello', 10, '*'), 'hello*****');
+
+            addTestCase(container, '填充字符串 - 开头填充',
+                () => DC.String.pad('hello', 10, '*', false), '*****hello');
+
+            // 转slug测试
+            addTestCase(container, '转URL友好slug',
+                () => DC.String.slug('Hello World!'), 'hello-world');
+
+            // 统计字符出现次数测试
+            addTestCase(container, '统计字符出现次数',
+                () => DC.String.countChar('hello world', 'l'), 3);
+        }
+
+        // 字符串验证测试
+        function runValidationTests() {
+            const container = document.getElementById('validation-tests');
+            container.innerHTML = '';
+
+            // 检查是否为JSON测试
+            addTestCase(container, '检查是否为JSON - 有效JSON',
+                () => DC.String.isJSON('{"name": "John"}'), true);
+
+            addTestCase(container, '检查是否为JSON - 无效JSON',
+                () => DC.String.isJSON('not json'), false);
+        }
+
+        // 运行交互式测试
+        function runInteractiveTest() {
+            const inputString = document.getElementById('input-string').value;
+            const operation = document.getElementById('operation').value;
+            const param1 = document.getElementById('param1').value;
+            const resultElement = document.getElementById('interactive-result');
+
+            try {
+                let result;
+                switch (operation) {
+                    case 'capitalize':
+                        result = DC.String.capitalize(inputString);
+                        break;
+                    case 'toCamelCase':
+                        result = DC.String.toCamelCase(inputString);
+                        break;
+                    case 'toSnakeCase':
+                        result = DC.String.toSnakeCase(inputString);
+                        break;
+                    case 'toKebabCase':
+                        result = DC.String.toKebabCase(inputString);
+                        break;
+                    case 'truncate':
+                        const length = param1 ? parseInt(param1) : 10;
+                        result = DC.String.truncate(inputString, length);
+                        break;
+                    case 'reverse':
+                        result = DC.String.reverse(inputString);
+                        break;
+                    case 'stripHtml':
+                        result = DC.String.stripHtml(inputString);
+                        break;
+                    case 'escapeHtml':
+                        result = DC.String.escapeHtml(inputString);
+                        break;
+                    case 'unescapeHtml':
+                        result = DC.String.unescapeHtml(inputString);
+                        break;
+                    case 'random':
+                        const randomLength = param1 ? parseInt(param1) : 10;
+                        result = DC.String.random(randomLength);
+                        break;
+                    case 'byteLength':
+                        result = DC.String.byteLength(inputString);
+                        break;
+                    case 'words':
+                        result = DC.String.words(inputString);
+                        break;
+                    case 'wordCount':
+                        result = DC.String.wordCount(inputString);
+                        break;
+                    case 'isJSON':
+                        result = DC.String.isJSON(inputString);
+                        break;
+                    case 'slug':
+                        result = DC.String.slug(inputString);
+                        break;
+                    default:
+                        result = '未知操作';
+                }
+
+                resultElement.textContent = `操作结果: ${JSON.stringify(result)}`;
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            // 重置统计
+            stats = {
+                total: 0,
+                passed: 0,
+                failed: 0,
+                pending: 0
+            };
+
+            // 清空容器
+            document.getElementById('conversion-tests').innerHTML = '';
+            document.getElementById('processing-tests').innerHTML = '';
+            document.getElementById('validation-tests').innerHTML = '';
+
+            // 运行测试
+            runConversionTests();
+            runProcessingTests();
+            runValidationTests();
+        }
+
+        // 页面加载完成后自动运行测试
+        window.onload = function() {
+            runAllTests();
+        };
+    </script>
+</body>
+</html>

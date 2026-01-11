@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSO单点登录系统 - 登录</title>
+  <link rel="stylesheet" href="dcSSO.css">
+</head>
+<body>
+  <div class="sso-container">
+    <div class="sso-background">
+      <div class="sso-bg-overlay"></div>
+    </div>
+
+    <div class="sso-login-container">
+      <div class="sso-login-card">
+        <!-- 头部Logo和标题 -->
+        <div class="sso-header">
+          <div class="sso-logo">
+            <img src="https://picsum.photos/seed/dc-logo/120/40.jpg" alt="DC Logo" />
+          </div>
+          <h1 class="sso-title">单点登录</h1>
+          <p class="sso-subtitle">使用一个账号访问所有DC服务</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <form class="sso-form" id="loginForm">
+          <div class="sso-form-group">
+            <label for="username" class="sso-label">账号</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <input type="text" id="username" name="username" placeholder="邮箱/手机号/用户名" required>
+            </div>
+          </div>
+
+          <div class="sso-form-group">
+            <label for="password" class="sso-label">密码</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <input type="password" id="password" name="password" placeholder="请输入密码" required>
+              <div class="sso-password-toggle" id="passwordToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sso-eye-icon">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sso-eye-off-icon" style="display: none;">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="sso-form-options">
+            <div class="sso-checkbox-group">
+              <input type="checkbox" id="rememberMe" name="rememberMe">
+              <label for="rememberMe">记住我</label>
+            </div>
+            <a href="#" class="sso-forgot-password" id="forgotPasswordLink">忘记密码？</a>
+          </div>
+
+          <button type="submit" class="sso-btn sso-btn-primary">登录</button>
+        </form>
+
+        <!-- 分隔线 -->
+        <div class="sso-divider">
+          <span>或</span>
+        </div>
+
+        <!-- 第三方登录 -->
+        <div class="sso-social-login">
+          <h3>使用其他方式登录</h3>
+          <div class="sso-social-buttons">
+            <button class="sso-social-btn sso-social-btn-qq">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+              </svg>
+              QQ登录
+            </button>
+            <button class="sso-social-btn sso-social-btn-wechat">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 4.882-1.786 7.267-.736-.847-3.206-4.468-5.49-8.01-5.49zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
+              </svg>
+              微信登录
+            </button>
+          </div>
+        </div>
+
+        <!-- 底部链接 -->
+        <div class="sso-footer">
+          <p>还没有账号？<a href="#" id="registerLink">立即注册</a></p>
+          <p class="sso-terms">登录即表示您同意我们的<a href="#">服务条款</a>和<a href="#">隐私政策</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 忘记密码模态框 -->
+  <div class="sso-modal" id="forgotPasswordModal">
+    <div class="sso-modal-content">
+      <div class="sso-modal-header">
+        <h2>找回密码</h2>
+        <button class="sso-modal-close" id="closeForgotPassword">&times;</button>
+      </div>
+      <div class="sso-modal-body">
+        <p>请输入您的注册邮箱，我们将向您发送密码重置链接。</p>
+        <form id="forgotPasswordForm">
+          <div class="sso-form-group">
+            <label for="resetEmail" class="sso-label">邮箱地址</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <input type="email" id="resetEmail" name="resetEmail" placeholder="请输入您的邮箱地址" required>
+            </div>
+          </div>
+          <button type="submit" class="sso-btn sso-btn-primary">发送重置链接</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="dcSSO.js"></script>
+</body>
+</html>

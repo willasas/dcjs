@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcString 工具类示例</title>
+    <link rel="stylesheet" href="../../dist/dc-1.0.0-2026-01-07.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #444;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .example {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .example h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        .controls {
+            margin: 15px 0;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e9f7ef;
+            border-radius: 3px;
+            border-left: 4px solid #4CAF50;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            width: 150px;
+            font-weight: bold;
+        }
+        .input-group input {
+            flex: 1;
+        }
+        .two-column {
+            display: flex;
+            gap: 20px;
+        }
+        .two-column > div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcString 工具类示例</h1>
+
+    <div class="example">
+        <h2>基本转换方法</h2>
+
+        <div class="input-group">
+            <label for="capitalize-input">字符串:</label>
+            <input type="text" id="capitalize-input" value="hello world" placeholder="输入要转换的字符串">
+        </div>
+
+        <div class="controls">
+            <button onclick="capitalize()">首字母大写</button>
+            <button onclick="toCamelCase()">转驼峰命名</button>
+            <button onclick="toSnakeCase()">转下划线命名</button>
+            <button onclick="toKebabCase()">转短横线命名</button>
+            <button onclick="reverse()">反转字符串</button>
+        </div>
+
+        <div class="result" id="basic-result">结果将显示在这里</div>
+
+        <div class="code-block">
+// 基本转换方法示例
+const str = "hello world";
+DC.String.capitalize(str);        // "Hello world"
+DC.String.toCamelCase(str);        // "helloWorld"
+DC.String.toSnakeCase(str);        // "hello_world"
+DC.String.toKebabCase(str);        // "hello-world"
+DC.String.reverse(str);            // "dlrow olleh"
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>字符串处理方法</h2>
+
+        <div class="two-column">
+            <div>
+                <div class="input-group">
+                    <label for="truncate-input">字符串:</label>
+                    <input type="text" id="truncate-input" value="这是一个很长的字符串，将被截断" placeholder="输入要截断的字符串">
+                </div>
+                <div class="input-group">
+                    <label for="truncate-length">长度:</label>
+                    <input type="number" id="truncate-length" value="10" min="1" max="100">
+                </div>
+            </div>
+            <div>
+                <div class="input-group">
+                    <label for="strip-html-input">HTML字符串:</label>
+                    <input type="text" id="strip-html-input" value="<p>这是<strong>HTML</strong>内容</p>" placeholder="输入HTML字符串">
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="truncate()">截断字符串</button>
+            <button onclick="stripHtml()">移除HTML标签</button>
+            <button onclick="padLeft()">左侧填充</button>
+            <button onclick="padRight()">右侧填充</button>
+            <button onclick="removeWhitespace()">移除空白</button>
+        </div>
+
+        <div class="result" id="process-result">结果将显示在这里</div>
+
+        <div class="code-block">
+// 字符串处理方法示例
+DC.String.truncate("这是一个很长的字符串", 10);    // "这是一个很..."
+DC.String.stripHtml("<p>这是<strong>HTML</strong>内容</p>");  // "这是HTML内容"
+DC.String.padLeft("5", 3, "0");                      // "005"
+DC.String.padRight("5", 3, "0");                     // "500"
+DC.String.removeWhitespace("  hello   world  ");      // "helloworld"
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>字符串验证方法</h2>
+
+        <div class="input-group">
+            <label for="validate-input">字符串:</label>
+            <input type="text" id="validate-input" value="test@example.com" placeholder="输入要验证的字符串">
+        </div>
+
+        <div class="controls">
+            <button onclick="isEmail()">验证邮箱</button>
+            <button onclick="isUrl()">验证URL</button>
+            <button onclick="isPhone()">验证手机号</button>
+            <button onclick="isNumber()">验证数字</button>
+            <button onclick="isJSON()">验证JSON</button>
+        </div>
+
+        <div class="result" id="validate-result">结果将显示在这里</div>
+
+        <div class="code-block">
+// 字符串验证方法示例
+DC.String.isEmail("test@example.com");     // true
+DC.String.isUrl("https://example.com");     // true
+DC.String.isPhone("13812345678");          // true
+DC.String.isNumber("123.45");               // true
+DC.String.isJSON('{"key": "value"}');       // true
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>字符串工具方法</h2>
+
+        <div class="two-column">
+            <div>
+                <div class="input-group">
+                    <label for="random-length">随机字符串长度:</label>
+                    <input type="number" id="random-length" value="8" min="1" max="50">
+                </div>
+            </div>
+            <div>
+                <div class="input-group">
+                    <label for="template-input">模板字符串:</label>
+                    <input type="text" id="template-input" value="Hello {name}, you are {age} years old." placeholder="输入模板字符串">
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="randomString()">生成随机字符串</button>
+            <button onclick="byteLength()">计算字节长度</button>
+            <button onclick="template()">模板替换</button>
+            <button onclick="wordCount()">统计单词数</button>
+            <button onclick="countOccurrences()">统计出现次数</button>
+        </div>
+
+        <div class="result" id="tool-result">结果将显示在这里</div>
+
+        <div class="code-block">
+// 字符串工具方法示例
+DC.String.random(8);                        // "aB3xY9zP"
+DC.String.byteLength("你好");                // 6 (UTF-8编码)
+DC.String.template("Hello {name}, you are {age} years old.", {name: "张三", age: 25});  // "Hello 张三, you are 25 years old."
+DC.String.wordCount("Hello world, this is a test.");  // 6
+DC.String.countOccurrences("hello world, hello universe", "hello");  // 2
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>实际应用示例：表单验证</h2>
+
+        <div class="input-group">
+            <label for="form-email">邮箱:</label>
+            <input type="text" id="form-email" placeholder="输入邮箱地址">
+        </div>
+
+        <div class="input-group">
+            <label for="form-phone">手机号:</label>
+            <input type="text" id="form-phone" placeholder="输入手机号">
+        </div>
+
+        <div class="input-group">
+            <label for="form-password">密码:</label>
+            <input type="password" id="form-password" placeholder="输入密码">
+        </div>
+
+        <div class="controls">
+            <button onclick="validateForm()">验证表单</button>
+        </div>
+
+        <div class="result" id="form-result">验证结果将显示在这里</div>
+
+        <div class="code-block">
+// 表单验证示例
+function validateForm() {
+    const email = document.getElementById('form-email').value;
+    const phone = document.getElementById('form-phone').value;
+    const password = document.getElementById('form-password').value;
+
+    const errors = [];
+
+    if (!DC.String.isEmail(email)) {
+        errors.push("邮箱格式不正确");
+    }
+
+    if (!DC.String.isPhone(phone)) {
+        errors.push("手机号格式不正确");
+    }
+
+    if (password.length < 8) {
+        errors.push("密码长度至少8位");
+    }
+
+    return errors.length === 0 ? "验证通过" : errors.join(", ");
+}
+        </div>
+    </div>
+
+    <script src="../../dist/dc-1.0.0-2026-01-07.js"></script>
+    <script>
+        // 基本转换方法
+        function capitalize() {
+            const input = document.getElementById('capitalize-input').value;
+            const result = DC.String.capitalize(input);
+            document.getElementById('basic-result').textContent = `capitalize: "${input}" → "${result}"`;
+        }
+
+        function toCamelCase() {
+            const input = document.getElementById('capitalize-input').value;
+            const result = DC.String.toCamelCase(input);
+            document.getElementById('basic-result').textContent = `toCamelCase: "${input}" → "${result}"`;
+        }
+
+        function toSnakeCase() {
+            const input = document.getElementById('capitalize-input').value;
+            const result = DC.String.toSnakeCase(input);
+            document.getElementById('basic-result').textContent = `toSnakeCase: "${input}" → "${result}"`;
+        }
+
+        function toKebabCase() {
+            const input = document.getElementById('capitalize-input').value;
+            const result = DC.String.toKebabCase(input);
+            document.getElementById('basic-result').textContent = `toKebabCase: "${input}" → "${result}"`;
+        }
+
+        function reverse() {
+            const input = document.getElementById('capitalize-input').value;
+            const result = DC.String.reverse(input);
+            document.getElementById('basic-result').textContent = `reverse: "${input}" → "${result}"`;
+        }
+
+        // 字符串处理方法
+        function truncate() {
+            const input = document.getElementById('truncate-input').value;
+            const length = parseInt(document.getElementById('truncate-length').value);
+            const result = DC.String.truncate(input, length);
+            document.getElementById('process-result').textContent = `truncate: "${input}" (长度${length}) → "${result}"`;
+        }
+
+        function stripHtml() {
+            const input = document.getElementById('strip-html-input').value;
+            const result = DC.String.stripHtml(input);
+            document.getElementById('process-result').textContent = `stripHtml: "${input}" → "${result}"`;
+        }
+
+        function padLeft() {
+            const input = document.getElementById('truncate-input').value;
+            const result = DC.String.padLeft(input, 10, "0");
+            document.getElementById('process-result').textContent = `padLeft: "${input}" → "${result}"`;
+        }
+
+        function padRight() {
+            const input = document.getElementById('truncate-input').value;
+            const result = DC.String.padRight(input, 10, "0");
+            document.getElementById('process-result').textContent = `padRight: "${input}" → "${result}"`;
+        }
+
+        function removeWhitespace() {
+            const input = document.getElementById('truncate-input').value;
+            const result = DC.String.removeWhitespace(input);
+            document.getElementById('process-result').textContent = `removeWhitespace: "${input}" → "${result}"`;
+        }
+
+        // 字符串验证方法
+        function isEmail() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.isEmail(input);
+            document.getElementById('validate-result').textContent = `isEmail: "${input}" → ${result}`;
+        }
+
+        function isUrl() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.isUrl(input);
+            document.getElementById('validate-result').textContent = `isUrl: "${input}" → ${result}`;
+        }
+
+        function isPhone() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.isPhone(input);
+            document.getElementById('validate-result').textContent = `isPhone: "${input}" → ${result}`;
+        }
+
+        function isNumber() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.isNumber(input);
+            document.getElementById('validate-result').textContent = `isNumber: "${input}" → ${result}`;
+        }
+
+        function isJSON() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.isJSON(input);
+            document.getElementById('validate-result').textContent = `isJSON: "${input}" → ${result}`;
+        }
+
+        // 字符串工具方法
+        function randomString() {
+            const length = parseInt(document.getElementById('random-length').value);
+            const result = DC.String.random(length);
+            document.getElementById('tool-result').textContent = `random(${length}): "${result}"`;
+        }
+
+        function byteLength() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.byteLength(input);
+            document.getElementById('tool-result').textContent = `byteLength: "${input}" → ${result} bytes`;
+        }
+
+        function template() {
+            const input = document.getElementById('template-input').value;
+            const data = { name: "张三", age: 25 };
+            const result = DC.String.template(input, data);
+            document.getElementById('tool-result').textContent = `template: "${input}" → "${result}"`;
+        }
+
+        function wordCount() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.wordCount(input);
+            document.getElementById('tool-result').textContent = `wordCount: "${input}" → ${result} words`;
+        }
+
+        function countOccurrences() {
+            const input = document.getElementById('validate-input').value;
+            const result = DC.String.countOccurrences(input, "e");
+            document.getElementById('tool-result').textContent = `countOccurrences (字符'e'): "${input}" → ${result} times`;
+        }
+
+        // 表单验证
+        function validateForm() {
+            const email = document.getElementById('form-email').value;
+            const phone = document.getElementById('form-phone').value;
+            const password = document.getElementById('form-password').value;
+
+            const errors = [];
+
+            if (!DC.String.isEmail(email)) {
+                errors.push("邮箱格式不正确");
+            }
+
+            if (!DC.String.isPhone(phone)) {
+                errors.push("手机号格式不正确");
+            }
+
+            if (password.length < 8) {
+                errors.push("密码长度至少8位");
+            }
+
+            const result = errors.length === 0 ? "验证通过" : errors.join(", ");
+            document.getElementById('form-result').textContent = result;
+        }
+    </script>
+</body>
+</html>

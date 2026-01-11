@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcUrl 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .url-part {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+        }
+        .part-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .tabs {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            transition: 0.3s;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        .tab-button.active {
+            background-color: #ccc;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcUrl 工具类交互式测试</h1>
+
+    <!-- 当前URL信息 -->
+    <div class="info-box">
+        <p><strong>当前页面URL:</strong> <span id="currentUrl">${window.location.href}</span></p>
+        <p><strong>测试说明:</strong> 此工具用于测试URL解析、构建和查询参数处理功能</p>
+    </div>
+
+    <!-- 标签页容器 -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'parse')">解析URL</button>
+        <button class="tab-button" onclick="openTab(event, 'build')">构建URL</button>
+        <button class="tab-button" onclick="openTab(event, 'query')">查询参数</button>
+        <button class="tab-button" onclick="openTab(event, 'advanced')">高级功能</button>
+        <button class="tab-button" onclick="openTab(event, 'allTests')">运行所有测试</button>
+    </div>
+
+    <!-- 解析URL标签页 -->
+    <div id="parse" class="tab-content active">
+        <div class="test-container">
+            <div class="test-title">URL解析</div>
+            
+            <label for="parseUrl">输入URL:</label>
+            <input type="text" id="parseUrl" value="https://www.example.com:8080/path/to/page?param1=value1&param2=value2#section" placeholder="输入要解析的URL">
+            
+            <button onclick="parseUrl()">解析</button>
+            <button onclick="clearResults()">清空</button>
+            
+            <div class="result" id="parseResult"></div>
+            
+            <div id="parsedParts" style="display: none;">
+                <h3>解析结果</h3>
+                <div class="url-part"><span class="part-label">协议:</span> <span id="protocol"></span></div>
+                <div class="url-part"><span class="part-label">认证信息:</span> <span id="auth"></span></div>
+                <div class="url-part"><span class="part-label">主机名:</span> <span id="hostname"></span></div>
+                <div class="url-part"><span class="part-label">端口:</span> <span id="port"></span></div>
+                <div class="url-part"><span class="part-label">路径:</span> <span id="pathname"></span></div>
+                <div class="url-part"><span class="part-label">查询字符串:</span> <span id="search"></span></div>
+                <div class="url-part"><span class="part-label">哈希:</span> <span id="hash"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 构建URL标签页 -->
+    <div id="build" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">URL构建</div>
+            
+            <label for="protocol">协议:</label>
+            <select id="protocol">
+                <option value="http:">HTTP (http:)</option>
+                <option value="https:" selected>HTTPS (https:)</option>
+                <option value="ftp:">FTP (ftp:)</option>
+                <option value="mailto:">邮件 (mailto:)</option>
+                <option value="">无协议</option>
+            </select>
+            
+            <label for="auth">认证信息 (可选):</label>
+            <input type="text" id="auth" placeholder="username:password">
+            
+            <label for="hostname">主机名:</label>
+            <input type="text" id="hostname" value="www.example.com" placeholder="example.com">
+            
+            <label for="port">端口 (可选):</label>
+            <input type="text" id="port" placeholder="8080">
+            
+            <label for="pathname">路径:</label>
+            <input type="text" id="pathname" value="/path/to/page" placeholder="/path/to/resource">
+            
+            <label for="search">查询字符串 (可选):</label>
+            <input type="text" id="search" value="?param1=value1&param2=value2" placeholder="?key=value">
+            
+            <label for="hash">哈希 (可选):</label>
+            <input type="text" id="hash" value="#section" placeholder="#section">
+            
+            <button onclick="buildUrl()">构建URL</button>
+            <button onclick="resetForm()">重置</button>
+            <button onclick="clearResults()">清空</button>
+            
+            <div class="result" id="buildResult"></div>
+        </div>
+    </div>
+
+    <!-- 查询参数标签页 -->
+    <div id="query" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">查询参数处理</div>
+            
+            <label for="queryUrl">输入URL:</label>
+            <input type="text" id="queryUrl" value="https://example.com/page?name=John&age=30&city=New+York" placeholder="输入包含查询参数的URL">
+            
+            <button onclick="getQueryParams()">解析查询参数</button>
+            <button onclick="clearResults()">清空</button>
+            
+            <div class="result" id="queryResult"></div>
+            
+            <hr>
+            
+            <h3>添加/修改参数</h3>
+            <label for="addParamName">参数名:</label>
+            <input type="text" id="addParamName" placeholder="输入参数名">
+            
+            <label for="addParamValue">参数值:</label>
+            <input type="text" id="addParamValue" placeholder="输入参数值">
+            
+            <button onclick="addQueryParam()">添加参数</button>
+            
+            <div class="result" id="addParamResult"></div>
+        </div>
+    </div>
+
+    <!-- 高级功能标签页 -->
+    <div id="advanced" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">高级功能测试</div>
+            
+            <button onclick="testRelativeUrl()">相对路径测试</button>
+            <button onclick="testSpecialChars()">特殊字符测试</button>
+            <button onclick="testEdgeCases()">边界情况测试</button>
+            <button onclick="testPerformance()">性能测试</button>
+            
+            <div class="result" id="advancedResult"></div>
+        </div>
+    </div>
+
+    <!-- 运行所有测试标签页 -->
+    <div id="allTests" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">运行所有测试</div>
+            
+            <button onclick="runAllTests()">执行全部测试</button>
+            
+            <div class="result" id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="info-box">
+        <h3>使用说明</h3>
+        <ul>
+            <li><strong>解析URL</strong>: 输入一个完整的URL，点击"解析"按钮查看各部分的解析结果</li>
+            <li><strong>构建URL</strong>: 填写各个URL组成部分，点击"构建URL"按钮生成完整的URL</li>
+            <li><strong>查询参数</strong>: 解析URL中的查询参数，或向现有URL添加新的查询参数</li>
+            <li><strong>高级功能</strong>: 测试各种特殊情况和性能表现</li>
+            <li>所有操作都不会改变当前页面的URL</li>
+        </ul>
+    </div>
+
+    <script src="../../../src/utils/dcUrl.js"></script>
+    <script>
+        // 页面加载时初始化
+        window.onload = function() {
+            updateCurrentUrl();
+            
+            // 绑定回车键到解析按钮
+            document.getElementById('parseUrl').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    parseUrl();
+                }
+            });
+            
+            document.getElementById('queryUrl').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    getQueryParams();
+                }
+            });
+        };
+
+        // 更新当前URL显示
+        function updateCurrentUrl() {
+            const currentUrlElement = document.getElementById('currentUrl');
+            if (currentUrlElement) {
+                currentUrlElement.textContent = window.location.href;
+            }
+        }
+
+        // 切换标签页
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+        }
+
+        // 解析URL
+        function parseUrl() {
+            try {
+                const url = document.getElementById('parseUrl').value.trim();
+                
+                if (!url) {
+                    throw new Error('请输入要解析的URL');
+                }
+                
+                const parsed = dcUrl.parse(url);
+                
+                // 显示结果
+                document.getElementById('parseResult').innerHTML = `
+                    <p><strong style="color: blue">✓ 解析成功！</strong></p>
+                    <p><strong>原始URL:</strong> <code>${url}</code></p>
+                `;
+                
+                // 显示各部分
+                document.getElementById('parsedParts').style.display = 'block';
+                document.getElementById('protocol').textContent = parsed.protocol || '(空)';
+                document.getElementById('auth').textContent = parsed.auth || '(空)';
+                document.getElementById('hostname').textContent = parsed.hostname || '(空)';
+                document.getElementById('port').textContent = parsed.port || '(空)';
+                document.getElementById('pathname').textContent = parsed.pathname || '(空)';
+                document.getElementById('search').textContent = parsed.search || '(空)';
+                document.getElementById('hash').textContent = parsed.hash || '(空)';
+                
+            } catch (error) {
+                document.getElementById('parseResult').innerHTML = `
+                    <p><strong style="color: red">✗ 解析失败: ${error.message}</strong></p>
+                `;
+                document.getElementById('parsedParts').style.display = 'none';
+            }
+        }
+
+        // 构建URL
+        function buildUrl() {
+            try {
+                const parts = {
+                    protocol: document.getElementById('protocol').value || undefined,
+                    auth: document.getElementById('auth').value || undefined,
+                    hostname: document.getElementById('hostname').value || undefined,
+                    port: document.getElementById('port').value || undefined,
+                    pathname: document.getElementById('pathname').value || undefined,
+                    search: document.getElementById('search').value || undefined,
+                    hash: document.getElementById('hash').value || undefined
+                };
+                
+                // 过滤掉undefined值
+                Object.keys(parts).forEach(key => {
+                    if (parts[key] === undefined) {
+                        delete parts[key];
+                    }
+                });
+                
+                const built = dcUrl.build(parts);
+                
+                document.getElementById('buildResult').innerHTML = `
+                    <p><strong style="color: green">✓ 构建成功！</strong></p>
+                    <p><strong>构建结果:</strong></p>
+                    <pre>${built}</pre>
+                    <p><em>已复制到剪贴板</em></p>
+                `;
+                
+                // 复制到剪贴板
+                navigator.clipboard.writeText(built).catch(err => {
+                    console.warn('无法复制到剪贴板:', err);
+                });
+                
+            } catch (error) {
+                document.getElementById('buildResult').innerHTML = `
+                    <p><strong style="color: red">✗ 构建失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('protocol').value = 'https:';
+            document.getElementById('auth').value = '';
+            document.getElementById('hostname').value = 'www.example.com';
+            document.getElementById('port').value = '';
+            document.getElementById('pathname').value = '/path/to/page';
+            document.getElementById('search').value = '?param1=value1&param2=value2';
+            document.getElementById('hash').value = '#section';
+            
+            document.getElementById('buildResult').innerHTML = '';
+        }
+
+        // 解析查询参数
+        function getQueryParams() {
+            try {
+                const url = document.getElementById('queryUrl').value.trim();
+                
+                if (!url) {
+                    throw new Error('请输入包含查询参数的URL');
+                }
+                
+                const params = dcUrl.getQueryParams(url);
+                
+                let paramsHtml = '<h3>解析结果</h3>';
+                
+                if (Object.keys(params).length === 0) {
+                    paramsHtml += '<p><em>未找到查询参数</em></p>';
+                } else {
+                    paramsHtml += '<table style="width: 100%; border-collapse: collapse;">';
+                    paramsHtml += '<tr style="background-color: #f0f0f0; text-align: left;"><th style="padding: 8px; border: 1px solid #ddd;">参数名</th><th style="padding: 8px; border: 1px solid #ddd;">参数值</th></tr>';
+                    
+                    Object.keys(params).forEach(key => {
+                        const value = params[key];
+                        const displayValue = Array.isArray(value) ? 
+                            `[${value.map(v => JSON.stringify(v)).join(', ')}]` : 
+                            JSON.stringify(value);
+                        
+                        paramsHtml += `<tr><td style="padding: 8px; border: 1px solid #ddd;">${key}</td><td style="padding: 8px; border: 1px solid #ddd;">${displayValue}</td></tr>`;
+                    });
+                    
+                    paramsHtml += '</table>';
+                }
+                
+                document.getElementById('queryResult').innerHTML = `
+                    <p><strong style="color: blue">✓ 解析成功！</strong></p>
+                    ${paramsHtml}
+                `;
+                
+            } catch (error) {
+                document.getElementById('queryResult').innerHTML = `
+                    <p><strong style="color: red">✗ 解析失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 添加查询参数
+        function addQueryParam() {
+            try {
+                const url = document.getElementById('queryUrl').value.trim();
+                const paramName = document.getElementById('addParamName').value.trim();
+                const paramValue = document.getElementById('addParamValue').value.trim();
+                
+                if (!url) {
+                    throw new Error('请输入基础URL');
+                }
+                
+                if (!paramName) {
+                    throw new Error('请输入参数名');
+                }
+                
+                const newUrl = dcUrl.addQueryParam(url, paramName, paramValue);
+                
+                document.getElementById('addParamResult').innerHTML = `
+                    <p><strong style="color: green">✓ 参数添加成功！</strong></p>
+                    <p><strong>原始URL:</strong> <code>${url}</code></p>
+                    <p><strong>新URL:</strong> <code>${newUrl}</code></p>
+                    <p><em>已复制到剪贴板</em></p>
+                `;
+                
+                // 复制到剪贴板
+                navigator.clipboard.writeText(newUrl).catch(err => {
+                    console.warn('无法复制到剪贴板:', err);
+                });
+                
+            } catch (error) {
+                document.getElementById('addParamResult').innerHTML = `
+                    <p><strong style="color: red">✗ 操作失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 相对路径测试
+        function testRelativeUrl() {
+            try {
+                const tests = [
+                    { desc: '相对路径', url: '/path/to/resource', expected: true },
+                    { desc: '绝对路径', url: '/absolute/path', expected: true },
+                    { desc: '根路径', url: '/', expected: true },
+                    { desc: '当前目录', url: './relative/path', expected: true },
+                    { desc: '上级目录', url: '../parent/path', expected: true }
+                ];
+                
+                let results = [];
+                
+                tests.forEach(test => {
+                    try {
+                        const parsed = dcUrl.parse(test.url);
+                        const success = parsed.pathname === test.url;
+                        results.push(`<li>${test.desc} (${test.url}): ${success ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</li>`);
+                    } catch (e) {
+                        results.push(`<li>${test.desc} (${test.url}): <span style="color: red; font-weight: bold;">异常 (${e.message})</span></li>`);
+                    }
+                });
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>相对路径测试结果</strong></p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 特殊字符测试
+        function testSpecialChars() {
+            try {
+                const url = 'https://example.com/search?q=hello%20world%21%40%23%24%25%5E%26%2A%28%29';
+                const parsed = dcUrl.parse(url);
+                const params = dcUrl.getQueryParams(url);
+                
+                const decodedValue = decodeURIComponent('hello%20world%21%40%23%24%25%5E%26%2A%28%29');
+                
+                const result = dcUrl.addQueryParam('', 'special', '!@#$%^&*()');
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>特殊字符测试结果</strong></p>
+                    <p><strong>URL解析:</strong></p>
+                    <p>原始URL: <code>${url}</code></p>
+                    <p>解码后: ${decodedValue}</p>
+                    <p><strong>查询参数:</strong></p>
+                    <p>q = ${params.q}</p>
+                    <p><strong>参数编码:</strong></p>
+                    <p>添加后的URL: <code>${result}</code></p>
+                    <p><em>测试显示URL编码和解码功能正常工作</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 边界情况测试
+        function testEdgeCases() {
+            try {
+                let results = [];
+                
+                // 空URL
+                try {
+                    const parsed = dcUrl.parse('');
+                    const emptySuccess = !parsed.protocol && !parsed.hostname && !parsed.pathname;
+                    results.push(`<li>空URL: ${emptySuccess ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</li>`);
+                } catch (e) {
+                    results.push(`<li>空URL: <span style="color: red; font-weight: bold;">异常 (${e.message})</span></li>`);
+                }
+                
+                // 仅协议
+                try {
+                    const parsed = dcUrl.parse('https:');
+                    const protocolOnly = parsed.protocol === 'https:' && !parsed.hostname && !parsed.pathname;
+                    results.push(`<li>仅协议: ${protocolOnly ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</li>`);
+                } catch (e) {
+                    results.push(`<li>仅协议: <span style="color: red; font-weight: bold;">异常 (${e.message})</span></li>`);
+                }
+                
+                // 仅主机名
+                try {
+                    const parsed = dcUrl.parse('example.com');
+                    const hostOnly = parsed.hostname === 'example.com';
+                    results.push(`<li>仅主机名: ${hostOnly ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</li>`);
+                } catch (e) {
+                    results.push(`<li>仅主机名: <span style="color: red; font-weight: bold;">异常 (${e.message})</span></li>`);
+                }
+                
+                // 无效URL
+                try {
+                    const parsed = dcUrl.parse('invalid-url-string');
+                    const invalidSuccess = !parsed.hostname && !parsed.pathname;
+                    results.push(`<li>无效URL: ${invalidSuccess ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</li>`);
+                } catch (e) {
+                    results.push(`<li>无效URL: <span style="color: red; font-weight: bold;">异常 (${e.message})</span></li>`);
+                }
+                
+                // 构建空对象
+                try {
+                    const built = dcUrl.build({});
+                    const emptyBuild = built === '';
+                    results.push(`<li>构建空对象: ${emptyBuild ? '<span style="color: green; font-weight: bold;">通过</span>' : '<span style="color: red; font-weight: bold;">失败</span>'}</li>`);
+                } catch (e) {
+                    results.push(`<li>构建空对象: <span style="color: red; font-weight: bold;">异常 (${e.message})</span></li>`);
+                }
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>边界情况测试结果</strong></p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 性能测试
+        function testPerformance() {
+            try {
+                const iterations = 10000;
+                const testUrl = 'https://www.example.com:8080/path/to/page?param1=value1&param2=value2#section';
+                
+                const startParse = performance.now();
+                
+                // 测试解析性能
+                for (let i = 0; i < iterations; i++) {
+                    dcUrl.parse(testUrl);
+                }
+                
+                const endParse = performance.now();
+                
+                // 测试构建性能
+                const parts = {
+                    protocol: 'https:',
+                    hostname: 'www.example.com',
+                    port: '8080',
+                    pathname: '/path/to/page',
+                    search: '?param1=value1&param2=value2',
+                    hash: '#section'
+                };
+                
+                const startBuild = performance.now();
+                
+                for (let i = 0; i < iterations; i++) {
+                    dcUrl.build(parts);
+                }
+                
+                const endBuild = performance.now();
+                
+                const parseTime = endParse - startParse;
+                const buildTime = endBuild - startBuild;
+                const total = parseTime + buildTime;
+                const opsPerSecond = Math.round((iterations * 2) / (total / 1000));
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>性能测试结果</strong></p>
+                    <p><strong>迭代次数:</strong> ${iterations}</p>
+                    <p><strong>解析耗时:</strong> ${parseTime.toFixed(2)}ms (${(parseTime/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>构建耗时:</strong> ${buildTime.toFixed(2)}ms (${(buildTime/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>总耗时:</strong> ${total.toFixed(2)}ms</p>
+                    <p><strong>每秒操作数:</strong> ${opsPerSecond.toLocaleString()} ops/s</p>
+                    <p><em>测试在当前浏览器环境下进行</em></p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">性能测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            const results = [];
+            
+            // 存储原始console.log方法
+            const originalLog = console.log;
+            let capturedOutput = '';
+            
+            // 重写console.log以捕获输出
+            console.log = function(message) {
+                capturedOutput += message + '\n';
+                originalLog.apply(console, arguments);
+            };
+            
+            try {
+                // 运行Node.js测试
+                const nodeTestPassed = require('../../../test/utils/dcUrl/dcUrl.test.js');
+                results.push(`<p><strong>Node.js环境测试:</strong> <span style="color: ${nodeTestPassed ? 'green' : 'red'}; font-weight: bold;">${nodeTestPassed ? '通过' : '失败'}</span></p>`);
+                
+                // 运行浏览器环境测试
+                const browserTestPassed = require('../../../test/utils/dcUrl/dcUrl-browser.test.js');
+                results.push(`<p><strong>浏览器环境测试:</strong> <span style="color: ${browserTestPassed ? 'green' : 'red'}; font-weight: bold;">${browserTestPassed ? '通过' : '失败'}</span></p>`);
+                
+            } catch (error) {
+                results.push(`<p><strong style="color: red">自动化测试运行失败: ${error.message}</strong></p>`);
+            } finally {
+                // 恢复原始console.log方法
+                console.log = originalLog;
+            }
+            
+            // 运行手动测试用例
+            testRelativeUrl();
+            testSpecialChars();
+            testEdgeCases();
+            
+            document.getElementById('allTestsResult').innerHTML = `
+                <h3>自动化测试结果</h3>
+                ${results.join('')}
+                <h3>手动测试结果</h3>
+                <p>请查看"高级功能"标签页中的测试结果</p>
+                <p><em>完整测试日志:</em></p>
+                <pre>${capturedOutput}</pre>
+            `;
+        }
+
+        // 清空结果
+        function clearResults() {
+            document.getElementById('parseResult').innerHTML = '';
+            document.getElementById('parsedParts').style.display = 'none';
+            document.getElementById('buildResult').innerHTML = '';
+            document.getElementById('queryResult').innerHTML = '';
+            document.getElementById('addParamResult').innerHTML = '';
+            document.getElementById('advancedResult').innerHTML = '';
+            document.getElementById('allTestsResult').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

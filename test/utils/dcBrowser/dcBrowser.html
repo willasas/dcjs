@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcBrowser 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcBrowser 工具类交互式测试</h1>
+    
+    <!-- 当前环境信息 -->
+    <div class="test-container">
+        <div class="test-title">当前浏览器环境</div>
+        <div class="info-box">
+            <p><strong>User Agent:</strong> <span id="userAgent"></span></p>
+            <p><strong>平台:</strong> <span id="platform"></span></p>
+            <p><strong>语言:</strong> <span id="language"></span></p>
+        </div>
+    </div>
+
+    <!-- 测试容器 -->
+    <div class="test-container">
+        <div class="test-title">isMobile: 移动设备检测</div>
+        <button onclick="testIsMobile()">运行测试</button>
+        <div class="result" id="mobileResult"></div>
+    </div>
+
+    <!-- 浏览器名称检测 -->
+    <div class="test-container">
+        <div class="test-title">getBrowserName: 浏览器名称检测</div>
+        <button onclick="testGetBrowserName()">运行测试</button>
+        <div class="result" id="browserNameResult"></div>
+    </div>
+
+    <!-- 自定义User Agent测试 -->
+    <div class="test-container">
+        <div class="test-title">自定义User Agent测试</div>
+        <label>自定义User Agent: 
+            <select id="userAgentSelect" onchange="updateCustomUA()">
+                <option value="mobile">移动设备 (iPhone)</option>
+                <option value="desktop">桌面设备 (Windows)</option>
+                <option value="chrome">Chrome浏览器</option>
+                <option value="firefox">Firefox浏览器</option>
+                <option value="safari">Safari浏览器</option>
+                <option value="custom">自定义</option>
+            </select>
+        </label>
+        <input type="text" id="customUA" size="80" placeholder="输入自定义User Agent字符串">
+        <button onclick="testCustomUserAgent()">测试自定义User Agent</button>
+        <div class="result" id="customResult"></div>
+    </div>
+
+    <!-- 手动刷新 -->
+    <div class="test-container">
+        <div class="test-title">操作</div>
+        <button onclick="refreshInfo()">刷新环境信息</button>
+        <button onclick="clearAllResults()">清除所有结果</button>
+    </div>
+
+    <script src="../../../src/utils/dcBrowser.js"></script>
+    <script>
+        // 页面加载时显示当前环境信息
+        window.onload = function() {
+            refreshInfo();
+            updateCustomUA();
+        };
+
+        function refreshInfo() {
+            document.getElementById('userAgent').textContent = navigator.userAgent;
+            document.getElementById('platform').textContent = navigator.platform || 'Unknown';
+            document.getElementById('language').textContent = navigator.language || 'Unknown';
+        }
+
+        function testIsMobile() {
+            try {
+                const result = dcBrowser.isMobile();
+                const userAgent = navigator.userAgent;
+                
+                document.getElementById('mobileResult').innerHTML = `
+                    <p><strong>检测结果:</strong> <span style="color: ${result ? 'green' : 'red'}; font-weight: bold;">${result ? '移动设备' : '桌面设备'}</span></p>
+                    <p><strong>User Agent:</strong> <code>${userAgent}</code></p>
+                    <p><em>注：此测试基于当前浏览器的User Agent字符串进行判断</em></p>
+                `;
+            } catch (error) {
+                document.getElementById('mobileResult').innerHTML = `
+                    <strong style="color: red">✗ 检测失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function testGetBrowserName() {
+            try {
+                const result = dcBrowser.getBrowserName();
+                const userAgent = navigator.userAgent;
+                
+                document.getElementById('browserNameResult').innerHTML = `
+                    <p><strong>浏览器名称:</strong> <span style="font-weight: bold;">${result}</span></p>
+                    <p><strong>User Agent:</strong> <code>${userAgent}</code></p>
+                    <p><em>注：此识别基于User Agent字符串中的特征进行匹配</em></p>
+                `;
+            } catch (error) {
+                document.getElementById('browserNameResult').innerHTML = `
+                    <strong style="color: red">✗ 识别失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function updateCustomUA() {
+            const select = document.getElementById('userAgentSelect');
+            const customInput = document.getElementById('customUA');
+            let ua = '';
+            
+            switch(select.value) {
+                case 'mobile':
+                    ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1';
+                    break;
+                case 'desktop':
+                    ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+                    break;
+                case 'chrome':
+                    ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+                    break;
+                case 'firefox':
+                    ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0';
+                    break;
+                case 'safari':
+                    ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15';
+                    break;
+                case 'custom':
+                    customInput.style.display = 'inline';
+                    return;
+                default:
+                    ua = '';
+            }
+            
+            customInput.style.display = 'none';
+            customInput.value = ua;
+        }
+
+        function testCustomUserAgent() {
+            try {
+                const customUA = document.getElementById('customUA').value.trim();
+                if (!customUA) {
+                    alert('请输入自定义User Agent字符串');
+                    return;
+                }
+                
+                // 保存原始navigator对象
+                const originalNavigator = {...navigator};
+                
+                // 创建新的navigator对象并设置userAgent
+                const newNavigator = Object.create(navigator);
+                Object.defineProperty(newNavigator, 'userAgent', {
+                    value: customUA,
+                    configurable: true
+                });
+                
+                // 替换全局navigator
+                globalThis.navigator = newNavigator;
+                
+                // 执行检测
+                const isMobile = dcBrowser.isMobile();
+                const browserName = dcBrowser.getBrowserName();
+                
+                // 恢复原始navigator
+                globalThis.navigator = originalNavigator;
+                
+                document.getElementById('customResult').innerHTML = `
+                    <p><strong>自定义User Agent:</strong> <code>${customUA}</code></p>
+                    <p><strong>移动设备检测:</strong> <span style="color: ${isMobile ? 'green' : 'red'}; font-weight: bold;">${isMobile ? '是' : '否'}</span></p>
+                    <p><strong>浏览器名称识别:</strong> <span style="font-weight: bold;">${browserName}</span></p>
+                `;
+            } catch (error) {
+                document.getElementById('customResult').innerHTML = `
+                    <strong style="color: red">✗ 测试失败: ${error.message}</strong>
+                `;
+            }
+        }
+
+        function clearAllResults() {
+            document.getElementById('mobileResult').innerHTML = '';
+            document.getElementById('browserNameResult').innerHTML = '';
+            document.getElementById('customResult').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

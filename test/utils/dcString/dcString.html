@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcString 工具类测试</title>
+    <link rel="stylesheet" href="../../dist/dc-1.0.0-2026-01-07.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .pass {
+            color: green;
+        }
+        .fail {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcString 工具类测试</h1>
+
+    <div class="test-section">
+        <h2>基本功能测试</h2>
+        <p>测试dcString工具类的基本功能</p>
+        <button onclick="testBasicFunction()">测试基本功能</button>
+        <div id="basic-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>字符串转换测试</h2>
+        <p>测试字符串转换相关方法</p>
+        <button onclick="testStringConversion()">测试字符串转换</button>
+        <div id="conversion-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>字符串处理测试</h2>
+        <p>测试字符串处理相关方法</p>
+        <button onclick="testStringProcessing()">测试字符串处理</button>
+        <div id="processing-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>字符串验证测试</h2>
+        <p>测试字符串验证相关方法</p>
+        <button onclick="testStringValidation()">测试字符串验证</button>
+        <div id="validation-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>交互式测试</h2>
+        <p>输入自定义字符串进行测试</p>
+        <input type="text" id="test-input" placeholder="输入测试字符串" value="hello world">
+        <button onclick="testCustomString()">测试自定义字符串</button>
+        <div id="custom-result" class="result">点击按钮查看结果</div>
+    </div>
+
+    <script src="../../dist/dc-1.0.0-2026-01-07.js"></script>
+    <script>
+        // 测试基本功能
+        function testBasicFunction() {
+            try {
+                const results = [];
+
+                // 测试工具类是否存在
+                results.push({
+                    test: 'dcString 工具类存在',
+                    pass: !!DC.String,
+                    actual: !!DC.String,
+                    expected: true
+                });
+
+                // 测试基本方法是否存在
+                const methods = ['capitalize', 'toCamelCase', 'toSnakeCase', 'toKebabCase', 'truncate',
+                               'toUpperCase', 'reverse', 'stripHtml', 'escapeHtml', 'unescapeHtml',
+                               'random', 'byteLength', 'template', 'contains'];
+
+                methods.forEach(method => {
+                    results.push({
+                        test: `dcString.${method} 方法存在`,
+                        pass: typeof DC.String[method] === 'function',
+                        actual: typeof DC.String[method],
+                        expected: 'function'
+                    });
+                });
+
+                // 显示结果
+                let html = '<h3>测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: ${result.actual}, 期望: ${result.expected})
+                    </p>`;
+                });
+
+                document.getElementById('basic-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('basic-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 测试字符串转换
+        function testStringConversion() {
+            try {
+                const results = [];
+
+                // 测试首字母大写
+                results.push({
+                    test: 'capitalize("hello")',
+                    pass: DC.String.capitalize("hello") === "Hello",
+                    actual: DC.String.capitalize("hello"),
+                    expected: "Hello"
+                });
+
+                // 测试驼峰命名
+                results.push({
+                    test: 'toCamelCase("hello-world")',
+                    pass: DC.String.toCamelCase("hello-world") === "helloWorld",
+                    actual: DC.String.toCamelCase("hello-world"),
+                    expected: "helloWorld"
+                });
+
+                // 测试大驼峰命名
+                results.push({
+                    test: 'toCamelCase("hello-world", true)',
+                    pass: DC.String.toCamelCase("hello-world", true) === "HelloWorld",
+                    actual: DC.String.toCamelCase("hello-world", true),
+                    expected: "HelloWorld"
+                });
+
+                // 测试下划线命名
+                results.push({
+                    test: 'toSnakeCase("helloWorld")',
+                    pass: DC.String.toSnakeCase("helloWorld") === "hello_world",
+                    actual: DC.String.toSnakeCase("helloWorld"),
+                    expected: "hello_world"
+                });
+
+                // 测试短横线命名
+                results.push({
+                    test: 'toKebabCase("helloWorld")',
+                    pass: DC.String.toKebabCase("helloWorld") === "hello-world",
+                    actual: DC.String.toKebabCase("helloWorld"),
+                    expected: "hello-world"
+                });
+
+                // 显示结果
+                let html = '<h3>字符串转换测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: "${result.actual}", 期望: "${result.expected}")
+                    </p>`;
+                });
+
+                document.getElementById('conversion-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('conversion-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 测试字符串处理
+        function testStringProcessing() {
+            try {
+                const results = [];
+
+                // 测试截取字符串
+                results.push({
+                    test: 'truncate("hello world", 5)',
+                    pass: DC.String.truncate("hello world", 5) === "hello...",
+                    actual: DC.String.truncate("hello world", 5),
+                    expected: "hello..."
+                });
+
+                // 测试反转字符串
+                results.push({
+                    test: 'reverse("hello")',
+                    pass: DC.String.reverse("hello") === "olleh",
+                    actual: DC.String.reverse("hello"),
+                    expected: "olleh"
+                });
+
+                // 测试去除HTML标签
+                results.push({
+                    test: 'stripHtml("<p>hello</p>")',
+                    pass: DC.String.stripHtml("<p>hello</p>") === "hello",
+                    actual: DC.String.stripHtml("<p>hello</p>"),
+                    expected: "hello"
+                });
+
+                // 测试转义HTML
+                results.push({
+                    test: 'escapeHtml("<script>")',
+                    pass: DC.String.escapeHtml("<script>") === "&lt;script&gt;",
+                    actual: DC.String.escapeHtml("<script>"),
+                    expected: "&lt;script&gt;"
+                });
+
+                // 测试解码HTML
+                results.push({
+                    test: 'unescapeHtml("&lt;script&gt;")',
+                    pass: DC.String.unescapeHtml("&lt;script&gt;") === "<script>",
+                    actual: DC.String.unescapeHtml("&lt;script&gt;"),
+                    expected: "<script>"
+                });
+
+                // 显示结果
+                let html = '<h3>字符串处理测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: "${result.actual}", 期望: "${result.expected}")
+                    </p>`;
+                });
+
+                document.getElementById('processing-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('processing-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 测试字符串验证
+        function testStringValidation() {
+            try {
+                const results = [];
+
+                // 测试包含字符串
+                results.push({
+                    test: 'contains("hello world", "world")',
+                    pass: DC.String.contains("hello world", "world") === true,
+                    actual: DC.String.contains("hello world", "world"),
+                    expected: true
+                });
+
+                // 测试不区分大小写包含
+                results.push({
+                    test: 'contains("Hello World", "world", false)',
+                    pass: DC.String.contains("Hello World", "world", false) === true,
+                    actual: DC.String.contains("Hello World", "world", false),
+                    expected: true
+                });
+
+                // 测试数组包含
+                results.push({
+                    test: 'contains("hello world", ["hello", "world"])',
+                    pass: DC.String.contains("hello world", ["hello", "world"]) === true,
+                    actual: DC.String.contains("hello world", ["hello", "world"]),
+                    expected: true
+                });
+
+                // 测试模板字符串
+                results.push({
+                    test: 'template("Hello ${name}", {name: "World"})',
+                    pass: DC.String.template("Hello ${name}", {name: "World"}) === "Hello World",
+                    actual: DC.String.template("Hello ${name}", {name: "World"}),
+                    expected: "Hello World"
+                });
+
+                // 显示结果
+                let html = '<h3>字符串验证测试结果:</h3>';
+                results.forEach(result => {
+                    html += `<p class="${result.pass ? 'pass' : 'fail'}">
+                        ${result.test}: ${result.pass ? '通过' : '失败'}
+                        (实际: ${JSON.stringify(result.actual)}, 期望: ${JSON.stringify(result.expected)})
+                    </p>`;
+                });
+
+                document.getElementById('validation-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('validation-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 测试自定义字符串
+        function testCustomString() {
+            try {
+                const input = document.getElementById('test-input').value;
+
+                if (!input) {
+                    document.getElementById('custom-result').textContent = '请输入测试字符串';
+                    return;
+                }
+
+                const results = {
+                    original: input,
+                    capitalize: DC.String.capitalize(input),
+                    camelCase: DC.String.toCamelCase(input),
+                    upperCamelCase: DC.String.toCamelCase(input, true),
+                    snakeCase: DC.String.toSnakeCase(input),
+                    kebabCase: DC.String.toKebabCase(input),
+                    reverse: DC.String.reverse(input),
+                    byteLength: DC.String.byteLength(input),
+                    truncated: DC.String.truncate(input, 10)
+                };
+
+                let html = '<h3>自定义字符串测试结果:</h3>';
+                for (const [key, value] of Object.entries(results)) {
+                    html += `<p><strong>${key}:</strong> ${value}</p>`;
+                }
+
+                document.getElementById('custom-result').innerHTML = html;
+            } catch (error) {
+                document.getElementById('custom-result').textContent = `错误: ${error.message}`;
+                console.error(error);
+            }
+        }
+
+        // 页面加载完成后执行基本测试
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('dcString 测试页面已加载');
+            testBasicFunction();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcArray 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcArray 工具类交互式测试</h1>
+    
+    <!-- unique 测试 -->
+    <div class="test-container">
+        <div class="test-title">unique: 去除重复元素</div>
+        <button onclick="testUnique()">运行测试</button>
+        <div class="result" id="uniqueResult"></div>
+    </div>
+
+    <!-- flatten 测试 -->
+    <div class="test-container">
+        <div class="test-title">flatten: 多层数组扁平化</div>
+        <button onclick="testFlatten()">运行测试</button>
+        <div class="result" id="flattenResult"></div>
+    </div>
+
+    <!-- groupBy 测试 -->
+    <div class="test-container">
+        <div class="test-title">groupBy: 按属性分组</div>
+        <button onclick="testGroupBy()">运行测试</button>
+        <div class="result" id="groupByResult"></div>
+    </div>
+
+    <script src="../../../src/utils/dcArray.js"></script>
+    <script>
+        function testUnique() {
+            const input = [1, 2, 2, 3, 4, 4, 5];
+            const result = dcArray.unique(input);
+            const expected = [1, 2, 3, 4, 5];
+            const passed = JSON.stringify(result) === JSON.stringify(expected);
+            document.getElementById('uniqueResult').innerHTML = `
+                输入: <pre>${JSON.stringify(input)}</pre>
+                输出: <pre>${JSON.stringify(result)}</pre>
+                预期: <pre>${JSON.stringify(expected)}</pre>
+                结果: <strong style="color: ${passed ? 'green' : 'red'}">${passed ? '通过' : '失败'}</strong>
+            `;
+        }
+
+        function testFlatten() {
+            const input = [1, [2, [3, 4], 5]];
+            const result = dcArray.flatten(input);
+            const expected = [1, 2, 3, 4, 5];
+            const passed = JSON.stringify(result) === JSON.stringify(expected);
+            document.getElementById('flattenResult').innerHTML = `
+                输入: <pre>${JSON.stringify(input)}</pre>
+                输出: <pre>${JSON.stringify(result)}</pre>
+                预期: <pre>${JSON.stringify(expected)}</pre>
+                结果: <strong style="color: ${passed ? 'green' : 'red'}">${passed ? '通过' : '失败'}</strong>
+            `;
+        }
+
+        function testGroupBy() {
+            const input = [
+                { category: 'fruit', name: 'apple' },
+                { category: 'fruit', name: 'banana' },
+                { category: 'vegetable', name: 'carrot' }
+            ];
+            const result = dcArray.groupBy(input, 'category');
+            const passed = result.fruit.length === 2 && result.vegetable.length === 1;
+            document.getElementById('groupByResult').innerHTML = `
+                输入: <pre>${JSON.stringify(input, null, 2)}</pre>
+                输出: <pre>${JSON.stringify(result, null, 2)}</pre>
+                结果: <strong style="color: ${passed ? 'green' : 'red'}">${passed ? '通过' : '失败'}</strong>
+            `;
+        }
+    </script>
+</body>
+</html>

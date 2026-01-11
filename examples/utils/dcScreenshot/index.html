@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC.Screenshot 工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .example {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .example h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .controls {
+            margin-bottom: 15px;
+        }
+        .screenshot-container {
+            width: 100%;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #fff;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .screenshot-result {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .info-panel {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 15px;
+        }
+        .screenshot-target {
+            width: 300px;
+            height: 150px;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+        .status-message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+        .error-message {
+            background-color: #fdecea;
+            border-left-color: #f44336;
+        }
+        .success-message {
+            background-color: #e8f5e9;
+            border-left-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>DC.Screenshot 工具类示例</h1>
+
+    <div class="example">
+        <h3>全页面截图</h3>
+        <div class="controls">
+            <button onclick="captureFullPage()">捕获全页面</button>
+            <button onclick="captureFullPageWithFormat('png')">PNG格式</button>
+            <button onclick="captureFullPageWithFormat('jpeg')">JPEG格式</button>
+            <button onclick="captureFullPageWithFormat('webp')">WebP格式</button>
+        </div>
+        <div id="full-page-result" class="screenshot-container">
+            <p>点击上方按钮捕获全页面截图</p>
+        </div>
+        <div class="info-panel">
+            <div>截图尺寸: <span id="full-page-dimensions">-</span></div>
+            <div>文件大小: <span id="full-page-size">-</span></div>
+            <div>耗时: <span id="full-page-time">-</span></div>
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>指定元素截图</h3>
+        <div class="controls">
+            <button onclick="captureElement()">捕获指定元素</button>
+            <button onclick="captureElementWithFormat('png')">PNG格式</button>
+            <button onclick="captureElementWithFormat('jpeg')">JPEG格式</button>
+            <button onclick="captureElementWithFormat('webp')">WebP格式</button>
+        </div>
+        <div id="screenshot-target" class="screenshot-target">这是要截图的元素</div>
+        <div id="element-result" class="screenshot-container">
+            <p>点击上方按钮捕获指定元素截图</p>
+        </div>
+        <div class="info-panel">
+            <div>截图尺寸: <span id="element-dimensions">-</span></div>
+            <div>文件大小: <span id="element-size">-</span></div>
+            <div>耗时: <span id="element-time">-</span></div>
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>指定区域截图</h3>
+        <div class="controls">
+            <button onclick="captureRegion()">捕获指定区域</button>
+            <button onclick="captureRegionWithFormat('png')">PNG格式</button>
+            <button onclick="captureRegionWithFormat('jpeg')">JPEG格式</button>
+            <button onclick="captureRegionWithFormat('webp')">WebP格式</button>
+        </div>
+        <div id="region-result" class="screenshot-container">
+            <p>点击上方按钮捕获指定区域截图</p>
+        </div>
+        <div class="info-panel">
+            <div>截图区域: <span id="region-area">x: 100, y: 100, width: 400, height: 300</span></div>
+            <div>截图尺寸: <span id="region-dimensions">-</span></div>
+            <div>文件大小: <span id="region-size">-</span></div>
+            <div>耗时: <span id="region-time">-</span></div>
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>带水印截图</h3>
+        <div class="controls">
+            <button onclick="captureWithWatermark()">捕获带水印截图</button>
+            <button onclick="captureWithCustomWatermark()">自定义水印</button>
+        </div>
+        <div id="watermark-result" class="screenshot-container">
+            <p>点击上方按钮捕获带水印截图</p>
+        </div>
+        <div class="info-panel">
+            <div>水印文本: <span id="watermark-text">DC.Screenshot</span></div>
+            <div>水印位置: <span id="watermark-position">右下角</span></div>
+            <div>截图尺寸: <span id="watermark-dimensions">-</span></div>
+            <div>耗时: <span id="watermark-time">-</span></div>
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>高级选项截图</h3>
+        <div class="controls">
+            <button onclick="captureWithAdvancedOptions()">高级选项截图</button>
+            <button onclick="captureWithQuality(0.5)">低质量 (0.5)</button>
+            <button onclick="captureWithQuality(0.9)">高质量 (0.9)</button>
+        </div>
+        <div id="advanced-result" class="screenshot-container">
+            <p>点击上方按钮使用高级选项截图</p>
+        </div>
+        <div class="info-panel">
+            <div>图片质量: <span id="advanced-quality">0.8</span></div>
+            <div>图片格式: <span id="advanced-format">png</span></div>
+            <div>截图尺寸: <span id="advanced-dimensions">-</span></div>
+            <div>耗时: <span id="advanced-time">-</span></div>
+        </div>
+    </div>
+
+    <script src="../../../dist/dc.js"></script>
+    <script>
+        // 显示状态消息
+        function showMessage(containerId, message, isError = false) {
+            const container = document.getElementById(containerId);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isError ? 'status-message error-message' : 'status-message success-message';
+            messageDiv.textContent = message;
+
+            // 清除之前的消息
+            const existingMessage = container.querySelector('.status-message');
+            if (existingMessage) {
+                container.removeChild(existingMessage);
+            }
+
+            container.appendChild(messageDiv);
+
+            // 5秒后自动移除消息
+            setTimeout(() => {
+                if (container.contains(messageDiv)) {
+                    container.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+
+        // 显示截图结果
+        function displayScreenshot(containerId, result, infoPrefix) {
+            const container = document.getElementById(containerId);
+
+            // 清除之前的内容
+            container.innerHTML = '';
+
+            // 显示截图
+            if (result.success && result.dataUrl) {
+                const img = document.createElement('img');
+                img.src = result.dataUrl;
+                img.className = 'screenshot-result';
+                container.appendChild(img);
+
+                // 更新信息面板
+                document.getElementById(`${infoPrefix}-dimensions`).textContent = `${result.width} x ${result.height}`;
+                document.getElementById(`${infoPrefix}-size`).textContent = result.size ? `${(result.size / 1024).toFixed(2)} KB` : '未知';
+                document.getElementById(`${infoPrefix}-time`).textContent = `${result.captureTime} ms`;
+
+                showMessage(containerId, '截图成功！');
+            } else {
+                showMessage(containerId, `截图失败: ${result.error}`, true);
+            }
+        }
+
+        // 全页面截图
+        function captureFullPage() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot();
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('full-page-result', result, 'full-page');
+                })
+                .catch(error => {
+                    showMessage('full-page-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 全页面截图（指定格式）
+        function captureFullPageWithFormat(format) {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({ format: format });
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('full-page-result', result, 'full-page');
+                })
+                .catch(error => {
+                    showMessage('full-page-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 指定元素截图
+        function captureElement() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot();
+            const element = document.getElementById('screenshot-target');
+
+            screenshot.captureElement(element)
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('element-result', result, 'element');
+                })
+                .catch(error => {
+                    showMessage('element-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 指定元素截图（指定格式）
+        function captureElementWithFormat(format) {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({ format: format });
+            const element = document.getElementById('screenshot-target');
+
+            screenshot.captureElement(element)
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('element-result', result, 'element');
+                })
+                .catch(error => {
+                    showMessage('element-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 指定区域截图
+        function captureRegion() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot();
+
+            screenshot.captureRegion(100, 100, 400, 300)
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('region-result', result, 'region');
+                })
+                .catch(error => {
+                    showMessage('region-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 指定区域截图（指定格式）
+        function captureRegionWithFormat(format) {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({ format: format });
+
+            screenshot.captureRegion(100, 100, 400, 300)
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('region-result', result, 'region');
+                })
+                .catch(error => {
+                    showMessage('region-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 带水印截图
+        function captureWithWatermark() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({
+                watermark: {
+                    text: 'DC.Screenshot',
+                    position: 'bottom-right',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: 16
+                }
+            });
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('watermark-result', result, 'watermark');
+                })
+                .catch(error => {
+                    showMessage('watermark-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 自定义水印截图
+        function captureWithCustomWatermark() {
+            const startTime = performance.now();
+            const watermarkText = `自定义水印 - ${new Date().toLocaleString()}`;
+            document.getElementById('watermark-text').textContent = watermarkText;
+
+            const screenshot = new DC.Screenshot({
+                watermark: {
+                    text: watermarkText,
+                    position: 'top-left',
+                    color: 'rgba(255, 0, 0, 0.7)',
+                    fontSize: 20
+                }
+            });
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('watermark-result', result, 'watermark');
+                    document.getElementById('watermark-position').textContent = '左上角';
+                })
+                .catch(error => {
+                    showMessage('watermark-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 高级选项截图
+        function captureWithAdvancedOptions() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({
+                quality: 0.8,
+                format: 'png',
+                useCORS: true
+            });
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('advanced-result', result, 'advanced');
+                })
+                .catch(error => {
+                    showMessage('advanced-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 指定质量截图
+        function captureWithQuality(quality) {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({
+                quality: quality,
+                format: 'jpeg'
+            });
+
+            document.getElementById('advanced-quality').textContent = quality;
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('advanced-result', result, 'advanced');
+                })
+                .catch(error => {
+                    showMessage('advanced-result', `截图失败: ${error.message}`, true);
+                });
+        }
+    </script>
+</body>
+</html>

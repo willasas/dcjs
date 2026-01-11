@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSO单点登录系统 - 注册</title>
+  <link rel="stylesheet" href="dcSSO.css">
+</head>
+<body>
+  <div class="sso-container">
+    <div class="sso-background">
+      <div class="sso-bg-overlay"></div>
+    </div>
+
+    <div class="sso-register-container">
+      <div class="sso-register-card">
+        <!-- 头部Logo和标题 -->
+        <div class="sso-header">
+          <div class="sso-logo">
+            <img src="https://picsum.photos/seed/dc-logo/120/40.jpg" alt="DC Logo" />
+          </div>
+          <h1 class="sso-title">创建账号</h1>
+          <p class="sso-subtitle">加入DC，享受一站式服务体验</p>
+        </div>
+
+        <!-- 注册表单 -->
+        <form class="sso-form" id="registerForm">
+          <div class="sso-form-row">
+            <div class="sso-form-group">
+              <label for="firstName" class="sso-label">名字</label>
+              <div class="sso-input-group">
+                <input type="text" id="firstName" name="firstName" placeholder="请输入名字" required>
+              </div>
+            </div>
+            <div class="sso-form-group">
+              <label for="lastName" class="sso-label">姓氏</label>
+              <div class="sso-input-group">
+                <input type="text" id="lastName" name="lastName" placeholder="请输入姓氏" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="sso-form-group">
+            <label for="email" class="sso-label">邮箱地址</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <input type="email" id="email" name="email" placeholder="请输入邮箱地址" required>
+            </div>
+          </div>
+
+          <div class="sso-form-group">
+            <label for="phone" class="sso-label">手机号码</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              </div>
+              <input type="tel" id="phone" name="phone" placeholder="请输入手机号码" required>
+            </div>
+          </div>
+
+          <div class="sso-form-group">
+            <label for="username" class="sso-label">用户名</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+            </div>
+            <div class="sso-form-hint">用户名将作为您的唯一标识，只能包含字母、数字和下划线</div>
+          </div>
+
+          <div class="sso-form-group">
+            <label for="password" class="sso-label">密码</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <input type="password" id="password" name="password" placeholder="请输入密码" required>
+              <div class="sso-password-toggle" id="passwordToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sso-eye-icon">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sso-eye-off-icon" style="display: none;">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="sso-password-strength" id="passwordStrength">
+              <div class="sso-strength-bar"></div>
+              <div class="sso-strength-text">密码强度：弱</div>
+            </div>
+          </div>
+
+          <div class="sso-form-group">
+            <label for="confirmPassword" class="sso-label">确认密码</label>
+            <div class="sso-input-group">
+              <div class="sso-input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="请再次输入密码" required>
+              <div class="sso-password-toggle" id="confirmPasswordToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sso-eye-icon">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sso-eye-off-icon" style="display: none;">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="sso-form-hint" id="passwordMatchHint" style="display: none;">密码不匹配</div>
+          </div>
+
+          <div class="sso-form-group">
+            <div class="sso-checkbox-group">
+              <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+              <label for="agreeTerms">我已阅读并同意<a href="#">服务条款</a>和<a href="#">隐私政策</a></label>
+            </div>
+          </div>
+
+          <div class="sso-form-group">
+            <div class="sso-checkbox-group">
+              <input type="checkbox" id="subscribeNewsletter" name="subscribeNewsletter">
+              <label for="subscribeNewsletter">订阅DC产品更新和优惠信息</label>
+            </div>
+          </div>
+
+          <button type="submit" class="sso-btn sso-btn-primary">创建账号</button>
+        </form>
+
+        <!-- 分隔线 -->
+        <div class="sso-divider">
+          <span>或</span>
+        </div>
+
+        <!-- 第三方注册 -->
+        <div class="sso-social-login">
+          <h3>使用其他方式注册</h3>
+          <div class="sso-social-buttons">
+            <button class="sso-social-btn sso-social-btn-qq">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+              </svg>
+              QQ注册
+            </button>
+            <button class="sso-social-btn sso-social-btn-wechat">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 4.882-1.786 7.267-.736-.847-3.206-4.468-5.49-8.01-5.49zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
+              </svg>
+              微信注册
+            </button>
+          </div>
+        </div>
+
+        <!-- 底部链接 -->
+        <div class="sso-footer">
+          <p>已有账号？<a href="#" id="loginLink">立即登录</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="dcSSO.js"></script>
+</body>
+</html>

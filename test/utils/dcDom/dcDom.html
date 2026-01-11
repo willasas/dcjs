@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcDom 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .dom-tree {
+            margin-top: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .element-node {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .element-node:hover {
+            background-color: #e0e0e0;
+        }
+        .node-tag {
+            font-weight: bold;
+            color: #333;
+        }
+        .node-id {
+            color: #666;
+            font-style: italic;
+        }
+        .node-class {
+            color: #0066cc;
+        }
+        .tabs {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .tab-button {
+            background-color: #f1f1f1;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            transition: 0.3s;
+        }
+        .tab-button:hover {
+            background-color: #ddd;
+        }
+        .tab-button.active {
+            background-color: #ccc;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .event-log {
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            background-color: #f0f0f0;
+        }
+        .log-entry {
+            margin: 2px 0;
+            color: #666;
+        }
+        .log-event {
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcDom 工具类交互式测试</h1>
+
+    <!-- 当前DOM信息 -->
+    <div class="info-box">
+        <p><strong>当前DOM结构:</strong> <span id="currentElementCount">0</span> 个元素</p>
+        <p><strong>测试说明:</strong> 此工具用于测试DOM查询、创建和操作功能。所有操作都在测试容器内进行。</p>
+    </div>
+
+    <!-- 标签页容器 -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'query')">元素查询</button>
+        <button class="tab-button" onclick="openTab(event, 'create')">元素创建</button>
+        <button class="tab-button" onclick="openTab(event, 'manipulate')">DOM操作</button>
+        <button class="tab-button" onclick="openTab(event, 'style')">样式操作</button>
+        <button class="tab-button" onclick="openTab(event, 'event')">事件处理</button>
+        <button class="tab-button" onclick="openTab(event, 'tree')">DOM树</button>
+        <button class="tab-button" onclick="openTab(event, 'presets')">预设测试</button>
+        <button class="tab-button" onclick="openTab(event, 'allTests')">运行所有测试</button>
+    </div>
+
+    <!-- 元素查询标签页 -->
+    <div id="query" class="tab-content active">
+        <div class="test-container">
+            <div class="test-title">元素查询</div>
+            
+            <label for="selector">选择器:</label>
+            <input type="text" id="selector" value="#testDiv" placeholder="输入CSS选择器，如: #id, .class, tag等">
+            
+            <button onclick="queryElement()">查询 (query)</button>
+            <button onclick="queryAllElements()">查询所有 (queryAll)</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="queryResult"></div>
+        </div>
+    </div>
+
+    <!-- 元素创建标签页 -->
+    <div id="create" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">元素创建</div>
+            
+            <label for="tagName">标签名:</label>
+            <input type="text" id="tagName" value="div" placeholder="输入标签名，如: div, span, p等">
+            
+            <label for="attributes">属性 (JSON格式):</label>
+            <textarea id="attributes" rows="3" placeholder="{\"id\": \"testId\", \"class\": \"testClass\"}">{"id": "testId", "class": "testClass"}</textarea>
+            
+            <label for="textContent">文本内容:</label>
+            <input type="text" id="textContent" value="测试内容" placeholder="元素的文本内容">
+            
+            <button onclick="createElement()">创建元素</button>
+            <button onclick="resetCreateForm()">重置</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="createResult"></div>
+        </div>
+    </div>
+
+    <!-- DOM操作标签页 -->
+    <div id="manipulate" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">DOM操作</div>
+            
+            <label for="operation">操作类型:</label>
+            <select id="operation">
+                <option value="append">append - 添加到最后</option>
+                <option value="prepend">prepend - 添加到开头</option>
+                <option value="before">before - 在前面插入</option>
+                <option value="after">after - 在后面插入</option>
+                <option value="remove">remove - 移除元素</option>
+                <option value="empty">empty - 清空内容</option>
+            </select>
+            
+            <label for="targetSelector">目标元素选择器:</label>
+            <input type="text" id="targetSelector" value="#container" placeholder="输入目标元素的选择器">
+            
+            <label for="newContent">新内容/选择器:</label>
+            <input type="text" id="newContent" value="<p>新段落</p>" placeholder="输入HTML内容或选择器">
+            
+            <button onclick="performManipulation()">执行操作</button>
+            <button onclick="resetManipulateForm()">重置</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="manipulateResult"></div>
+        </div>
+    </div>
+
+    <!-- 样式操作标签页 -->
+    <div id="style" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">样式操作</div>
+            
+            <label for="styleSelector">元素选择器:</label>
+            <input type="text" id="styleSelector" value="#styledDiv" placeholder="输入要操作的元素选择器">
+            
+            <label for="cssProperty">CSS属性:</label>
+            <input type="text" id="cssProperty" value="color" placeholder="如: color, fontSize, backgroundColor">
+            
+            <label for="cssValue">属性值:</label>
+            <input type="text" id="cssValue" value="red" placeholder="如: red, 16px, #f0f0f0">
+            
+            <button onclick="setStyle()">设置样式 (css)</button>
+            <button onclick="getStyle()">获取样式</button>
+            <button onclick="addClass()">添加类名</button>
+            <button onclick="removeClass()">移除类名</button>
+            <button onclick="toggleClass()">切换类名</button>
+            <button onclick="hasClass()">检查类名</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="styleResult"></div>
+        </div>
+    </div>
+
+    <!-- 事件处理标签页 -->
+    <div id="event" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">事件处理</div>
+            
+            <label for="eventSelector">元素选择器:</label>
+            <input type="text" id="eventSelector" value="#eventButton" placeholder="输入要绑定事件的元素选择器">
+            
+            <label for="eventType">事件类型:</label>
+            <input type="text" id="eventType" value="click" placeholder="如: click, mouseover, keydown">
+            
+            <button onclick="bindEvent()">绑定事件 (on)</button>
+            <button onclick="unbindEvent()">移除事件 (off)</button>
+            <button onclick="bindOnceEvent()">一次性事件 (once)</button>
+            <button onclick="triggerEvent()">触发事件 (trigger)</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="result" id="eventResult"></div>
+            
+            <h3>事件日志</h3>
+            <div class="event-log" id="eventLog"></div>
+        </div>
+    </div>
+
+    <!-- DOM树标签页 -->
+    <div id="tree" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">DOM树结构</div>
+            
+            <button onclick="refreshTree()">刷新树结构</button>
+            <button onclick="collapseAll()">折叠全部</button>
+            <button onclick="expandAll()">展开全部</button>
+            <button onclick="clearResults()">清空结果</button>
+            
+            <div class="dom-tree" id="domTree">
+                <div class="element-node">
+                    <span class="node-tag">&lt;body&gt;</span>
+                    <span class="node-id">#body</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预设测试标签页 -->
+    <div id="presets" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">预设测试用例</div>
+            
+            <button onclick="runBasicQueryTest()">基本查询测试</button>
+            <button onclick="runCreationTest()">创建测试</button>
+            <button onclick="runManipulationTest()">操作测试</button>
+            <button onclick="runStyleTest()">样式测试</button>
+            <button onclick="runEventTest()">事件测试</button>
+            <button onclick="runEdgeCaseTest()">边界情况测试</button>
+            <button onclick="runPerformanceTest()">性能测试</button>
+            
+            <div class="result" id="presetResult"></div>
+        </div>
+    </div>
+
+    <!-- 运行所有测试标签页 -->
+    <div id="allTests" class="tab-content">
+        <div class="test-container">
+            <div class="test-title">运行所有测试</div>
+            
+            <button onclick="runAllTests()">执行全部自动化测试</button>
+            
+            <div class="result" id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="info-box">
+        <h3>使用说明</h3>
+        <ul>
+            <li><strong>元素查询</strong>: 使用CSS选择器来查找单个或多个元素</li>
+            <li><strong>元素创建</strong>: 创建新的DOM元素并设置属性和内容</li>
+            <li><strong>DOM操作</strong>: 在现有元素上执行添加、删除、移动等操作</li>
+            <li><strong>样式操作</strong>: 修改元素的CSS样式和类名</li>
+            <li><strong>事件处理</strong>: 绑定、解绑和触发DOM事件</li>
+            <li><strong>DOM树</strong>: 查看当前的DOM结构</li>
+            <li><strong>预设测试</strong>: 运行一系列预定义的测试用例</li>
+            <li><strong>运行所有测试</strong>: 自动运行所有测试用例</li>
+            <li>所有操作都只在测试环境中进行，不会影响实际页面</li>
+        </ul>
+    </div>
+
+    <!-- 测试容器 -->
+    <div id="testContainer" style="margin-top: 20px; border: 1px solid #ccc; padding: 20px;">
+        <h3>测试区域</h3>
+        <div id="container" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+            <p>这是一个容器元素</p>
+            <div id="testDiv" class="test-class" data-test="value">测试DIV</div>
+            <div class="multi-test">多选测试1</div>
+            <div class="multi-test">多选测试2</div>
+            <div class="multi-test">多选测试3</div>
+        </div>
+        <div id="styledDiv" style="color: blue; font-size: 14px; background-color: yellow; padding: 10px; margin: 10px 0;">
+            这是一个有样式的DIV
+        </div>
+        <button id="eventButton" style="padding: 10px; margin: 10px 0;">点击我</button>
+        <div id="dynamicContent"></div>
+    </div>
+
+    <script src="../../../src/utils/dcDom.js"></script>
+    <script>
+        // 页面加载时初始化
+        window.onload = function() {
+            refreshTree();
+            updateCurrentElementCount();
+            setupEventLogging();
+        };
+
+        // 切换标签页
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+        }
+
+        // 更新当前元素数量显示
+        function updateCurrentElementCount() {
+            const container = document.getElementById('testContainer');
+            if (container) {
+                const count = container.querySelectorAll('*').length;
+                document.getElementById('currentElementCount').textContent = count;
+            }
+        }
+
+        // 设置事件日志
+        function setupEventLogging() {
+            const eventButton = document.getElementById('eventButton');
+            
+            // 绑定一个初始事件用于演示
+            dcDom.on(eventButton, 'click', function(e) {
+                logEvent(`按钮被点击`, 'click');
+            });
+        }
+
+        // 记录事件
+        function logEvent(message, eventType = '') {
+            const log = document.getElementById('eventLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            const now = new Date().toLocaleTimeString();
+            
+            if (eventType) {
+                entry.innerHTML = `<span class="log-time">[${now}]</span> <span class="log-event">${eventType}</span>: ${message}`;
+            } else {
+                entry.innerHTML = `<span class="log-time">[${now}]</span> ${message}`;
+            }
+            
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // 清空结果
+        function clearResults() {
+            const resultContainers = document.getElementsByClassName('result');
+            for (let i = 0; i < resultContainers.length; i++) {
+                resultContainers[i].innerHTML = '';
+            }
+        }
+
+        // 查询单个元素
+        function queryElement() {
+            try {
+                const selector = document.getElementById('selector').value.trim();
+                
+                if (!selector) {
+                    throw new Error('请选择器不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                
+                if (element) {
+                    document.getElementById('queryResult').innerHTML = `
+                        <p><strong style="color: green">✓ 找到元素！</strong></p>
+                        <p><strong>选择器:</strong> ${selector}</p>
+                        <p><strong>标签名:</strong> ${element.tagName.toLowerCase()}</p>
+                        <p><strong>ID:</strong> ${element.id || '(无)'}</p>
+                        <p><strong>类名:</strong> ${element.className || '(无)'}</p>
+                        <p><strong>文本内容:</strong> ${element.textContent}</p>
+                    `;
+                    
+                    // 高亮元素
+                    highlightElement(element);
+                } else {
+                    document.getElementById('queryResult').innerHTML = `
+                        <p><strong style="color: orange">⚠ 未找到匹配的元素</strong></p>
+                        <p><strong>选择器:</strong> ${selector}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                document.getElementById('queryResult').innerHTML = `
+                    <p><strong style="color: red">✗ 查询失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 查询所有元素
+        function queryAllElements() {
+            try {
+                const selector = document.getElementById('selector').value.trim();
+                
+                if (!selector) {
+                    throw new Error('请选择器不能为空');
+                }
+                
+                const elements = dcDom.queryAll(selector);
+                
+                if (elements.length > 0) {
+                    let resultsHtml = `
+                        <p><strong style="color: green">✓ 找到 ${elements.length} 个元素！</strong></p>
+                        <p><strong>选择器:</strong> ${selector}</p>
+                        <p><strong>匹配的元素:</strong></p>
+                        <ul>
+                    `;
+                    
+                    elements.forEach((element, index) => {
+                        resultsHtml += `
+                            <li>
+                                <strong>元素 ${index + 1}:</strong><br>
+                                标签名: ${element.tagName.toLowerCase()}<br>
+                                ID: ${element.id || '(无)'}<br>
+                                类名: ${element.className || '(无)'}<br>
+                                文本内容: ${element.textContent}
+                            </li>
+                        `;
+                    });
+
+                    resultsHtml += '</ul>';
+                    document.getElementById('queryResult').innerHTML = resultsHtml;
+                    
+                    // 高亮所有元素
+                    elements.forEach(highlightElement);
+                } else {
+                    document.getElementById('queryResult').innerHTML = `
+                        <p><strong style="color: orange">⚠ 未找到匹配的元素</strong></p>
+                        <p><strong>选择器:</strong> ${selector}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                document.getElementById('queryResult').innerHTML = `
+                    <p><strong style="color: red">✗ 查询失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 高亮元素
+        function highlightElement(element) {
+            // 先清除之前的高亮
+            const highlighted = document.querySelectorAll('.highlighted');
+            highlighted.forEach(el => {
+                el.style.border = '';
+                el.classList.remove('highlighted');
+            });
+            
+            // 高亮当前元素
+            element.style.border = '2px solid red';
+            element.classList.add('highlighted');
+            
+            // 滚动到元素位置
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 创建元素
+        function createElement() {
+            try {
+                const tagName = document.getElementById('tagName').value.trim();
+                const attributesText = document.getElementById('attributes').value.trim();
+                const textContent = document.getElementById('textContent').value.trim();
+                
+                if (!tagName) {
+                    throw new Error('标签名不能为空');
+                }
+                
+                let attributes = {};
+                if (attributesText) {
+                    try {
+                        attributes = JSON.parse(attributesText);
+                    } catch (e) {
+                        throw new Error('属性必须是有效的JSON格式');
+                    }
+                }
+                
+                // 创建元素
+                const element = dcDom.createElement(tagName, attributes, textContent ? [textContent] : []);
+                
+                // 添加到动态内容区域
+                const dynamicContent = document.getElementById('dynamicContent');
+                dcDom.empty(dynamicContent);
+                dcDom.append(dynamicContent, element);
+                
+                document.getElementById('createResult').innerHTML = `
+                    <p><strong style="color: green">✓ 元素创建成功！</strong></p>
+                    <p><strong>标签名:</strong> ${tagName}</p>
+                    <p><strong>属性:</strong> ${attributesText || '(无)'}</p>
+                    <p><strong>文本内容:</strong> ${textContent || '(无)'}</p>
+                    <p><strong>完整HTML:</strong></p>
+                    <pre>${element.outerHTML}</pre>
+                `;
+                
+                // 高亮创建的元素
+                highlightElement(element);
+                
+                // 更新统计
+                updateCurrentElementCount();
+                refreshTree();
+                
+            } catch (error) {
+                document.getElementById('createResult').innerHTML = `
+                    <p><strong style="color: red">✗ 创建失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 重置创建表单
+        function resetCreateForm() {
+            document.getElementById('tagName').value = 'div';
+            document.getElementById('attributes').value = '{"id": "testId", "class": "testClass"}';
+            document.getElementById('textContent').value = '测试内容';
+            document.getElementById('createResult').innerHTML = '';
+        }
+
+        // 执行DOM操作
+        function performManipulation() {
+            try {
+                const operation = document.getElementById('operation').value;
+                const targetSelector = document.getElementById('targetSelector').value.trim();
+                const newContent = document.getElementById('newContent').value.trim();
+                
+                if (!targetSelector) {
+                    throw new Error('目标选择器不能为空');
+                }
+                
+                const targetElement = dcDom.query(targetSelector);
+                if (!targetElement) {
+                    throw new Error(`找不到目标元素: ${targetSelector}`);
+                }
+                
+                let newElement;
+                
+                // 解析新内容
+                if (newContent.startsWith('<')) {
+                    // HTML字符串
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = newContent;
+                    newElement = tempDiv.firstElementChild;
+                } else {
+                    // 选择器
+                    newElement = dcDom.query(newContent);
+                    if (!newElement) {
+                        throw new Error(`找不到新内容元素: ${newContent}`);
+                    }
+                }
+                
+                if (!newElement) {
+                    throw new Error('无法解析新内容');
+                }
+                
+                // 执行操作
+                switch (operation) {
+                    case 'append':
+                        dcDom.append(targetElement, newElement);
+                        break;
+                    case 'prepend':
+                        dcDom.prepend(targetElement, newElement);
+                        break;
+                    case 'before':
+                        dcDom.before(targetElement, newElement);
+                        break;
+                    case 'after':
+                        dcDom.after(targetElement, newElement);
+                        break;
+                    case 'remove':
+                        dcDom.remove(targetElement);
+                        break;
+                    case 'empty':
+                        dcDom.empty(targetElement);
+                        break;
+                }
+                
+                document.getElementById('manipulateResult').innerHTML = `
+                    <p><strong style="color: green">✓ ${getOperationName(operation)} 成功！</strong></p>
+                    <p><strong>操作:</strong> ${getOperationName(operation)}</p>
+                    <p><strong>目标元素:</strong> ${targetSelector}</p>
+                    <p><strong>新内容:</strong> ${newContent}</p>
+                `;
+                
+                // 高亮相关元素
+                if (operation !== 'remove' && operation !== 'empty') {
+                    highlightElement(newElement);
+                }
+                
+                // 更新统计
+                updateCurrentElementCount();
+                refreshTree();
+                
+            } catch (error) {
+                document.getElementById('manipulateResult').innerHTML = `
+                    <p><strong style="color: red">✗ 操作失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 获取操作名称
+        function getOperationName(operation) {
+            const names = {
+                'append': '添加到最后',
+                'prepend': '添加到开头',
+                'before': '在前面插入',
+                'after': '在后面插入',
+                'remove': '移除元素',
+                'empty': '清空内容'
+            };
+            return names[operation] || operation;
+        }
+
+        // 重置DOM操作表单
+        function resetManipulateForm() {
+            document.getElementById('operation').value = 'append';
+            document.getElementById('targetSelector').value = '#container';
+            document.getElementById('newContent').value = '<p>新段落</p>';
+            document.getElementById('manipulateResult').innerHTML = '';
+        }
+
+        // 设置样式
+        function setStyle() {
+            try {
+                const selector = document.getElementById('styleSelector').value.trim();
+                const property = document.getElementById('cssProperty').value.trim();
+                const value = document.getElementById('cssValue').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                if (!property) {
+                    throw new Error('CSS属性不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 设置样式
+                dcDom.css(element, property, value);
+                
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: green">✓ 样式设置成功！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>属性:</strong> ${property}</p>
+                    <p><strong>值:</strong> ${value}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: red">✗ 设置失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 获取样式
+        function getStyle() {
+            try {
+                const selector = document.getElementById('styleSelector').value.trim();
+                const property = document.getElementById('cssProperty').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                if (!property) {
+                    throw new Error('CSS属性不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 获取样式
+                const value = dcDom.css(element, property);
+                
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 样式获取成功</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>属性:</strong> ${property}</p>
+                    <p><strong>值:</strong> ${value || '(无)'}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: red">✗ 获取失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 添加类名
+        function addClass() {
+            try {
+                const selector = document.getElementById('styleSelector').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 添加类名
+                dcDom.addClass(element, 'added-class');
+                
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: green">✓ 类名添加成功！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>添加的类名:</strong> added-class</p>
+                    <p><strong>当前类名:</strong> ${element.className || '(无)'}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: red">✗ 添加失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 移除类名
+        function removeClass() {
+            try {
+                const selector = document.getElementById('styleSelector').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 移除类名
+                dcDom.removeClass(element, 'added-class');
+                
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: green">✓ 类名移除成功！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>移除的类名:</strong> added-class</p>
+                    <p><strong>当前类名:</strong> ${element.className || '(无)'}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: red">✗ 移除失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 切换类名
+        function toggleClass() {
+            try {
+                const selector = document.getElementById('styleSelector').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 检查当前状态
+                const hasClass = dcDom.hasClass(element, 'toggled-class');
+                
+                // 切换类名
+                dcDom.toggleClass(element, 'toggled-class');
+                
+                const action = hasClass ? '移除' : '添加';
+                
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: ${hasClass ? 'orange' : 'green'}">✓ 类名已${action}！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>操作:</strong> ${action} toggled-class</p>
+                    <p><strong>当前类名:</strong> ${element.className || '(无)'}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: red">✗ 操作失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 检查类名
+        function hasClass() {
+            try {
+                const selector = document.getElementById('styleSelector').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 检查类名
+                const hasAddedClass = dcDom.hasClass(element, 'added-class');
+                const hasToggledClass = dcDom.hasClass(element, 'toggled-class');
+                
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 类名检查结果</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>包含 'added-class':</strong> ${hasAddedClass ? '是' : '否'}</p>
+                    <p><strong>包含 'toggled-class':</strong> ${hasToggledClass ? '是' : '否'}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML = `
+                    <p><strong style="color: red">✗ 检查失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 绑定事件
+        function bindEvent() {
+            try {
+                const selector = document.getElementById('eventSelector').value.trim();
+                const eventType = document.getElementById('eventType').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                if (!eventType) {
+                    throw new Error('事件类型不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 移除可能存在的旧事件
+                const oldHandler = element._testHandler;
+                if (oldHandler) {
+                    dcDom.off(element, eventType, oldHandler);
+                }
+                
+                // 创建新的事件处理器
+                const handler = function(e) {
+                    logEvent(`自定义${eventType}事件被触发`, eventType);
+                };
+                
+                // 保存引用以便后续移除
+                element._testHandler = handler;
+                
+                // 绑定事件
+                dcDom.on(element, eventType, handler);
+                
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: green">✓ 事件绑定成功！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>事件类型:</strong> ${eventType}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 移除事件
+        function unbindEvent() {
+            try {
+                const selector = document.getElementById('eventSelector').value.trim();
+                const eventType = document.getElementById('eventType').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                if (!eventType) {
+                    throw new Error('事件类型不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 获取之前绑定的处理器
+                const handler = element._testHandler;
+                if (!handler) {
+                    throw new Error('没有找到可移除的事件处理器');
+                }
+                
+                // 移除事件
+                dcDom.off(element, eventType, handler);
+                
+                // 清除引用
+                delete element._testHandler;
+                
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: green">✓ 事件移除成功！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>事件类型:</strong> ${eventType}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: red">✗ 移除失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 绑定一次性事件
+        function bindOnceEvent() {
+            try {
+                const selector = document.getElementById('eventSelector').value.trim();
+                const eventType = document.getElementById('eventType').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                if (!eventType) {
+                    throw new Error('事件类型不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 创建事件处理器
+                const handler = function(e) {
+                    logEvent(`一次性${eventType}事件被触发（只会触发一次）`, eventType);
+                };
+                
+                // 绑定一次性事件
+                dcDom.once(element, eventType, handler);
+                
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: green">✓ 一次性事件绑定成功！</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>事件类型:</strong> ${eventType}</p>
+                    <p><em>此事件只能触发一次</em></p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: red">✗ 绑定失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 转发事件
+        function triggerEvent() {
+            try {
+                const selector = document.getElementById('eventSelector').value.trim();
+                const eventType = document.getElementById('eventType').value.trim();
+                
+                if (!selector) {
+                    throw new Error('元素选择器不能为空');
+                }
+                
+                if (!eventType) {
+                    throw new Error('事件类型不能为空');
+                }
+                
+                const element = dcDom.query(selector);
+                if (!element) {
+                    throw new Error(`找不到元素: ${selector}`);
+                }
+                
+                // 触发事件
+                dcDom.trigger(element, eventType);
+                
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: blue">ℹ 事件已触发</strong></p>
+                    <p><strong>元素:</strong> ${selector}</p>
+                    <p><strong>事件类型:</strong> ${eventType}</p>
+                `;
+                
+                // 高亮元素
+                highlightElement(element);
+                
+            } catch (error) {
+                document.getElementById('eventResult').innerHTML = `
+                    <p><strong style="color: red">✗ 触发失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 刷新DOM树
+        function refreshTree() {
+            const tree = document.getElementById('domTree');
+            tree.innerHTML = '';
+            
+            // 从测试容器开始构建树
+            const testContainer = document.getElementById('testContainer');
+            if (testContainer) {
+                buildTreeNode(tree, testContainer, 0);
+            }
+        }
+
+        // 构建树节点
+        function buildTreeNode(parent, element, level) {
+            if (!element || element.nodeType !== Node.ELEMENT_NODE) return;
+            
+            const node = document.createElement('div');
+            node.className = 'element-node';
+            node.style.marginLeft = (level * 20) + 'px';
+            
+            // 创建标签名
+            const tagSpan = document.createElement('span');
+            tagSpan.className = 'node-tag';
+            tagSpan.textContent = `<${element.tagName.toLowerCase()}>`;
+            
+            // 创建ID
+            if (element.id) {
+                const idSpan = document.createElement('span');
+                idSpan.className = 'node-id';
+                idSpan.textContent = `#${element.id}`;
+                
+                node.appendChild(tagSpan);
+                node.appendChild(document.createTextNode(' '));
+                node.appendChild(idSpan);
+            } else {
+                node.appendChild(tagSpan);
+            }
+            
+            // 创建类名
+            if (element.className) {
+                const classSpan = document.createElement('span');
+                classSpan.className = 'node-class';
+                classSpan.textContent = `.${element.className.split(' ').join('.')}`;
+                
+                node.appendChild(document.createTextNode(' '));
+                node.appendChild(classSpan);
+            }
+            
+            // 点击节点时高亮对应元素
+            node.addEventListener('click', function() {
+                highlightElement(element);
+                logEvent(`选择了元素: ${element.tagName.toLowerCase()}${element.id ? '#' + element.id : ''}`, 'selection');
+            });
+            
+            parent.appendChild(node);
+            
+            // 递归处理子元素
+            Array.from(element.children).forEach(child => {
+                buildTreeNode(parent, child, level + 1);
+            });
+        }
+
+        // 折叠全部
+        function collapseAll() {
+            const nodes = document.getElementsByClassName('element-node');
+            for (let i = 0; i < nodes.length; i++) {
+                nodes[i].style.display = i === 0 ? 'block' : 'none';
+            }
+        }
+
+        // 展开全部
+        function expandAll() {
+            const nodes = document.getElementsByClassName('element-node');
+            for (let i = 0; i < nodes.length; i++) {
+                nodes[i].style.display = 'block';
+            }
+        }
+
+        // 基本查询测试
+        function runBasicQueryTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 测试查询
+                const test1 = dcDom.query('#testDiv') !== null;
+                const test2 = dcDom.query('.test-class') !== null;
+                const test3 = dcDom.query('p') !== null;
+                const test4 = dcDom.query('#nonexistent') === null;
+                
+                // 测试查询所有
+                const multiElements = dcDom.queryAll('.multi-test');
+                const test5 = multiElements.length === 3;
+                
+                const allPassed = test1 && test2 && test3 && test4 && test5;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>基本查询测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试基本的元素查询功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>查询ID: ${test1 ? '✓' : '✗'}</li>
+                        <li>查询类名: ${test2 ? '✓' : '✗'}</li>
+                        <li>查询标签: ${test3 ? '✓' : '✗'}</li>
+                        <li>查询不存在: ${test4 ? '✓' : '✗'}</li>
+                        <li>查询多个: ${test5 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 创建测试
+        function runCreationTest() {
+            try {
+                // 清空
+                const dynamicContent = document.getElementById('dynamicContent');
+                dcDom.empty(dynamicContent);
+                
+                // 创建元素
+                const div = dcDom.createElement('div', {
+                    id: 'createdDiv',
+                    class: 'created-element'
+                }, ['这是创建的元素']);
+                
+                const span = dcDom.createElement('span', {
+                    class: 'inner-span'
+                }, ['内部SPAN']);
+                
+                const nestedDiv = dcDom.createElement('div', {
+                    class: 'nested-div'
+                }, [
+                    dcDom.createElement('h3', {}, ['嵌套标题']),
+                    dcDom.createElement('p', {}, ['嵌套段落'])
+                ]);
+                
+                // 添加到容器
+                dcDom.append(dynamicContent, div);
+                dcDom.append(div, span);
+                dcDom.append(dynamicContent, nestedDiv);
+                
+                // 验证
+                const test1 = dcDom.query('#createdDiv') !== null;
+                const test2 = dcDom.query('#createdDiv .inner-span') !== null;
+                const test3 = dcDom.query('.nested-div h3') !== null;
+                const test4 = dcDom.query('.nested-div p') !== null;
+                
+                const allPassed = test1 && test2 && test3 && test4;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>创建测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试元素创建和嵌套功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>创建DIV: ${test1 ? '✓' : '✗'}</li>
+                        <li>创建SPAN: ${test2 ? '✓' : '✗'}</li>
+                        <li>创建H3: ${test3 ? '✓' : '✗'}</li>
+                        <li>创建P: ${test4 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 更新统计
+                updateCurrentElementCount();
+                refreshTree();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 操作测试
+        function runManipulationTest() {
+            try {
+                // 清空动态内容
+                const dynamicContent = document.getElementById('dynamicContent');
+                dcDom.empty(dynamicContent);
+                
+                // 创建一些测试元素
+                const container = dcDom.query('#container');
+                dcDom.empty(container);
+                
+                const div1 = dcDom.createElement('div', { class: 'manipulate-test' }, ['元素1']);
+                const div2 = dcDom.createElement('div', { class: 'manipulate-test' }, ['元素2']);
+                const div3 = dcDom.createElement('div', { class: 'manipulate-test' }, ['元素3']);
+                
+                // append
+                dcDom.append(container, div1);
+                
+                // prepend
+                dcDom.prepend(container, div2);
+                
+                // before
+                dcDom.before(div1, div3);
+                
+                // 验证顺序
+                const children = container.children;
+                const test1 = children[0] === div2; // prepend
+                const test2 = children[1] === div3; // before
+                const test3 = children[2] === div1; // append
+                
+                // empty
+                dcDom.empty(container);
+                const test4 = container.children.length === 0;
+                
+                const allPassed = test1 && test2 && test3 && test4;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>操作测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试DOM操作功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>prepend顺序: ${test1 ? '✓' : '✗'}</li>
+                        <li>before位置: ${test2 ? '✓' : '✗'}</li>
+                        <li>append位置: ${test3 ? '✓' : '✗'}</li>
+                        <li>empty效果: ${test4 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 更新统计
+                updateCurrentElementCount();
+                refreshTree();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 样式测试
+        function runStyleTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 获取测试元素
+                const styledDiv = dcDom.query('#styledDiv');
+                
+                // 设置样式
+                dcDom.css(styledDiv, 'color', 'red');
+                dcDom.css(styledDiv, 'fontSize', '18px');
+                dcDom.css(styledDiv, 'backgroundColor', 'lightblue');
+                
+                // 添加类名
+                dcDom.addClass(styledDiv, 'style-test');
+                
+                // 验证
+                const color = dcDom.css(styledDiv, 'color');
+                const fontSize = dcDom.css(styledDiv, 'fontSize');
+                const bgColor = dcDom.css(styledDiv, 'backgroundColor');
+                const hasClass = dcDom.hasClass(styledDiv, 'style-test');
+                
+                const test1 = color.includes('red');
+                const test2 = fontSize === '18px';
+                const test3 = bgColor.includes('lightblue');
+                const test4 = hasClass;
+                
+                const allPassed = test1 && test2 && test3 && test4;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>样式测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试样式和类名操作功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>颜色: ${test1 ? '✓' : '✗'}</li>
+                        <li>字体大小: ${test2 ? '✓' : '✗'}</li>
+                        <li>背景色: ${test3 ? '✓' : '✗'}</li>
+                        <li>类名: ${test4 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 高亮元素
+                highlightElement(styledDiv);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 事件测试
+        function runEventTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                // 获取测试按钮
+                const eventButton = dcDom.query('#eventButton');
+                
+                // 移除可能存在的旧事件
+                if (eventButton._testHandler) {
+                    dcDom.off(eventButton, 'click', eventButton._testHandler);
+                    delete eventButton._testHandler;
+                }
+                
+                // 绑定事件
+                let clickCount = 0;
+                const handler = () => {
+                    clickCount++;
+                    logEvent(`事件测试点击次数: ${clickCount}`, 'test');
+                };
+                
+                eventButton._testHandler = handler;
+                dcDom.on(eventButton, 'click', handler);
+                
+                // 触发两次
+                dcDom.trigger(eventButton, 'click');
+                dcDom.trigger(eventButton, 'click');
+                
+                // 移除事件
+                dcDom.off(eventButton, 'click', handler);
+                delete eventButton._testHandler;
+                
+                // 验证
+                const test1 = clickCount === 2;
+                
+                // 再次触发，应该不再增加
+                dcDom.trigger(eventButton, 'click');
+                const test2 = clickCount === 2;
+                
+                const allPassed = test1 && test2;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>事件测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 测试事件绑定、触发和移除功能</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>正确触发: ${test1 ? '✓' : '✗'}</li>
+                        <li>正确移除: ${test2 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                // 高亮元素
+                highlightElement(eventButton);
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 边界情况测试
+        function runEdgeCaseTest() {
+            try {
+                // 清空
+                clearResults();
+                
+                let results = [];
+                
+                // 无效选择器
+                try {
+                    dcDom.query('invalid[selector');
+                    results.push('<li>无效选择器: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>无效选择器: ✓ 正确抛出异常</li>');
+                }
+                
+                // 无效标签名
+                try {
+                    dcDom.createElement('invalid<tag>');
+                    results.push('<li>无效标签名: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>无效标签名: ✓ 正确抛出异常</li>');
+                }
+                
+                // 非元素对象
+                try {
+                    dcDom.attr({}, 'test', 'value');
+                    results.push('<li>非元素对象attr: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>非元素对象attr: ✓ 正确抛出异常</li>');
+                }
+                
+                try {
+                    dcDom.css({}, 'color', 'red');
+                    results.push('<li>非元素对象css: ✗ 应该抛出异常</li>');
+                } catch (e) {
+                    results.push('<li>非元素对象css: ✓ 正确抛出异常</li>');
+                }
+                
+                // 空选择器
+                try {
+                    const result = dcDom.query('');
+                    results.push(`<li>空选择器: ${result === null ? '✓ 返回null' : '✗ 不符合预期'}</li>`);
+                } catch (e) {
+                    results.push('<li>空选择器: ✗ 异常</li>');
+                }
+                
+                // 不存在的元素
+                try {
+                    const result = dcDom.query('#never-exists');
+                    results.push(`<li>不存在的元素: ${result === null ? '✓ 返回null' : '✗ 不符合预期'}</li>`);
+                } catch (e) {
+                    results.push('<li>不存在的元素: ✗ 异常</li>');
+                }
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>边界情况测试结果</strong></p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 性能测试
+        function runPerformanceTest() {
+            try {
+                const iterations = 1000;
+                const start = performance.now();
+                
+                // 创建大量元素
+                for (let i = 0; i < iterations; i++) {
+                    const div = dcDom.createElement('div', {
+                        id: `perf-${i}`,
+                        class: 'performance-test'
+                    }, [`元素 ${i}`]);
+                    
+                    // 添加到文档
+                    document.body.appendChild(div);
+                }
+                
+                const createEnd = performance.now();
+                
+                // 查询大量元素
+                for (let i = 0; i < iterations; i++) {
+                    dcDom.query(`#perf-${i}`);
+                }
+                
+                const queryEnd = performance.now();
+                
+                // 移除大量元素
+                for (let i = 0; i < iterations; i++) {
+                    const element = dcDom.query(`#perf-${i}`);
+                    if (element) {
+                        dcDom.remove(element);
+                    }
+                }
+                
+                const end = performance.now();
+                const createDuration = createEnd - start;
+                const queryDuration = queryEnd - createEnd;
+                const removeDuration = end - queryEnd;
+                const totalDuration = end - start;
+                const opsPerSecond = Math.round((iterations * 3) / (totalDuration / 1000));
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>性能测试结果:</strong></p>
+                    <p><strong>迭代次数:</strong> ${iterations}</p>
+                    <p><strong>创建耗时:</strong> ${createDuration.toFixed(2)}ms (${(createDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>查询耗时:</strong> ${queryDuration.toFixed(2)}ms (${(queryDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>移除耗时:</strong> ${removeDuration.toFixed(2)}ms (${(removeDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>总耗时:</strong> ${totalDuration.toFixed(2)}ms</p>
+                    <p><strong>每秒操作数:</strong> ${opsPerSecond.toLocaleString()} ops/s</p>
+                    <p><em>测试在当前浏览器环境下进行</em></p>
+                `;
+                
+                // 更新统计
+                updateCurrentElementCount();
+                refreshTree();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">性能测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            const results = [];
+            
+            // 存储原始console.log方法
+            const originalLog = console.log;
+            let capturedOutput = '';
+            
+            // 重写console.log以捕获输出
+            console.log = function(message) {
+                capturedOutput += message + '\n';
+                originalLog.apply(console, arguments);
+            };
+            
+            try {
+                // 运行Node.js测试
+                const nodeTestPassed = require('../../../test/utils/dcDom/dcDom.test.js');
+                results.push(`<p><strong>Node.js环境测试:</strong> <span style="color: ${nodeTestPassed ? 'green' : 'red'}; font-weight: bold;">${nodeTestPassed ? '通过' : '失败'}</span></p>`);
+                
+                // 运行浏览器环境测试
+                const browserTestPassed = require('../../../test/utils/dcDom/dcDom-browser.test.js');
+                results.push(`<p><strong>浏览器环境测试:</strong> <span style="color: ${browserTestPassed ? 'green' : 'red'}; font-weight: bold;">${browserTestPassed ? '通过' : '失败'}</span></p>`);
+                
+            } catch (error) {
+                results.push(`<p><strong style="color: red">自动化测试运行失败: ${error.message}</strong></p>`);
+            } finally {
+                // 恢复原始console.log方法
+                console.log = originalLog;
+            }
+            
+            // 运行手动测试用例
+            runBasicQueryTest();
+            runCreationTest();
+            runManipulationTest();
+            runStyleTest();
+            runEventTest();
+            runEdgeCaseTest();
+            runPerformanceTest();
+            
+            document.getElementById('allTestsResult').innerHTML = `
+                <h3>自动化测试结果</h3>
+                ${results.join('')}
+                <h3>手动测试结果</h3>
+                <p>请查看"预设测试"标签页中的测试结果</p>
+                <p><em>完整测试日志:</em></p>
+                <pre>${capturedOutput}</pre>
+            `;
+        }
+    </script>
+</body>
+</html>

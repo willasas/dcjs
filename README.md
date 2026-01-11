@@ -1,134 +1,236 @@
-# DCJS - 前端工具库
+# DC.js - DarkCrystal 前端工具库
 
-DCJS 是一个前端工具库，提供通用的 JavaScript 工具函数和可复用的 Web 组件，用于加速网页开发。该库包含数组处理、浏览器检测、加密、日期处理、DOM 操作等多种工具类，以及一系列常用的 UI 组件。
+DC.js 是一个纯前端的常用组件和工具类库，旨在为前端开发提供基础组件和工具类。
 
-## 主要特性
+## 项目特点
 
-- **通用工具函数**: 包括数组、字符串、日期、URL、文件、浏览器检测、加密等操作
-- **UI 组件库**: 提供多个可复用的前端组件
-- **数据管理**: 内置城市、颜色、链接等静态数据
-- **SCSS 样式系统**: 支持模块化 SCSS 编写，输出 CSS 文件
-- **二维码生成**: 提供简单易用的二维码生成功能
-
-## 主要组件
-
-### DCProductivitySlider - 现代化生产力滑块组件
-一个功能丰富的滑块组件，适用于展示项目、产品、图片等内容，提供流畅的切换动画和响应式设计。
-
-**主要特性：**
-- 自动播放、触摸滑动、键盘导航
-- 链接支持 - 卡片按钮支持外部链接和内部锚点
-- 响应式设计，支持移动端和桌面端
-- 丰富的回调函数支持
-
-**详细文档：** [docs/dcproductivityslider.md](./docs/dcproductivityslider.md)
-
-### DcAdapt - 页面适配工具
-用于处理页面适配的工具类，支持一屏适配和长页面适配，提供 px、rem、vw/vh 三种适配单位的支持。
-
-**详细文档：** [docs/dcadapt.md](./docs/dcadapt.md)
-
-### DCNetworkChecker - 网络连接检测工具
-网络连接检测工具类，提供网络连接状态检测功能。
-
-**详细文档：** [docs/DCNetworkChecker使用说明.md](./docs/DCNetworkChecker使用说明.md)
-
-### DCQRCode - 二维码生成工具
-二维码生成工具类，提供简单易用的二维码生成功能。
-
-**详细文档：** [docs/dcjs库使用说明.md](./docs/dcjs库使用说明.md)
+- 纯前端项目，不依赖任何后端服务
+- 基于Parcel打包构建
+- 提供JavaScript和TypeScript两个版本
+- 所有组件和工具类都注册到全局的window.DC对象下
+- 包含完整的测试用例、示例代码和说明文档
 
 ## 项目结构
 
 ```
-.
-├─ dist/                       // 构建输出目录
-├─ docs/                       // 文档目录
-│   ├─ dcjs库使用说明.md        // 主要使用说明
-│   ├─ DCNetworkChecker使用说明.md  // 网络检测器说明
-│   └─ dcproductivityslider.md // 滑块组件说明
-├─ src/                        // 源代码目录
-│   ├─ index.js                // 库的统一入口文件
-│   └─ utils/                  // 工具类目录
-│       ├─ dcArray.js          // 数组工具类
-│       ├─ dcBrowser.js        // 浏览器工具类
-│       ├─ dcCrypto.js         // 加密工具类
-│       ├─ dcDate.js           // 日期工具类
-│       ├─ dcEle.js           // DOM元素工具类
-│       ├─ dcFiles.js         // 文件工具类
-│       ├─ dcFunction.js      // 函数工具类
-│       ├─ dcMedia.js         // 媒体工具类
-│       ├─ dcNetworkChecker.js // 网络检测工具类
-│       ├─ dcNumber.js        // 数字工具类
-│       ├─ dcObject.js        // 对象工具类
-│       ├─ dcPlatform.js      // 平台检测工具类
-│       ├─ dcQRCode.js        // 二维码生成工具类
-│       ├─ dcString.js        // 字符串工具类
-│       ├─ dcUrl.js           // URL工具类
-│       ├─ dcValidate.js      // 验证工具类
-│       └─ ...                // 其他工具类
-├─ test/                       // 测试文件目录
-│   ├─ dcqrcode-test.html      // 二维码测试页面
-│   ├─ dcqrcode.test.js        // 二维码浏览器测试
-│   └─ dcqrcode-node.test.js   // 二维码Node.js测试
-├─ .parcelrc                   // Parcel构建配置
-├─ package.json                // 项目配置文件
-├─ build-bundle.js             // 自定义构建脚本
-└─ README.md                   // 项目说明文件
+dcjs/
+├── src/                    # 源代码目录
+│   ├── components/         # 组件目录
+│   │   ├── animate/        # 动画组件
+│   │   ├── article/        # 文章组件
+│   │   ├── bgm/            # 背景音乐组件
+│   │   ├── dcprogressbar/ # 进度条组件
+│   │   └── ...             # 其他组件
+│   ├── utils/              # 工具类目录
+│   │   ├── dcArray.js      # 数组工具类
+│   │   ├── dcBrowser.js    # 浏览器工具类
+│   │   ├── dcCookie.js     # Cookie工具类
+│   │   ├── dcDate.js       # 日期工具类
+│   │   ├── dcDevice.js     # 设备工具类
+│   │   ├── dcDom.js        # DOM工具类
+│   │   ├── dcDynamicLoader.js # 动态加载工具类
+│   │   ├── dcEventBus.js   # 事件总线工具类
+│   │   ├── dcFile.js       # 文件工具类
+│   │   ├── dcFormat.js     # 格式化工具类
+│   │   ├── dcLocalStorage.js # 本地存储工具类
+│   │   ├── dcMath.js       # 数学工具类
+│   │   ├── dcNetwork.js    # 网络工具类
+│   │   ├── dcObject.js     # 对象工具类
+│   │   ├── dcRandom.js     # 随机数工具类
+│   │   ├── dcScreenshot.js # 截图工具类
+│   │   ├── dcSessionStorage.js # 会话存储工具类
+│   │   ├── dcStorage.js    # 存储工具类
+│   │   ├── dcString.js     # 字符串工具类
+│   │   ├── dcUrl.js        # URL工具类
+│   │   ├── dcValidate.js   # 验证工具类
+│   │   ├── dcWatermark.js  # 水印工具类
+│   │   ├── dcWebp.js       # WebP工具类
+│   │   └── download.js     # 下载工具类
+│   ├── index.js            # JavaScript版本入口文件
+│   └── index.ts            # TypeScript版本入口文件
+├── dist/                   # 构建输出目录
+├── test/                   # 测试用例目录
+├── examples/               # 示例代码目录
+│   ├── components/         # 组件示例
+│   └── utils/              # 工具类示例
+├── docs/                   # 说明文档目录
+├── scripts/                # 构建脚本目录
+├── package.json            # 项目配置文件
+└── tsconfig.json           # TypeScript配置文件
 ```
+
+## 主要组件
+
+### DC.ProgressBar - 进度条组件
+功能丰富的进度条组件，支持自定义样式、事件回调、步长控制等多种功能。
+
+**主要特性：**
+- 支持自定义颜色、高度、范围等样式
+- 支持步长控制，确保值按指定步长变化
+- 提供丰富的事件回调，如值变化、完成等
+- 支持显示/隐藏进度文本
+- 支持增加/减少/重置等操作方法
+- 支持拖拽交互（可选）
+
+**详细文档：** [docs/dcProgressBar.md](./docs/dcProgressBar.md)
+
+### DC.Screenshot - 截图工具类
+功能强大的截图工具类，支持全页面截图、指定元素截图、指定区域截图等多种截图方式。
+
+**主要特性：**
+- 支持全页面截图
+- 支持指定元素截图
+- 支持指定区域截图
+- 支持添加水印
+- 支持多种输出格式
+- 支持高级选项配置
+
+**详细文档：** [docs/dcScreenshot.md](./docs/dcScreenshot.md)
+
+### DC.Array - 数组工具类
+提供数组操作的常用方法，包括去重、扁平化、分组、排序等功能。
+
+**主要特性：**
+- 数组去重、扁平化、分组
+- 数组排序、分块、差集、交集、并集
+- 数组随机排序、求和、平均值
+- 数组最大值、最小值
+
+### 其他工具类
+- DC.Browser - 浏览器工具类
+- DC.Cookie - Cookie工具类
+- DC.Date - 日期工具类
+- DC.Device - 设备工具类
+- DC.Dom - DOM工具类
+- DC.DynamicLoader - 动态加载工具类
+- DC.EventBus - 事件总线工具类
+- DC.File - 文件工具类
+- DC.Format - 格式化工具类
+- DC.LocalStorage - 本地存储工具类
+- DC.Math - 数学工具类
+- DC.Network - 网络工具类
+- DC.Object - 对象工具类
+- DC.Random - 随机数工具类
+- DC.SessionStorage - 会话存储工具类
+- DC.Storage - 存储工具类
+- DC.String - 字符串工具类
+- DC.Url - URL工具类
+- DC.Validate - 验证工具类
+- DC.Watermark - 水印工具类
+- DC.Webp - WebP工具类
+- Download - 下载工具类
 
 ## 安装和使用
 
-### 安装依赖
+### 直接引入
+```html
+<!-- JavaScript版本 -->
+<script src="dist/dc-x.x.x-YYYYMMDD.js"></script>
 
-```bash
-# 安装项目依赖
-npm install
+<!-- TypeScript版本 -->
+<script src="dist/dc-ts-x.x.x-YYYYMMDD.js"></script>
 ```
+
+### NPM安装
+```bash
+npm install dcjs
+```
+
+### 使用示例
+```javascript
+// 使用工具类
+const uniqueArray = DC.Array.unique([1, 2, 2, 3, 4, 4, 5]);
+console.log(uniqueArray); // [1, 2, 3, 4, 5]
+
+// 使用组件
+const progressBar = new DC.ProgressBar({
+  container: '#progress-container',
+  value: 30,
+  max: 100,
+  color: '#4CAF50',
+  showText: true
+});
+
+// 截图工具
+DC.Screenshot.capturePage().then(dataUrl => {
+  console.log('截图成功:', dataUrl);
+});
+```
+
+## 开发指南
 
 ### 构建项目
-
 ```bash
-# 构建生产版本
-npm run build
+# 构建JavaScript版本
+npm run build:all
 
-# 开发模式监听文件变化
+# 构建TypeScript版本
+npm run build:all:ts
+
+# 监听模式开发JavaScript版本
 npm run watch
+
+# 监听模式开发TypeScript版本
+npm run watch:ts
 ```
 
-构建后的文件将输出到 `dist/` 目录。
-
-### 引入方式
-
-#### 方式一：直接引入构建文件
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>dcjs 示例</title>
-</head>
-<body>
-  <!-- 在 HTML 中引入构建后的文件 -->
-  <script src="dist/dc.js"></script>
-  <script>
-    // 使用库中的工具类
-    const networkChecker = new DC.NetworkChecker();
-    console.log('DC 库已加载');
-  </script>
-</body>
-</html>
+### 测试
+```bash
+# 运行测试
+npm test
 ```
 
-#### 方式二：ES6 模块导入
+### 添加新组件或工具类
+1. 在`src/components`或`src/utils`目录下创建新的组件或工具类
+2. 在`src/index.js`和`src/index.ts`中导入并注册到全局DC对象
+3. 在`test`目录下创建对应的测试用例
+4. 在`examples`目录下创建对应的示例代码
+5. 在`docs`目录下创建对应的说明文档
 
-```javascript
-// 导入整个库
-import DC from './path/to/dc.js';
+## 代码规范
 
-// 或导入特定工具
-import { NetworkChecker, QRCode } from './path/to/dc.js';
-```
+- 所有的js代码必须符合es6规范
+- 所有的scss代码必须符合scss规范
+- 所有的html代码必须符合html规范
+- 所有的组件和工具类的代码必须符合js规范
+- 所有的测试用例的代码必须符合js规范
+- 所有的示例代码的代码必须符合html规范
+
+## 文件命名规则
+
+- 构建完成后的js文件名格式为：`<文件名>-<版本号>-<日期>.js`
+- 构建完成后的css文件名格式为：`<文件名>-<版本号>-<日期>.css`
+
+## 版本管理
+
+本项目使用语义化版本管理，版本号格式为MAJOR.MINOR.PATCH
+
+## 贡献指南
+
+1. Fork 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
+
+## 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+
+## 联系方式
+
+如有问题或建议，请通过以下方式联系：
+
+- 提交 [Issue](https://github.com/yourusername/dcjs/issues)
+- 发送邮件至 your.email@example.com
+
+## 更新日志
+
+### v1.0.0 (2023-XX-XX)
+- 初始版本发布
+- 包含基础工具类和组件
+- 支持JavaScript和TypeScript两个版本
+- 提供完整的测试用例和示例代码
 
 ## API 文档
 

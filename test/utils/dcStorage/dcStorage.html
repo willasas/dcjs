@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcStorage 工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .test-title {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], 
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .storage-list {
+            margin-top: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .storage-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .storage-item:last-child {
+            border-bottom: none;
+        }
+        .key-col {
+            font-weight: bold;
+            color: #333;
+            word-break: break-all;
+        }
+        .value-col {
+            color: #666;
+            word-break: break-all;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcStorage 工具类交互式测试</h1>
+
+    <!-- 存储状态信息 -->
+    <div class="info-box">
+        <p><strong>当前存储项数:</strong> <span id="itemCount">0</span></p>
+        <p><strong>存储类型:</strong> JavaScript对象（非持久化）</p>
+        <p><em>注意：此测试中的数据不会保存到localStorage或sessionStorage，刷新页面后数据将丢失</em></p>
+    </div>
+
+    <!-- 基本操作测试 -->
+    <div class="test-container">
+        <div class="test-title">基本存储操作</div>
+        
+        <label for="storageKey">键名:</label>
+        <input type="text" id="storageKey" placeholder="输入键名，如: username">
+        
+        <label for="dataType">数据类型:</label>
+        <select id="dataType" onchange="updateValueInput()">
+            <option value="string">字符串</option>
+            <option value="number">数字</option>
+            <option value="boolean">布尔值</option>
+            <option value="object">对象</option>
+            <option value="array">数组</option>
+        </select>
+        
+        <label for="dataValue">值:</label>
+        <textarea id="dataValue" rows="3" placeholder="输入要存储的值"></textarea>
+        
+        <button onclick="setStorage()">存储 (set)</button>
+        <button onclick="getStorage()">获取 (get)</button>
+        <button onclick="removeStorage()">删除 (remove)</button>
+        <button onclick="clearAll()">清空所有 (clear)</button>
+        
+        <div class="result" id="basicResult"></div>
+    </div>
+
+    <!-- 获取指定键 -->
+    <div class="test-container">
+        <div class="test-title">获取指定键值</div>
+        
+        <label for="getKey">要获取的键名:</label>
+        <input type="text" id="getKey" placeholder="输入要获取的键名">
+        
+        <label for="defaultValue">默认值 (可选):</label>
+        <input type="text" id="defaultValue" placeholder="如果键不存在时返回的默认值">
+        
+        <button onclick="getWithDefault()">获取 (带默认值)</button>
+        <button onclick="checkExists()">检查是否存在 (has)</button>
+        
+        <div class="result" id="getResult"></div>
+    </div>
+
+    <!-- 所有键值列表 -->
+    <div class="test-container">
+        <div class="test-title">所有存储项</div>
+        
+        <button onclick="refreshList()">刷新列表</button>
+        <button onclick="copyAllKeys()">复制所有键名</button>
+        
+        <div class="storage-list" id="storageList">
+            <div class="storage-item">
+                <span class="key-col">暂无数据</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预设测试用例 -->
+    <div class="test-container">
+        <div class="test-title">预设测试用例</div>
+        
+        <button onclick="runStringTest()">字符串测试</button>
+        <button onclick="runNumberTest()">数字测试</button>
+        <button onclick="runBooleanTest()">布尔值测试</button>
+        <button onclick="runObjectTest()">对象测试</button>
+        <button onclick="runArrayTest()">数组测试</button>
+        <button onclick="runEdgeCaseTest()">边界情况测试</button>
+        
+        <div class="result" id="presetResult"></div>
+    </div>
+
+    <!-- 高级功能测试 -->
+    <div class="test-container">
+        <div class="test-title">高级功能测试</div>
+        
+        <button onclick="runPerformanceTest()">性能测试</button>
+        <button onclick="runSecurityTest()">安全测试</button>
+        <button onclick="runCompatibilityTest()">兼容性测试</button>
+        
+        <div class="result" id="advancedResult"></div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="info-box">
+        <h3>使用说明</h3>
+        <ul>
+            <li>在"键名"输入框中输入唯一的标识符</li>
+            <li>选择要存储的数据类型</li>
+            <li>在"值"输入框中输入相应的数据</li>
+            <li>点击"存储"按钮保存数据</li>
+            <li>使用"获取"按钮读取已存储的数据</li>
+            <li>可以随时删除单个条目或清空所有数据</li>
+            <li>左侧列表会显示当前所有的存储项</li>
+        </ul>
+    </div>
+
+    <script src="../../../src/utils/dcStorage.js"></script>
+    <script>
+        // 页面加载时初始化
+        window.onload = function() {
+            refreshList();
+            updateValueInput();
+        };
+
+        // 根据数据类型更新值输入框的占位符
+        function updateValueInput() {
+            const dataType = document.getElementById('dataType').value;
+            const dataValue = document.getElementById('dataValue');
+            
+            switch(dataType) {
+                case 'string':
+                    dataValue.placeholder = '输入字符串，如: John Doe';
+                    dataValue.value = 'Hello World';
+                    break;
+                case 'number':
+                    dataValue.placeholder = '输入数字，如: 123';
+                    dataValue.value = '42';
+                    break;
+                case 'boolean':
+                    dataValue.placeholder = '输入布尔值: true 或 false';
+                    dataValue.value = 'true';
+                    break;
+                case 'object':
+                    dataValue.placeholder = '输入JSON格式的对象，如: {"name": "John", "age": 30}';
+                    dataValue.value = '{"name": "张三", "age": 25, "city": "北京"}';
+                    break;
+                case 'array':
+                    dataValue.placeholder = '输入JSON格式的数组，如: [1, 2, 3]';
+                    dataValue.value = '[1, 2, 3, "a", "b", "c"]';
+                    break;
+            }
+        }
+
+        // 存储数据
+        function setStorage() {
+            try {
+                const key = document.getElementById('storageKey').value.trim();
+                const dataType = document.getElementById('dataType').value;
+                const valueStr = document.getElementById('dataValue').value.trim();
+                
+                if (!key) {
+                    throw new Error('键名不能为空');
+                }
+                
+                if (!valueStr) {
+                    throw new Error('值不能为空');
+                }
+                
+                let value;
+                
+                // 根据数据类型解析值
+                switch(dataType) {
+                    case 'string':
+                        value = valueStr;
+                        break;
+                    case 'number':
+                        value = Number(valueStr);
+                        if (isNaN(value)) {
+                            throw new Error('请输入有效的数字');
+                        }
+                        break;
+                    case 'boolean':
+                        if (valueStr.toLowerCase() === 'true') {
+                            value = true;
+                        } else if (valueStr.toLowerCase() === 'false') {
+                            value = false;
+                        } else {
+                            throw new Error('布尔值只能是 true 或 false');
+                        }
+                        break;
+                    case 'object':
+                        try {
+                            value = JSON.parse(valueStr);
+                            if (typeof value !== 'object' || Array.isArray(value)) {
+                                throw new Error('请输入有效的对象');
+                            }
+                        } catch (e) {
+                            throw new Error('无效的JSON格式: ' + e.message);
+                        }
+                        break;
+                    case 'array':
+                        try {
+                            value = JSON.parse(valueStr);
+                            if (!Array.isArray(value)) {
+                                throw new Error('请输入有效的数组');
+                            }
+                        } catch (e) {
+                            throw new Error('无效的JSON格式: ' + e.message);
+                        }
+                        break;
+                    default:
+                        value = valueStr;
+                }
+                
+                dcStorage.set(key, value);
+                refreshList();
+                
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: green">✓ 存储成功！</strong></p>
+                    <p><strong>键名:</strong> ${key}</p>
+                    <p><strong>值:</strong> <code>${JSON.stringify(value)}</code></p>
+                    <p><strong>数据类型:</strong> ${dataType}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: red">✗ 存储失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 获取数据
+        function getStorage() {
+            try {
+                const key = document.getElementById('storageKey').value.trim();
+                
+                if (!key) {
+                    throw new Error('键名不能为空');
+                }
+                
+                const value = dcStorage.get(key);
+                
+                if (value === null) {
+                    document.getElementById('basicResult').innerHTML = `
+                        <p><strong style="color: orange">⚠ 键名 "${key}" 不存在</strong></p>
+                    `;
+                } else {
+                    document.getElementById('basicResult').innerHTML = `
+                        <p><strong style="color: blue">ℹ 获取成功</strong></p>
+                        <p><strong>键名:</strong> ${key}</p>
+                        <p><strong>值:</strong> <code>${JSON.stringify(value)}</code></p>
+                        <p><strong>数据类型:</strong> ${typeof value}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: red">✗ 获取失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 删除数据
+        function removeStorage() {
+            try {
+                const key = document.getElementById('storageKey').value.trim();
+                
+                if (!key) {
+                    throw new Error('键名不能为空');
+                }
+                
+                dcStorage.remove(key);
+                refreshList();
+                
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: green">✓ 删除成功！</strong></p>
+                    <p><strong>已删除键名:</strong> ${key}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: red">✗ 删除失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 清空所有数据
+        function clearAll() {
+            if (confirm('确定要清空所有存储数据吗？此操作不可撤销！')) {
+                dcStorage.clear();
+                refreshList();
+                
+                document.getElementById('basicResult').innerHTML = `
+                    <p><strong style="color: green">✓ 所有数据已清空！</strong></p>
+                `;
+            }
+        }
+
+        // 获取数据（带默认值）
+        function getWithDefault() {
+            try {
+                const key = document.getElementById('getKey').value.trim();
+                const defaultValue = document.getElementById('defaultValue').value.trim();
+                
+                if (!key) {
+                    throw new Error('键名不能为空');
+                }
+                
+                let value = dcStorage.get(key);
+                
+                if (value === null && defaultValue !== '') {
+                    // 如果键不存在且提供了默认值，则使用默认值
+                    try {
+                        // 尝试解析为JSON，否则作为字符串处理
+                        value = JSON.parse(defaultValue);
+                    } catch (e) {
+                        value = defaultValue;
+                    }
+                }
+                
+                if (value === null) {
+                    document.getElementById('getResult').innerHTML = `
+                        <p><strong style="color: orange">⚠ 键名 "${key}" 不存在，且未提供默认值</strong></p>
+                    `;
+                } else {
+                    document.getElementById('getResult').innerHTML = `
+                        <p><strong style="color: blue">ℹ 获取成功</strong></p>
+                        <p><strong>键名:</strong> ${key}</p>
+                        <p><strong>值:</strong> <code>${JSON.stringify(value)}</code></p>
+                        <p><strong>来源:</strong> ${dcStorage.has(key) ? '实际存储' : '默认值'}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                document.getElementById('getResult').innerHTML = `
+                    <p><strong style="color: red">✗ 获取失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 检查键是否存在
+        function checkExists() {
+            try {
+                const key = document.getElementById('getKey').value.trim();
+                
+                if (!key) {
+                    throw new Error('键名不能为空');
+                }
+                
+                const exists = dcStorage.has(key);
+                
+                document.getElementById('getResult').innerHTML = `
+                    <p><strong>检查结果:</strong> <span style="font-weight: bold; color: ${exists ? 'green' : 'red'};">${exists ? '存在' : '不存在'}</span></p>
+                    <p><strong>键名:</strong> ${key}</p>
+                `;
+                
+            } catch (error) {
+                document.getElementById('getResult').innerHTML = `
+                    <p><strong style="color: red">✗ 检查失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 刷新存储列表
+        function refreshList() {
+            const list = document.getElementById('storageList');
+            const keys = dcStorage.keys();
+            const count = document.getElementById('itemCount');
+            
+            count.textContent = keys.length;
+            
+            if (keys.length === 0) {
+                list.innerHTML = '<div class="storage-item"><span class="key-col">暂无数据</span></div>';
+                return;
+            }
+            
+            list.innerHTML = '';
+            
+            // 按字母顺序排序键名
+            keys.sort().forEach(key => {
+                const value = dcStorage.get(key);
+                const item = document.createElement('div');
+                item.className = 'storage-item';
+                
+                const keySpan = document.createElement('span');
+                keySpan.className = 'key-col';
+                keySpan.textContent = key;
+                
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'value-col';
+                valueSpan.textContent = JSON.stringify(value);
+                
+                item.appendChild(keySpan);
+                item.appendChild(valueSpan);
+                list.appendChild(item);
+            });
+        }
+
+        // 复制所有键名到剪贴板
+        function copyAllKeys() {
+            const keys = dcStorage.keys();
+            
+            if (keys.length === 0) {
+                alert('没有可复制的键名');
+                return;
+            }
+            
+            navigator.clipboard.writeText(keys.join('\n')).then(() => {
+                alert(`已复制 ${keys.length} 个键名到剪贴板`);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动选择复制');
+            });
+        }
+
+        // 字符串测试
+        function runStringTest() {
+            try {
+                // 清空
+                dcStorage.clear();
+                
+                // 测试字符串存储
+                dcStorage.set('greeting', 'Hello World');
+                dcStorage.set('username', 'john_doe_123');
+                dcStorage.set('email', 'user@example.com');
+                
+                // 验证
+                const test1 = dcStorage.get('greeting') === 'Hello World';
+                const test2 = dcStorage.get('username') === 'john_doe_123';
+                const test3 = dcStorage.get('email') === 'user@example.com';
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>字符串测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 存储和获取多个字符串值</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>问候语: ${test1 ? '✓' : '✗'} (期望: Hello World, 实际: ${dcStorage.get('greeting')})</li>
+                        <li>用户名: ${test2 ? '✓' : '✗'} (期望: john_doe_123, 实际: ${dcStorage.get('username')})</li>
+                        <li>邮箱: ${test3 ? '✓' : '✗'} (期望: user@example.com, 实际: ${dcStorage.get('email')})</li>
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 数字测试
+        function runNumberTest() {
+            try {
+                // 清空
+                dcStorage.clear();
+                
+                // 测试数字存储
+                dcStorage.set('count', 42);
+                dcStorage.set('price', 99.99);
+                dcStorage.set('negative', -123);
+                
+                // 验证
+                const test1 = dcStorage.get('count') === 42;
+                const test2 = dcStorage.get('price') === 99.99;
+                const test3 = dcStorage.get('negative') === -123;
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>数字测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 存储和获取整数、小数和负数</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>计数: ${test1 ? '✓' : '✗'} (期望: 42, 实际: ${dcStorage.get('count')})</li>
+                        <li>价格: ${test2 ? '✓' : '✗'} (期望: 99.99, 实际: ${dcStorage.get('price')})</li>
+                        <li>负数: ${test3 ? '✓' : '✗'} (期望: -123, 实际: ${dcStorage.get('negative')})</li>
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 布尔值测试
+        function runBooleanTest() {
+            try {
+                // 清空
+                dcStorage.clear();
+                
+                // 测试布尔值存储
+                dcStorage.set('isActive', true);
+                dcStorage.set('isCompleted', false);
+                
+                // 验证
+                const test1 = dcStorage.get('isActive') === true;
+                const test2 = dcStorage.get('isCompleted') === false;
+                
+                const allPassed = test1 && test2;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>布尔值测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 存储和获取布尔值</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>激活状态: ${test1 ? '✓' : '✗'} (期望: true, 实际: ${dcStorage.get('isActive')})</li>
+                        <li>完成状态: ${test2 ? '✓' : '✗'} (期望: false, 实际: ${dcStorage.get('isCompleted')})</li>
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 对象测试
+        function runObjectTest() {
+            try {
+                // 清空
+                dcStorage.clear();
+                
+                // 测试对象存储
+                const user = {
+                    name: 'Alice',
+                    age: 30,
+                    email: 'alice@example.com',
+                    address: {
+                        city: 'New York',
+                        zipCode: '10001'
+                    }
+                };
+                
+                dcStorage.set('user', user);
+                
+                // 验证
+                const retrievedUser = dcStorage.get('user');
+                const test1 = retrievedUser !== null;
+                const test2 = retrievedUser.name === 'Alice';
+                const test3 = retrievedUser.age === 30;
+                const test4 = retrievedUser.address.city === 'New York';
+                
+                const allPassed = test1 && test2 && test3 && test4;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>对象测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 存储和获取复杂对象</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>对象存在: ${test1 ? '✓' : '✗'}</li>
+                        <li>姓名: ${test2 ? '✓' : '✗'} (期望: Alice, 实际: ${retrievedUser ? retrievedUser.name : 'null'})</li>
+                        <li>年龄: ${test3 ? '✓' : '✗'} (期望: 30, 实际: ${retrievedUser ? retrievedUser.age : 'null'})</li>
+                        <li>城市: ${test4 ? '✓' : '✗'} (期望: New York, 实际: ${retrievedUser && retrievedUser.address ? retrievedUser.address.city : 'null'})</li>
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 数组测试
+        function runArrayTest() {
+            try {
+                // 清空
+                dcStorage.clear();
+                
+                // 测试数组存储
+                const numbers = [1, 2, 3, 4, 5];
+                const fruits = ['apple', 'banana', 'orange'];
+                const mixed = [1, 'hello', true, { name: 'test' }];
+                
+                dcStorage.set('numbers', numbers);
+                dcStorage.set('fruits', fruits);
+                dcStorage.set('mixed', mixed);
+                
+                // 验证
+                const retrievedNumbers = dcStorage.get('numbers');
+                const retrievedFruits = dcStorage.get('fruits');
+                const retrievedMixed = dcStorage.get('mixed');
+                
+                const test1 = Array.isArray(retrievedNumbers) && JSON.stringify(retrievedNumbers) === JSON.stringify(numbers);
+                const test2 = Array.isArray(retrievedFruits) && JSON.stringify(retrievedFruits) === JSON.stringify(fruits);
+                const test3 = Array.isArray(retrievedMixed) && JSON.stringify(retrievedMixed) === JSON.stringify(mixed);
+                
+                const allPassed = test1 && test2 && test3;
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>数组测试:</strong> <span style="color: ${allPassed ? 'green' : 'red'}; font-weight: bold;">${allPassed ? '通过' : '失败'}</span></p>
+                    <p><strong>测试内容:</strong> 存储和获取不同类型的数组</p>
+                    <p><strong>详细结果:</strong></p>
+                    <ul>
+                        <li>数字数组: ${test1 ? '✓' : '✗'}</li>
+                        <li>水果数组: ${test2 ? '✓' : '✗'}</li>
+                        <li>混合数组: ${test3 ? '✓' : '✗'}</li>
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 边界情况测试
+        function runEdgeCaseTest() {
+            try {
+                // 清空
+                dcStorage.clear();
+                
+                let results = [];
+                
+                // 空键名测试
+                try {
+                    dcStorage.set('', 'empty key');
+                    results.push('<li>空键名: ✓ 成功</li>');
+                } catch (e) {
+                    results.push(`<li>空键名: ✗ 失败 (${e.message})</li>`);
+                }
+                
+                // 空值测试
+                try {
+                    dcStorage.set('emptyValue', '');
+                    const emptyValue = dcStorage.get('emptyValue');
+                    const testEmpty = emptyValue === '';
+                    results.push(`<li>空值: ${testEmpty ? '✓' : '✗'} (期望: 空字符串, 实际: '${emptyValue}')`);
+                } catch (e) {
+                    results.push(`<li>空值: ✗ 异常 (${e.message})</li>`);
+                }
+                
+                // null值测试
+                try {
+                    dcStorage.set('nullValue', null);
+                    const nullValue = dcStorage.get('nullValue');
+                    const testNull = nullValue === null;
+                    results.push(`<li>null值: ${testNull ? '✓' : '✗'} (期望: null, 实际: ${nullValue})`);
+                } catch (e) {
+                    results.push(`<li>null值: ✗ 异常 (${e.message})</li>`);
+                }
+                
+                // undefined值测试
+                try {
+                    dcStorage.set('undefinedValue', undefined);
+                    const undefinedValue = dcStorage.get('undefinedValue');
+                    const testUndefined = undefinedValue === null; // 注意：undefined会被转换为null
+                    results.push(`<li>undefined值: ${testUndefined ? '✓' : '✗'} (期望: null, 实际: ${undefinedValue})`);
+                } catch (e) {
+                    results.push(`<li>undefined值: ✗ 异常 (${e.message})</li>`);
+                }
+                
+                // 获取不存在的键
+                try {
+                    const nonExistent = dcStorage.get('nonexistent_key');
+                    const testNonExistent = nonExistent === null;
+                    results.push(`<li>不存在的键: ${testNonExistent ? '✓' : '✗'} (期望: null, 实际: ${nonExistent})`);
+                } catch (e) {
+                    results.push(`<li>不存在的键: ✗ 异常 (${e.message})</li>`);
+                }
+                
+                // 删除不存在的键
+                try {
+                    dcStorage.remove('nonexistent_remove');
+                    results.push('<li>删除不存在的键: ✓ 成功（无异常）</li>');
+                } catch (e) {
+                    results.push(`<li>删除不存在的键: ✗ 异常 (${e.message})</li>`);
+                }
+                
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong>边界情况测试结果</strong></p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('presetResult').innerHTML = `
+                    <p><strong style="color: red">测试异常: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 性能测试
+        function runPerformanceTest() {
+            try {
+                const iterations = 10000;
+                const start = performance.now();
+                
+                // 设置大量数据
+                for (let i = 0; i < iterations; i++) {
+                    dcStorage.set(`key_${i}`, `value_${i}`);
+                }
+                
+                const setEnd = performance.now();
+                
+                // 获取大量数据
+                for (let i = 0; i < iterations; i++) {
+                    dcStorage.get(`key_${i}`);
+                }
+                
+                const end = performance.now();
+                const setDuration = setEnd - start;
+                const getDuration = end - setEnd;
+                const totalDuration = end - start;
+                const opsPerSecond = Math.round((iterations * 2) / (totalDuration / 1000));
+                
+                // 清理
+                for (let i = 0; i < iterations; i++) {
+                    dcStorage.remove(`key_${i}`);
+                }
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>性能测试结果:</strong></p>
+                    <p><strong>迭代次数:</strong> ${iterations}</p>
+                    <p><strong>设置耗时:</strong> ${setDuration.toFixed(2)}ms (${(setDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>获取耗时:</strong> ${getDuration.toFixed(2)}ms (${(getDuration/iterations*1000).toFixed(4)}μs/次)</p>
+                    <p><strong>总耗时:</strong> ${totalDuration.toFixed(2)}ms</p>
+                    <p><strong>每秒操作数:</strong> ${opsPerSecond.toLocaleString()} ops/s</p>
+                    <p><em>测试在当前浏览器环境下进行</em></p>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">性能测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 安全测试
+        function runSecurityTest() {
+            try {
+                // 测试特殊字符键名
+                const specialKeys = [
+                    'key.with.dots',
+                    'key-with-dashes',
+                    'key_with_underscores',
+                    'key with spaces',
+                    'key@special#chars$',
+                    '<script>alert("xss")</script>',
+                    '../path/traversal',
+                    '..\\path\\traversal'
+                ];
+                
+                let results = [];
+                
+                specialKeys.forEach(key => {
+                    try {
+                        dcStorage.set(key, `value for ${key}`);
+                        const retrieved = dcStorage.get(key);
+                        const success = retrieved === `value for ${key}`;
+                        results.push(`<li>${key}: ${success ? '✓' : '✗'}</li>`);
+                    } catch (e) {
+                        results.push(`<li>${key}: ✗ (${e.message})</li>`);
+                    }
+                });
+                
+                // 测试超长键名和值
+                try {
+                    const longKey = 'x'.repeat(1000);
+                    const longValue = 'y'.repeat(10000);
+                    dcStorage.set(longKey, longValue);
+                    const retrieved = dcStorage.get(longKey);
+                    const success = retrieved === longValue;
+                    results.push(`<li>超长键值: ${success ? '✓' : '✗'}</li>`);
+                } catch (e) {
+                    results.push(`<li>超长键值: ✗ (${e.message})</li>`);
+                }
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>安全测试结果</strong></p>
+                    <p><strong>测试内容:</strong> 特殊字符和超长键值处理</p>
+                    <ul>
+                        ${results.join('')}
+                    </ul>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">安全测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+
+        // 兼容性测试
+        function runCompatibilityTest() {
+            try {
+                // 测试API是否存在
+                const apiTests = [
+                    { name: 'set', exists: typeof dcStorage.set === 'function' },
+                    { name: 'get', exists: typeof dcStorage.get === 'function' },
+                    { name: 'remove', exists: typeof dcStorage.remove === 'function' },
+                    { name: 'clear', exists: typeof dcStorage.clear === 'function' },
+                    { name: 'keys', exists: typeof dcStorage.keys === 'function' },
+                    { name: 'has', exists: typeof dcStorage.has === 'function' }
+                ];
+                
+                // 测试基本功能
+                dcStorage.set('compatibility_test', 'success');
+                const getValue = dcStorage.get('compatibility_test');
+                const hasKey = dcStorage.has('compatibility_test');
+                dcStorage.remove('compatibility_test');
+                const removedValue = dcStorage.get('compatibility_test');
+                
+                const basicTest = getValue === 'success' && hasKey && removedValue === null;
+                
+                // 检查存储是否持久化（应该不是）
+                const isPersistent = false; // 因为我们使用的是内存存储
+                
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong>兼容性测试结果</strong></p>
+                    <p><strong>API可用性:</strong></p>
+                    <ul>
+                        ${apiTests.map(test => `<li>${test.name}: ${test.exists ? '✓' : '✗'}</li>`).join('')}
+                    </ul>
+                    <p><strong>基本功能:</strong> ${basicTest ? '✓ 全部通过' : '✗ 存在问题'}</p>
+                    <p><strong>数据持久化:</strong> ${isPersistent ? '✓ 是' : '✗ 否（预期行为）'}</p>
+                    <p><em>dcStorage使用内存存储，数据在页面刷新后会丢失</em></p>
+                `;
+                
+                refreshList();
+                
+            } catch (error) {
+                document.getElementById('advancedResult').innerHTML = `
+                    <p><strong style="color: red">兼容性测试失败: ${error.message}</strong></p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

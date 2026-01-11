@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcString TypeScript 版本测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .test-input {
+            margin-bottom: 10px;
+        }
+        .test-result {
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+        .version-info {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcString TypeScript 版本测试</h1>
+
+    <div class="version-info">
+        <strong>版本信息:</strong> TypeScript 版本 | 构建时间: <span id="build-time"></span>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 capitalize 方法</div>
+        <div class="test-input">
+            <input type="text" id="capitalize-input" value="hello world" placeholder="输入字符串">
+            <button onclick="testCapitalize()">测试</button>
+        </div>
+        <div class="test-result" id="capitalize-result">点击测试按钮查看结果</div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 toCamelCase 方法</div>
+        <div class="test-input">
+            <input type="text" id="camelcase-input" value="hello-world" placeholder="输入字符串">
+            <button onclick="testCamelCase()">测试</button>
+        </div>
+        <div class="test-result" id="camelcase-result">点击测试按钮查看结果</div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 toSnakeCase 方法</div>
+        <div class="test-input">
+            <input type="text" id="snakecase-input" value="helloWorld" placeholder="输入字符串">
+            <button onclick="testSnakeCase()">测试</button>
+        </div>
+        <div class="test-result" id="snakecase-result">点击测试按钮查看结果</div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 truncate 方法</div>
+        <div class="test-input">
+            <input type="text" id="truncate-input" value="hello world" placeholder="输入字符串">
+            <input type="number" id="truncate-length" value="5" placeholder="截取长度">
+            <button onclick="testTruncate()">测试</button>
+        </div>
+        <div class="test-result" id="truncate-result">点击测试按钮查看结果</div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 escapeHtml 方法</div>
+        <div class="test-input">
+            <input type="text" id="escapehtml-input" value="<div>hello</div>" placeholder="输入HTML字符串">
+            <button onclick="testEscapeHtml()">测试</button>
+        </div>
+        <div class="test-result" id="escapehtml-result">点击测试按钮查看结果</div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 random 方法</div>
+        <div class="test-input">
+            <input type="number" id="random-length" value="10" placeholder="随机字符串长度">
+            <button onclick="testRandom()">测试</button>
+        </div>
+        <div class="test-result" id="random-result">点击测试按钮查看结果</div>
+    </div>
+
+    <div class="test-container">
+        <div class="test-title">测试 isJSON 方法</div>
+        <div class="test-input">
+            <input type="text" id="isjson-input" value='{"name": "John"}' placeholder="输入字符串">
+            <button onclick="testIsJSON()">测试</button>
+        </div>
+        <div class="test-result" id="isjson-result">点击测试按钮查看结果</div>
+    </div>
+
+    <script src="../dist/dc-1.0.0-2026-01-07-ts.js"></script>
+    <script>
+        // 显示构建时间
+        document.getElementById('build-time').textContent = new Date().toLocaleString();
+
+        // 测试 capitalize 方法
+        function testCapitalize() {
+            const input = document.getElementById('capitalize-input').value;
+            const resultElement = document.getElementById('capitalize-result');
+
+            try {
+                const result = DC.String.capitalize(input);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+
+        // 测试 toCamelCase 方法
+        function testCamelCase() {
+            const input = document.getElementById('camelcase-input').value;
+            const resultElement = document.getElementById('camelcase-result');
+
+            try {
+                const result = DC.String.toCamelCase(input);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+
+        // 测试 toSnakeCase 方法
+        function testSnakeCase() {
+            const input = document.getElementById('snakecase-input').value;
+            const resultElement = document.getElementById('snakecase-result');
+
+            try {
+                const result = DC.String.toSnakeCase(input);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+
+        // 测试 truncate 方法
+        function testTruncate() {
+            const input = document.getElementById('truncate-input').value;
+            const length = parseInt(document.getElementById('truncate-length').value);
+            const resultElement = document.getElementById('truncate-result');
+
+            try {
+                const result = DC.String.truncate(input, length);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+
+        // 测试 escapeHtml 方法
+        function testEscapeHtml() {
+            const input = document.getElementById('escapehtml-input').value;
+            const resultElement = document.getElementById('escapehtml-result');
+
+            try {
+                const result = DC.String.escapeHtml(input);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+
+        // 测试 random 方法
+        function testRandom() {
+            const length = parseInt(document.getElementById('random-length').value);
+            const resultElement = document.getElementById('random-result');
+
+            try {
+                const result = DC.String.random(length);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+
+        // 测试 isJSON 方法
+        function testIsJSON() {
+            const input = document.getElementById('isjson-input').value;
+            const resultElement = document.getElementById('isjson-result');
+
+            try {
+                const result = DC.String.isJSON(input);
+                resultElement.textContent = `结果: ${result}`;
+                resultElement.className = 'test-result success';
+            } catch (error) {
+                resultElement.textContent = `错误: ${error.message}`;
+                resultElement.className = 'test-result error';
+            }
+        }
+    </script>
+</body>
+</html>
