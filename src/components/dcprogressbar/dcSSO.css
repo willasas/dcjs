@@ -1,0 +1,209 @@
+@charset "UTF-8";
+/** DC SSO单点登录系统样式 提供登录、注册和找回密码界面的样式 @author DC Team @version 1.0.0 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 1rem; color: #2d3748; background-color: #f7fafc; line-height: 1.6; }
+
+.sso-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+
+.sso-container.sso-login-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+.sso-container.sso-register-bg { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); }
+
+.sso-container.sso-reset-bg { background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); }
+
+.sso-card { width: 100%; max-width: 450px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); overflow: hidden; transition: all 0.3s ease; }
+
+.sso-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04); }
+
+.sso-card .sso-card-header { padding: 2rem 2rem 1rem; text-align: center; }
+
+.sso-card .sso-card-header .sso-logo { width: 60px; height: 60px; margin: 0 auto 1rem; background-color: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: bold; }
+
+.sso-card .sso-card-header .sso-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #2d3748; }
+
+.sso-card .sso-card-header .sso-subtitle { color: #4a5568; font-size: 0.875rem; }
+
+.sso-card .sso-card-body { padding: 1rem 2rem 2rem; }
+
+.sso-form .sso-form-group { margin-bottom: 1rem; }
+
+.sso-form .sso-form-group label { display: block; margin-bottom: 0.25rem; font-weight: 500; color: #2d3748; font-size: 0.875rem; }
+
+.sso-form .sso-form-group .sso-input-group { position: relative; }
+
+.sso-form .sso-form-group .sso-input-group .sso-input { width: 100%; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 1rem; transition: all 0.3s ease; }
+
+.sso-form .sso-form-group .sso-input-group .sso-input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+
+.sso-form .sso-form-group .sso-input-group .sso-input.is-invalid { border-color: #f56565; }
+
+.sso-form .sso-form-group .sso-input-group .sso-input-icon { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #718096; pointer-events: none; }
+
+.sso-form .sso-form-group .sso-input-group .sso-input-addon { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #718096; cursor: pointer; padding: 0.25rem; }
+
+.sso-form .sso-form-group .sso-input-group .sso-input-addon:hover { color: #667eea; }
+
+.sso-form .sso-form-group .sso-input-group .sso-password-toggle { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #718096; transition: all 0.3s ease; }
+
+.sso-form .sso-form-group .sso-input-group .sso-password-toggle:hover { color: #667eea; }
+
+.sso-form .sso-form-group .sso-input-group .sso-password-toggle svg { width: 20px; height: 20px; }
+
+.sso-form .sso-form-group .sso-input-group .sso-password-toggle .sso-eye-icon { display: block; }
+
+.sso-form .sso-form-group .sso-input-group .sso-password-toggle .sso-eye-off-icon { display: none; }
+
+.sso-form .sso-form-group .sso-input-group .sso-password-toggle .hidden { display: none !important; }
+
+.sso-form .sso-form-group .sso-form-text { font-size: 0.875rem; color: #718096; margin-top: 0.25rem; }
+
+.sso-form .sso-form-group .sso-error-text { font-size: 0.875rem; color: #f56565; margin-top: 0.25rem; }
+
+.sso-form .sso-checkbox-group { display: flex; align-items: center; margin-bottom: 1rem; }
+
+.sso-form .sso-checkbox-group input[type='checkbox'] { margin-right: 0.5rem; }
+
+.sso-form .sso-checkbox-group label { font-size: 0.875rem; color: #4a5568; cursor: pointer; }
+
+.sso-form .sso-checkbox-group .sso-link { margin-left: auto; color: #667eea; text-decoration: none; font-size: 0.875rem; }
+
+.sso-form .sso-checkbox-group .sso-link:hover { text-decoration: underline; }
+
+.sso-btn { display: inline-block; padding: 1rem 1.5rem; border: none; border-radius: 6px; font-size: 1rem; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+
+.sso-btn:focus { outline: none; }
+
+.sso-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.sso-btn.sso-btn-primary { background-color: #667eea; color: white; }
+
+.sso-btn.sso-btn-primary:hover:not(:disabled) { background-color: #5a67d8; }
+
+.sso-btn.sso-btn-secondary { background-color: #48bb78; color: white; }
+
+.sso-btn.sso-btn-secondary:hover:not(:disabled) { background-color: #38a169; }
+
+.sso-btn.sso-btn-outline { background-color: transparent; border: 1px solid #667eea; color: #667eea; }
+
+.sso-btn.sso-btn-outline:hover:not(:disabled) { background-color: #667eea; color: white; }
+
+.sso-btn.sso-btn-block { display: block; width: 100%; }
+
+.sso-btn.sso-btn-lg { padding: 1.5rem 2rem; font-size: 1.125rem; }
+
+.sso-btn.sso-btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+
+.sso-social-login { margin-top: 1.5rem; }
+
+.sso-social-login .sso-divider { text-align: center; margin-bottom: 1rem; position: relative; }
+
+.sso-social-login .sso-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background-color: #e2e8f0; }
+
+.sso-social-login .sso-divider span { background-color: #ffffff; padding: 0 1rem; color: #718096; font-size: 0.875rem; position: relative; z-index: 1; }
+
+.sso-social-login .sso-social-buttons { display: flex; gap: 1rem; }
+
+.sso-social-login .sso-social-buttons .sso-social-btn { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 6px; background-color: white; color: #4a5568; cursor: pointer; transition: all 0.3s ease; }
+
+.sso-social-login .sso-social-buttons .sso-social-btn:hover { background-color: #edf2f7; transform: translateY(-2px); }
+
+.sso-social-login .sso-social-buttons .sso-social-btn.sso-social-btn-qq:hover { border-color: #12b7f5; color: #12b7f5; }
+
+.sso-social-login .sso-social-buttons .sso-social-btn.sso-social-btn-wechat:hover { border-color: #07c160; color: #07c160; }
+
+.sso-social-login .sso-social-buttons .sso-social-btn .sso-social-icon { margin-right: 0.5rem; font-size: 1.125rem; }
+
+.sso-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+
+.sso-modal.show { opacity: 1; visibility: visible; }
+
+.sso-modal .sso-modal-content { background-color: #ffffff; border-radius: 8px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; transform: scale(0.9); transition: all 0.3s ease; }
+
+.sso-modal.show .sso-modal .sso-modal-content { transform: scale(1); }
+
+.sso-modal .sso-modal-content .sso-modal-header { padding: 1.5rem; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+
+.sso-modal .sso-modal-content .sso-modal-header .sso-modal-title { font-size: 1.125rem; font-weight: 600; color: #2d3748; }
+
+.sso-modal .sso-modal-content .sso-modal-header .sso-modal-close { background: none; border: none; font-size: 1.25rem; color: #718096; cursor: pointer; padding: 0.25rem; }
+
+.sso-modal .sso-modal-content .sso-modal-header .sso-modal-close:hover { color: #2d3748; }
+
+.sso-modal .sso-modal-content .sso-modal-body { padding: 1.5rem; }
+
+.sso-modal .sso-modal-content .sso-modal-footer { padding: 1.5rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 1rem; }
+
+.sso-password-strength { margin-top: 0.5rem; }
+
+.sso-password-strength .sso-strength-bar { height: 4px; background-color: #e2e8f0; border-radius: 2px; overflow: hidden; margin-bottom: 0.25rem; }
+
+.sso-password-strength .sso-strength-bar .sso-strength-bar-fill { height: 100%; width: 0; transition: all 0.3s ease; border-radius: 2px; }
+
+.sso-password-strength .sso-strength-text { font-size: 0.875rem; color: #718096; }
+
+.sso-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
+
+.sso-steps::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 1px; background-color: #e2e8f0; z-index: 1; }
+
+.sso-steps .sso-step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 30px; }
+
+.sso-steps .sso-step .sso-step-number { width: 40px; height: 40px; border-radius: 50%; background-color: #e2e8f0; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-bottom: 0.5rem; transition: all 0.3s ease; }
+
+.sso-steps .sso-step .sso-step-title { font-size: 0.875rem; color: #718096; text-align: center; }
+
+.sso-steps .sso-step.active .sso-step-number { background-color: #667eea; }
+
+.sso-steps .sso-step.active .sso-step-title { color: #667eea; font-weight: 500; }
+
+.sso-steps .sso-step.completed .sso-step-number { background-color: #48bb78; }
+
+.sso-steps .sso-step.completed .sso-step-title { color: #48bb78; }
+
+.sso-step-content { display: none; }
+
+.sso-step-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+@keyframes fadeIn { from { opacity: 0;
+    transform: translateY(10px); }
+  to { opacity: 1;
+    transform: translateY(0); } }
+
+.sso-verification-code { display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0; }
+
+.sso-verification-code .sso-code-input { width: 50px; height: 50px; text-align: center; font-size: 1.25rem; font-weight: 600; border: 1px solid #e2e8f0; border-radius: 6px; }
+
+.sso-verification-code .sso-code-input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+
+@media (max-width: 768px) { .sso-container { padding: 1rem; }
+  .sso-card { max-width: 100%; }
+  .sso-social-buttons { flex-direction: column; }
+  .sso-steps .sso-step { width: 20px; }
+  .sso-steps .sso-step .sso-step-number { width: 30px; height: 30px; font-size: 0.875rem; }
+  .sso-steps .sso-step .sso-step-title { font-size: 0.75rem; } }
+
+.sso-text-center { text-align: center; }
+
+.sso-mt-1 { margin-top: 0.25rem; }
+
+.sso-mt-2 { margin-top: 0.5rem; }
+
+.sso-mt-3 { margin-top: 1rem; }
+
+.sso-mt-4 { margin-top: 1.5rem; }
+
+.sso-mb-1 { margin-bottom: 0.25rem; }
+
+.sso-mb-2 { margin-bottom: 0.5rem; }
+
+.sso-mb-3 { margin-bottom: 1rem; }
+
+.sso-mb-4 { margin-bottom: 1.5rem; }
+
+.sso-d-flex { display: flex; }
+
+.sso-align-items-center { align-items: center; }
+
+.sso-justify-content-center { justify-content: center; }
+
+.sso-justify-content-between { justify-content: space-between; }
