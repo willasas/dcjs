@@ -32,7 +32,7 @@ function runTests() {
   console.log('=== 基本功能测试 ===')
 
   test('dcString 工具类存在', () => {
-    return typeof dcString === 'object'
+    return typeof dcString === 'function'
   })
 
   test('capitalize 方法存在', () => {

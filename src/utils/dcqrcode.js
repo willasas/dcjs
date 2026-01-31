@@ -575,8 +575,9 @@ class dcQRCode {
   }
 }
 
-// 将类添加到全局DC对象
-window.DC = window.DC || {}
-window.DC.QRCode = dcQRCode
-
-// export default dcQRCode;
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.QRCode = dcQRCode
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = dcQRCode
+}

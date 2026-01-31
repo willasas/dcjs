@@ -9,14 +9,14 @@ class dcHttps {
    */
   static async get(url) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url)
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
-      return await response.json();
+      return await response.json()
     } catch (error) {
-      console.error('GET request failed:', error);
-      throw error;
+      console.error('GET request failed:', error)
+      throw error
     }
   }
 
@@ -34,17 +34,21 @@ class dcHttps {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
-      return await response.json();
+      return await response.json()
     } catch (error) {
-      console.error('POST request failed:', error);
-      throw error;
+      console.error('POST request failed:', error)
+      throw error
     }
   }
 }
 
-window.DC = window.DC || {};
-window.DC.Https = dcHttps;
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.Https = dcHttps
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = dcHttps
+}

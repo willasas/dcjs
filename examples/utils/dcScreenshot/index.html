@@ -188,6 +188,55 @@
         </div>
     </div>
 
+    <div class="example">
+        <h3>缩放功能演示</h3>
+        <div class="controls">
+            <button onclick="captureWithScale(1)">原始尺寸 (1x)</button>
+            <button onclick="captureWithScale(2)">2倍缩放</button>
+            <button onclick="captureWithScale(3)">3倍缩放</button>
+            <button onclick="captureWithCustomSize()">自定义尺寸</button>
+        </div>
+        <div id="scale-result" class="screenshot-container">
+            <p>点击上方按钮测试缩放功能</p>
+        </div>
+        <div class="info-panel">
+            <div>缩放比例: <span id="scale-factor">1</span></div>
+            <div>实际尺寸: <span id="scale-actual-size">-</span></div>
+            <div>截图尺寸: <span id="scale-dimensions">-</span></div>
+            <div>耗时: <span id="scale-time">-</span></div>
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>新导出方法演示</h3>
+        <div class="controls">
+            <button onclick="testNewExportMethods()">测试所有导出方法</button>
+            <button onclick="downloadScreenshot()">直接下载截图</button>
+        </div>
+        <div id="export-result" class="screenshot-container">
+            <p>点击上方按钮测试新的导出方法</p>
+        </div>
+        <div class="info-panel">
+            <div>导出状态: <span id="export-status">未执行</span></div>
+            <div>耗时: <span id="export-time">-</span></div>
+        </div>
+    </div>
+
+    <div class="example">
+        <h3>静态快捷方法演示</h3>
+        <div class="controls">
+            <button onclick="testStaticMethods()">测试静态方法</button>
+            <button onclick="testStaticDownload()">静态方法下载</button>
+        </div>
+        <div id="static-result" class="screenshot-container">
+            <p>点击上方按钮测试静态快捷方法</p>
+        </div>
+        <div class="info-panel">
+            <div>执行状态: <span id="static-status">未执行</span></div>
+            <div>耗时: <span id="static-time">-</span></div>
+        </div>
+    </div>
+
     <script src="../../../dist/dc.js"></script>
     <script>
         // 显示状态消息
@@ -415,6 +464,206 @@
                 .catch(error => {
                     showMessage('advanced-result', `截图失败: ${error.message}`, true);
                 });
+        }
+
+        // 缩放功能演示
+        function captureWithScale(scale) {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({
+                scale: scale
+            });
+
+            document.getElementById('scale-factor').textContent = scale;
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('scale-result', result, 'scale');
+                    // 计算实际画布尺寸
+                    const actualWidth = result.width * scale;
+                    const actualHeight = result.height * scale;
+                    document.getElementById('scale-actual-size').textContent = `${actualWidth} x ${actualHeight}`;
+                })
+                .catch(error => {
+                    showMessage('scale-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 自定义尺寸演示
+        function captureWithCustomSize() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({
+                width: 1200,
+                height: 800,
+                scale: 1.5
+            });
+
+            document.getElementById('scale-factor').textContent = '1.5 (自定义尺寸)';
+
+            screenshot.captureFullPage()
+                .then(result => {
+                    result.captureTime = Math.round(performance.now() - startTime);
+                    displayScreenshot('scale-result', result, 'scale');
+                    // 计算实际画布尺寸
+                    const actualWidth = result.width * 1.5;
+                    const actualHeight = result.height * 1.5;
+                    document.getElementById('scale-actual-size').textContent = `${actualWidth} x ${actualHeight}`;
+                })
+                .catch(error => {
+                    showMessage('scale-result', `截图失败: ${error.message}`, true);
+                });
+        }
+
+        // 测试新导出方法
+        async function testNewExportMethods() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot();
+
+            try {
+                document.getElementById('export-status').textContent = '执行中...';
+
+                // 捕获截图
+                const result = await screenshot.captureElement(document.getElementById('screenshot-target'));
+                
+                // 测试各种导出方法
+                const methods = ['toSvg', 'toCanvas', 'toBlob', 'toPng', 'toJpg', 'toWebp'];
+                const results = [];
+
+                for (const method of methods) {
+                    try {
+                        await result[method]();
+                        results.push(`${method}: 成功`);
+                    } catch (error) {
+                        results.push(`${method}: 失败 - ${error.message}`);
+                    }
+                }
+
+                // 显示结果
+                const exportResult = document.getElementById('export-result');
+                exportResult.innerHTML = '';
+                
+                const resultDiv = document.createElement('div');
+                resultDiv.innerHTML = '<h4>导出方法测试结果:</h4><ul>' + 
+                    results.map(r => `<li>${r}</li>`).join('') + '</ul>';
+                exportResult.appendChild(resultDiv);
+
+                // 显示原始截图
+                if (result.success && result.dataUrl) {
+                    const img = document.createElement('img');
+                    img.src = result.dataUrl;
+                    img.className = 'screenshot-result';
+                    img.style.maxWidth = '400px';
+                    exportResult.appendChild(img);
+                }
+
+                document.getElementById('export-status').textContent = '完成';
+                document.getElementById('export-time').textContent = `${Math.round(performance.now() - startTime)} ms`;
+                showMessage('export-result', '导出方法测试完成！');
+            } catch (error) {
+                showMessage('export-result', `测试失败: ${error.message}`, true);
+                document.getElementById('export-status').textContent = '失败';
+            }
+        }
+
+        // 直接下载截图
+        function downloadScreenshot() {
+            const startTime = performance.now();
+            const screenshot = new DC.Screenshot({
+                format: 'png',
+                quality: 0.9
+            });
+
+            screenshot.captureElement(document.getElementById('screenshot-target'))
+                .then(result => {
+                    return result.download({ filename: 'screenshot-example' });
+                })
+                .then(() => {
+                    showMessage('export-result', '截图已开始下载！');
+                    document.getElementById('export-time').textContent = `${Math.round(performance.now() - startTime)} ms`;
+                })
+                .catch(error => {
+                    showMessage('export-result', `下载失败: ${error.message}`, true);
+                });
+        }
+
+        // 测试静态快捷方法
+        async function testStaticMethods() {
+            const startTime = performance.now();
+
+            try {
+                document.getElementById('static-status').textContent = '执行中...';
+
+                // 测试静态方法
+                const staticResults = [];
+                
+                // 测试元素截图
+                const element = document.getElementById('screenshot-target');
+                
+                // 测试 toPng 静态方法
+                try {
+                    const pngResult = await DC.Screenshot.toPng(element);
+                    staticResults.push('toPng: 成功');
+                } catch (error) {
+                    staticResults.push(`toPng: 失败 - ${error.message}`);
+                }
+
+                // 测试 toCanvas 静态方法
+                try {
+                    const canvasResult = await DC.Screenshot.toCanvas(element);
+                    staticResults.push('toCanvas: 成功');
+                } catch (error) {
+                    staticResults.push(`toCanvas: 失败 - ${error.message}`);
+                }
+
+                // 测试 toBlob 静态方法
+                try {
+                    const blobResult = await DC.Screenshot.toBlob(element);
+                    staticResults.push('toBlob: 成功');
+                } catch (error) {
+                    staticResults.push(`toBlob: 失败 - ${error.message}`);
+                }
+
+                // 显示结果
+                const staticResult = document.getElementById('static-result');
+                staticResult.innerHTML = '';
+                
+                const resultDiv = document.createElement('div');
+                resultDiv.innerHTML = '<h4>静态方法测试结果:</h4><ul>' + 
+                    staticResults.map(r => `<li>${r}</li>`).join('') + '</ul>';
+                staticResult.appendChild(resultDiv);
+
+                document.getElementById('static-status').textContent = '完成';
+                document.getElementById('static-time').textContent = `${Math.round(performance.now() - startTime)} ms`;
+                showMessage('static-result', '静态方法测试完成！');
+            } catch (error) {
+                showMessage('static-result', `测试失败: ${error.message}`, true);
+                document.getElementById('static-status').textContent = '失败';
+            }
+        }
+
+        // 测试静态方法下载
+        function testStaticDownload() {
+            const startTime = performance.now();
+
+            try {
+                const element = document.getElementById('screenshot-target');
+                
+                // 使用静态方法直接下载
+                DC.Screenshot.download(element, {
+                    filename: 'static-download-example',
+                    format: 'png',
+                    quality: 0.9
+                })
+                .then(() => {
+                    showMessage('static-result', '静态方法下载成功！');
+                    document.getElementById('static-time').textContent = `${Math.round(performance.now() - startTime)} ms`;
+                })
+                .catch(error => {
+                    showMessage('static-result', `下载失败: ${error.message}`, true);
+                });
+            } catch (error) {
+                showMessage('static-result', `测试失败: ${error.message}`, true);
+            }
         }
     </script>
 </body>

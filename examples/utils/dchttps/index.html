@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dcHttps 网络请求工具示例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #444;
+      margin: 25px 0 15px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    h3 {
+      color: #555;
+      margin: 20px 0 10px;
+    }
+
+    .example-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 150px;
+      resize: vertical;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button.secondary {
+      background-color: #2196f3;
+    }
+
+    button.secondary:hover {
+      background-color: #0b7dda;
+    }
+
+    button.danger {
+      background-color: #f44336;
+    }
+
+    button.danger:hover {
+      background-color: #da190b;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .result.error {
+      background-color: #ffebee;
+      border-left-color: #f44336;
+    }
+
+    .result h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .result pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .info-box {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .info-box p {
+      margin: 5px 0;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #4CAF50;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>dcHttps 网络请求工具示例</h1>
+    
+    <div class="info-box">
+      <h3>工具介绍</h3>
+      <p>dcHttps 是一个简化网络请求的工具类，提供了以下功能：</p>
+      <ul>
+        <li><code>get(url)</code> - 发起 GET 请求</li>
+        <li><code>post(url, data)</code> - 发起 POST 请求</li>
+      </ul>
+      <p><strong>注意：</strong>由于浏览器的同源策略，直接在本地打开此页面可能无法正常发起跨域请求。本示例使用 <a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder</a> 提供的模拟 API 进行演示。</p>
+    </div>
+
+    <!-- GET 请求示例 -->
+    <div class="example-section">
+      <h3>1. GET 请求示例</h3>
+      
+      <div class="input-group">
+        <label for="get-url">请求 URL：</label>
+        <input type="text" id="get-url" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="请输入请求 URL">
+      </div>
+      
+      <button onclick="testGetRequest()">发起 GET 请求</button>
+      <span id="get-loading" class="loading hidden"></span>
+      
+      <div class="result" id="get-result">
+        <h4>请求结果</h4>
+        <pre id="get-response">点击「发起 GET 请求」按钮开始</pre>
+      </div>
+    </div>
+
+    <!-- POST 请求示例 -->
+    <div class="example-section">
+      <h3>2. POST 请求示例</h3>
+      
+      <div class="input-group">
+        <label for="post-url">请求 URL：</label>
+        <input type="text" id="post-url" value="https://jsonplaceholder.typicode.com/posts" placeholder="请输入请求 URL">
+      </div>
+      
+      <div class="input-group">
+        <label for="post-data">请求数据（JSON）：</label>
+        <textarea id="post-data" placeholder="请输入 JSON 格式的数据">{
+  "title": "测试标题",
+  "body": "测试内容",
+  "userId": 1
+}</textarea>
+      </div>
+      
+      <button onclick="testPostRequest()">发起 POST 请求</button>
+      <span id="post-loading" class="loading hidden"></span>
+      
+      <div class="result" id="post-result">
+        <h4>请求结果</h4>
+        <pre id="post-response">点击「发起 POST 请求」按钮开始</pre>
+      </div>
+    </div>
+
+    <!-- 错误处理示例 -->
+    <div class="example-section">
+      <h3>3. 错误处理示例</h3>
+      
+      <div class="input-group">
+        <label for="error-url">错误 URL（不存在的接口）：</label>
+        <input type="text" id="error-url" value="https://jsonplaceholder.typicode.com/nonexistent" placeholder="请输入错误的 URL">
+      </div>
+      
+      <button onclick="testErrorHandling()" class="danger">测试错误处理</button>
+      <span id="error-loading" class="loading hidden"></span>
+      
+      <div class="result" id="error-result">
+        <h4>错误结果</h4>
+        <pre id="error-response">点击「测试错误处理」按钮开始</pre>
+      </div>
+    </div>
+
+    <!-- 实际应用示例 -->
+    <div class="example-section">
+      <h3>4. 实际应用示例</h3>
+      
+      <div class="input-group">
+        <label for="user-id">用户 ID：</label>
+        <input type="text" id="user-id" value="1" placeholder="请输入用户 ID">
+      </div>
+      
+      <button onclick="getUserPosts()">获取用户帖子</button>
+      <span id="app-loading" class="loading hidden"></span>
+      
+      <div class="result" id="app-result">
+        <h4>应用结果</h4>
+        <pre id="app-response">点击「获取用户帖子」按钮开始</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../src/utils/dchttps.js"></script>
+  <script>
+    // 显示加载状态
+    function showLoading(elementId) {
+      document.getElementById(elementId).classList.remove('hidden');
+    }
+
+    // 隐藏加载状态
+    function hideLoading(elementId) {
+      document.getElementById(elementId).classList.add('hidden');
+    }
+
+    // 更新结果显示
+    function updateResult(elementId, content, isError = false) {
+      const resultElement = document.getElementById(elementId);
+      resultElement.textContent = content;
+      
+      const parentResult = resultElement.closest('.result');
+      if (isError) {
+        parentResult.classList.add('error');
+      } else {
+        parentResult.classList.remove('error');
+      }
+    }
+
+    // 测试 GET 请求
+    async function testGetRequest() {
+      const url = document.getElementById('get-url').value;
+      
+      if (!url) {
+        updateResult('get-response', '请输入请求 URL', true);
+        return;
+      }
+      
+      showLoading('get-loading');
+      
+      try {
+        const response = await DC.Https.get(url);
+        updateResult('get-response', JSON.stringify(response, null, 2));
+      } catch (error) {
+        updateResult('get-response', `错误: ${error.message}`, true);
+      } finally {
+        hideLoading('get-loading');
+      }
+    }
+
+    // 测试 POST 请求
+    async function testPostRequest() {
+      const url = document.getElementById('post-url').value;
+      const dataStr = document.getElementById('post-data').value;
+      
+      if (!url) {
+        updateResult('post-response', '请输入请求 URL', true);
+        return;
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(dataStr);
+      } catch (error) {
+        updateResult('post-response', `JSON 格式错误: ${error.message}`, true);
+        return;
+      }
+      
+      showLoading('post-loading');
+      
+      try {
+        const response = await DC.Https.post(url, data);
+        updateResult('post-response', JSON.stringify(response, null, 2));
+      } catch (error) {
+        updateResult('post-response', `错误: ${error.message}`, true);
+      } finally {
+        hideLoading('post-loading');
+      }
+    }
+
+    // 测试错误处理
+    async function testErrorHandling() {
+      const url = document.getElementById('error-url').value;
+      
+      if (!url) {
+        updateResult('error-response', '请输入请求 URL', true);
+        return;
+      }
+      
+      showLoading('error-loading');
+      
+      try {
+        const response = await DC.Https.get(url);
+        updateResult('error-response', JSON.stringify(response, null, 2));
+      } catch (error) {
+        updateResult('error-response', `错误: ${error.message}`, true);
+      } finally {
+        hideLoading('error-loading');
+      }
+    }
+
+    // 实际应用示例：获取用户帖子
+    async function getUserPosts() {
+      const userId = document.getElementById('user-id').value;
+      
+      if (!userId) {
+        updateResult('app-response', '请输入用户 ID', true);
+        return;
+      }
+      
+      const url = `https://jsonplaceholder.typicode.com/posts?userId=${userId}`;
+      
+      showLoading('app-loading');
+      
+      try {
+        const posts = await DC.Https.get(url);
+        
+        if (posts.length === 0) {
+          updateResult('app-response', `用户 ${userId} 没有帖子`);
+        } else {
+          const formattedPosts = posts.map(post => ({
+            id: post.id,
+            title: post.title,
+            body: post.body.substring(0, 50) + (post.body.length > 50 ? '...' : '')
+          }));
+          updateResult('app-response', JSON.stringify(formattedPosts, null, 2));
+        }
+      } catch (error) {
+        updateResult('app-response', `错误: ${error.message}`, true);
+      } finally {
+        hideLoading('app-loading');
+      }
+    }
+  </script>
+</body>
+</html>

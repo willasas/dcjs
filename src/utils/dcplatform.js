@@ -379,6 +379,9 @@ class DCPlatform {
   }
 }
 
-// 导出到全局
-window.DC = window.DC || {}
-window.DC.Platform = DCPlatform
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.Platform = DCPlatform
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCPlatform
+}

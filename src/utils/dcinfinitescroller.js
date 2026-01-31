@@ -9,19 +9,19 @@ class DCInfiniteScroller {
   constructor(container, loadCallback, options = {}) {
     // 参数校验
     if (!(container instanceof HTMLElement)) {
-      throw new TypeError('container必须是有效的DOM元素');
+      throw new TypeError('container必须是有效的DOM元素')
     }
     if (typeof loadCallback !== 'function') {
-      throw new TypeError('loadCallback必须是函数');
+      throw new TypeError('loadCallback必须是函数')
     }
 
     // 初始化成员变量
-    this.container = container;
-    this.loadCallback = loadCallback;
-    this.isLoading = false;
-    this.lastScrollTop = 0;
-    this._cachedItems = null;
-    this._lastCacheTime = 0;
+    this.container = container
+    this.loadCallback = loadCallback
+    this.isLoading = false
+    this.lastScrollTop = 0
+    this._cachedItems = null
+    this._lastCacheTime = 0
 
     // 合并配置项
     this.options = {
@@ -31,151 +31,154 @@ class DCInfiniteScroller {
       enableScrollRecycling: true,
       maxItems: 1000,
       recyclingInterval: 300,
-      ...options
-    };
+      ...options,
+    }
 
     // 初始化哨兵元素
-    this.sentinel = document.createElement('div');
-    this.sentinel.id = 'sentinel';
-    this.container.appendChild(this.sentinel);
+    this.sentinel = document.createElement('div')
+    this.sentinel.id = 'sentinel'
+    this.container.appendChild(this.sentinel)
 
     // 初始化滚动监听
     this.container.addEventListener('scroll', () => {
-      this.lastScrollTop = this.container.scrollTop;
-    });
+      this.lastScrollTop = this.container.scrollTop
+    })
 
     // 设置核心功能
-    this.setupObserver();
-    this.setupRecycling();
+    this.setupObserver()
+    this.setupRecycling()
   }
 
   /** 设置交叉观察器 */
   setupObserver() {
-    this.observer = new IntersectionObserver(entries => {
-      if (!entries[0]?.isIntersecting) return;
+    this.observer = new IntersectionObserver(
+      entries => {
+        if (!entries[0]?.isIntersecting) return
 
-      if (entries[0].isIntersecting && !this.isLoading) {
-        this.showLoadingIndicator();
-        this.isLoading = true;
+        if (entries[0].isIntersecting && !this.isLoading) {
+          this.showLoadingIndicator()
+          this.isLoading = true
 
-        this.loadCallback(this.options.batchSize)
-          .then(() => {
-            this.isLoading = false;
-            this.recycleDOM();
-            this.hideLoadingIndicator();
-          })
-          .catch(error => {
-            console.error('加载失败:', error);
-            this.isLoading = false;
-            this.hideLoadingIndicator();
-          });
-      }
-    }, {
-      rootMargin: `${this.options.threshold}px`
-    });
+          this.loadCallback(this.options.batchSize)
+            .then(() => {
+              this.isLoading = false
+              this.recycleDOM()
+              this.hideLoadingIndicator()
+            })
+            .catch(error => {
+              console.error('加载失败:', error)
+              this.isLoading = false
+              this.hideLoadingIndicator()
+            })
+        }
+      },
+      {
+        rootMargin: `${this.options.threshold}px`,
+      },
+    )
 
-    this.observer.observe(this.sentinel);
+    this.observer.observe(this.sentinel)
   }
 
   /** 设置滚动回收机制 */
   setupRecycling() {
     // 防抖函数实现
-    const debounceRAF = (fn) => {
-      let ticking = false;
+    const debounceRAF = fn => {
+      let ticking = false
       const wrapper = (...args) => {
         if (!ticking) {
           requestAnimationFrame(() => {
-            fn(...args);
-            ticking = false;
-          });
-          ticking = true;
+            fn(...args)
+            ticking = false
+          })
+          ticking = true
         }
-      };
-      wrapper.wrapped = fn;
-      return wrapper;
-    };
+      }
+      wrapper.wrapped = fn
+      return wrapper
+    }
 
     this.debouncedRecycle = debounceRAF(() => {
       if (this.options.enableScrollRecycling) {
-        this.recycleDOM();
+        this.recycleDOM()
       }
-    });
+    })
 
-    this.container.addEventListener('scroll', this.debouncedRecycle);
+    this.container.addEventListener('scroll', this.debouncedRecycle)
   }
 
   /** DOM回收方法 */
   recycleDOM() {
     // 缓存优化
     if (!this._cachedItems || Date.now() - this._lastCacheTime > 1000) {
-      this._cachedItems = [...this.container.children]
-        .filter(el => el !== this.sentinel && el.classList.contains('item'));
-      this._lastCacheTime = Date.now();
+      this._cachedItems = [...this.container.children].filter(el => el !== this.sentinel && el.classList.contains('item'))
+      this._lastCacheTime = Date.now()
     }
 
-    const prevHeight = this.container.scrollHeight;
-    let removedHeight = 0;
+    const prevHeight = this.container.scrollHeight
+    let removedHeight = 0
 
     // 元素回收逻辑
     this._cachedItems.forEach(item => {
-      const rect = item.getBoundingClientRect();
-      if (rect.bottom < -this.options.recycleThreshold ||
-          rect.top > window.innerHeight + this.options.recycleThreshold) {
-        removedHeight += item.offsetHeight;
-        item.remove();
+      const rect = item.getBoundingClientRect()
+      if (rect.bottom < -this.options.recycleThreshold || rect.top > window.innerHeight + this.options.recycleThreshold) {
+        removedHeight += item.offsetHeight
+        item.remove()
       }
-    });
+    })
 
     // 保持滚动位置
-    const heightDiff = this.container.scrollHeight - prevHeight;
-    this.container.scrollTop = this.lastScrollTop - (removedHeight - heightDiff);
+    const heightDiff = this.container.scrollHeight - prevHeight
+    this.container.scrollTop = this.lastScrollTop - (removedHeight - heightDiff)
 
     // 最大元素数限制
     if (this._cachedItems.length > this.options.maxItems) {
-      const excess = this._cachedItems.splice(0, this.options.maxItems / 2);
-      excess.forEach(item => item.remove());
+      const excess = this._cachedItems.splice(0, this.options.maxItems / 2)
+      excess.forEach(item => item.remove())
     }
   }
 
   /** 显示加载指示器 */
   showLoadingIndicator() {
     if (!this.loadingIndicator) {
-      this.loadingIndicator = document.createElement('div');
+      this.loadingIndicator = document.createElement('div')
       this.loadingIndicator.style.cssText = `
         padding: 10px;
         text-align: center;
         color: #666;
-      `;
-      this.loadingIndicator.textContent = '加载中...';
+      `
+      this.loadingIndicator.textContent = '加载中...'
     }
-    this.container.appendChild(this.loadingIndicator);
+    this.container.appendChild(this.loadingIndicator)
   }
 
   /** 隐藏加载指示器 */
   hideLoadingIndicator() {
-    this.loadingIndicator?.remove();
+    this.loadingIndicator?.remove()
   }
 
   /** 销毁组件 */
   destroy() {
     // 清理事件监听
-    this.container.removeEventListener('scroll', this.debouncedRecycle);
+    this.container.removeEventListener('scroll', this.debouncedRecycle)
 
     // 清理观察者
     if (this.observer) {
-      this.observer.disconnect();
+      this.observer.disconnect()
     }
 
     // 清理DOM元素
-    this.sentinel.remove();
-    this.hideLoadingIndicator();
+    this.sentinel.remove()
+    this.hideLoadingIndicator()
 
     // 清理缓存
-    this._cachedItems = null;
+    this._cachedItems = null
   }
 }
 
-
-// 导出到全局
-window.DC = window.DC || {};
-window.DC.InfiniteScroller = DCInfiniteScroller;
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.InfiniteScroller = DCInfiniteScroller
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCInfiniteScroller
+}

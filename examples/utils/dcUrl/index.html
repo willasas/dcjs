@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcUrl 工具类示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin: 20px 0 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        
+        .example {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .example h3 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .code {
+            background-color: #f1f3f4;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .result {
+            background-color: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .input-group {
+            margin: 10px 0;
+        }
+        
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 300px;
+        }
+        
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcUrl 工具类示例</h1>
+    
+    <!-- URL解析示例 -->
+    <div class="example">
+        <h3>1. parse - URL解析</h3>
+        <p>解析 URL 字符串，返回 URL 组件对象。</p>
+        <div class="input-group">
+            <label for="parseUrlInput">URL：</label>
+            <input type="text" id="parseUrlInput" value="https://www.example.com/path?query=value#hash">
+            <button onclick="testParse()">解析</button>
+        </div>
+        <div id="parseResult" class="result"></div>
+    </div>
+    
+    <!-- 查询字符串解析示例 -->
+    <div class="example">
+        <h3>2. parseQuery - 查询字符串解析</h3>
+        <p>解析 URL 查询字符串，返回查询参数对象。</p>
+        <div class="input-group">
+            <label for="queryStringInput">查询字符串：</label>
+            <input type="text" id="queryStringInput" value="name=John&age=30&hobbies=reading&hobbies=coding">
+            <button onclick="testParseQuery()">解析</button>
+        </div>
+        <div id="parseQueryResult" class="result"></div>
+    </div>
+    
+    <!-- URL构建示例 -->
+    <div class="example">
+        <h3>3. build - URL构建</h3>
+        <p>根据组件构建完整的 URL 字符串。</p>
+        <div class="input-group">
+            <label for="protocolInput">协议：</label>
+            <input type="text" id="protocolInput" value="https" style="width: 100px;">
+            <label for="hostInput">主机：</label>
+            <input type="text" id="hostInput" value="www.example.com" style="width: 200px;">
+            <label for="pathInput">路径：</label>
+            <input type="text" id="pathInput" value="/path/to/resource" style="width: 200px;">
+            <button onclick="testBuild()">构建</button>
+        </div>
+        <div id="buildResult" class="result"></div>
+    </div>
+    
+    <!-- 获取URL参数示例 -->
+    <div class="example">
+        <h3>4. getParam - 获取URL参数</h3>
+        <p>从 URL 中获取指定的查询参数值。</p>
+        <div class="input-group">
+            <label for="getParamUrl">URL：</label>
+            <input type="text" id="getParamUrl" value="https://www.example.com?name=John&age=30">
+            <label for="getParamName">参数名：</label>
+            <input type="text" id="getParamName" value="name" style="width: 100px;">
+            <button onclick="testGetParam()">获取</button>
+        </div>
+        <div id="getParamResult" class="result"></div>
+    </div>
+    
+    <!-- 更新URL参数示例 -->
+    <div class="example">
+        <h3>5. updateParams - 更新URL参数</h3>
+        <p>修改 URL 中的查询参数，返回新的 URL 字符串。</p>
+        <div class="input-group">
+            <label for="updateParamUrl">URL：</label>
+            <input type="text" id="updateParamUrl" value="https://www.example.com?name=John&age=30">
+            <label for="updateParamName">参数名：</label>
+            <input type="text" id="updateParamName" value="age" style="width: 100px;">
+            <label for="updateParamValue">参数值：</label>
+            <input type="text" id="updateParamValue" value="31" style="width: 100px;">
+            <button onclick="testUpdateParams()">更新</button>
+        </div>
+        <div id="updateParamsResult" class="result"></div>
+    </div>
+    
+    <!-- 删除URL参数示例 -->
+    <div class="example">
+        <h3>6. removeParams - 删除URL参数</h3>
+        <p>从 URL 中删除指定的查询参数，返回新的 URL 字符串。</p>
+        <div class="input-group">
+            <label for="removeParamUrl">URL：</label>
+            <input type="text" id="removeParamUrl" value="https://www.example.com?name=John&age=30&city=New%20York">
+            <label for="removeParamName">参数名：</label>
+            <input type="text" id="removeParamName" value="age" style="width: 100px;">
+            <button onclick="testRemoveParams()">删除</button>
+        </div>
+        <div id="removeParamsResult" class="result"></div>
+    </div>
+    
+    <!-- URL验证示例 -->
+    <div class="example">
+        <h3>7. isValid - URL验证</h3>
+        <p>检查 URL 字符串是否为有效的 URL 格式。</p>
+        <div class="input-group">
+            <label for="validateUrlInput">URL：</label>
+            <input type="text" id="validateUrlInput" value="https://www.example.com">
+            <button onclick="testIsValid()">验证</button>
+        </div>
+        <div id="isValidResult" class="result"></div>
+    </div>
+    
+    <!-- 路径合并示例 -->
+    <div class="example">
+        <h3>8. join - 路径合并</h3>
+        <p>合并多个 URL 路径片段，返回合并后的路径。</p>
+        <div class="input-group">
+            <label for="joinPath1">路径1：</label>
+            <input type="text" id="joinPath1" value="https://www.example.com" style="width: 200px;">
+            <label for="joinPath2">路径2：</label>
+            <input type="text" id="joinPath2" value="path" style="width: 100px;">
+            <label for="joinPath3">路径3：</label>
+            <input type="text" id="joinPath3" value="to/resource" style="width: 150px;">
+            <button onclick="testJoin()">合并</button>
+        </div>
+        <div id="joinResult" class="result"></div>
+    </div>
+    
+    <!-- 获取文件扩展名示例 -->
+    <div class="example">
+        <h3>9. getExtension - 获取文件扩展名</h3>
+        <p>从 URL 中获取文件扩展名。</p>
+        <div class="input-group">
+            <label for="extensionUrlInput">URL：</label>
+            <input type="text" id="extensionUrlInput" value="https://www.example.com/image.jpg">
+            <button onclick="testGetExtension()">获取</button>
+        </div>
+        <div id="extensionResult" class="result"></div>
+    </div>
+    
+    <!-- 获取域名示例 -->
+    <div class="example">
+        <h3>10. getDomain - 获取域名</h3>
+        <p>从 URL 中提取域名。</p>
+        <div class="input-group">
+            <label for="domainUrlInput">URL：</label>
+            <input type="text" id="domainUrlInput" value="https://subdomain.example.com/path">
+            <button onclick="testGetDomain()">获取</button>
+        </div>
+        <div id="domainResult" class="result"></div>
+    </div>
+    
+    <!-- 绝对路径检查示例 -->
+    <div class="example">
+        <h3>11. isAbsolute - 绝对路径检查</h3>
+        <p>检查 URL 字符串是否为绝对路径。</p>
+        <div class="input-group">
+            <label for="absoluteUrlInput">URL：</label>
+            <input type="text" id="absoluteUrlInput" value="https://www.example.com">
+            <button onclick="testIsAbsolute()">检查</button>
+        </div>
+        <div id="absoluteResult" class="result"></div>
+    </div>
+    
+    <!-- URL标准化示例 -->
+    <div class="example">
+        <h3>12. normalize - URL标准化</h3>
+        <p>标准化 URL 字符串。</p>
+        <div class="input-group">
+            <label for="normalizeUrlInput">URL：</label>
+            <input type="text" id="normalizeUrlInput" value="https://www.example.com/path/../page">
+            <button onclick="testNormalize()">标准化</button>
+        </div>
+        <div id="normalizeResult" class="result"></div>
+    </div>
+    
+    <!-- 相对路径示例 -->
+    <div class="example">
+        <h3>13. getRelativePath - 获取相对路径</h3>
+        <p>获取从源路径到目标路径的相对路径。</p>
+        <div class="input-group">
+            <label for="fromPathInput">源路径：</label>
+            <input type="text" id="fromPathInput" value="/path/to/source" style="width: 200px;">
+            <label for="toPathInput">目标路径：</label>
+            <input type="text" id="toPathInput" value="/path/to/target/file.html" style="width: 250px;">
+            <button onclick="testGetRelativePath()">计算</button>
+        </div>
+        <div id="relativePathResult" class="result"></div>
+    </div>
+    
+    <!-- 导入 dcUrl 模块 -->
+    <script src="../../../src/utils/dcUrl.js"></script>
+    
+    <script>
+        // 测试 URL 解析
+        function testParse() {
+            const url = document.getElementById('parseUrlInput').value;
+            const result = DC.Url.parse(url);
+            document.getElementById('parseResult').innerHTML = `解析结果：<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+        
+        // 测试查询字符串解析
+        function testParseQuery() {
+            const queryString = document.getElementById('queryStringInput').value;
+            const result = DC.Url.parseQuery(queryString);
+            document.getElementById('parseQueryResult').innerHTML = `解析结果：<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+        
+        // 测试 URL 构建
+        function testBuild() {
+            const protocol = document.getElementById('protocolInput').value;
+            const host = document.getElementById('hostInput').value;
+            const path = document.getElementById('pathInput').value;
+            
+            try {
+                const result = DC.Url.build({
+                    protocol: protocol,
+                    host: host,
+                    path: path
+                });
+                document.getElementById('buildResult').innerHTML = `构建结果：${result}`;
+            } catch (error) {
+                document.getElementById('buildResult').innerHTML = `错误：${error.message}`;
+            }
+        }
+        
+        // 测试获取 URL 参数
+        function testGetParam() {
+            const url = document.getElementById('getParamUrl').value;
+            const paramName = document.getElementById('getParamName').value;
+            const result = DC.Url.getParam(paramName, url);
+            document.getElementById('getParamResult').innerHTML = `参数 "${paramName}" 的值：${result}`;
+        }
+        
+        // 测试更新 URL 参数
+        function testUpdateParams() {
+            const url = document.getElementById('updateParamUrl').value;
+            const paramName = document.getElementById('updateParamName').value;
+            const paramValue = document.getElementById('updateParamValue').value;
+            
+            const updates = {};
+            updates[paramName] = paramValue;
+            
+            const result = DC.Url.updateParams(url, updates);
+            document.getElementById('updateParamsResult').innerHTML = `更新结果：${result}`;
+        }
+        
+        // 测试删除 URL 参数
+        function testRemoveParams() {
+            const url = document.getElementById('removeParamUrl').value;
+            const paramName = document.getElementById('removeParamName').value;
+            const result = DC.Url.removeParams(url, paramName);
+            document.getElementById('removeParamsResult').innerHTML = `删除结果：${result}`;
+        }
+        
+        // 测试 URL 验证
+        function testIsValid() {
+            const url = document.getElementById('validateUrlInput').value;
+            const result = DC.Url.isValid(url);
+            document.getElementById('isValidResult').innerHTML = `URL 是否有效：${result}`;
+        }
+        
+        // 测试路径合并
+        function testJoin() {
+            const path1 = document.getElementById('joinPath1').value;
+            const path2 = document.getElementById('joinPath2').value;
+            const path3 = document.getElementById('joinPath3').value;
+            const result = DC.Url.join(path1, path2, path3);
+            document.getElementById('joinResult').innerHTML = `合并结果：${result}`;
+        }
+        
+        // 测试获取文件扩展名
+        function testGetExtension() {
+            const url = document.getElementById('extensionUrlInput').value;
+            const result = DC.Url.getExtension(url);
+            document.getElementById('extensionResult').innerHTML = `文件扩展名：${result}`;
+        }
+        
+        // 测试获取域名
+        function testGetDomain() {
+            const url = document.getElementById('domainUrlInput').value;
+            const result = DC.Url.getDomain(url);
+            document.getElementById('domainResult').innerHTML = `域名：${result}`;
+        }
+        
+        // 测试绝对路径检查
+        function testIsAbsolute() {
+            const url = document.getElementById('absoluteUrlInput').value;
+            const result = DC.Url.isAbsolute(url);
+            document.getElementById('absoluteResult').innerHTML = `是否为绝对路径：${result}`;
+        }
+        
+        // 测试URL标准化
+        function testNormalize() {
+            const url = document.getElementById('normalizeUrlInput').value;
+            const result = DC.Url.normalize(url);
+            document.getElementById('normalizeResult').innerHTML = `标准化结果：${result}`;
+        }
+        
+        // 测试相对路径
+        function testGetRelativePath() {
+            const from = document.getElementById('fromPathInput').value;
+            const to = document.getElementById('toPathInput').value;
+            const result = DC.Url.getRelativePath(from, to);
+            document.getElementById('relativePathResult').innerHTML = `相对路径：${result}`;
+        }
+        
+        // 初始化测试
+        window.onload = function() {
+            testParse();
+            testParseQuery();
+            testBuild();
+            testGetParam();
+            testUpdateParams();
+            testRemoveParams();
+            testIsValid();
+            testJoin();
+            testGetExtension();
+            testGetDomain();
+            testIsAbsolute();
+            testNormalize();
+            testGetRelativePath();
+        };
+    </script>
+</body>
+</html>

@@ -26,6 +26,8 @@ import './utils/dcwaterfall'
 import './utils/dprettylog'
 import './utils/ga'
 import './utils/sampleadapt'
+import './utils/dcDailyQuote'  // 添加每日一言工具
+import './utils/dcScreenshot'  // 添加截图工具
 
 // 各个工具类已在各自文件中注册到 window.DC 对象
 // 此文件提供跨环境（浏览器、CommonJS、AMD）的兼容性支持

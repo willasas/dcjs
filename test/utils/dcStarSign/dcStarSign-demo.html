@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星次工具类示例</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        input, select, button {
+            padding: 12px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        input {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            background-color: #e8f4fd;
+            border: 1px solid #bee1f4;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2980b9;
+            display: none;
+        }
+        .info-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 3px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 中国传统十二星次查询工具 🌟</h1>
+
+        <div class="info-box">
+            <h3>📚 关于十二星次</h3>
+            <p>十二星次是中国古代天文学中的一种划分方式，类似于西方的星座概念。它是根据月亮在天空中经过的12个特定区域来划分的，每个区域对应一个时间段。</p>
+            <p><strong>十二星次名称：</strong>星纪、玄枵、娵訾、降娄、大梁、实沈、鹑首、鹑火、鹑尾、寿星、大火、析木</p>
+        </div>
+
+        <!-- 在线查询 -->
+        <div class="section">
+            <h2>🔍 在线查询您的星次</h2>
+            <div class="input-group">
+                <input type="date" id="birthDate" placeholder="选择您的出生日期">
+                <button onclick="getStarSign()">查询星次</button>
+            </div>
+            <div class="input-group">
+                <span>或输入日期:</span>
+                <input type="text" id="dateString" placeholder="例如: 2000-05-20 或 2000/05/20" value="2000-05-20">
+                <button onclick="getStarSignFromString()">查询</button>
+            </div>
+            <div id="result" class="result"></div>
+        </div>
+
+        <!-- 星次对照表 -->
+        <div class="section">
+            <h2>📋 十二星次对照表</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>星次名称</th>
+                        <th>起始日期</th>
+                        <th>结束日期</th>
+                        <th>对应公历</th>
+                    </tr>
+                </thead>
+                <tbody id="starSignTableBody">
+                    <!-- 表格内容将通过JavaScript动态填充 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 使用示例 -->
+        <div class="section">
+            <h2>💻 JavaScript 使用示例</h2>
+            <pre style="background-color: #2d3748; color: #cbd5e0; padding: 15px; border-radius: 6px; overflow-x: auto;">
+              // 创建星次工具实例
+              const starSign = new dcStarSign();
+
+              // 根据日期获取星次
+              const result = starSign.getStarSignByDate('2000-05-20');
+              console.log(result); // 输出: 您的星次为鹑火
+
+              // 获取所有星次信息
+              const allSigns = starSign.getAllStarSigns();
+              console.log(allSigns);
+
+              // 获取特定星次信息
+              const info = starSign.getStarSignInfo('鹑火');
+              console.log(info); // 输出鹑火的日期范围信息
+            </pre>
+        </div>
+    </div>
+
+    <!-- 引入星次工具类 -->
+    <script src="../../src/utils/dcStarSign.js"></script>
+
+    <script>
+        // 创建星次工具实例
+        const starSign = new dcStarSign();
+
+        // 填充星次对照表
+        function fillStarSignTable() {
+            const tableBody = document.getElementById('starSignTableBody');
+            const signs = starSign.getAllStarSigns();
+
+            signs.forEach(sign => {
+                const row = document.createElement('tr');
+
+                // 如果跨越年份，特殊处理显示
+                let dateRange;
+                if (sign.startMonth > sign.endMonth) {
+                    dateRange = `${sign.startMonth}月${sign.startDay}日 - 次年${sign.endMonth}月${sign.endDay}日`;
+                } else {
+                    dateRange = `${sign.startMonth}月${sign.startDay}日 - ${sign.endMonth}月${sign.endDay}日`;
+                }
+
+                row.innerHTML = `
+                    <td><strong>${sign.name}</strong></td>
+                    <td>${sign.startMonth}月${sign.startDay}日</td>
+                    <td>${sign.endMonth}月${sign.endDay}日</td>
+                    <td>${dateRange}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 查询星次
+        function getStarSign() {
+            const dateInput = document.getElementById('birthDate').value;
+            if (!dateInput) {
+                alert('请选择一个日期');
+                return;
+            }
+
+            const result = starSign.getStarSignByDate(dateInput);
+            showResult(result);
+        }
+
+        // 通过字符串查询星次
+        function getStarSignFromString() {
+            const dateString = document.getElementById('dateString').value;
+            if (!dateString) {
+                alert('请输入一个日期');
+                return;
+            }
+
+            const result = starSign.getStarSignByDate(dateString);
+            showResult(result);
+        }
+
+        // 显示结果
+        function showResult(result) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = result;
+            resultDiv.style.display = 'block';
+
+            // 添加动画效果
+            resultDiv.style.animation = 'none';
+            setTimeout(() => {
+                resultDiv.style.animation = 'fadeIn 0.5s';
+            }, 10);
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            fillStarSignTable();
+
+            // 设置今天的日期作为默认值
+            const today = new Date();
+            const formattedToday = today.toISOString().split('T')[0];
+            document.getElementById('birthDate').value = formattedToday;
+        });
+    </script>
+</body>
+</html>

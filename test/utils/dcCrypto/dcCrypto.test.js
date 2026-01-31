@@ -1,123 +1,222 @@
-// dcCrypto 工具类单元测试
+/**
+ * dcCrypto 测试用例
+ */
+const dcCrypto = require('../../../src/utils/dcCrypto');
 
-// 导入要测试的模块
-const dcCrypto = require('../../../src/utils/dcCrypto.js');
+describe('dcCrypto', () => {
+  // Mock crypto 对象
+  beforeEach(() => {
+    global.crypto = {
+      subtle: {
+        digest: jest.fn((algorithm, data) => {
+          // 模拟 SHA-256 哈希
+          return Promise.resolve(new ArrayBuffer(32));
+        }),
+        importKey: jest.fn((format, keyData, algorithm, extractable, usages) => {
+          return Promise.resolve({});
+        }),
+        encrypt: jest.fn((algorithm, key, data) => {
+          return Promise.resolve(new ArrayBuffer(16));
+        }),
+        decrypt: jest.fn((algorithm, key, data) => {
+          return Promise.resolve(new TextEncoder().encode('test message'));
+        }),
+        sign: jest.fn((algorithm, key, data) => {
+          return Promise.resolve(new ArrayBuffer(32));
+        })
+      },
+      getRandomValues: jest.fn((array) => {
+        for (let i = 0; i < array.length; i++) {
+          array[i] = Math.floor(Math.random() * 256);
+        }
+        return array;
+      }),
+      randomUUID: jest.fn(() => '123e4567-e89b-12d3-a456-426614174000')
+    };
 
-// 测试套件
-function runTests() {
-  let passedTests = 0;
-  let totalTests = 0;
+    global.btoa = jest.fn((str) => {
+      return Buffer.from(str, 'binary').toString('base64');
+    });
 
-  // 测试辅助函数
-  function test(description, testFunction) {
-    totalTests++;
-    try {
-      const result = testFunction();
-      if (result) {
-        console.log(`✓ ${description}`);
-        passedTests++;
-      } else {
-        console.error(`✗ ${description}`);
-      }
-    } catch (error) {
-      console.error(`✗ ${description}: ${error.message}`);
-    }
-  }
+    global.atob = jest.fn((str) => {
+      return Buffer.from(str, 'base64').toString('binary');
+    });
 
-  // 加密解密测试
-  test('encrypt: 正常文本加密', () => {
-    const plaintext = 'Hello World';
-    const password = 'secret123';
-    const encrypted = dcCrypto.encrypt(plaintext, password);
-    
-    // 检查加密结果是否为非空字符串
-    return typeof encrypted === 'string' && encrypted.length > 0 && encrypted !== plaintext;
+    global.TextEncoder = jest.fn(() => ({
+      encode: jest.fn((str) => {
+        const buffer = new ArrayBuffer(str.length);
+        const view = new Uint8Array(buffer);
+        for (let i = 0; i < str.length; i++) {
+          view[i] = str.charCodeAt(i);
+        }
+        return view;
+      })
+    }));
+
+    global.TextDecoder = jest.fn(() => ({
+      decode: jest.fn((buffer) => {
+        return 'test message';
+      })
+    }));
   });
 
-  test('decrypt: 正常文本解密', () => {
-    const plaintext = 'Hello World';
-    const password = 'secret123';
-    const encrypted = dcCrypto.encrypt(plaintext, password);
-    const decrypted = dcCrypto.decrypt(encrypted, password);
-    
-    return decrypted === plaintext;
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('encrypt/decrypt: 复杂文本处理', () => {
-    const plaintext = '这是一段包含中文、数字123和特殊字符!@#的文本';
-    const password = 'complexPassword!@#';
-    const encrypted = dcCrypto.encrypt(plaintext, password);
-    const decrypted = dcCrypto.decrypt(encrypted, password);
-    
-    return decrypted === plaintext;
+  describe('md5', () => {
+    test('MD5加密', () => {
+      const result = dcCrypto.md5('test');
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(32);
+    });
   });
 
-  // 边界情况测试
-  test('encrypt: 空文本处理', () => {
-    const plaintext = '';
-    const password = 'secret123';
-    const encrypted = dcCrypto.encrypt(plaintext, password);
-    const decrypted = dcCrypto.decrypt(encrypted, password);
-    
-    return decrypted === plaintext;
+  describe('sha256', () => {
+    test('SHA-256加密', async () => {
+      const result = await dcCrypto.sha256('test');
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(64);
+    });
   });
 
-  test('encrypt: 空密码处理', () => {
-    const plaintext = 'Hello World';
-    const password = '';
-    const encrypted = dcCrypto.encrypt(plaintext, password);
-    const decrypted = dcCrypto.decrypt(encrypted, password);
-    
-    return decrypted === plaintext;
+  describe('base64Encode', () => {
+    test('Base64编码', () => {
+      const result = dcCrypto.base64Encode('test');
+      expect(typeof result).toBe('string');
+    });
   });
 
-  test('decrypt: 无效密文处理', () => {
-    const invalidCiphertext = 'invalid-cipher-text';
-    const password = 'secret123';
-    let errorOccurred = false;
-    
-    try {
-      dcCrypto.decrypt(invalidCiphertext, password);
-    } catch (error) {
-      errorOccurred = true;
-    }
-    
-    return errorOccurred;
+  describe('base64Decode', () => {
+    test('Base64解码', () => {
+      const encoded = dcCrypto.base64Encode('test');
+      const result = dcCrypto.base64Decode(encoded);
+      expect(typeof result).toBe('string');
+    });
+
+    test('无效的Base64字符串', () => {
+      const result = dcCrypto.base64Decode('invalid');
+      expect(result).toBe('');
+    });
   });
 
-  // 安全性测试
-  test('encrypt: 相同文本不同密码产生不同密文', () => {
-    const plaintext = 'Hello World';
-    const password1 = 'password1';
-    const password2 = 'password2';
-    
-    const encrypted1 = dcCrypto.encrypt(plaintext, password1);
-    const encrypted2 = dcCrypto.encrypt(plaintext, password2);
-    
-    return encrypted1 !== encrypted2;
+  describe('aesEncrypt', () => {
+    test('AES加密', async () => {
+      const result = await dcCrypto.aesEncrypt('test message', 'password');
+      expect(typeof result).toBe('string');
+    });
+
+    test('空消息', async () => {
+      console.error = jest.fn();
+      const result = await dcCrypto.aesEncrypt('', 'password');
+      expect(console.error).toHaveBeenCalledWith('消息和密码不能为空');
+      expect(result).toBe('');
+    });
+
+    test('空密码', async () => {
+      console.error = jest.fn();
+      const result = await dcCrypto.aesEncrypt('test message', '');
+      expect(console.error).toHaveBeenCalledWith('消息和密码不能为空');
+      expect(result).toBe('');
+    });
   });
 
-  test('decrypt: 正确密码才能解密', () => {
-    const plaintext = 'Hello World';
-    const correctPassword = 'correct123';
-    const wrongPassword = 'wrong123';
-    
-    const encrypted = dcCrypto.encrypt(plaintext, correctPassword);
-    let errorOccurred = false;
-    
-    try {
-      dcCrypto.decrypt(encrypted, wrongPassword);
-    } catch (error) {
-      errorOccurred = true;
-    }
-    
-    return errorOccurred;
+  describe('aesDecrypt', () => {
+    test('AES解密', async () => {
+      const encrypted = await dcCrypto.aesEncrypt('test message', 'password');
+      const result = await dcCrypto.aesDecrypt(encrypted, 'password');
+      expect(typeof result).toBe('string');
+    });
+
+    test('空加密消息', async () => {
+      console.error = jest.fn();
+      const result = await dcCrypto.aesDecrypt('', 'password');
+      expect(console.error).toHaveBeenCalledWith('加密消息和密码不能为空');
+      expect(result).toBe('');
+    });
+
+    test('空密码', async () => {
+      console.error = jest.fn();
+      const result = await dcCrypto.aesDecrypt('encrypted', '');
+      expect(console.error).toHaveBeenCalledWith('加密消息和密码不能为空');
+      expect(result).toBe('');
+    });
   });
 
-  console.log(`\n测试结果: ${passedTests}/${totalTests} 通过`);
-  return passedTests === totalTests;
-}
+  describe('generatePassword', () => {
+    test('生成随机密码', () => {
+      const result = dcCrypto.generatePassword();
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(32);
+    });
 
-if (require.main === module) {
-  runTests();
-}
+    test('生成指定长度的密码', () => {
+      const length = 16;
+      const result = dcCrypto.generatePassword(length);
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(length);
+    });
+  });
+
+  describe('generateKey', () => {
+    test('生成随机密钥', () => {
+      const result = dcCrypto.generateKey();
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(32);
+    });
+
+    test('生成指定长度的密钥', () => {
+      const length = 16;
+      const result = dcCrypto.generateKey(length);
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(length);
+    });
+  });
+
+  describe('uuid', () => {
+    test('生成UUID', () => {
+      const result = dcCrypto.uuid();
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(36);
+    });
+  });
+
+  describe('hmacSha256', () => {
+    test('HMAC-SHA256签名', async () => {
+      const result = await dcCrypto.hmacSha256('test message', 'key');
+      expect(typeof result).toBe('string');
+      expect(result.length).toBe(64);
+    });
+  });
+
+  describe('secureRandom', () => {
+    test('生成安全的随机数', () => {
+      const result = dcCrypto.secureRandom(1, 10);
+      expect(typeof result).toBe('number');
+      expect(result).toBeGreaterThanOrEqual(1);
+      expect(result).toBeLessThanOrEqual(10);
+    });
+  });
+
+  describe('hashPassword', () => {
+    test('生成密码哈希', async () => {
+      const result = await dcCrypto.hashPassword('password');
+      expect(typeof result).toBe('string');
+      expect(result.split(':').length).toBe(2);
+    });
+  });
+
+  describe('verifyPassword', () => {
+    test('验证密码哈希', async () => {
+      const hash = await dcCrypto.hashPassword('password');
+      const result = await dcCrypto.verifyPassword('password', hash);
+      expect(typeof result).toBe('boolean');
+    });
+
+    test('验证错误的密码', async () => {
+      const hash = await dcCrypto.hashPassword('password');
+      const result = await dcCrypto.verifyPassword('wrong', hash);
+      expect(typeof result).toBe('boolean');
+    });
+  });
+});

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcValidate 工具类示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin: 20px 0 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        
+        .example {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .example h3 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .code {
+            background-color: #f1f3f4;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .result {
+            background-color: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #721c24;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .input-group {
+            margin: 10px 0;
+        }
+        
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .validation-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .valid {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .invalid {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcValidate 工具类示例</h1>
+    
+    <!-- 空值验证示例 -->
+    <div class="example">
+        <h3>1. isEmpty - 空值验证</h3>
+        <p>检查值是否为空，包括 undefined、null、空字符串、空数组和空对象。</p>
+        <div class="input-group">
+            <label for="isEmptyInput">输入值：</label>
+            <input type="text" id="isEmptyInput" placeholder="输入要检查的值">
+            <button onclick="testIsEmpty()">验证</button>
+        </div>
+        <div id="isEmptyResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 邮箱验证示例 -->
+    <div class="example">
+        <h3>2. isEmail - 邮箱验证</h3>
+        <p>验证是否为有效的电子邮件地址格式。</p>
+        <div class="input-group">
+            <label for="emailInput">邮箱地址：</label>
+            <input type="email" id="emailInput" placeholder="输入邮箱地址">
+            <button onclick="testIsEmail()">验证</button>
+        </div>
+        <div id="emailResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 手机号码验证示例 -->
+    <div class="example">
+        <h3>3. isPhone - 手机号码验证</h3>
+        <p>验证是否为有效的手机号码（支持国际格式）。</p>
+        <div class="input-group">
+            <label for="phoneInput">手机号码：</label>
+            <input type="tel" id="phoneInput" placeholder="输入手机号码">
+            <button onclick="testIsPhone()">验证</button>
+        </div>
+        <div id="phoneResult" class="validation-result"></div>
+    </div>
+    
+    <!-- URL验证示例 -->
+    <div class="example">
+        <h3>4. isUrl - URL验证</h3>
+        <p>验证是否为有效的 URL 格式。</p>
+        <div class="input-group">
+            <label for="urlInput">URL地址：</label>
+            <input type="url" id="urlInput" placeholder="输入URL地址">
+            <button onclick="testIsUrl()">验证</button>
+        </div>
+        <div id="urlResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 身份证号验证示例 -->
+    <div class="example">
+        <h3>5. isIdCard - 身份证号验证</h3>
+        <p>验证是否为有效的身份证号格式（支持 18 位身份证）。</p>
+        <div class="input-group">
+            <label for="idCardInput">身份证号：</label>
+            <input type="text" id="idCardInput" placeholder="输入身份证号">
+            <button onclick="testIsIdCard()">验证</button>
+        </div>
+        <div id="idCardResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 密码强度验证示例 -->
+    <div class="example">
+        <h3>6. isPassword - 密码强度验证</h3>
+        <p>验证是否为有效的密码（至少包含数字和字母，长度 8-16 位）。</p>
+        <div class="input-group">
+            <label for="passwordInput">密码：</label>
+            <input type="password" id="passwordInput" placeholder="输入密码">
+            <button onclick="testIsPassword()">验证</button>
+        </div>
+        <div id="passwordResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 字符串长度验证示例 -->
+    <div class="example">
+        <h3>7. isLengthBetween - 字符串长度验证</h3>
+        <p>验证字符串长度是否在指定范围内。</p>
+        <div class="input-group">
+            <label for="lengthInput">输入字符串：</label>
+            <input type="text" id="lengthInput" placeholder="输入字符串">
+            <label for="minLength">最小长度：</label>
+            <input type="number" id="minLength" value="3" min="0" style="width: 80px;">
+            <label for="maxLength">最大长度：</label>
+            <input type="number" id="maxLength" value="10" min="0" style="width: 80px;">
+            <button onclick="testIsLengthBetween()">验证</button>
+        </div>
+        <div id="lengthResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 中文字符验证示例 -->
+    <div class="example">
+        <h3>8. isChinese - 中文字符验证</h3>
+        <p>验证字符串是否仅包含中文字符。</p>
+        <div class="input-group">
+            <label for="chineseInput">输入字符串：</label>
+            <input type="text" id="chineseInput" placeholder="输入字符串">
+            <button onclick="testIsChinese()">验证</button>
+        </div>
+        <div id="chineseResult" class="validation-result"></div>
+    </div>
+    
+    <!-- 类型验证示例 -->
+    <div class="example">
+        <h3>9. 类型验证（isNumber, isInteger, isObject, isArray）</h3>
+        <p>验证值的类型。</p>
+        <div class="input-group">
+            <label for="typeInput">输入值：</label>
+            <input type="text" id="typeInput" placeholder="输入要检查的值">
+            <button onclick="testTypeValidation()">验证类型</button>
+        </div>
+        <div id="typeResult" class="result"></div>
+    </div>
+    
+    <!-- 导入 dcValidate 模块 -->
+    <script src="../../../src/utils/dcValidate.js"></script>
+    
+    <script>
+        // 测试空值验证
+        function testIsEmpty() {
+            const input = document.getElementById('isEmptyInput').value;
+            let value;
+            
+            // 尝试转换输入值
+            try {
+                value = input === '' ? '' : JSON.parse(input);
+            } catch {
+                value = input;
+            }
+            
+            const result = DC.Validate.isEmpty(value);
+            const resultDiv = document.getElementById('isEmptyResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：值为空';
+            } else {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：值不为空';
+            }
+        }
+        
+        // 测试邮箱验证
+        function testIsEmail() {
+            const email = document.getElementById('emailInput').value;
+            const result = DC.Validate.isEmail(email);
+            const resultDiv = document.getElementById('emailResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：邮箱地址有效';
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：邮箱地址无效';
+            }
+        }
+        
+        // 测试手机号码验证
+        function testIsPhone() {
+            const phone = document.getElementById('phoneInput').value;
+            const result = DC.Validate.isPhone(phone);
+            const resultDiv = document.getElementById('phoneResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：手机号码有效';
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：手机号码无效';
+            }
+        }
+        
+        // 测试 URL 验证
+        function testIsUrl() {
+            const url = document.getElementById('urlInput').value;
+            const result = DC.Validate.isUrl(url);
+            const resultDiv = document.getElementById('urlResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：URL 有效';
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：URL 无效';
+            }
+        }
+        
+        // 测试身份证号验证
+        function testIsIdCard() {
+            const idCard = document.getElementById('idCardInput').value;
+            const result = DC.Validate.isIdCard(idCard);
+            const resultDiv = document.getElementById('idCardResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：身份证号有效';
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：身份证号无效';
+            }
+        }
+        
+        // 测试密码强度验证
+        function testIsPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const result = DC.Validate.isPassword(password);
+            const resultDiv = document.getElementById('passwordResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：密码有效（符合强度要求）';
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：密码无效（至少包含数字和字母，长度 8-16 位）';
+            }
+        }
+        
+        // 测试字符串长度验证
+        function testIsLengthBetween() {
+            const input = document.getElementById('lengthInput').value;
+            const min = parseInt(document.getElementById('minLength').value);
+            const max = parseInt(document.getElementById('maxLength').value);
+            const result = DC.Validate.isLengthBetween(input, min, max);
+            const resultDiv = document.getElementById('lengthResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = `结果：字符串长度在 ${min}-${max} 之间`;
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = `结果：字符串长度不在 ${min}-${max} 之间`;
+            }
+        }
+        
+        // 测试中文字符验证
+        function testIsChinese() {
+            const input = document.getElementById('chineseInput').value;
+            const result = DC.Validate.isChinese(input);
+            const resultDiv = document.getElementById('chineseResult');
+            
+            if (result) {
+                resultDiv.className = 'validation-result valid';
+                resultDiv.innerHTML = '结果：仅包含中文字符';
+            } else {
+                resultDiv.className = 'validation-result invalid';
+                resultDiv.innerHTML = '结果：包含非中文字符或为空';
+            }
+        }
+        
+        // 测试类型验证
+        function testTypeValidation() {
+            const input = document.getElementById('typeInput').value;
+            let value;
+            
+            // 尝试转换输入值
+            try {
+                value = input === '' ? '' : JSON.parse(input);
+            } catch {
+                value = input;
+            }
+            
+            const results = {
+                isNumber: DC.Validate.isNumber(value),
+                isInteger: DC.Validate.isInteger(value),
+                isObject: DC.Validate.isObject(value),
+                isArray: DC.Validate.isArray(value)
+            };
+            
+            const resultDiv = document.getElementById('typeResult');
+            resultDiv.innerHTML = `
+                输入值：${JSON.stringify(value)}<br>
+                是数字：${results.isNumber}<br>
+                是整数：${results.isInteger}<br>
+                是对象：${results.isObject}<br>
+                是数组：${results.isArray}
+            `;
+        }
+    </script>
+</body>
+</html>

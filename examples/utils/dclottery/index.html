@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dclottery 工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .example {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+        .info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        select {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .lottery-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f3e5f5;
+            border-radius: 4px;
+            text-align: center;
+        }
+        #square-lottery {
+            margin: 20px auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        #circle-lottery {
+            margin: 20px auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .prize-info {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff3e0;
+            border-radius: 4px;
+        }
+        .prize-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e65100;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dclottery 工具类示例</h1>
+
+        <div class="section">
+            <h2>1. 方形抽奖</h2>
+            <div class="example">
+                <div class="lottery-container">
+                    <div id="square-lottery"></div>
+                    <button onclick="startSquareLottery()">开始抽奖</button>
+                    <button onclick="resetSquareLottery()">重置</button>
+                </div>
+                <div class="result" id="squareResult"></div>
+                <div class="prize-info" id="squarePrizeInfo"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. 圆形抽奖</h2>
+            <div class="example">
+                <div class="lottery-container">
+                    <div id="circle-lottery"></div>
+                    <button onclick="startCircleLottery()">开始抽奖</button>
+                    <button onclick="resetCircleLottery()">重置</button>
+                </div>
+                <div class="result" id="circleResult"></div>
+                <div class="prize-info" id="circlePrizeInfo"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. 自定义抽奖</h2>
+            <div class="example">
+                <label>奖项数量: <input type="number" id="customTotal" value="8" min="4" max="16"></label>
+                <label>形状:
+                    <select id="customShape">
+                        <option value="square">方形</option>
+                        <option value="circle">圆形</option>
+                    </select>
+                </label>
+                <button onclick="createCustomLottery()">创建抽奖</button>
+                <div class="lottery-container">
+                    <div id="custom-lottery"></div>
+                    <button onclick="startCustomLottery()" disabled>开始抽奖</button>
+                    <button onclick="resetCustomLottery()" disabled>重置</button>
+                </div>
+                <div class="result" id="customResult"></div>
+                <div class="prize-info" id="customPrizeInfo"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../src/utils/dclottery.js"></script>
+    <script>
+        let squareLottery = null;
+        let circleLottery = null;
+        let customLottery = null;
+
+        // 初始化方形抽奖
+        function initSquareLottery() {
+            try {
+                squareLottery = new DC.Lottery({
+                    contentId: 'square-lottery',
+                    width: 400,
+                    height: 400,
+                    total: 8,
+                    boxw: 100,
+                    boxh: 100,
+                    sbtnx: 150,
+                    sbtny: 150,
+                    sbtnw: 100,
+                    sbtnh: 100,
+                    position: '0_0,100_0,200_0,300_0,0_100,300_100,0_200,300_200,0_300,100_300,200_300,300_300',
+                    starturl: '',
+                    lighturl: '',
+                    prizes: [
+                        { name: '一等奖', image: '' },
+                        { name: '二等奖', image: '' },
+                        { name: '三等奖', image: '' },
+                        { name: '四等奖', image: '' },
+                        { name: '五等奖', image: '' },
+                        { name: '六等奖', image: '' },
+                        { name: '七等奖', image: '' },
+                        { name: '八等奖', image: '' }
+                    ],
+                    onClickRollEvent: function() {
+                        document.getElementById('squareResult').innerHTML = '<div class="info">抽奖开始...</div>';
+                    },
+                    onCompleteRollEvent: function(prize) {
+                        document.getElementById('squareResult').innerHTML = '<div class="success">抽奖结束！</div>';
+                        document.getElementById('squarePrizeInfo').innerHTML = '<div class="prize-name">中奖啦！恭喜获得: ' + prize.name + '</div>';
+                    }
+                });
+                document.getElementById('squareResult').innerHTML = '<div class="success">方形抽奖初始化成功！</div>';
+            } catch (error) {
+                document.getElementById('squareResult').innerHTML = '<div class="error">初始化失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 初始化圆形抽奖
+        function initCircleLottery() {
+            try {
+                circleLottery = new DC.Lottery({
+                    contentId: 'circle-lottery',
+                    width: 400,
+                    height: 400,
+                    total: 8,
+                    boxw: 100,
+                    boxh: 100,
+                    sbtnx: 200,
+                    sbtny: 200,
+                    sbtnw: 100,
+                    sbtnh: 100,
+                    position: '150_0,300_150,150_300,0_150,75_75,225_75,225_225,75_225',
+                    starturl: '',
+                    lighturl: '',
+                    shape: 'circle',
+                    prizes: [
+                        { name: '一等奖', image: '' },
+                        { name: '二等奖', image: '' },
+                        { name: '三等奖', image: '' },
+                        { name: '四等奖', image: '' },
+                        { name: '五等奖', image: '' },
+                        { name: '六等奖', image: '' },
+                        { name: '七等奖', image: '' },
+                        { name: '八等奖', image: '' }
+                    ],
+                    onClickRollEvent: function() {
+                        document.getElementById('circleResult').innerHTML = '<div class="info">抽奖开始...</div>';
+                    },
+                    onCompleteRollEvent: function(prize) {
+                        document.getElementById('circleResult').innerHTML = '<div class="success">抽奖结束！</div>';
+                        document.getElementById('circlePrizeInfo').innerHTML = '<div class="prize-name">中奖啦！恭喜获得: ' + prize.name + '</div>';
+                    }
+                });
+                document.getElementById('circleResult').innerHTML = '<div class="success">圆形抽奖初始化成功！</div>';
+            } catch (error) {
+                document.getElementById('circleResult').innerHTML = '<div class="error">初始化失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 开始方形抽奖
+        function startSquareLottery() {
+            if (squareLottery) {
+                squareLottery.startLottery();
+            } else {
+                document.getElementById('squareResult').innerHTML = '<div class="error">抽奖未初始化！</div>';
+            }
+        }
+
+        // 重置方形抽奖
+        function resetSquareLottery() {
+            if (squareLottery) {
+                squareLottery.reset();
+                document.getElementById('squareResult').innerHTML = '<div class="info">抽奖已重置</div>';
+                document.getElementById('squarePrizeInfo').innerHTML = '';
+            }
+        }
+
+        // 开始圆形抽奖
+        function startCircleLottery() {
+            if (circleLottery) {
+                circleLottery.startLottery();
+            } else {
+                document.getElementById('circleResult').innerHTML = '<div class="error">抽奖未初始化！</div>';
+            }
+        }
+
+        // 重置圆形抽奖
+        function resetCircleLottery() {
+            if (circleLottery) {
+                circleLottery.reset();
+                document.getElementById('circleResult').innerHTML = '<div class="info">抽奖已重置</div>';
+                document.getElementById('circlePrizeInfo').innerHTML = '';
+            }
+        }
+
+        // 创建自定义抽奖
+        function createCustomLottery() {
+            const total = parseInt(document.getElementById('customTotal').value);
+            const shape = document.getElementById('customShape').value;
+
+            try {
+                // 生成位置
+                const positions = generatePositions(total, shape);
+
+                // 创建抽奖
+                customLottery = new DC.Lottery({
+                    contentId: 'custom-lottery',
+                    width: 400,
+                    height: 400,
+                    total: total,
+                    boxw: 80,
+                    boxh: 80,
+                    sbtnx: 200,
+                    sbtny: 200,
+                    sbtnw: 100,
+                    sbtnh: 100,
+                    position: positions,
+                    starturl: '',
+                    lighturl: '',
+                    shape: shape,
+                    prizes: generatePrizes(total),
+                    onClickRollEvent: function() {
+                        document.getElementById('customResult').innerHTML = '<div class="info">抽奖开始...</div>';
+                    },
+                    onCompleteRollEvent: function(prize) {
+                        document.getElementById('customResult').innerHTML = '<div class="success">抽奖结束！</div>';
+                        document.getElementById('customPrizeInfo').innerHTML = '<div class="prize-name">中奖啦！恭喜获得: ' + prize.name + '</div>';
+                    }
+                });
+
+                document.getElementById('customResult').innerHTML = '<div class="success">自定义抽奖创建成功！</div>';
+
+                // 启用按钮
+                document.querySelector('button[onclick="startCustomLottery()"]').disabled = false;
+                document.querySelector('button[onclick="resetCustomLottery()"]').disabled = false;
+            } catch (error) {
+                document.getElementById('customResult').innerHTML = '<div class="error">创建失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 开始自定义抽奖
+        function startCustomLottery() {
+            if (customLottery) {
+                customLottery.startLottery();
+            } else {
+                document.getElementById('customResult').innerHTML = '<div class="error">抽奖未创建！</div>';
+            }
+        }
+
+        // 重置自定义抽奖
+        function resetCustomLottery() {
+            if (customLottery) {
+                customLottery.reset();
+                document.getElementById('customResult').innerHTML = '<div class="info">抽奖已重置</div>';
+                document.getElementById('customPrizeInfo').innerHTML = '';
+            }
+        }
+
+        // 生成位置
+        function generatePositions(total, shape) {
+            const positions = [];
+            const size = 400;
+            const boxSize = 80;
+
+            if (shape === 'square') {
+                // 方形布局
+                const cols = Math.ceil(Math.sqrt(total));
+                const rows = Math.ceil(total / cols);
+                const spacing = (size - boxSize * cols) / (cols + 1);
+
+                let count = 0;
+                for (let row = 0; row < rows && count < total; row++) {
+                    for (let col = 0; col < cols && count < total; col++) {
+                        const x = spacing + col * (boxSize + spacing);
+                        const y = spacing + row * (boxSize + spacing);
+                        positions.push(`${Math.round(x)}_${Math.round(y)}`);
+                        count++;
+                    }
+                }
+            } else {
+                // 圆形布局
+                const centerX = size / 2;
+                const centerY = size / 2;
+                const radius = size / 3;
+
+                for (let i = 0; i < total; i++) {
+                    const angle = (i / total) * Math.PI * 2;
+                    const x = centerX + radius * Math.cos(angle) - boxSize / 2;
+                    const y = centerY + radius * Math.sin(angle) - boxSize / 2;
+                    positions.push(`${Math.round(x)}_${Math.round(y)}`);
+                }
+            }
+
+            return positions.join(',');
+        }
+
+        // 生成奖品
+        function generatePrizes(total) {
+            const prizes = [];
+            const prizeNames = ['一等奖', '二等奖', '三等奖', '四等奖', '五等奖', '六等奖', '七等奖', '八等奖', '九等奖', '十等奖'];
+
+            for (let i = 0; i < total; i++) {
+                prizes.push({
+                    name: prizeNames[i] || `奖品${i + 1}`,
+                    image: ''
+                });
+            }
+
+            return prizes;
+        }
+
+        // 初始化
+        window.onload = function() {
+            initSquareLottery();
+            initCircleLottery();
+        };
+    </script>
+</body>
+</html>

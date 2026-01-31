@@ -110,21 +110,21 @@ class DcAdapt {
    */
   getBrowserNavHeight() {
     // 使用更准确的方法计算实际可用高度
-    const windowHeight = window.innerHeight;
-    const screenHeight = window.screen.height;
-    const pixelRatio = window.devicePixelRatio || 1;
-    
+    const windowHeight = window.innerHeight
+    const screenHeight = window.screen.height
+    const pixelRatio = window.devicePixelRatio || 1
+
     // 考虑设备像素比
-    const physicalScreenHeight = screenHeight / pixelRatio;
-    
+    const physicalScreenHeight = screenHeight / pixelRatio
+
     // 如果是Windows系统，考虑任务栏高度
-    const isWindows = navigator.platform.indexOf('Win') > -1;
-    const estimatedTaskbarHeight = isWindows ? 40 : 0;
-    
+    const isWindows = navigator.platform.indexOf('Win') > -1
+    const estimatedTaskbarHeight = isWindows ? 40 : 0
+
     // 计算实际的导航栏高度
-    const navHeight = Math.max(0, physicalScreenHeight - windowHeight - estimatedTaskbarHeight);
-    
-    return Math.round(navHeight);
+    const navHeight = Math.max(0, physicalScreenHeight - windowHeight - estimatedTaskbarHeight)
+
+    return Math.round(navHeight)
   }
 
   /**
@@ -132,11 +132,11 @@ class DcAdapt {
    * @returns {number} 视口高度（像素）
    */
   getViewportHeight() {
-    const windowHeight = window.innerHeight;
-    const navHeight = this.getBrowserNavHeight();
-    
+    const windowHeight = window.innerHeight
+    const navHeight = this.getBrowserNavHeight()
+
     // 确保返回的高度是正数且不超过窗口高度
-    return Math.max(windowHeight - navHeight, 0);
+    return Math.max(windowHeight - navHeight, 0)
   }
 
   /**
@@ -186,15 +186,15 @@ class DcAdapt {
    * 根据当前配置和状态执行适配
    */
   adapt() {
-    const { currentUnit, currentMode } = this.state;
-    const { device } = this.config;
+    const { currentUnit, currentMode } = this.state
+    const { device } = this.config
 
     // 更新视口高度
-    const viewportHeight = this.getViewportHeight();
-    
+    const viewportHeight = this.getViewportHeight()
+
     // 设置实际可用高度为CSS变量
-    document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`);
-    document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`);
+    document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`)
+    document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`)
 
     if (currentMode === 'fullscreen') {
       this.handleFullscreenAdapt()
@@ -411,8 +411,8 @@ class DcAdapt {
    * @param {number} viewportHeight - 视口高度
    */
   adaptWithRem(designConfig, viewportWidth, viewportHeight) {
-    const baseSize = 100; // 基准字号
-    let scale;
+    const baseSize = 100 // 基准字号
+    let scale
 
     // 根据屏幕方向选择缩放方式
     if (this.config.device.isMobile) {
@@ -422,45 +422,45 @@ class DcAdapt {
       if (isLandscapeDesign === isLandscapeScreen) {
         // 设计稿方向与屏幕方向一致时
         scale = Math.min(viewportWidth / designConfig.width, viewportHeight / designConfig.height)
-        const fontSize = baseSize * scale;
-        document.documentElement.style.fontSize = `${fontSize}px`;
+        const fontSize = baseSize * scale
+        document.documentElement.style.fontSize = `${fontSize}px`
       } else {
         // 设计稿方向与屏幕方向不一致时，需要旋转适配
         scale = Math.min(viewportWidth / designConfig.height, viewportHeight / designConfig.width)
-        const fontSize = baseSize * scale;
-        document.documentElement.style.fontSize = `${fontSize}px`;
+        const fontSize = baseSize * scale
+        document.documentElement.style.fontSize = `${fontSize}px`
       }
 
-      document.documentElement.style.setProperty('--rem-scale', scale.toFixed(6));
-      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`);
-      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`);
+      document.documentElement.style.setProperty('--rem-scale', scale.toFixed(6))
+      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`)
+      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`)
     } else {
       // PC端适配优化
-      const targetDesignSize = this.getTargetDesignSize(designConfig);
-      
+      const targetDesignSize = this.getTargetDesignSize(designConfig)
+
       // 使用配置中的基准尺寸
-      const baseWidth = designConfig.width;  // 1920
-      const baseHeight = designConfig.height; // 1080
-      
+      const baseWidth = designConfig.width // 1920
+      const baseHeight = designConfig.height // 1080
+
       // 计算当前目标设计尺寸相对于基准尺寸的放大倍数
-      const designScale = targetDesignSize.width / baseWidth;
-      
+      const designScale = targetDesignSize.width / baseWidth
+
       // 计算视口相对于当前目标设计尺寸的缩放比例
-      const scaleW = viewportWidth / targetDesignSize.width;
-      const scaleH = viewportHeight / targetDesignSize.height;
-      const viewportScale = Math.min(scaleW, scaleH);
-      
+      const scaleW = viewportWidth / targetDesignSize.width
+      const scaleH = viewportHeight / targetDesignSize.height
+      const viewportScale = Math.min(scaleW, scaleH)
+
       // 最终缩放比例 = 视口缩放比例 * 设计尺寸放大倍数
-      scale = viewportScale * designScale;
+      scale = viewportScale * designScale
 
       // 计算并设置根元素字号
-      const fontSize = baseSize * scale;
-      document.documentElement.style.fontSize = `${fontSize}px`;
-      
+      const fontSize = baseSize * scale
+      document.documentElement.style.fontSize = `${fontSize}px`
+
       // 设置其他CSS变量
-      document.documentElement.style.setProperty('--rem-scale', scale.toFixed(6));
-      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`);
-      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`);
+      document.documentElement.style.setProperty('--rem-scale', scale.toFixed(6))
+      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`)
+      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`)
 
       console.log('REM Debug:', {
         baseSize,
@@ -468,8 +468,8 @@ class DcAdapt {
         viewportScale,
         finalScale: scale,
         fontSize,
-        viewport: { width: viewportWidth, height: viewportHeight }
-      });
+        viewport: { width: viewportWidth, height: viewportHeight },
+      })
     }
   }
 
@@ -508,30 +508,30 @@ class DcAdapt {
       }
     } else {
       // PC端适配优化
-      const targetDesignSize = this.getTargetDesignSize(designConfig);
-      
+      const targetDesignSize = this.getTargetDesignSize(designConfig)
+
       // 使用配置中的基准尺寸
-      const baseWidth = designConfig.width;  // 1920
-      const baseHeight = designConfig.height; // 1080
-      
+      const baseWidth = designConfig.width // 1920
+      const baseHeight = designConfig.height // 1080
+
       // 计算视口相对于基准尺寸的缩放比例
-      const scaleW = viewportWidth / baseWidth;
-      const scaleH = viewportHeight / baseHeight;
-      const scale = Math.min(scaleW, scaleH);
+      const scaleW = viewportWidth / baseWidth
+      const scaleH = viewportHeight / baseHeight
+      const scale = Math.min(scaleW, scaleH)
 
       // 设置基准单位
-      document.documentElement.style.setProperty('--vw-base', `${(100 / baseWidth).toFixed(6)}vw`);
-      document.documentElement.style.setProperty('--vh-base', `${(100 / baseHeight).toFixed(6)}vh`);
-      
+      document.documentElement.style.setProperty('--vw-base', `${(100 / baseWidth).toFixed(6)}vw`)
+      document.documentElement.style.setProperty('--vh-base', `${(100 / baseHeight).toFixed(6)}vh`)
+
       // 设置缩放比例
-      document.documentElement.style.setProperty('--vw-scale', scale.toFixed(6));
-      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`);
-      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`);
+      document.documentElement.style.setProperty('--vw-scale', scale.toFixed(6))
+      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`)
+      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`)
 
       console.log('VW Scales:', {
         scale,
-        viewport: { width: viewportWidth, height: viewportHeight }
-      });
+        viewport: { width: viewportWidth, height: viewportHeight },
+      })
     }
   }
 
@@ -543,7 +543,7 @@ class DcAdapt {
    * @param {number} viewportHeight - 视口高度
    */
   adaptWithPx(designConfig, viewportWidth, viewportHeight) {
-    let scale;
+    let scale
 
     if (this.config.device.isMobile) {
       const isLandscapeDesign = designConfig.width > designConfig.height
@@ -558,47 +558,48 @@ class DcAdapt {
       }
     } else {
       // PC端适配优化
-      const targetDesignSize = this.getTargetDesignSize(designConfig);
-      
+      const targetDesignSize = this.getTargetDesignSize(designConfig)
+
       // 获取配置中最小的设计尺寸作为基准
-      const fullscreenSizes = designConfig?.fullscreenSizes || [];
-      const baseDesignSize = fullscreenSizes.length > 0 
-        ? fullscreenSizes.reduce((min, current) => {
-            return current.width < min.width ? current : min;
-          }, fullscreenSizes[0])
-        : { width: 1920, height: 1080 }; // 默认基准尺寸
-      
+      const fullscreenSizes = designConfig?.fullscreenSizes || []
+      const baseDesignSize =
+        fullscreenSizes.length > 0
+          ? fullscreenSizes.reduce((min, current) => {
+              return current.width < min.width ? current : min
+            }, fullscreenSizes[0])
+          : { width: 1920, height: 1080 } // 默认基准尺寸
+
       // 使用配置中的基准尺寸
-      const baseWidth = baseDesignSize.width;
-      const baseHeight = baseDesignSize.height;
-      
+      const baseWidth = baseDesignSize.width
+      const baseHeight = baseDesignSize.height
+
       // 计算当前目标设计尺寸相对于基准设计尺寸的放大倍数
-      const designScale = targetDesignSize.width / baseDesignSize.width; 
-      
+      const designScale = targetDesignSize.width / baseDesignSize.width
+
       // 计算视口相对于当前目标设计尺寸的缩放比例
-      const scaleW = viewportWidth / targetDesignSize.width;
-      const scaleH = viewportHeight / targetDesignSize.height;
-      const viewportScale = Math.min(scaleW, scaleH);
-      
+      const scaleW = viewportWidth / targetDesignSize.width
+      const scaleH = viewportHeight / targetDesignSize.height
+      const viewportScale = Math.min(scaleW, scaleH)
+
       // 最终缩放比例 = 视口缩放比例 * 设计尺寸放大倍数
-      scale = viewportScale * designScale;
+      scale = viewportScale * designScale
 
       // 设置CSS变量
-      document.documentElement.style.setProperty('--calendar-scale', scale.toFixed(6));
-      document.documentElement.style.setProperty('--organize-scale', scale.toFixed(6));
-      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`);
-      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`);
-      document.documentElement.style.setProperty('--scale-width', scaleW.toFixed(6));
-      document.documentElement.style.setProperty('--scale-height', scaleH.toFixed(6));
-      document.documentElement.style.setProperty('--aspect-ratio', scale.toFixed(6));
-      document.documentElement.style.setProperty('--px-scale', scale.toFixed(6));
+      document.documentElement.style.setProperty('--calendar-scale', scale.toFixed(6))
+      document.documentElement.style.setProperty('--organize-scale', scale.toFixed(6))
+      document.documentElement.style.setProperty('--client-width', `${viewportWidth}px`)
+      document.documentElement.style.setProperty('--client-height', `${viewportHeight}px`)
+      document.documentElement.style.setProperty('--scale-width', scaleW.toFixed(6))
+      document.documentElement.style.setProperty('--scale-height', scaleH.toFixed(6))
+      document.documentElement.style.setProperty('--aspect-ratio', scale.toFixed(6))
+      document.documentElement.style.setProperty('--px-scale', scale.toFixed(6))
 
       console.log('Scales:', {
         baseSize: { width: baseWidth, height: baseHeight },
         targetSize: targetDesignSize,
         viewportSize: { width: viewportWidth, height: viewportHeight },
-        scale: { width: scaleW, height: scaleH, final: scale }
-      });
+        scale: { width: scaleW, height: scaleH, final: scale },
+      })
     }
   }
 
@@ -666,41 +667,41 @@ class DcAdapt {
    * @returns {string} 转换后的值（保留6位小数）
    */
   convertUnits(value, fromUnit, toUnit, designConfig) {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = this.getViewportHeight();
-    const baseSize = 100; // REM基准值
+    const viewportWidth = window.innerWidth
+    const viewportHeight = this.getViewportHeight()
+    const baseSize = 100 // REM基准值
 
     // 获取目标设计尺寸
-    const targetDesignSize = this.getTargetDesignSize(designConfig);
-    const baseWidth = targetDesignSize.width;
-    const baseHeight = targetDesignSize.height;
+    const targetDesignSize = this.getTargetDesignSize(designConfig)
+    const baseWidth = targetDesignSize.width
+    const baseHeight = targetDesignSize.height
 
     // 计算缩放比例
-    const scaleW = viewportWidth / baseWidth;
-    const scaleH = viewportHeight / baseHeight;
-    const scale = Math.min(scaleW, scaleH);
+    const scaleW = viewportWidth / baseWidth
+    const scaleH = viewportHeight / baseHeight
+    const scale = Math.min(scaleW, scaleH)
 
     // 先转换为px
-    let pxValue;
+    let pxValue
     switch (fromUnit) {
       case 'rem':
-        pxValue = value * baseSize * scale;
-        break;
+        pxValue = value * baseSize * scale
+        break
       case 'vw':
-        pxValue = (value / 100) * viewportWidth;
-        break;
+        pxValue = (value / 100) * viewportWidth
+        break
       default:
-        pxValue = value;
+        pxValue = value
     }
 
     // 再从px转换为目标单位
     switch (toUnit) {
       case 'rem':
-        return (pxValue / (baseSize * scale)).toFixed(6);
+        return (pxValue / (baseSize * scale)).toFixed(6)
       case 'vw':
-        return ((pxValue / viewportWidth) * 100).toFixed(6);
+        return ((pxValue / viewportWidth) * 100).toFixed(6)
       default:
-        return pxValue.toFixed(6);
+        return pxValue.toFixed(6)
     }
   }
 
@@ -710,38 +711,29 @@ class DcAdapt {
    * @param {'px'|'rem'|'vw'} unit - 目标单位
    */
   setUnit(unit) {
-    if (this.state.currentUnit === unit) return;
+    if (this.state.currentUnit === unit) return
 
-    const oldUnit = this.state.currentUnit;
-    this.state.currentUnit = unit;
+    const oldUnit = this.state.currentUnit
+    this.state.currentUnit = unit
 
     // 更新CSS变量
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
 
     // 转换CSS变量
-    const cssVars = [
-      '--calendar-scale',
-      '--organize-scale',
-      '--scale-width',
-      '--scale-height',
-      '--aspect-ratio',
-      '--px-scale',
-      '--rem-scale',
-      '--vw-scale'
-    ];
+    const cssVars = ['--calendar-scale', '--organize-scale', '--scale-width', '--scale-height', '--aspect-ratio', '--px-scale', '--rem-scale', '--vw-scale']
 
     cssVars.forEach(varName => {
-      const value = getComputedStyle(document.documentElement).getPropertyValue(varName);
+      const value = getComputedStyle(document.documentElement).getPropertyValue(varName)
       if (value) {
-        const newValue = this.convertUnits(parseFloat(value), oldUnit, unit, designConfig);
-        document.documentElement.style.setProperty(varName, newValue);
+        const newValue = this.convertUnits(parseFloat(value), oldUnit, unit, designConfig)
+        document.documentElement.style.setProperty(varName, newValue)
       }
-    });
+    })
 
     // 重新适配
-    this.adapt();
+    this.adapt()
   }
 
   /**
@@ -752,29 +744,29 @@ class DcAdapt {
    */
   setDesignSize(type, size) {
     if (!this.config.designSize[type]) {
-      console.warn(`Invalid design size type: ${type}`);
-      return;
+      console.warn(`Invalid design size type: ${type}`)
+      return
     }
 
     // 验证尺寸配置
     if (!size || typeof size !== 'object') {
-      console.warn('Invalid size configuration');
-      return;
+      console.warn('Invalid size configuration')
+      return
     }
 
     // 更新基本尺寸
     if (size.width && size.height) {
-      this.config.designSize[type].width = size.width;
-      this.config.designSize[type].height = size.height;
+      this.config.designSize[type].width = size.width
+      this.config.designSize[type].height = size.height
     }
 
     // 更新全屏尺寸配置
     if (Array.isArray(size.fullscreenSizes)) {
-      this.config.designSize[type].fullscreenSizes = size.fullscreenSizes;
+      this.config.designSize[type].fullscreenSizes = size.fullscreenSizes
     }
 
     // 重新适配
-    this.adapt();
+    this.adapt()
   }
 
   /**
@@ -783,24 +775,24 @@ class DcAdapt {
    */
   destroy() {
     // 移除事件监听
-    window.removeEventListener('resize', this.debounce(this.adapt.bind(this), 250));
+    window.removeEventListener('resize', this.debounce(this.adapt.bind(this), 250))
     window.removeEventListener('orientationchange', () => {
       setTimeout(() => {
-        this.state.orientation = this.getScreenOrientation();
-        this.adapt();
-      }, 300);
-    });
+        this.state.orientation = this.getScreenOrientation()
+        this.adapt()
+      }, 300)
+    })
 
     // 移除样式表
-    const styleSheet = document.getElementById('dc-adapt-unit-converter');
+    const styleSheet = document.getElementById('dc-adapt-unit-converter')
     if (styleSheet) {
-      styleSheet.remove();
+      styleSheet.remove()
     }
 
     // 重置根元素样式
-    const html = document.documentElement;
-    html.style.fontSize = '';
-    
+    const html = document.documentElement
+    html.style.fontSize = ''
+
     // 清除所有CSS变量
     const cssVars = [
       '--rem-base',
@@ -815,18 +807,18 @@ class DcAdapt {
       '--client-height',
       '--scale-width',
       '--scale-height',
-      '--aspect-ratio'
-    ];
-    
+      '--aspect-ratio',
+    ]
+
     cssVars.forEach(varName => {
-      html.style.removeProperty(varName);
-    });
+      html.style.removeProperty(varName)
+    })
 
     // 重置文档流
-    document.body.style.width = '';
-    document.body.style.height = '';
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
+    document.body.style.width = ''
+    document.body.style.height = ''
+    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
 
     // 清理实例状态
     this.state = {
@@ -834,8 +826,8 @@ class DcAdapt {
       currentMode: 'fullscreen',
       browserNavHeight: 0,
       isInitialized: false,
-      orientation: 'portrait'
-    };
+      orientation: 'portrait',
+    }
   }
 
   /**
@@ -855,10 +847,10 @@ class DcAdapt {
    * @returns {string} rem值（保留6位小数）
    */
   convertPxToRem(value) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, 'px', 'rem', designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, 'px', 'rem', designConfig)
   }
 
   /**
@@ -867,10 +859,10 @@ class DcAdapt {
    * @returns {string} vw值（保留6位小数）
    */
   convertPxToVw(value) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, 'px', 'vw', designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, 'px', 'vw', designConfig)
   }
 
   /**
@@ -879,10 +871,10 @@ class DcAdapt {
    * @returns {string} px值（保留6位小数）
    */
   convertRemToPx(value) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, 'rem', 'px', designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, 'rem', 'px', designConfig)
   }
 
   /**
@@ -891,10 +883,10 @@ class DcAdapt {
    * @returns {string} vw值（保留6位小数）
    */
   convertRemToVw(value) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, 'rem', 'vw', designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, 'rem', 'vw', designConfig)
   }
 
   /**
@@ -903,10 +895,10 @@ class DcAdapt {
    * @returns {string} px值（保留6位小数）
    */
   convertVwToPx(value) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, 'vw', 'px', designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, 'vw', 'px', designConfig)
   }
 
   /**
@@ -915,10 +907,10 @@ class DcAdapt {
    * @returns {string} rem值（保留6位小数）
    */
   convertVwToRem(value) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, 'vw', 'rem', designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, 'vw', 'rem', designConfig)
   }
 
   /**
@@ -929,14 +921,16 @@ class DcAdapt {
    * @returns {string} 转换后的值（保留6位小数）
    */
   getValueInCurrentUnit(value, fromUnit) {
-    const { device, designSize } = this.config;
-    const deviceType = device.isMobile ? 'mobile' : 'pc';
-    const designConfig = designSize[deviceType];
-    return this.convertUnits(value, fromUnit, this.state.currentUnit, designConfig);
+    const { device, designSize } = this.config
+    const deviceType = device.isMobile ? 'mobile' : 'pc'
+    const designConfig = designSize[deviceType]
+    return this.convertUnits(value, fromUnit, this.state.currentUnit, designConfig)
   }
 }
 
-// 导出到全局作用域
-if (typeof window !== 'undefined') {
-  window.DcAdapt = DcAdapt
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.adapt = DcAdapt
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DcAdapt
 }

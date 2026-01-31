@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcMedia 媒体工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #555;
+            margin-top: 25px;
+        }
+        .example {
+            margin: 20px 0;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+            min-height: 50px;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .image-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .image-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        video {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .device-list {
+            list-style: none;
+            padding: 0;
+        }
+        .device-list li {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .warning {
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            color: #856404;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcMedia 媒体工具类示例</h1>
+
+    <div class="example">
+        <h2>1. 图片懒加载示例</h2>
+        <p>点击下方按钮初始化图片懒加载，然后滚动页面查看图片加载效果。</p>
+
+        <div class="controls">
+            <button onclick="initLazyLoading()">初始化图片懒加载</button>
+            <button onclick="showAllImages()">显示所有图片</button>
+        </div>
+
+        <div class="result" id="lazyload-result">点击按钮开始测试</div>
+
+        <div class="image-container">
+            <div class="image-item">
+                <img data-src="https://picsum.photos/400/300?random=1" alt="示例图片1" style="opacity: 0;">
+                <p>图片1</p>
+            </div>
+            <div class="image-item">
+                <img data-src="https://picsum.photos/400/300?random=2" alt="示例图片2" style="opacity: 0;">
+                <p>图片2</p>
+            </div>
+            <div class="image-item">
+                <img data-src="https://picsum.photos/400/300?random=3" alt="示例图片3" style="opacity: 0;">
+                <p>图片3</p>
+            </div>
+            <div class="image-item">
+                <img data-src="https://picsum.photos/400/300?random=4" alt="示例图片4" style="opacity: 0;">
+                <p>图片4</p>
+            </div>
+            <div class="image-item">
+                <img data-src="https://picsum.photos/400/300?random=5" alt="示例图片5" style="opacity: 0;">
+                <p>图片5</p>
+            </div>
+            <div class="image-item">
+                <img data-src="https://picsum.photos/400/300?random=6" alt="示例图片6" style="opacity: 0;">
+                <p>图片6</p>
+            </div>
+        </div>
+
+        <div class="code-block">
+// 初始化图片懒加载
+DC.Media.initLazyLoading();
+
+// 显示所有图片
+DC.Media.showImages();
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>2. 媒体流获取示例</h2>
+        <p>点击下方按钮获取摄像头和麦克风流。</p>
+
+        <div class="controls">
+            <button onclick="getMediaStream()">获取摄像头和麦克风</button>
+            <button onclick="getDisplayMedia()">获取屏幕共享</button>
+            <button onclick="stopMediaStream()">停止媒体流</button>
+        </div>
+
+        <div class="result" id="media-stream-result">点击按钮开始测试</div>
+
+        <div style="margin: 20px 0;">
+            <video id="media-video" autoplay controls style="display: none;"></video>
+            <video id="screen-video" autoplay controls style="display: none;"></video>
+        </div>
+
+        <div class="code-block">
+// 获取摄像头和麦克风
+DC.Media.getMediaStream()
+  .then(stream => {
+    const video = document.getElementById('media-video');
+    video.srcObject = stream;
+    video.style.display = 'block';
+  })
+  .catch(error => {
+    console.error('获取媒体流失败:', error);
+  });
+
+// 获取屏幕共享
+DC.Media.getDisplayMedia()
+  .then(stream => {
+    const video = document.getElementById('screen-video');
+    video.srcObject = stream;
+    video.style.display = 'block';
+  })
+  .catch(error => {
+    console.error('获取屏幕共享失败:', error);
+  });
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>3. 音频可视化示例</h2>
+        <p>点击下方按钮开始音频可视化。</p>
+
+        <div class="controls">
+            <button onclick="createAudioVisualization()">开始音频可视化</button>
+            <button onclick="stopAudioVisualization()">停止音频可视化</button>
+        </div>
+
+        <div class="result" id="audio-visualization-result">点击按钮开始测试</div>
+
+        <div style="margin: 20px 0;">
+            <canvas id="visualization-canvas" width="600" height="200"></canvas>
+        </div>
+
+        <div class="code-block">
+// 创建音频可视化
+DC.Media.getMediaStream({ audio: true, video: false })
+  .then(stream => {
+    const canvas = document.getElementById('visualization-canvas');
+    const stopVisualization = DC.Media.createAudioVisualization(stream, 'waveform', canvas);
+
+    // 存储停止函数以便后续调用
+    window.stopVisualization = stopVisualization;
+  })
+  .catch(error => {
+    console.error('获取音频流失败:', error);
+  });
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>4. 媒体设备检测示例</h2>
+        <p>点击下方按钮检测可用的媒体设备。</p>
+
+        <div class="controls">
+            <button onclick="getMediaDevices()">检测媒体设备</button>
+        </div>
+
+        <div class="result" id="media-devices-result">点击按钮开始测试</div>
+
+        <div class="code-block">
+// 检测媒体设备
+DC.Media.getMediaDevices()
+  .then(devices => {
+    console.log('音频输入设备:', devices.audioInputs);
+    console.log('音频输出设备:', devices.audioOutputs);
+    console.log('视频输入设备:', devices.videoInputs);
+  })
+  .catch(error => {
+    console.error('获取媒体设备失败:', error);
+  });
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>5. 视频滤镜示例</h2>
+        <p>点击下方按钮应用视频滤镜。</p>
+
+        <div class="controls">
+            <button onclick="applyVideoFilter()">应用黑白滤镜</button>
+            <button onclick="stopVideoFilter()">停止滤镜</button>
+        </div>
+
+        <div class="result" id="video-filter-result">点击按钮开始测试</div>
+
+        <div style="margin: 20px 0;">
+            <video id="filter-video" autoplay style="display: none;"></video>
+            <canvas id="filter-canvas" width="600" height="300"></canvas>
+        </div>
+
+        <div class="code-block">
+// 应用视频滤镜
+DC.Media.getMediaStream({ video: true, audio: false })
+  .then(stream => {
+    const video = document.getElementById('filter-video');
+    video.srcObject = stream;
+    video.style.display = 'none';
+
+    const canvas = document.getElementById('filter-canvas');
+    const stopFilter = DC.Media.applyVideoFilter(video, canvas, (data) => {
+      // 黑白滤镜
+      for (let i = 0; i < data.length; i += 4) {
+        const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = gray;     // 红色
+        data[i + 1] = gray; // 绿色
+        data[i + 2] = gray; // 蓝色
+      }
+    });
+
+    // 存储停止函数以便后续调用
+    window.stopFilter = stopFilter;
+  })
+  .catch(error => {
+    console.error('获取视频流失败:', error);
+  });
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>6. 媒体录制示例</h2>
+        <p>点击下方按钮开始录制视频。</p>
+
+        <div class="controls">
+            <button onclick="startRecording()">开始录制</button>
+            <button onclick="stopRecording()">停止录制并下载</button>
+        </div>
+
+        <div class="result" id="recording-result">点击按钮开始测试</div>
+
+        <div style="margin: 20px 0;">
+            <video id="recording-video" autoplay controls style="display: none;"></video>
+        </div>
+
+        <div class="code-block">
+// 开始录制
+let mediaRecorder;
+let recordedChunks = [];
+
+DC.Media.getMediaStream()
+  .then(stream => {
+    const video = document.getElementById('recording-video');
+    video.srcObject = stream;
+    video.style.display = 'block';
+
+    mediaRecorder = DC.Media.recordStream(stream);
+  })
+  .catch(error => {
+    console.error('获取媒体流失败:', error);
+  });
+
+// 停止录制
+mediaRecorder.then(blob => {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'recording.webm';
+  a.click();
+});
+        </div>
+    </div>
+
+    <div class="example">
+        <h2>7. 实例方法示例</h2>
+        <p>测试 dcMedia 的实例方法。</p>
+
+        <div class="controls">
+            <button onclick="testInstanceMethods()">测试实例方法</button>
+        </div>
+
+        <div class="result" id="instance-methods-result">点击按钮开始测试</div>
+
+        <div class="code-block">
+// 创建 dcMedia 实例
+const mediaPlayer = new DC.Media();
+
+// 播放媒体
+mediaPlayer.play('https://example.com/video.mp4');
+console.log('是否正在播放:', mediaPlayer.isPlaying());
+
+// 停止媒体
+setTimeout(() => {
+  mediaPlayer.stop();
+  console.log('是否正在播放:', mediaPlayer.isPlaying());
+}, 2000);
+        </div>
+    </div>
+
+    <div class="warning">
+        <strong>注意：</strong> 本示例中的部分功能（如获取媒体流、屏幕共享等）需要用户授权，并且可能在某些浏览器或环境中不可用。请在支持这些功能的现代浏览器中测试。
+    </div>
+
+    <script src="../../../dist/dc-1.0.0-2026-01-31.js"></script>
+    <script>
+        // 全局变量
+        let mediaStream = null;
+        let screenStream = null;
+        let stopVisualization = null;
+        let stopFilter = null;
+        let mediaRecorder = null;
+
+        // 1. 图片懒加载示例
+        function initLazyLoading() {
+            DC.Media.initLazyLoading();
+            document.getElementById('lazyload-result').textContent = '图片懒加载已初始化，请滚动页面查看图片加载效果';
+        }
+
+        function showAllImages() {
+            DC.Media.showImages();
+            document.getElementById('lazyload-result').textContent = '所有图片已显示';
+        }
+
+        // 2. 媒体流获取示例
+        function getMediaStream() {
+            DC.Media.getMediaStream()
+                .then(stream => {
+                    mediaStream = stream;
+                    const video = document.getElementById('media-video');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    document.getElementById('media-stream-result').textContent = '成功获取摄像头和麦克风流';
+                })
+                .catch(error => {
+                    console.error('获取媒体流失败:', error);
+                    document.getElementById('media-stream-result').textContent = '获取媒体流失败: ' + error.message;
+                });
+        }
+
+        function getDisplayMedia() {
+            DC.Media.getDisplayMedia()
+                .then(stream => {
+                    screenStream = stream;
+                    const video = document.getElementById('screen-video');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    document.getElementById('media-stream-result').textContent = '成功获取屏幕共享流';
+                })
+                .catch(error => {
+                    console.error('获取屏幕共享失败:', error);
+                    document.getElementById('media-stream-result').textContent = '获取屏幕共享失败: ' + error.message;
+                });
+        }
+
+        function stopMediaStream() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+                document.getElementById('media-video').style.display = 'none';
+            }
+            if (screenStream) {
+                screenStream.getTracks().forEach(track => track.stop());
+                screenStream = null;
+                document.getElementById('screen-video').style.display = 'none';
+            }
+            document.getElementById('media-stream-result').textContent = '媒体流已停止';
+        }
+
+        // 3. 音频可视化示例
+        function createAudioVisualization() {
+            DC.Media.getMediaStream({ audio: true, video: false })
+                .then(stream => {
+                    mediaStream = stream;
+                    const canvas = document.getElementById('visualization-canvas');
+                    stopVisualization = DC.Media.createAudioVisualization(stream, 'waveform', canvas);
+                    document.getElementById('audio-visualization-result').textContent = '音频可视化已开始';
+                })
+                .catch(error => {
+                    console.error('获取音频流失败:', error);
+                    document.getElementById('audio-visualization-result').textContent = '获取音频流失败: ' + error.message;
+                });
+        }
+
+        function stopAudioVisualization() {
+            if (stopVisualization) {
+                stopVisualization();
+                stopVisualization = null;
+            }
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            document.getElementById('audio-visualization-result').textContent = '音频可视化已停止';
+        }
+
+        // 4. 媒体设备检测示例
+        function getMediaDevices() {
+            DC.Media.getMediaDevices()
+                .then(devices => {
+                    let result = '<h3>检测到的媒体设备：</h3>';
+
+                    if (devices.audioInputs.length > 0) {
+                        result += '<h4>音频输入设备：</h4>';
+                        result += '<ul class="device-list">';
+                        devices.audioInputs.forEach(device => {
+                            result += `<li>${device.label || '未知设备'} (${device.deviceId})</li>`;
+                        });
+                        result += '</ul>';
+                    }
+
+                    if (devices.audioOutputs.length > 0) {
+                        result += '<h4>音频输出设备：</h4>';
+                        result += '<ul class="device-list">';
+                        devices.audioOutputs.forEach(device => {
+                            result += `<li>${device.label || '未知设备'} (${device.deviceId})</li>`;
+                        });
+                        result += '</ul>';
+                    }
+
+                    if (devices.videoInputs.length > 0) {
+                        result += '<h4>视频输入设备：</h4>';
+                        result += '<ul class="device-list">';
+                        devices.videoInputs.forEach(device => {
+                            result += `<li>${device.label || '未知设备'} (${device.deviceId})</li>`;
+                        });
+                        result += '</ul>';
+                    }
+
+                    if (devices.audioInputs.length === 0 && devices.audioOutputs.length === 0 && devices.videoInputs.length === 0) {
+                        result += '未检测到任何媒体设备';
+                    }
+
+                    document.getElementById('media-devices-result').innerHTML = result;
+                })
+                .catch(error => {
+                    console.error('获取媒体设备失败:', error);
+                    document.getElementById('media-devices-result').textContent = '获取媒体设备失败: ' + error.message;
+                });
+        }
+
+        // 5. 视频滤镜示例
+        function applyVideoFilter() {
+            DC.Media.getMediaStream({ video: true, audio: false })
+                .then(stream => {
+                    mediaStream = stream;
+                    const video = document.getElementById('filter-video');
+                    video.srcObject = stream;
+                    video.style.display = 'none';
+
+                    const canvas = document.getElementById('filter-canvas');
+                    stopFilter = DC.Media.applyVideoFilter(video, canvas, (data) => {
+                        // 黑白滤镜
+                        for (let i = 0; i < data.length; i += 4) {
+                            const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                            data[i] = gray;     // 红色
+                            data[i + 1] = gray; // 绿色
+                            data[i + 2] = gray; // 蓝色
+                        }
+                    });
+
+                    document.getElementById('video-filter-result').textContent = '视频滤镜已应用';
+                })
+                .catch(error => {
+                    console.error('获取视频流失败:', error);
+                    document.getElementById('video-filter-result').textContent = '获取视频流失败: ' + error.message;
+                });
+        }
+
+        function stopVideoFilter() {
+            if (stopFilter) {
+                stopFilter();
+                stopFilter = null;
+            }
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            document.getElementById('filter-video').style.display = 'none';
+            document.getElementById('video-filter-result').textContent = '视频滤镜已停止';
+        }
+
+        // 6. 媒体录制示例
+        function startRecording() {
+            DC.Media.getMediaStream()
+                .then(stream => {
+                    mediaStream = stream;
+                    const video = document.getElementById('recording-video');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+
+                    mediaRecorder = DC.Media.recordStream(stream);
+                    document.getElementById('recording-result').textContent = '录制已开始，请点击"停止录制并下载"按钮结束录制';
+                })
+                .catch(error => {
+                    console.error('获取媒体流失败:', error);
+                    document.getElementById('recording-result').textContent = '获取媒体流失败: ' + error.message;
+                });
+        }
+
+        function stopRecording() {
+            if (mediaRecorder) {
+                mediaRecorder.then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'recording.webm';
+                    a.click();
+                    URL.revokeObjectURL(url);
+
+                    if (mediaStream) {
+                        mediaStream.getTracks().forEach(track => track.stop());
+                        mediaStream = null;
+                    }
+                    document.getElementById('recording-video').style.display = 'none';
+                    document.getElementById('recording-result').textContent = '录制已停止并开始下载';
+                });
+            }
+        }
+
+        // 7. 实例方法示例
+        function testInstanceMethods() {
+            const mediaPlayer = new DC.Media();
+
+            mediaPlayer.play('https://example.com/video.mp4');
+            let result = '播放媒体: https://example.com/video.mp4<br>';
+            result += '是否正在播放: ' + mediaPlayer.isPlaying() + '<br>';
+
+            mediaPlayer.stop();
+            result += '停止媒体<br>';
+            result += '是否正在播放: ' + mediaPlayer.isPlaying();
+
+            document.getElementById('instance-methods-result').innerHTML = result;
+        }
+    </script>
+</body>
+</html>

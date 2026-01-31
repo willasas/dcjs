@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dcFiles 示例</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    h2 {
+      color: #555;
+      margin-top: 30px;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 10px;
+    }
+    h3 {
+      color: #666;
+      margin-top: 20px;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+      font-size: 14px;
+    }
+    .btn:hover {
+      background-color: #45a049;
+    }
+    .btn-secondary {
+      background-color: #2196F3;
+    }
+    .btn-secondary:hover {
+      background-color: #0b7dda;
+    }
+    .btn-danger {
+      background-color: #f44336;
+    }
+    .btn-danger:hover {
+      background-color: #da190b;
+    }
+    .btn-info {
+      background-color: #ff9800;
+    }
+    .btn-info:hover {
+      background-color: #e68a00;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-height: 80px;
+    }
+    .preview-container {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .preview-item {
+      margin: 5px;
+      text-align: center;
+    }
+    .preview-item img {
+      max-width: 200px;
+      max-height: 200px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .file-input-container {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .lazy-images-container {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 200px; /* 增加间距以测试懒加载 */
+    }
+    .lazy-image {
+      width: 300px;
+      height: 200px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+    }
+    .code-block {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      margin: 10px 0;
+    }
+    .success {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .error {
+      color: #f44336;
+      font-weight: bold;
+    }
+    .info {
+      color: #2196F3;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>dcFiles 示例</h1>
+
+    <!-- 文件读取示例 -->
+    <div class="section">
+      <h2>1. 文件读取</h2>
+      <div class="file-input-container">
+        <h3>选择文件:</h3>
+        <input type="file" id="file-input" multiple>
+        <button class="btn" onclick="readFiles()">读取文件</button>
+        <button class="btn btn-secondary" onclick="readImageFile()">读取图片文件</button>
+      </div>
+      <div class="result" id="fileResult"></div>
+      <div class="preview-container" id="imagePreview"></div>
+    </div>
+
+    <!-- 图片操作示例 -->
+    <div class="section">
+      <h2>2. 图片操作</h2>
+      <button class="btn" onclick="createImageElement()">创建图片元素</button>
+      <button class="btn btn-secondary" onclick="loadMultipleImages()">加载多个图片</button>
+      <button class="btn btn-info" onclick="resizeImage()">调整图片大小</button>
+      <div class="result" id="imageResult"></div>
+      <div class="preview-container" id="imageOperationsPreview"></div>
+    </div>
+
+    <!-- 文件下载示例 -->
+    <div class="section">
+      <h2>3. 文件下载</h2>
+      <button class="btn" onclick="downloadTextFile()">下载文本文件</button>
+      <button class="btn btn-secondary" onclick="downloadImageFile()">下载图片文件</button>
+      <div class="result" id="downloadResult"></div>
+    </div>
+
+    <!-- 图片预加载示例 -->
+    <div class="section">
+      <h2>4. 图片预加载</h2>
+      <button class="btn" onclick="preloadImages()">预加载图片</button>
+      <div class="progress-bar" id="preloadProgress">
+        <div class="progress-fill" id="preloadProgressFill"></div>
+      </div>
+      <div class="result" id="preloadResult"></div>
+    </div>
+
+    <!-- 图片懒加载示例 -->
+    <div class="section">
+      <h2>5. 图片懒加载</h2>
+      <p>向下滚动页面查看懒加载效果</p>
+      <button class="btn" onclick="initLazyLoader()">初始化懒加载</button>
+      <div class="lazy-images-container" id="lazyImagesContainer">
+        <div class="lazy-image">
+          <img class="lazy" data-src="https://picsum.photos/300/200?random=1" alt="Lazy Image 1" width="300" height="200">
+        </div>
+        <div class="lazy-image">
+          <img class="lazy" data-src="https://picsum.photos/300/200?random=2" alt="Lazy Image 2" width="300" height="200">
+        </div>
+        <div class="lazy-image">
+          <img class="lazy" data-src="https://picsum.photos/300/200?random=3" alt="Lazy Image 3" width="300" height="200">
+        </div>
+        <div class="lazy-image">
+          <img class="lazy" data-src="https://picsum.photos/300/200?random=4" alt="Lazy Image 4" width="300" height="200">
+        </div>
+        <div class="lazy-image">
+          <img class="lazy" data-src="https://picsum.photos/300/200?random=5" alt="Lazy Image 5" width="300" height="200">
+        </div>
+      </div>
+      <div class="result" id="lazyLoadResult"></div>
+    </div>
+  </div>
+
+  <!-- 导入 DCJS 库 -->
+  <script src="../../../src/index.js"></script>
+
+  <script>
+    let lazyLoader;
+
+    // 文件读取
+    function readFiles() {
+      const input = document.getElementById('file-input');
+      const files = DC.Files.getFiles(input);
+      const result = document.getElementById('fileResult');
+
+      if (files.length === 0) {
+        result.innerHTML = '<p class="error">请选择文件</p>';
+        return;
+      }
+
+      result.innerHTML = `<h3>文件列表:</h3><ul>`;
+      files.forEach((file, index) => {
+        result.innerHTML += `<li>${file.name} (${(file.size / 1024).toFixed(2)} KB, ${file.type})</li>`;
+      });
+      result.innerHTML += `</ul>`;
+
+      // 读取第一个文件内容
+      if (files.length > 0) {
+        DC.Files.readFile(files[0], 'text')
+          .then(content => {
+            result.innerHTML += `<h3>第一个文件内容:</h3><div class="code-block">${content}</div>`;
+          })
+          .catch(error => {
+            result.innerHTML += `<p class="error">读取失败: ${error.message}</p>`;
+          });
+      }
+    }
+
+    function readImageFile() {
+      const input = document.getElementById('file-input');
+      const files = DC.Files.getFiles(input);
+      const result = document.getElementById('fileResult');
+      const preview = document.getElementById('imagePreview');
+
+      if (files.length === 0) {
+        result.innerHTML = '<p class="error">请选择文件</p>';
+        return;
+      }
+
+      // 过滤图片文件
+      const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+      if (imageFiles.length === 0) {
+        result.innerHTML = '<p class="error">请选择图片文件</p>';
+        return;
+      }
+
+      // 清空预览容器
+      preview.innerHTML = '';
+
+      // 读取并预览每个图片文件
+      imageFiles.forEach((file, index) => {
+        DC.Files.readImage(file)
+          .then(dataUrl => {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'preview-item';
+            previewItem.innerHTML = `
+              <img src="${dataUrl}" alt="Preview ${index + 1}">
+              <p>${file.name}</p>
+            `;
+            preview.appendChild(previewItem);
+          })
+          .catch(error => {
+            result.innerHTML += `<p class="error">读取图片失败: ${error.message}</p>`;
+          });
+      });
+
+      result.innerHTML = `<p class="success">正在预览 ${imageFiles.length} 个图片文件</p>`;
+    }
+
+    // 图片操作
+    function createImageElement() {
+      const result = document.getElementById('imageResult');
+      const preview = document.getElementById('imageOperationsPreview');
+
+      DC.Files.createImage('https://picsum.photos/300/200?random=10')
+        .then(img => {
+          img.width = 300;
+          img.style.border = '1px solid #ddd';
+          img.style.borderRadius = '4px';
+
+          // 清空预览容器
+          preview.innerHTML = '';
+          preview.appendChild(img);
+
+          result.innerHTML = '<p class="success">图片元素创建成功</p>';
+        })
+        .catch(error => {
+          result.innerHTML = `<p class="error">创建失败: ${error.message}</p>`;
+        });
+    }
+
+    function loadMultipleImages() {
+      const result = document.getElementById('imageResult');
+      const preview = document.getElementById('imageOperationsPreview');
+
+      const imageUrls = [
+        'https://picsum.photos/200/150?random=11',
+        'https://picsum.photos/200/150?random=12',
+        'https://picsum.photos/200/150?random=13'
+      ];
+
+      DC.Files.loadImages(imageUrls)
+        .then(images => {
+          // 清空预览容器
+          preview.innerHTML = '';
+
+          images.forEach((img, index) => {
+            img.width = 200;
+            img.style.border = '1px solid #ddd';
+            img.style.borderRadius = '4px';
+            img.style.margin = '5px';
+            preview.appendChild(img);
+          });
+
+          result.innerHTML = `<p class="success">成功加载 ${images.length} 个图片</p>`;
+        })
+        .catch(error => {
+          result.innerHTML = `<p class="error">加载失败: ${error.message}</p>`;
+        });
+    }
+
+    function resizeImage() {
+      const result = document.getElementById('imageResult');
+      const preview = document.getElementById('imageOperationsPreview');
+
+      // 创建模拟图片文件
+      const mockImageFile = new File(['mock image content'], 'test.jpg', { type: 'image/jpeg' });
+
+      DC.Files.resizeFile(mockImageFile, 1024 * 1024) // 1MB
+        .then(resizedBlob => {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(resizedBlob);
+          img.width = 300;
+          img.style.border = '1px solid #ddd';
+          img.style.borderRadius = '4px';
+
+          // 清空预览容器
+          preview.innerHTML = '';
+          preview.appendChild(img);
+
+          result.innerHTML = `<p class="success">图片大小调整成功，新大小: ${(resizedBlob.size / 1024).toFixed(2)} KB</p>`;
+        })
+        .catch(error => {
+          result.innerHTML = `<p class="error">调整失败: ${error.message}</p>`;
+        });
+    }
+
+    // 文件下载
+    function downloadTextFile() {
+      const result = document.getElementById('downloadResult');
+
+      // 创建文本文件
+      const textContent = 'Hello, DCJS!\nThis is a test text file downloaded using dcFiles.downloadFile()';
+      const textBlob = new Blob([textContent], { type: 'text/plain' });
+
+      DC.Files.downloadFile(textBlob, 'example.txt');
+      result.innerHTML = '<p class="success">文本文件下载已触发</p>';
+    }
+
+    function downloadImageFile() {
+      const result = document.getElementById('downloadResult');
+
+      // 下载图片
+      DC.Files.downloadFile('https://picsum.photos/500/300?random=20', 'downloaded-image.jpg');
+      result.innerHTML = '<p class="success">图片文件下载已触发</p>';
+    }
+
+    // 图片预加载
+    function preloadImages() {
+      const result = document.getElementById('preloadResult');
+      const progressBar = document.getElementById('preloadProgressFill');
+
+      const imageUrls = [
+        'https://picsum.photos/200/150?random=31',
+        'https://picsum.photos/200/150?random=32',
+        'https://picsum.photos/200/150?random=33',
+        'https://picsum.photos/200/150?random=34',
+        'https://picsum.photos/200/150?random=35'
+      ];
+
+      progressBar.style.width = '0%';
+      result.innerHTML = '<p class="info">正在预加载图片...</p>';
+
+      new DC.Files.Preload(
+        imageUrls,
+        {
+          complete: (successCount, errorCount) => {
+            result.innerHTML = `<p class="success">预加载完成: 成功 ${successCount}, 失败 ${errorCount}</p>`;
+            progressBar.style.width = '100%';
+          },
+          progress: (loaded, total, src, status) => {
+            const progress = (loaded / total) * 100;
+            progressBar.style.width = `${progress}%`;
+            result.innerHTML = `<p class="info">加载进度: ${loaded}/${total}, ${status}</p>`;
+          },
+          error: (src) => {
+            result.innerHTML += `<p class="error">加载失败: ${src}</p>`;
+          }
+        }
+      );
+    }
+
+    // 图片懒加载
+    function initLazyLoader() {
+      const result = document.getElementById('lazyLoadResult');
+
+      try {
+        lazyLoader = new DC.Files.LazyLoader({
+          selector: '.lazy',
+          threshold: 0.1,
+          rootMargin: '100px'
+        });
+        result.innerHTML = '<p class="success">懒加载已初始化</p>';
+      } catch (error) {
+        result.innerHTML = `<p class="error">初始化失败: ${error.message}</p>`;
+      }
+    }
+
+    // 页面加载完成后初始化
+    window.onload = function() {
+      console.log('dcFiles 示例页面加载完成');
+    };
+  </script>
+</body>
+</html>

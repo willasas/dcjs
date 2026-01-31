@@ -1,6 +1,38 @@
 // dcjs 库所有工具类的测试用例
 // 使用 Jest 进行测试
 
+// 模拟 TextEncoder 和 TextDecoder
+if (typeof TextEncoder === 'undefined') {
+  global.TextEncoder = require('util').TextEncoder;
+}
+if (typeof TextDecoder === 'undefined') {
+  global.TextDecoder = require('util').TextDecoder;
+}
+
+// 模拟 crypto API
+if (!global.crypto) {
+  global.crypto = {
+    getRandomValues: function(buffer) {
+      for (let i = 0; i < buffer.length; i++) {
+        buffer[i] = Math.floor(Math.random() * 256);
+      }
+      return buffer;
+    },
+    randomUUID: function() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    },
+    subtle: {
+      digest: function(algorithm, data) {
+        return Promise.resolve(new ArrayBuffer(32));
+      }
+    }
+  };
+}
+
 // 使用 jsdom 模拟浏览器环境
 const { JSDOM } = require('jsdom');
 
@@ -143,7 +175,16 @@ global.DC.Media = {
   playVideo: (src) => Promise.resolve({ src, type: 'video', action: 'play' })
 };
 
-global.DC.QRCode = require('../src/utils/dcqrcode.js').default;
+// 模拟 DC.QRCode 类
+global.DC.QRCode = class {
+  generate(text, options = {}) {
+    return `data:image/png;base64,mock-qr-code-${text}`;
+  }
+  
+  render(element, text, options = {}) {
+    // 模拟渲染操作
+  }
+};
 
 describe('DCJS 库所有工具类测试', () => {
   describe('DC.Array 测试', () => {

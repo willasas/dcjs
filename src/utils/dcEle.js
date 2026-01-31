@@ -392,22 +392,6 @@ class dcEle {
   }
 
   /**
-   * 从HTML字符串创建新的DOM元素
-   * @param {string} str - HTML字符串
-   * @returns {HTMLElement} 创建的DOM元素
-   */
-  static createElement(str) {
-    const el = document.createElement('div')
-    el.innerHTML = str
-    const firstElement = el.firstElementChild
-    if (!firstElement) {
-      console.error('提供的HTML字符串不包含任何元素.')
-      return document.createElement('div')
-    }
-    return firstElement
-  }
-
-  /**
    * 通过标签名创建元素
    * @param {string} tagName - 元素标签名
    * @returns {HTMLElement|null} 创建的元素或null（如果无效）
@@ -732,5 +716,9 @@ class dcEle {
   }
 }
 
-window.DC = window.DC || {}
-window.DC.Ele = dcEle
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.Ele = dcEle
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = dcEle
+}

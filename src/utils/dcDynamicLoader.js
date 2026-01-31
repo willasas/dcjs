@@ -306,6 +306,9 @@ class DCDynamicDependencyLoader {
   }
 }
 
-// 导出到全局
-window.DC = window.DC || {}
-window.DC.DynamicDependencyLoader = DCDynamicDependencyLoader
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.DynamicDependencyLoader = DCDynamicDependencyLoader
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCDynamicDependencyLoader
+}

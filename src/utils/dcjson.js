@@ -9,20 +9,20 @@ class DCJson {
    */
   static isValidJSON(str) {
     if (typeof str !== 'string') {
-      console.error('Expected a string as input.');
-      return false;
+      console.error('Expected a string as input.')
+      return false
     }
 
     try {
-      JSON.parse(str);
-      return true;
+      JSON.parse(str)
+      return true
     } catch (e) {
       if (e instanceof SyntaxError) {
-        console.error('Invalid JSON syntax:', e);
-        return false;
+        console.error('Invalid JSON syntax:', e)
+        return false
       } else {
-        console.error('An unexpected error occurred:', e);
-        return false;
+        console.error('An unexpected error occurred:', e)
+        return false
       }
     }
   }
@@ -36,29 +36,29 @@ class DCJson {
    */
   static jsonToCsv(data, columns, delimiter = ',') {
     if (!Array.isArray(data) || !Array.isArray(columns) || typeof delimiter !== 'string') {
-      throw new Error('Invalid input parameters');
+      throw new Error('Invalid input parameters')
     }
 
     if (columns.length === 0) {
-      throw new Error('Columns array must not be empty');
+      throw new Error('Columns array must not be empty')
     }
 
-    const escapeCSVValue = (value) => {
+    const escapeCSVValue = value => {
       if (value === null || value === undefined) {
-        return '';
+        return ''
       }
-      return `"${value.toString().replace(/"/g, '""')}"`;
-    };
+      return `"${value.toString().replace(/"/g, '""')}"`
+    }
 
-    const headerRow = columns.join(delimiter);
+    const headerRow = columns.join(delimiter)
     const rows = data.map(obj => {
       return columns.reduce((acc, key) => {
-        const value = obj[key] !== undefined ? obj[key] : '';
-        return `${acc}${acc.length ? delimiter : ''}${escapeCSVValue(value)}`;
-      }, '');
-    });
+        const value = obj[key] !== undefined ? obj[key] : ''
+        return `${acc}${acc.length ? delimiter : ''}${escapeCSVValue(value)}`
+      }, '')
+    })
 
-    return [headerRow, ...rows].join('\n');
+    return [headerRow, ...rows].join('\n')
   }
 
   /**
@@ -67,7 +67,7 @@ class DCJson {
    * @returns {Object} 返回合并后的JSON对象。
    */
   static mergeJsonObjects(...jsonObjects) {
-    return Object.assign({}, ...jsonObjects);
+    return Object.assign({}, ...jsonObjects)
   }
 
   /**
@@ -76,9 +76,13 @@ class DCJson {
    * @returns {Object} 返回深拷贝后的JSON对象。
    */
   static deepCopyJson(jsonObject) {
-    return JSON.parse(JSON.stringify(jsonObject));
+    return JSON.parse(JSON.stringify(jsonObject))
   }
 }
 
-window.DC = window.DC || {};
-window.DC.Json = DCJson;
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.Json = DCJson
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCJson
+}

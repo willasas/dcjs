@@ -18,23 +18,23 @@ class DCNetworkChecker {
   constructor(options = {}) {
     // 默认测试URL，用户可以通过options.testUrls覆盖
     const defaultTestUrls = [
-      'https://httpbin.org/get',      // 通用HTTP请求测试服务
-      'https://api.github.com',       // GitHub API，测试HTTPS连接
-      'https://www.google.com/generate_204'  // Google的无内容响应服务
-    ];
-    
-    this.testUrls = options.testUrls || defaultTestUrls;
-    this.timeout = options.timeout || 5000;
-    this.interval = options.interval || 10000; // 定期检查间隔
-    this.retryAttempts = options.retryAttempts || 3; // 重试次数
-    this.retryDelay = options.retryDelay || 1000; // 重试间隔
-    this._isMonitoring = false;
-    this._monitorInterval = null;
-    
+      'https://httpbin.org/get', // 通用HTTP请求测试服务
+      'https://api.github.com', // GitHub API，测试HTTPS连接
+      'https://www.google.com/generate_204', // Google的无内容响应服务
+    ]
+
+    this.testUrls = options.testUrls || defaultTestUrls
+    this.timeout = options.timeout || 5000
+    this.interval = options.interval || 10000 // 定期检查间隔
+    this.retryAttempts = options.retryAttempts || 3 // 重试次数
+    this.retryDelay = options.retryDelay || 1000 // 重试间隔
+    this._isMonitoring = false
+    this._monitorInterval = null
+
     // 事件回调
-    this.onOnline = options.onOnline || null;
-    this.onOffline = options.onOffline || null;
-    this.onStatusChange = options.onStatusChange || null;
+    this.onOnline = options.onOnline || null
+    this.onOffline = options.onOffline || null
+    this.onStatusChange = options.onStatusChange || null
   }
 
   /**
@@ -44,29 +44,29 @@ class DCNetworkChecker {
   async testConnection() {
     // 首先检查浏览器认为是否在线
     if (!navigator.onLine) {
-      return { 
-        online: false, 
-        type: 'browser-offline', 
-        message: '浏览器报告离线' 
-      };
+      return {
+        online: false,
+        type: 'browser-offline',
+        message: '浏览器报告离线',
+      }
     }
 
     // 尝试连接到测试URL
     for (const url of this.testUrls) {
       try {
-        const start = Date.now();
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-        
+        const start = Date.now()
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), this.timeout)
+
         const response = await fetch(url, {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache',
-          signal: controller.signal
-        });
+          signal: controller.signal,
+        })
 
-        clearTimeout(timeoutId);
-        const responseTime = Date.now() - start;
+        clearTimeout(timeoutId)
+        const responseTime = Date.now() - start
 
         // 对于204 No Content响应的特殊处理
         if (url.includes('generate_204')) {
@@ -76,8 +76,8 @@ class DCNetworkChecker {
               type: 'fast-response',
               message: '网络连接正常',
               responseTime,
-              url
-            };
+              url,
+            }
           }
         } else {
           // 对于其他URL，检查是否返回有效响应
@@ -87,21 +87,21 @@ class DCNetworkChecker {
               type: 'valid-response',
               message: '网络连接正常',
               responseTime,
-              url
-            };
+              url,
+            }
           }
         }
       } catch (error) {
-        console.log(`测试 ${url} 时出错:`, error.message);
+        console.log(`测试 ${url} 时出错:`, error.message)
         // 继续尝试下一个URL
       }
     }
 
-    return { 
-      online: false, 
-      type: 'connection-failed', 
-      message: '无法连接到任何测试服务器' 
-    };
+    return {
+      online: false,
+      type: 'connection-failed',
+      message: '无法连接到任何测试服务器',
+    }
   }
 
   /**
@@ -110,24 +110,24 @@ class DCNetworkChecker {
    */
   async testConnectionWithRetry() {
     for (let i = 0; i < this.retryAttempts; i++) {
-      const result = await this.testConnection();
-      
+      const result = await this.testConnection()
+
       if (result.online) {
-        return result; // 如果连接成功，直接返回
+        return result // 如果连接成功，直接返回
       }
-      
+
       // 如果不是最后一次尝试，等待一段时间后重试
       if (i < this.retryAttempts - 1) {
-        await new Promise(resolve => setTimeout(resolve, this.retryDelay));
+        await new Promise(resolve => setTimeout(resolve, this.retryDelay))
       }
     }
-    
+
     // 所有重试都失败后，返回失败结果
-    return { 
-      online: false, 
-      type: 'connection-failed-after-retry', 
-      message: `经过${this.retryAttempts}次重试后仍然无法连接` 
-    };
+    return {
+      online: false,
+      type: 'connection-failed-after-retry',
+      message: `经过${this.retryAttempts}次重试后仍然无法连接`,
+    }
   }
 
   /**
@@ -135,9 +135,7 @@ class DCNetworkChecker {
    * @returns {Object} 网络相关信息
    */
   getNetworkInfo() {
-    const connection = navigator.connection || 
-                      navigator.mozConnection || 
-                      navigator.webkitConnection;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
 
     return {
       online: navigator.onLine,
@@ -145,8 +143,8 @@ class DCNetworkChecker {
       downlink: connection ? connection.downlink : 'unknown',
       rtt: connection ? connection.rtt : 'unknown',
       saveData: connection ? connection.saveData : 'unknown',
-      downlinkMax: connection ? connection.downlinkMax : 'unknown'
-    };
+      downlinkMax: connection ? connection.downlinkMax : 'unknown',
+    }
   }
 
   /**
@@ -154,25 +152,25 @@ class DCNetworkChecker {
    */
   startMonitoring() {
     if (this._isMonitoring) {
-      console.warn('网络监控已在运行中');
-      return;
+      console.warn('网络监控已在运行中')
+      return
     }
 
-    this._isMonitoring = true;
-    
+    this._isMonitoring = true
+
     // 添加浏览器原生事件监听器
-    window.addEventListener('online', this._handleOnline.bind(this));
-    window.addEventListener('offline', this._handleOffline.bind(this));
-    
+    window.addEventListener('online', this._handleOnline.bind(this))
+    window.addEventListener('offline', this._handleOffline.bind(this))
+
     // 定期检查网络连接
     this._monitorInterval = setInterval(async () => {
-      const result = await this.testConnectionWithRetry();
+      const result = await this.testConnectionWithRetry()
       if (this.onStatusChange) {
-        this.onStatusChange(result);
+        this.onStatusChange(result)
       }
-    }, this.interval);
-    
-    console.log('网络监控已启动');
+    }, this.interval)
+
+    console.log('网络监控已启动')
   }
 
   /**
@@ -180,51 +178,51 @@ class DCNetworkChecker {
    */
   stopMonitoring() {
     if (!this._isMonitoring) {
-      console.warn('网络监控未在运行');
-      return;
+      console.warn('网络监控未在运行')
+      return
     }
 
-    this._isMonitoring = false;
+    this._isMonitoring = false
     if (this._monitorInterval) {
-      clearInterval(this._monitorInterval);
-      this._monitorInterval = null;
+      clearInterval(this._monitorInterval)
+      this._monitorInterval = null
     }
-    
+
     // 移除事件监听器
-    window.removeEventListener('online', this._handleOnline.bind(this));
-    window.removeEventListener('offline', this._handleOffline.bind(this));
-    
-    console.log('网络监控已停止');
+    window.removeEventListener('online', this._handleOnline.bind(this))
+    window.removeEventListener('offline', this._handleOffline.bind(this))
+
+    console.log('网络监控已停止')
   }
 
   // 处理上线事件
   _handleOnline() {
-    console.log('网络已连接');
+    console.log('网络已连接')
     if (this.onOnline) {
-      this.onOnline();
+      this.onOnline()
     }
-    
+
     // 尝试重新连接服务或同步数据
     this.testConnectionWithRetry().then(result => {
       if (this.onStatusChange) {
-        this.onStatusChange(result);
+        this.onStatusChange(result)
       }
-    });
+    })
   }
 
   // 处理离线事件
   _handleOffline() {
-    console.log('网络已断开');
+    console.log('网络已断开')
     if (this.onOffline) {
-      this.onOffline();
+      this.onOffline()
     }
-    
+
     if (this.onStatusChange) {
-      this.onStatusChange({ 
-        online: false, 
-        type: 'browser-offline', 
-        message: '浏览器报告离线' 
-      });
+      this.onStatusChange({
+        online: false,
+        type: 'browser-offline',
+        message: '浏览器报告离线',
+      })
     }
   }
 
@@ -233,16 +231,20 @@ class DCNetworkChecker {
    * @returns {Promise<Object>} 包含网络状态和信息的摘要对象
    */
   async getStatusSummary() {
-    const networkInfo = this.getNetworkInfo();
-    const connectionResult = await this.testConnectionWithRetry();
-    
+    const networkInfo = this.getNetworkInfo()
+    const connectionResult = await this.testConnectionWithRetry()
+
     return {
       ...networkInfo,
       ...connectionResult,
-      lastChecked: new Date().toISOString()
-    };
+      lastChecked: new Date().toISOString(),
+    }
   }
 }
 
-window.DC = window.DC || {};
-window.DC.NetworkChecker = DCNetworkChecker;
+// 注册到全局DC对象
+if (typeof window !== 'undefined' && window.DC) {
+  window.DC.NetworkChecker = DCNetworkChecker
+} else if (typeof module !== 'undefined' && module.exports) {
+  module.exports = DCNetworkChecker
+}

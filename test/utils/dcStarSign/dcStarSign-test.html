@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星次工具类测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #e8f5e8;
+            border: 1px solid #c3e6c3;
+        }
+        .error {
+            background-color: #fdeaea;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>星次工具类测试</h1>
+
+        <!-- 基本功能测试 -->
+        <div class="test-section">
+            <h2>基本功能测试</h2>
+            <div class="input-group">
+                <label>输入出生日期: </label>
+                <input type="date" id="birthDateInput" value="2000-12-15">
+                <button onclick="testGetStarSign()">获取星次</button>
+            </div>
+            <div id="resultBasic" class="test-result">点击按钮测试星次计算功能</div>
+        </div>
+
+        <!-- 边界日期测试 -->
+        <div class="test-section">
+            <h2>边界日期测试</h2>
+            <div class="input-group">
+                <button onclick="testBoundaryDates()">测试边界日期</button>
+            </div>
+            <div id="resultBoundary" class="test-result">点击按钮测试边界日期</div>
+        </div>
+
+        <!-- 所有星次测试 -->
+        <div class="test-section">
+            <h2>所有星次测试</h2>
+            <div class="input-group">
+                <button onclick="testAllStarSigns()">测试所有星次</button>
+            </div>
+            <div id="resultAll" class="test-result">点击按钮测试所有星次</div>
+        </div>
+
+        <!-- 日期解析测试 -->
+        <div class="test-section">
+            <h2>日期解析测试</h2>
+            <div class="input-group">
+                <input type="text" id="dateStringInput" placeholder="输入日期字符串，如: 2000-12-15" value="2000-12-15">
+                <button onclick="testDateString()">测试日期字符串解析</button>
+            </div>
+            <div id="resultParse" class="test-result">点击按钮测试日期解析功能</div>
+        </div>
+    </div>
+
+    <!-- 引入星次工具类 -->
+    <script src="../../src/utils/dcStarSign.js"></script>
+
+    <script>
+        // 创建星次工具实例
+        const starSign = new dcStarSign();
+
+        // 测试获取星次功能
+        function testGetStarSign() {
+            const input = document.getElementById('birthDateInput').value;
+            const result = starSign.getStarSignByDate(input);
+            document.getElementById('resultBasic').innerHTML = `
+                输入日期: ${input}<br>
+                星次结果: ${result}
+            `;
+        }
+
+        // 测试边界日期
+        function testBoundaryDates() {
+            const boundaryDates = [
+                { date: '2023-12-08', expected: '星纪' }, // 星纪开始
+                { date: '2023-01-05', expected: '星纪' }, // 星纪结束
+                { date: '2023-01-06', expected: '玄枵' }, // 玄枵开始
+                { date: '2023-02-08', expected: '玄枵' }, // 玄枵结束
+                { date: '2023-02-09', expected: '娵訾' }, // 娵訾开始
+                { date: '2023-03-05', expected: '娵訾' }, // 娵訾结束
+                { date: '2023-03-06', expected: '降娄' }, // 降娄开始
+                { date: '2023-04-04', expected: '降娄' }, // 降娄结束
+                { date: '2023-04-05', expected: '大梁' }, // 大梁开始
+                { date: '2023-05-05', expected: '大梁' }, // 大梁结束
+                { date: '2023-05-06', expected: '实沈' }, // 实沈开始
+                { date: '2023-06-05', expected: '实沈' }, // 实沈结束
+                { date: '2023-06-06', expected: '鹑首' }, // 鹑首开始
+                { date: '2023-07-06', expected: '鹑首' }, // 鹑首结束
+                { date: '2023-07-07', expected: '鹑火' }, // 鹑火开始
+                { date: '2023-08-07', expected: '鹑火' }, // 鹑火结束
+                { date: '2023-08-08', expected: '鹑尾' }, // 鹑尾开始
+                { date: '2023-09-07', expected: '鹑尾' }, // 鹑尾结束
+                { date: '2023-09-08', expected: '寿星' }, // 寿星开始
+                { date: '2023-10-07', expected: '寿星' }, // 寿星结束
+                { date: '2023-10-08', expected: '大火' }, // 大火开始
+                { date: '2023-11-12', expected: '大火' }, // 大火结束
+                { date: '2023-11-13', expected: '析木' }, // 析木开始
+                { date: '2023-12-07', expected: '析木' }  // 析木结束
+            ];
+
+            let successCount = 0;
+            let html = '<h3>边界日期测试结果:</h3>';
+
+            for (const testData of boundaryDates) {
+                const result = starSign.getStarSignByDate(testData.date);
+                const actualStarSign = result.replace('您的星次为', '');
+
+                const isCorrect = actualStarSign === testData.expected;
+                if (isCorrect) successCount++;
+
+                html += `
+                    <div style="${isCorrect ? 'color: green;' : 'color: red;'}">
+                        日期: ${testData.date}, 期望: ${testData.expected}, 实际: ${actualStarSign},
+                        ${isCorrect ? '✓' : '✗'}
+                    </div>
+                `;
+            }
+
+            html += `<br><strong>测试结果: ${successCount}/${boundaryDates.length} 通过</strong>`;
+            document.getElementById('resultBoundary').innerHTML = html;
+        }
+
+        // 测试所有星次
+        function testAllStarSigns() {
+            const allSigns = starSign.getAllStarSigns();
+            let html = '<h3>所有星次信息:</h3>';
+
+            for (const sign of allSigns) {
+                html += `
+                    <div>
+                        <strong>${sign.name}</strong>:
+                        ${sign.startMonth}月${sign.startDay}日 至 ${sign.endMonth}月${sign.endDay}日
+                    </div>
+                `;
+            }
+
+            document.getElementById('resultAll').innerHTML = html;
+        }
+
+        // 测试日期字符串解析
+        function testDateString() {
+            const dateString = document.getElementById('dateStringInput').value;
+            const result = starSign.getStarSignByDate(dateString);
+
+            document.getElementById('resultParse').innerHTML = `
+                输入日期字符串: ${dateString}<br>
+                星次结果: ${result}
+            `;
+        }
+
+        // 页面加载完成后自动运行一些基本测试
+        window.onload = function() {
+            console.log("星次工具类测试页面已加载");
+            console.log("可用的星次:", starSign.getAllStarSigns());
+        };
+    </script>
+</body>
+</html>

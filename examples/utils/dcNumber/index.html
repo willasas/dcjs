@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcNumber 工具类示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #3498db;
+            margin: 20px 0 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+
+        .example {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .example h3 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .code {
+            background-color: #f1f3f4;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .result {
+            background-color: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 100px;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>dcNumber 工具类示例</h1>
+
+    <!-- 数字格式化示例 -->
+    <div class="example">
+        <h3>1. format - 数字格式化</h3>
+        <p>格式化数字，添加千分位分隔符，控制小数位数。</p>
+        <div class="input-group">
+            <label for="formatNum">数字：</label>
+            <input type="number" id="formatNum" value="1234567.8912" step="any">
+            <label for="formatDecimals">小数位数：</label>
+            <input type="number" id="formatDecimals" value="2" min="0" max="10">
+            <button onclick="testFormat()">格式化</button>
+        </div>
+        <div id="formatResult" class="result"></div>
+    </div>
+
+    <!-- 中文大写金额示例 -->
+    <div class="example">
+        <h3>2. toChinese - 数字转中文大写金额</h3>
+        <p>将数字转换为中文大写金额格式。</p>
+        <div class="input-group">
+            <label for="chineseNum">数字：</label>
+            <input type="number" id="chineseNum" value="12345.67" step="any">
+            <button onclick="testToChinese()">转换</button>
+        </div>
+        <div id="chineseResult" class="result"></div>
+    </div>
+
+    <!-- 精确计算示例 -->
+    <div class="example">
+        <h3>3. calculate - 数字精确计算</h3>
+        <p>执行数字的精确计算，避免 JavaScript 浮点数精度问题。</p>
+        <div class="input-group">
+            <label for="calcNum1">数字1：</label>
+            <input type="number" id="calcNum1" value="0.1" step="any">
+            <label for="calcNum2">数字2：</label>
+            <input type="number" id="calcNum2" value="0.2" step="any">
+            <select id="calcOperation">
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">*</option>
+                <option value="divide">/</option>
+            </select>
+            <button onclick="testCalculate()">计算</button>
+        </div>
+        <div id="calcResult" class="result"></div>
+    </div>
+
+    <!-- 数字范围限制示例 -->
+    <div class="example">
+        <h3>4. clamp - 数字范围限制</h3>
+        <p>将数字限制在指定范围内。</p>
+        <div class="input-group">
+            <label for="clampNum">数字：</label>
+            <input type="number" id="clampNum" value="15" step="any">
+            <label for="clampMin">最小值：</label>
+            <input type="number" id="clampMin" value="0" step="any">
+            <label for="clampMax">最大值：</label>
+            <input type="number" id="clampMax" value="10" step="any">
+            <button onclick="testClamp()">限制</button>
+        </div>
+        <div id="clampResult" class="result"></div>
+    </div>
+
+    <!-- 随机数生成示例 -->
+    <div class="example">
+        <h3>5. random - 生成随机数</h3>
+        <p>生成指定范围内的随机数。</p>
+        <div class="input-group">
+            <label for="randomMin">最小值：</label>
+            <input type="number" id="randomMin" value="1" step="any">
+            <label for="randomMax">最大值：</label>
+            <input type="number" id="randomMax" value="100" step="any">
+            <label for="randomInteger">整数：</label>
+            <input type="checkbox" id="randomInteger" checked>
+            <button onclick="testRandom()">生成</button>
+        </div>
+        <div id="randomResult" class="result"></div>
+    </div>
+
+    <!-- 文件大小转换示例 -->
+    <div class="example">
+        <h3>6. toFileSize - 字节转文件大小</h3>
+        <p>将字节数转换为人类可读的文件大小格式。</p>
+        <div class="input-group">
+            <label for="fileSizeBytes">字节数：</label>
+            <input type="number" id="fileSizeBytes" value="1048576" step="1">
+            <button onclick="testToFileSize()">转换</button>
+        </div>
+        <div id="fileSizeResult" class="result"></div>
+    </div>
+
+    <!-- 罗马数字转换示例 -->
+    <div class="example">
+        <h3>7. toRoman - 数字转罗马数字</h3>
+        <p>将数字转换为罗马数字格式（支持 1-3999）。</p>
+        <div class="input-group">
+            <label for="romanNum">数字：</label>
+            <input type="number" id="romanNum" value="1999" min="1" max="3999" step="1">
+            <button onclick="testToRoman()">转换</button>
+        </div>
+        <div id="romanResult" class="result"></div>
+    </div>
+
+    <!-- 质数判断示例 -->
+    <div class="example">
+        <h3>8. isPrime - 判断是否为质数</h3>
+        <p>判断一个数字是否为质数。</p>
+        <div class="input-group">
+            <label for="primeNum">数字：</label>
+            <input type="number" id="primeNum" value="17" step="1">
+            <button onclick="testIsPrime()">判断</button>
+        </div>
+        <div id="primeResult" class="result"></div>
+    </div>
+
+    <!-- 阶乘计算示例 -->
+    <div class="example">
+        <h3>9. factorial - 计算阶乘</h3>
+        <p>计算数字的阶乘。</p>
+        <div class="input-group">
+            <label for="factorialNum">数字：</label>
+            <input type="number" id="factorialNum" value="5" min="0" step="1">
+            <button onclick="testFactorial()">计算</button>
+        </div>
+        <div id="factorialResult" class="result"></div>
+    </div>
+
+    <!-- 平方根计算示例 -->
+    <div class="example">
+        <h3>10. sqrt - 计算平方根</h3>
+        <p>计算数字的平方根。</p>
+        <div class="input-group">
+            <label for="sqrtNum">数字：</label>
+            <input type="number" id="sqrtNum" value="16" min="0" step="any">
+            <button onclick="testSqrt()">计算</button>
+        </div>
+        <div id="sqrtResult" class="result"></div>
+    </div>
+
+    <!-- 数字补零示例 -->
+    <div class="example">
+        <h3>11. pad - 数字补零</h3>
+        <p>为数字添加前导零，达到指定长度。</p>
+        <div class="input-group">
+            <label for="padNum">数字：</label>
+            <input type="number" id="padNum" value="7" step="1">
+            <label for="padLength">长度：</label>
+            <input type="number" id="padLength" value="3" min="1" step="1">
+            <button onclick="testPad()">补零</button>
+        </div>
+        <div id="padResult" class="result"></div>
+    </div>
+
+    <!-- 整数判断示例 -->
+    <div class="example">
+        <h3>12. isInteger - 判断是否为整数</h3>
+        <p>判断一个数字是否为整数。</p>
+        <div class="input-group">
+            <label for="integerNum">数字：</label>
+            <input type="number" id="integerNum" value="5" step="any">
+            <button onclick="testIsInteger()">判断</button>
+        </div>
+        <div id="integerResult" class="result"></div>
+    </div>
+
+    <!-- 百分比计算示例 -->
+    <div class="example">
+        <h3>13. percentage - 计算百分比</h3>
+        <p>计算一个数字占总数的百分比。</p>
+        <div class="input-group">
+            <label for="percentNum">数字：</label>
+            <input type="number" id="percentNum" value="25" step="any">
+            <label for="percentTotal">总数：</label>
+            <input type="number" id="percentTotal" value="100" step="any">
+            <label for="percentDecimals">小数位数：</label>
+            <input type="number" id="percentDecimals" value="2" min="0" step="1">
+            <button onclick="testPercentage()">计算</button>
+        </div>
+        <div id="percentResult" class="result"></div>
+    </div>
+
+    <!-- 数字四舍五入示例 -->
+    <div class="example">
+        <h3>14. round - 数字四舍五入</h3>
+        <p>对数字进行四舍五入，保留指定小数位数。</p>
+        <div class="input-group">
+            <label for="roundNum">数字：</label>
+            <input type="number" id="roundNum" value="123.4567" step="any">
+            <label for="roundDecimals">小数位数：</label>
+            <input type="number" id="roundDecimals" value="2" min="0" step="1">
+            <button onclick="testRound()">四舍五入</button>
+        </div>
+        <div id="roundResult" class="result"></div>
+    </div>
+
+    <!-- 基本算术运算示例 -->
+    <div class="example">
+        <h3>15. 基本算术运算 - sum, subtract, multiply, divide</h3>
+        <p>执行基本的算术运算。</p>
+        <div class="input-group">
+            <label for="arithNum1">数字1：</label>
+            <input type="number" id="arithNum1" value="10" step="any">
+            <label for="arithNum2">数字2：</label>
+            <input type="number" id="arithNum2" value="5" step="any">
+            <button onclick="testSum()">求和</button>
+            <button onclick="testSubtract()">求差</button>
+            <button onclick="testMultiply()">求积</button>
+            <button onclick="testDivide()">求商</button>
+        </div>
+        <div id="arithResult" class="result"></div>
+    </div>
+
+    <!-- 通用算术运算示例 -->
+    <div class="example">
+        <h3>16. count - 通用算术运算</h3>
+        <p>使用指定运算符执行算术运算。</p>
+        <div class="input-group">
+            <label for="countNum1">数字1：</label>
+            <input type="number" id="countNum1" value="8" step="any">
+            <label for="countNum2">数字2：</label>
+            <input type="number" id="countNum2" value="4" step="any">
+            <select id="countOperator">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+            <button onclick="testCount()">计算</button>
+        </div>
+        <div id="countResult" class="result"></div>
+    </div>
+
+    <!-- 导入 dcNumber 模块 -->
+    <script src="../../../src/utils/dcNumber.js"></script>
+
+    <script>
+        // 测试数字格式化
+        function testFormat() {
+            const num = parseFloat(document.getElementById('formatNum').value);
+            const decimals = parseInt(document.getElementById('formatDecimals').value);
+            const result = DC.Number.format(num, decimals);
+            document.getElementById('formatResult').innerHTML = `格式化结果：${result}`;
+        }
+
+        // 测试中文大写金额
+        function testToChinese() {
+            const num = parseFloat(document.getElementById('chineseNum').value);
+            const result = DC.Number.toChinese(num);
+            document.getElementById('chineseResult').innerHTML = `中文大写金额：${result}`;
+        }
+
+        // 测试精确计算
+        function testCalculate() {
+            const num1 = parseFloat(document.getElementById('calcNum1').value);
+            const num2 = parseFloat(document.getElementById('calcNum2').value);
+            const operation = document.getElementById('calcOperation').value;
+
+            try {
+                const result = DC.Number.calculate(num1, num2, operation);
+                document.getElementById('calcResult').innerHTML = `计算结果：${result}`;
+            } catch (error) {
+                document.getElementById('calcResult').innerHTML = `错误：${error.message}`;
+            }
+        }
+
+        // 测试数字范围限制
+        function testClamp() {
+            const num = parseFloat(document.getElementById('clampNum').value);
+            const min = parseFloat(document.getElementById('clampMin').value);
+            const max = parseFloat(document.getElementById('clampMax').value);
+            const result = DC.Number.clamp(num, min, max);
+            document.getElementById('clampResult').innerHTML = `限制结果：${result}`;
+        }
+
+        // 测试随机数生成
+        function testRandom() {
+            const min = parseFloat(document.getElementById('randomMin').value);
+            const max = parseFloat(document.getElementById('randomMax').value);
+            const isInteger = document.getElementById('randomInteger').checked;
+            const result = DC.Number.random(min, max, isInteger);
+            document.getElementById('randomResult').innerHTML = `随机数：${result}`;
+        }
+
+        // 测试文件大小转换
+        function testToFileSize() {
+            const bytes = parseInt(document.getElementById('fileSizeBytes').value);
+            const result = DC.Number.toFileSize(bytes);
+            document.getElementById('fileSizeResult').innerHTML = `文件大小：${result}`;
+        }
+
+        // 测试罗马数字转换
+        function testToRoman() {
+            const num = parseInt(document.getElementById('romanNum').value);
+            const result = DC.Number.toRoman(num);
+            document.getElementById('romanResult').innerHTML = `罗马数字：${result}`;
+        }
+
+        // 测试质数判断
+        function testIsPrime() {
+            const num = parseInt(document.getElementById('primeNum').value);
+            const result = DC.Number.isPrime(num);
+            document.getElementById('primeResult').innerHTML = `${num} ${result ? '是' : '不是'} 质数`;
+        }
+
+        // 测试阶乘计算
+        function testFactorial() {
+            const num = parseInt(document.getElementById('factorialNum').value);
+            const result = DC.Number.factorial(num);
+            document.getElementById('factorialResult').innerHTML = `${num} 的阶乘：${result}`;
+        }
+
+        // 测试平方根计算
+        function testSqrt() {
+            const num = parseFloat(document.getElementById('sqrtNum').value);
+            try {
+                const result = DC.Number.sqrt(num);
+                document.getElementById('sqrtResult').innerHTML = `${num} 的平方根：${result}`;
+            } catch (error) {
+                document.getElementById('sqrtResult').innerHTML = `错误：${error.message}`;
+            }
+        }
+
+        // 测试数字补零
+        function testPad() {
+            const num = parseInt(document.getElementById('padNum').value);
+            const length = parseInt(document.getElementById('padLength').value);
+            const result = DC.Number.pad(num, length);
+            document.getElementById('padResult').innerHTML = `补零结果：${result}`;
+        }
+
+        // 测试整数判断
+        function testIsInteger() {
+            const num = parseFloat(document.getElementById('integerNum').value);
+            const result = DC.Number.isInteger(num);
+            document.getElementById('integerResult').innerHTML = `${num} ${result ? '是' : '不是'} 整数`;
+        }
+
+        // 测试百分比计算
+        function testPercentage() {
+            const num = parseFloat(document.getElementById('percentNum').value);
+            const total = parseFloat(document.getElementById('percentTotal').value);
+            const decimals = parseInt(document.getElementById('percentDecimals').value);
+            const result = DC.Number.percentage(num, total, decimals);
+            document.getElementById('percentResult').innerHTML = `百分比：${result}`;
+        }
+
+        // 测试数字四舍五入
+        function testRound() {
+            const num = parseFloat(document.getElementById('roundNum').value);
+            const decimals = parseInt(document.getElementById('roundDecimals').value);
+            const result = DC.Number.round(num, decimals);
+            document.getElementById('roundResult').innerHTML = `四舍五入结果：${result}`;
+        }
+
+        // 测试求和
+        function testSum() {
+            const num1 = document.getElementById('arithNum1').value;
+            const num2 = document.getElementById('arithNum2').value;
+            const result = DC.Number.sum(num1, num2);
+            document.getElementById('arithResult').innerHTML = `${num1} + ${num2} = ${result}`;
+        }
+
+        // 测试求差
+        function testSubtract() {
+            const num1 = document.getElementById('arithNum1').value;
+            const num2 = document.getElementById('arithNum2').value;
+            const result = DC.Number.subtract(num1, num2);
+            document.getElementById('arithResult').innerHTML = `${num1} - ${num2} = ${result}`;
+        }
+
+        // 测试求积
+        function testMultiply() {
+            const num1 = document.getElementById('arithNum1').value;
+            const num2 = document.getElementById('arithNum2').value;
+            const result = DC.Number.multiply(num1, num2);
+            document.getElementById('arithResult').innerHTML = `${num1} × ${num2} = ${result}`;
+        }
+
+        // 测试求商
+        function testDivide() {
+            const num1 = document.getElementById('arithNum1').value;
+            const num2 = document.getElementById('arithNum2').value;
+            const result = DC.Number.divide(num1, num2);
+            document.getElementById('arithResult').innerHTML = `${num1} ÷ ${num2} = ${result}`;
+        }
+
+        // 测试通用算术运算
+        function testCount() {
+            const num1 = document.getElementById('countNum1').value;
+            const num2 = document.getElementById('countNum2').value;
+            const operator = document.getElementById('countOperator').value;
+            const result = DC.Number.count(num1, num2, operator);
+            document.getElementById('countResult').innerHTML = `${num1} ${operator} ${num2} = ${result}`;
+        }
+
+        // 初始化测试
+        window.onload = function() {
+            testFormat();
+            testToChinese();
+            testCalculate();
+            testClamp();
+            testRandom();
+            testToFileSize();
+            testToRoman();
+            testIsPrime();
+            testFactorial();
+            testSqrt();
+            testPad();
+            testIsInteger();
+            testPercentage();
+            testRound();
+            testSum();
+        };        
+    </script>
+</body>
+</html>

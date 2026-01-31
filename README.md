@@ -82,10 +82,18 @@ dcjs/
 - 支持指定元素截图
 - 支持指定区域截图
 - 支持添加水印
-- 支持多种输出格式
-- 支持高级选项配置
+- 支持多种输出格式（PNG、JPEG、WebP）
+- 支持缩放功能以获取更高分辨率的截图
+- 支持多种导出格式和方法（SVG、Canvas、Blob等）
+- 支持静态快捷方法以方便使用
+- 支持丰富的配置选项：
+  - `scale`：缩放因子，用于高分辨率截图
+  - `width`/`height`：自定义尺寸
+  - `embedFonts`/`localFonts`/`iconFonts`/`excludeFonts`：字体相关选项
+  - `exclude`/`filter`：元素过滤选项
+  - `outerTransforms`/`outerShadows`：样式相关选项
 
-**详细文档：** [docs/dcScreenshot.md](./docs/dcScreenshot.md)
+**详细文档：** [docs/utils/dcScreenshot.md](./docs/utils/dcScreenshot.md)
 
 ### DC.Array - 数组工具类
 提供数组操作的常用方法，包括去重、扁平化、分组、排序等功能。
@@ -152,8 +160,33 @@ const progressBar = new DC.ProgressBar({
 });
 
 // 截图工具
-DC.Screenshot.capturePage().then(dataUrl => {
-  console.log('截图成功:', dataUrl);
+// 方式1: 创建实例使用
+const screenshot = new DC.Screenshot({
+  scale: 2, // 2倍分辨率
+  quality: 0.9
+});
+
+// 捕获全页面并下载
+screenshot.captureFullPage()
+  .then(result => {
+    if (result.success) {
+      return result.download({ filename: 'full-page' });
+    }
+  });
+
+// 方式2: 使用静态快捷方法
+// 捕获元素并转换为PNG
+const element = document.getElementById('main-content');
+DC.Screenshot.toPng(element)
+  .then(img => {
+    document.body.appendChild(img);
+  });
+
+// 直接下载元素截图
+DC.Screenshot.download(element, {
+  format: 'png',
+  filename: 'element-screenshot',
+  quality: 0.9
 });
 ```
 

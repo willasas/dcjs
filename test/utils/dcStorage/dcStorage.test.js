@@ -24,180 +24,195 @@ function runTests() {
     }
   }
 
-  // 基本存储操作测试
-  test('set: 存储字符串数据', () => {
-    const key = 'testString';
-    const value = 'Hello World';
-    
-    dcStorage.set(key, value);
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === value;
+  // 测试前清空存储
+  dcStorage.clear();
+
+  // 测试 set 方法
+  test('set: 存储字符串', () => {
+    dcStorage.set('username', 'john_doe');
+    return dcStorage.get('username') === 'john_doe';
   });
 
-  test('set: 存储数字数据', () => {
-    const key = 'testNumber';
-    const value = 12345;
-    
-    dcStorage.set(key, value);
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === value;
+  test('set: 存储数字', () => {
+    dcStorage.set('count', 42);
+    return dcStorage.get('count') === 42;
   });
 
   test('set: 存储布尔值', () => {
-    const key = 'testBoolean';
-    const value = true;
-    
-    dcStorage.set(key, value);
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === value;
+    dcStorage.set('isActive', true);
+    return dcStorage.get('isActive') === true;
   });
 
-  test('set: 存储对象数据', () => {
-    const key = 'testObject';
-    const value = { name: '张三', age: 25, city: '北京' };
-    
-    dcStorage.set(key, value);
-    const retrieved = dcStorage.get(key);
-    
-    return JSON.stringify(retrieved) === JSON.stringify(value);
+  test('set: 存储对象', () => {
+    const user = { name: '张三', age: 25, city: '北京' };
+    dcStorage.set('user', user);
+    const storedUser = dcStorage.get('user');
+    return storedUser.name === '张三' && storedUser.age === 25 && storedUser.city === '北京';
   });
 
-  test('set: 存储数组数据', () => {
-    const key = 'testArray';
-    const value = [1, 2, 3, 'a', 'b', 'c'];
-    
-    dcStorage.set(key, value);
-    const retrieved = dcStorage.get(key);
-    
-    return JSON.stringify(retrieved) === JSON.stringify(value);
+  test('set: 存储数组', () => {
+    const items = [1, 2, 3, 'a', 'b', 'c'];
+    dcStorage.set('items', items);
+    const storedItems = dcStorage.get('items');
+    return Array.isArray(storedItems) && storedItems.length === 6 && storedItems[0] === 1 && storedItems[3] === 'a';
   });
 
-  // get方法测试
+  test('set: 存储函数（应该转换为null）', () => {
+    const func = () => console.log('test');
+    dcStorage.set('function', func);
+    return dcStorage.get('function') === null;
+  });
+
+  test('set: 存储undefined（应该转换为null）', () => {
+    dcStorage.set('undefinedValue', undefined);
+    return dcStorage.get('undefinedValue') === null;
+  });
+
+  test('set: 覆盖已存在的键', () => {
+    dcStorage.set('username', 'john_doe');
+    dcStorage.set('username', 'jane_smith');
+    return dcStorage.get('username') === 'jane_smith';
+  });
+
+  test('set: 无效的键名（空字符串）', () => {
+    dcStorage.set('', 'value');
+    return dcStorage.get('') === null;
+  });
+
+  test('set: 无效的键名（非字符串）', () => {
+    dcStorage.set(123, 'value');
+    return dcStorage.get(123) === null;
+  });
+
+  // 测试 get 方法
   test('get: 获取存在的键', () => {
-    const key = 'existingKey';
-    const value = 'some value';
-    
-    dcStorage.set(key, value);
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === value;
+    dcStorage.set('testKey', 'testValue');
+    return dcStorage.get('testKey') === 'testValue';
   });
 
   test('get: 获取不存在的键', () => {
-    const retrieved = dcStorage.get('nonexistentKey');
-    
-    return retrieved === null;
+    return dcStorage.get('nonexistentKey') === null;
   });
 
-  test('get: 获取不存在的键并提供默认值', () => {
-    const defaultValue = 'default value';
-    const retrieved = dcStorage.get('nonexistentKey', defaultValue);
-    
-    return retrieved === defaultValue;
+  test('get: 获取不存在的键但提供默认值', () => {
+    return dcStorage.get('nonexistentKey', 'defaultValue') === 'defaultValue';
   });
 
-  // remove方法测试
+  test('get: 获取不存在的键但提供对象默认值', () => {
+    const defaultValue = { foo: 'bar' };
+    const result = dcStorage.get('nonexistentKey', defaultValue);
+    return result.foo === 'bar';
+  });
+
+  test('get: 获取不存在的键但提供数组默认值', () => {
+    const defaultValue = [1, 2, 3];
+    const result = dcStorage.get('nonexistentKey', defaultValue);
+    return Array.isArray(result) && result.length === 3 && result[0] === 1;
+  });
+
+  test('get: 无效的键名（空字符串）', () => {
+    return dcStorage.get('') === null;
+  });
+
+  test('get: 无效的键名（非字符串）', () => {
+    return dcStorage.get(123) === null;
+  });
+
+  // 测试 remove 方法
   test('remove: 删除存在的键', () => {
-    const key = 'keyToRemove';
-    const value = 'value to remove';
-    
-    dcStorage.set(key, value);
-    dcStorage.remove(key);
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === null;
+    dcStorage.set('removeTest', 'value');
+    dcStorage.remove('removeTest');
+    return dcStorage.get('removeTest') === null;
   });
 
-  test('remove: 删除不存在的键', () => {
-    // 删除不存在的键不应该抛出异常
-    try {
-      dcStorage.remove('nonexistentKey');
-      return true;
-    } catch (error) {
-      return false;
-    }
+  test('remove: 删除不存在的键（不应抛出异常）', () => {
+    dcStorage.remove('nonexistentKey');
+    return true; // 只要不抛出异常就通过
   });
 
-  // clear方法测试
+  test('remove: 无效的键名（空字符串）', () => {
+    dcStorage.remove('');
+    return true; // 只要不抛出异常就通过
+  });
+
+  test('remove: 无效的键名（非字符串）', () => {
+    dcStorage.remove(123);
+    return true; // 只要不抛出异常就通过
+  });
+
+  // 测试 clear 方法
   test('clear: 清空所有存储', () => {
-    // 先设置一些数据
     dcStorage.set('key1', 'value1');
     dcStorage.set('key2', 'value2');
-    
-    // 清空
     dcStorage.clear();
-    
-    // 检查是否都为空
-    const value1 = dcStorage.get('key1');
-    const value2 = dcStorage.get('key2');
-    
-    return value1 === null && value2 === null;
+    return dcStorage.get('key1') === null && dcStorage.get('key2') === null;
   });
 
-  // keys方法测试
+  // 测试 keys 方法
   test('keys: 获取所有键名', () => {
-    // 先清空
     dcStorage.clear();
-    
-    // 设置多个键值对
     dcStorage.set('key1', 'value1');
     dcStorage.set('key2', 'value2');
     dcStorage.set('key3', 'value3');
-    
     const keys = dcStorage.keys();
-    
-    return Array.isArray(keys) && 
-           keys.length === 3 && 
-           keys.includes('key1') && 
-           keys.includes('key2') && 
-           keys.includes('key3');
+    return Array.isArray(keys) && keys.length === 3 && keys.includes('key1') && keys.includes('key2') && keys.includes('key3');
   });
 
-  // has方法测试
+  test('keys: 空存储', () => {
+    dcStorage.clear();
+    const keys = dcStorage.keys();
+    return Array.isArray(keys) && keys.length === 0;
+  });
+
+  // 测试 has 方法
   test('has: 检查存在的键', () => {
-    const key = 'existingKey';
-    dcStorage.set(key, 'some value');
-    
-    return dcStorage.has(key) === true;
+    dcStorage.set('hasTest', 'value');
+    return dcStorage.has('hasTest') === true;
   });
 
   test('has: 检查不存在的键', () => {
     return dcStorage.has('nonexistentKey') === false;
   });
 
-  // 边界情况测试
-  test('set: 空键名处理', () => {
-    try {
-      dcStorage.set('', 'value');
-      return true;
-    } catch (error) {
-      return false;
+  test('has: 无效的键名（空字符串）', () => {
+    return dcStorage.has('') === false;
+  });
+
+  test('has: 无效的键名（非字符串）', () => {
+    return dcStorage.has(123) === false;
+  });
+
+  // 测试组合操作
+  test('组合操作: 设置、获取、删除、检查', () => {
+    dcStorage.set('comboTest', 'value');
+    const hasKey = dcStorage.has('comboTest');
+    const value = dcStorage.get('comboTest');
+    dcStorage.remove('comboTest');
+    const hasKeyAfterRemove = dcStorage.has('comboTest');
+
+    return hasKey === true && value === 'value' && hasKeyAfterRemove === false;
+  });
+
+  test('组合操作: 批量操作', () => {
+    dcStorage.clear();
+
+    // 设置多个键
+    for (let i = 1; i <= 10; i++) {
+      dcStorage.set(`key${i}`, `value${i}`);
     }
-  });
 
-  test('set: 空值处理', () => {
-    const key = 'emptyValueKey';
-    dcStorage.set(key, '');
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === '';
-  });
+    const keys = dcStorage.keys();
+    const hasAllKeys = keys.length === 10 && keys.every((key, index) => key === `key${index + 1}`);
 
-  test('set: null值处理', () => {
-    const key = 'nullValueKey';
-    dcStorage.set(key, null);
-    const retrieved = dcStorage.get(key);
-    
-    return retrieved === null;
-  });
+    // 删除多个键
+    for (let i = 1; i <= 5; i++) {
+      dcStorage.remove(`key${i}`);
+    }
 
-  test('get: 空键名处理', () => {
-    const retrieved = dcStorage.get('');
-    
-    return retrieved === null;
+    const keysAfterRemove = dcStorage.keys();
+    const hasRemainingKeys = keysAfterRemove.length === 5 && keysAfterRemove.every((key, index) => key === `key${index + 6}`);
+
+    return hasAllKeys && hasRemainingKeys;
   });
 
   console.log(`\n测试结果: ${passedTests}/${totalTests} 通过`);
@@ -207,3 +222,5 @@ function runTests() {
 if (require.main === module) {
   runTests();
 }
+
+module.exports = { runTests };

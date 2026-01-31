@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DcAdapt 页面适配工具示例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #444;
+      margin: 25px 0 15px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    h3 {
+      color: #555;
+      margin: 20px 0 10px;
+    }
+
+    .example-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .control-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button.secondary {
+      background-color: #2196f3;
+    }
+
+    button.secondary:hover {
+      background-color: #0b7dda;
+    }
+
+    button.danger {
+      background-color: #f44336;
+    }
+
+    button.danger:hover {
+      background-color: #da190b;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .result h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .result pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .info-box {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .info-box p {
+      margin: 5px 0;
+    }
+
+    .demo-box {
+      width: 100%;
+      height: 300px;
+      background-color: #f0f0f0;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+
+    .demo-box.adapted {
+      background-color: #e8f5e8;
+      border-color: #4CAF50;
+      color: #333;
+    }
+
+    .config-panel {
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .config-row {
+      display: flex;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .config-row > div {
+      flex: 1;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .config-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DcAdapt 页面适配工具示例</h1>
+    
+    <div class="info-box">
+      <h3>工具介绍</h3>
+      <p>DcAdapt 是一个页面适配工具类，支持 PC 端和移动端的页面自适配，包括一屏适配和长页面适配。</p>
+      <p>主要功能：</p>
+      <ul>
+        <li>支持多种适配单位：px、rem、vw</li>
+        <li>支持两种适配模式：全屏适配（fullscreen）和长页面适配（longpage）</li>
+        <li>自动检测设备类型和屏幕方向</li>
+        <li>提供单位转换功能</li>
+        <li>响应式调整，支持窗口大小变化</li>
+      </ul>
+    </div>
+
+    <!-- 基本适配示例 -->
+    <div class="example-section">
+      <h3>1. 基本适配示例</h3>
+      
+      <div class="control-group">
+        <label for="unit-select">选择适配单位：</label>
+        <select id="unit-select">
+          <option value="px">px（像素）</option>
+          <option value="rem">rem（相对单位）</option>
+          <option value="vw">vw（视口宽度）</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label for="mode-select">选择适配模式：</label>
+        <select id="mode-select">
+          <option value="fullscreen">全屏适配</option>
+          <option value="longpage">长页面适配</option>
+        </select>
+      </div>
+      
+      <button onclick="initAdapt()">初始化适配</button>
+      <button onclick="updateAdapt()">更新适配</button>
+      <button onclick="destroyAdapt()" class="danger">销毁适配</button>
+      
+      <div class="demo-box" id="demo-box">
+        适配效果展示区
+      </div>
+      
+      <div class="result" id="adapt-result">
+        <h4>适配结果</h4>
+        <pre id="adapt-log">点击「初始化适配」按钮开始</pre>
+      </div>
+    </div>
+
+    <!-- 单位转换示例 -->
+    <div class="example-section">
+      <h3>2. 单位转换示例</h3>
+      
+      <div class="config-row">
+        <div>
+          <label for="convert-value">输入值：</label>
+          <input type="number" id="convert-value" value="100" min="0">
+        </div>
+        <div>
+          <label for="from-unit">从单位：</label>
+          <select id="from-unit">
+            <option value="px">px</option>
+            <option value="rem">rem</option>
+            <option value="vw">vw</option>
+          </select>
+        </div>
+        <div>
+          <label for="to-unit">到单位：</label>
+          <select id="to-unit">
+            <option value="px">px</option>
+            <option value="rem">rem</option>
+            <option value="vw">vw</option>
+          </select>
+        </div>
+      </div>
+      
+      <button onclick="convertUnits()">执行转换</button>
+      
+      <div class="result" id="convert-result">
+        <h4>转换结果</h4>
+        <pre id="convert-log">点击「执行转换」按钮开始</pre>
+      </div>
+    </div>
+
+    <!-- 设备信息示例 -->
+    <div class="example-section">
+      <h3>3. 设备信息示例</h3>
+      
+      <button onclick="showDeviceInfo()">显示设备信息</button>
+      
+      <div class="result" id="device-result">
+        <h4>设备信息</h4>
+        <pre id="device-log">点击「显示设备信息」按钮开始</pre>
+      </div>
+    </div>
+
+    <!-- 高级配置示例 -->
+    <div class="example-section">
+      <h3>4. 高级配置示例</h3>
+      
+      <div class="config-panel">
+        <h4>设计尺寸配置</h4>
+        <div class="config-row">
+          <div>
+            <label for="pc-width">PC 宽度：</label>
+            <input type="number" id="pc-width" value="1920" min="1">
+          </div>
+          <div>
+            <label for="pc-height">PC 高度：</label>
+            <input type="number" id="pc-height" value="1080" min="1">
+          </div>
+        </div>
+        <div class="config-row">
+          <div>
+            <label for="mobile-width">移动端宽度：</label>
+            <input type="number" id="mobile-width" value="750" min="1">
+          </div>
+          <div>
+            <label for="mobile-height">移动端高度：</label>
+            <input type="number" id="mobile-height" value="1624" min="1">
+          </div>
+        </div>
+      </div>
+      
+      <button onclick="initCustomAdapt()">初始化自定义适配</button>
+      
+      <div class="result" id="custom-result">
+        <h4>自定义适配结果</h4>
+        <pre id="custom-log">点击「初始化自定义适配」按钮开始</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../src/utils/dcadapt.js"></script>
+  <script>
+    let adaptInstance = null;
+
+    function initAdapt() {
+      const unit = document.getElementById('unit-select').value;
+      const mode = document.getElementById('mode-select').value;
+      
+      // 销毁现有实例
+      if (adaptInstance) {
+        adaptInstance.destroy();
+      }
+      
+      // 创建新实例
+      adaptInstance = new window.DC.adapt({
+        unit: unit,
+        mode: mode
+      });
+      
+      // 更新演示区
+      const demoBox = document.getElementById('demo-box');
+      demoBox.classList.add('adapted');
+      demoBox.textContent = `已适配：${unit} 单位，${mode} 模式`;
+      
+      // 显示结果
+      updateAdaptLog(`初始化适配成功：
+- 单位：${unit}
+- 模式：${mode}
+- 设备类型：${adaptInstance.config.device.isDesktop ? '桌面' : adaptInstance.config.device.isMobile ? '移动' : '平板'}
+- 屏幕方向：${adaptInstance.state.orientation}`);
+    }
+
+    function updateAdapt() {
+      if (!adaptInstance) {
+        updateAdaptLog('请先初始化适配');
+        return;
+      }
+      
+      const unit = document.getElementById('unit-select').value;
+      const mode = document.getElementById('mode-select').value;
+      
+      // 更新单位
+      adaptInstance.setUnit(unit);
+      // 更新模式
+      adaptInstance.setMode(mode);
+      // 重新适配
+      adaptInstance.adapt();
+      
+      // 更新演示区
+      const demoBox = document.getElementById('demo-box');
+      demoBox.textContent = `已适配：${unit} 单位，${mode} 模式`;
+      
+      // 显示结果
+      updateAdaptLog(`更新适配成功：
+- 单位：${unit}
+- 模式：${mode}`);
+    }
+
+    function destroyAdapt() {
+      if (!adaptInstance) {
+        updateAdaptLog('请先初始化适配');
+        return;
+      }
+      
+      adaptInstance.destroy();
+      adaptInstance = null;
+      
+      // 更新演示区
+      const demoBox = document.getElementById('demo-box');
+      demoBox.classList.remove('adapted');
+      demoBox.textContent = '适配效果展示区';
+      
+      // 显示结果
+      updateAdaptLog('适配已销毁');
+    }
+
+    function updateAdaptLog(message) {
+      document.getElementById('adapt-log').textContent = message;
+    }
+
+    function convertUnits() {
+      if (!adaptInstance) {
+        document.getElementById('convert-log').textContent = '请先初始化适配';
+        return;
+      }
+      
+      const value = parseFloat(document.getElementById('convert-value').value);
+      const fromUnit = document.getElementById('from-unit').value;
+      const toUnit = document.getElementById('to-unit').value;
+      
+      if (isNaN(value)) {
+        document.getElementById('convert-log').textContent = '请输入有效的数值';
+        return;
+      }
+      
+      const deviceType = adaptInstance.config.device.isMobile ? 'mobile' : 'pc';
+      const designConfig = adaptInstance.config.designSize[deviceType];
+      
+      const result = adaptInstance.convertUnits(value, fromUnit, toUnit, designConfig);
+      
+      document.getElementById('convert-log').textContent = `${value} ${fromUnit} = ${result} ${toUnit}`;
+    }
+
+    function showDeviceInfo() {
+      if (!adaptInstance) {
+        // 创建临时实例获取设备信息
+        const tempAdapt = new window.DC.adapt();
+        const deviceInfo = tempAdapt.config.device;
+        const navHeight = tempAdapt.getBrowserNavHeight();
+        const orientation = tempAdapt.getScreenOrientation();
+        const viewportHeight = tempAdapt.getViewportHeight();
+        
+        tempAdapt.destroy();
+        
+        document.getElementById('device-log').textContent = `设备信息：
+- 桌面设备：${deviceInfo.isDesktop}
+- 移动设备：${deviceInfo.isMobile}
+- 平板设备：${deviceInfo.isTablet}
+- 屏幕方向：${orientation}
+- 浏览器导航栏高度：${navHeight}px
+- 视口高度：${viewportHeight}px
+- 窗口宽度：${window.innerWidth}px
+- 窗口高度：${window.innerHeight}px`;
+      } else {
+        const deviceInfo = adaptInstance.config.device;
+        const navHeight = adaptInstance.getBrowserNavHeight();
+        const orientation = adaptInstance.getScreenOrientation();
+        const viewportHeight = adaptInstance.getViewportHeight();
+        
+        document.getElementById('device-log').textContent = `设备信息：
+- 桌面设备：${deviceInfo.isDesktop}
+- 移动设备：${deviceInfo.isMobile}
+- 平板设备：${deviceInfo.isTablet}
+- 屏幕方向：${orientation}
+- 浏览器导航栏高度：${navHeight}px
+- 视口高度：${viewportHeight}px
+- 窗口宽度：${window.innerWidth}px
+- 窗口高度：${window.innerHeight}px`;
+      }
+    }
+
+    function initCustomAdapt() {
+      const pcWidth = parseInt(document.getElementById('pc-width').value);
+      const pcHeight = parseInt(document.getElementById('pc-height').value);
+      const mobileWidth = parseInt(document.getElementById('mobile-width').value);
+      const mobileHeight = parseInt(document.getElementById('mobile-height').value);
+      
+      // 验证输入
+      if (isNaN(pcWidth) || isNaN(pcHeight) || isNaN(mobileWidth) || isNaN(mobileHeight)) {
+        document.getElementById('custom-log').textContent = '请输入有效的尺寸值';
+        return;
+      }
+      
+      // 销毁现有实例
+      if (adaptInstance) {
+        adaptInstance.destroy();
+      }
+      
+      // 创建自定义实例
+      adaptInstance = new window.DC.adapt({
+        unit: 'rem',
+        mode: 'fullscreen',
+        designSize: {
+          pc: {
+            width: pcWidth,
+            height: pcHeight,
+            fullscreenSizes: [
+              { width: pcWidth, height: pcHeight }
+            ]
+          },
+          mobile: {
+            width: mobileWidth,
+            height: mobileHeight,
+            fullscreenSizes: [
+              { width: mobileWidth, height: mobileHeight },
+              { width: mobileHeight, height: mobileWidth }
+            ]
+          }
+        }
+      });
+      
+      // 显示结果
+      document.getElementById('custom-log').textContent = `自定义适配初始化成功：
+- PC 设计尺寸：${pcWidth}x${pcHeight}
+- 移动端设计尺寸：${mobileWidth}x${mobileHeight}
+- 单位：rem
+- 模式：fullscreen`;
+    }
+
+    // 窗口大小变化时更新适配
+    window.addEventListener('resize', function() {
+      if (adaptInstance) {
+        adaptInstance.adapt();
+        updateAdaptLog(`窗口大小变化，已自动更新适配`);
+      }
+    });
+
+    // 页面加载完成后初始化
+    window.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('adapt-log').textContent = '页面加载完成，准备就绪';
+    });
+  </script>
+</body>
+</html>
