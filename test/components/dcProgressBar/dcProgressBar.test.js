@@ -1,342 +1,147 @@
 /**
- * dcProgressBar 组件单元测试
- * @author DC Team
- * @version 1.0.0
+ * DCProgressBar 测试文件
+ * 测试进度条组件的功能和API
  */
 
-// 导入要测试的模块
-const { JSDOM } = require('jsdom')
-const fs = require('fs')
-const path = require('path')
+describe('DCProgressBar', () => {
+  let container;
+  let progressBar;
 
-// 设置模拟DOM环境
-const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>')
-global.window = dom.window
-global.document = dom.window.document
-global.Element = dom.window.Element
-global.HTMLElement = dom.window.HTMLElement
-global.Node = dom.window.Node
+  beforeEach(() => {
+    // 创建测试容器
+    container = document.createElement('div');
+    container.id = 'test-container';
+    document.body.appendChild(container);
+  });
 
-// 加载组件代码
-const componentPath = path.join(__dirname, '../../../src/components/dcprogressbar/dcprogressbar.js')
-const componentCode = fs.readFileSync(componentPath, 'utf8')
-eval(componentCode)
-
-// 测试套件
-function runTests() {
-  let passedTests = 0
-  let totalTests = 0
-
-  // 测试辅助函数
-  function test(description, testFunction) {
-    totalTests++
-    try {
-      const result = testFunction()
-      if (result) {
-        console.log(`✓ ${description}`)
-        passedTests++
-      } else {
-        console.error(`✗ ${description}`)
-      }
-    } catch (error) {
-      console.error(`✗ ${description}: ${error.message}`)
+  afterEach(() => {
+    // 清理测试容器
+    if (progressBar) {
+      progressBar.destroy();
     }
-  }
+    if (container) {
+      container.remove();
+    }
+  });
 
-  // 基本功能测试
-  console.log('=== 基本功能测试 ===')
+  test('should initialize with default options', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container'
+    });
 
-  test('dcProgressBar 组件存在', () => {
-    return typeof DCProgressBar === 'function'
-  })
+    expect(progressBar.getValue()).toBe(0);
+  });
 
-  test('组件可以实例化', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
+  test('should initialize with custom options', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container',
       value: 50,
-    })
-    return !!progressBar
-  })
+      min: 0,
+      max: 100,
+      step: 5,
+      color: '#ff0000'
+    });
 
-  test('实例具有必要的属性', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 30,
-    })
-    return progressBar.value === 30 && progressBar.container === container && progressBar.element instanceof HTMLElement
-  })
+    expect(progressBar.getValue()).toBe(50);
+  });
 
-  // 初始化测试
-  console.log('\n=== 初始化测试 ===')
+  test('should set value correctly', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container'
+    });
 
-  test('默认值初始化', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-    })
-    return progressBar.value === 0
-  })
+    progressBar.setValue(75);
+    expect(progressBar.getValue()).toBe(75);
+  });
 
-  test('自定义值初始化', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 75,
-    })
-    return progressBar.value === 75
-  })
+  test('should respect min and max values', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container',
+      min: 10,
+      max: 90
+    });
 
-  test('边界值初始化（超出最大值）', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 150,
-    })
-    return progressBar.value === 100
-  })
+    progressBar.setValue(5);
+    expect(progressBar.getValue()).toBe(10);
 
-  test('边界值初始化（低于最小值）', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: -10,
-    })
-    return progressBar.value === 0
-  })
+    progressBar.setValue(95);
+    expect(progressBar.getValue()).toBe(90);
+  });
 
-  // 方法测试
-  console.log('\n=== 方法测试 ===')
+  test('should respect step value', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container',
+      step: 10
+    });
 
-  test('getValue 方法返回当前值', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-    })
-    return progressBar.getValue() === 50
-  })
+    progressBar.setValue(25);
+    expect(progressBar.getValue()).toBe(20);
 
-  test('setValue 方法更新值', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 30,
-    })
-    progressBar.setValue(70)
-    return progressBar.getValue() === 70
-  })
+    progressBar.setValue(36);
+    expect(progressBar.getValue()).toBe(40);
+  });
 
-  test('setValue 方法处理边界值（超出最大值）', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-    })
-    progressBar.setValue(150)
-    return progressBar.getValue() === 100
-  })
+  test('should trigger onChange callback when value changes', () => {
+    const onChangeMock = jest.fn();
 
-  test('setValue 方法处理边界值（低于最小值）', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-    })
-    progressBar.setValue(-10)
-    return progressBar.getValue() === 0
-  })
-
-  test('increment 方法增加值', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 40,
-    })
-    progressBar.increment(20)
-    return progressBar.getValue() === 60
-  })
-
-  test('increment 方法处理边界值（超出最大值）', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 90,
-    })
-    progressBar.increment(20)
-    return progressBar.getValue() === 100
-  })
-
-  test('decrement 方法减少值', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 60,
-    })
-    progressBar.decrement(20)
-    return progressBar.getValue() === 40
-  })
-
-  test('decrement 方法处理边界值（低于最小值）', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 10,
-    })
-    progressBar.decrement(20)
-    return progressBar.getValue() === 0
-  })
-
-  test('getPercentage 方法返回百分比', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-    })
-    return progressBar.getPercentage() === 50
-  })
-
-  // DOM 测试
-  console.log('\n=== DOM 测试 ===')
-
-  test('创建必要的DOM元素', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-    })
-
-    const progressBarElement = progressBar.element
-    const progressFill = progressBarElement.querySelector('.dc-progress-fill')
-
-    return progressBarElement instanceof HTMLElement && progressFill instanceof HTMLElement
-  })
-
-  test('setValue 方法更新DOM', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container',
       value: 0,
-    })
+      onChange: onChangeMock
+    });
 
-    progressBar.setValue(50)
-    const progressFill = progressBar.element.querySelector('.dc-progress-fill')
-    const width = progressFill.style.width
+    progressBar.setValue(50);
+    expect(onChangeMock).toHaveBeenCalledWith(50, 0);
+  });
 
-    return width === '50%'
-  })
+  test('should not trigger onChange callback when value does not change', () => {
+    const onChangeMock = jest.fn();
 
-  test('显示百分比文本', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 75,
-      showPercentage: true,
-    })
-
-    const percentageText = progressBar.element.querySelector('.dc-progress-text')
-    return percentageText && percentageText.textContent === '75%'
-  })
-
-  test('不显示百分比文本', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 75,
-      showPercentage: false,
-    })
-
-    const percentageText = progressBar.element.querySelector('.dc-progress-text')
-    return percentageText === null
-  })
-
-  // 事件测试
-  console.log('\n=== 事件测试 ===')
-
-  test('触发change事件', done => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container',
       value: 50,
-    })
+      onChange: onChangeMock
+    });
 
-    let eventTriggered = false
-    progressBar.element.addEventListener('change', () => {
-      eventTriggered = true
-    })
+    progressBar.setValue(50);
+    expect(onChangeMock).not.toHaveBeenCalled();
+  });
 
-    progressBar.setValue(75)
+  test('should update config correctly', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container',
+      value: 50
+    });
 
-    // 在真实环境中，这需要异步检查
-    // 这里简化处理，假设事件立即触发
-    return eventTriggered
-  })
+    progressBar.updateConfig({
+      max: 200,
+      color: '#00ff00'
+    });
 
-  // 样式测试
-  console.log('\n=== 样式测试 ===')
+    progressBar.setValue(150);
+    expect(progressBar.getValue()).toBe(150);
+  });
 
-  test('应用自定义背景颜色', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-      backgroundColor: '#ff0000',
-    })
+  test('should handle container not found error', () => {
+    // 模拟console.error
+    const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation();
 
-    const progressBarElement = progressBar.element
-    const backgroundColor = progressBarElement.style.backgroundColor
+    progressBar = new window.DC.ProgressBar({
+      container: '#non-existent-container'
+    });
 
-    return backgroundColor === 'rgb(255, 0, 0)' || backgroundColor === '#ff0000'
-  })
+    expect(consoleErrorMock).toHaveBeenCalledWith('Container not found:', '#non-existent-container');
 
-  test('应用自定义进度颜色', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-      progressColor: '#00ff00',
-    })
+    // 恢复console.error
+    consoleErrorMock.mockRestore();
+  });
 
-    const progressFill = progressBar.element.querySelector('.dc-progress-fill')
-    const progressColor = progressFill.style.backgroundColor
+  test('should destroy component correctly', () => {
+    progressBar = new window.DC.ProgressBar({
+      container: '#test-container'
+    });
 
-    return progressColor === 'rgb(0, 255, 0)' || progressColor === '#00ff00'
-  })
-
-  test('应用自定义高度', () => {
-    const container = document.createElement('div')
-    const progressBar = new DCProgressBar({
-      container: container,
-      value: 50,
-      height: '30px',
-    })
-
-    const progressBarElement = progressBar.element
-    const height = progressBarElement.style.height
-
-    return height === '30px'
-  })
-
-  // 输出测试结果
-  console.log(`\n=== 测试完成 ===`)
-  console.log(`总测试数: ${totalTests}`)
-  console.log(`通过测试: ${passedTests}`)
-  console.log(`失败测试: ${totalTests - passedTests}`)
-  console.log(`通过率: ${((passedTests / totalTests) * 100).toFixed(2)}%`)
-
-  return {
-    total: totalTests,
-    passed: passedTests,
-    failed: totalTests - passedTests,
-    passRate: (passedTests / totalTests) * 100,
-  }
-}
-
-// 如果直接运行此文件，则执行测试
-if (require.main === module) {
-  runTests()
-}
-
-// 导出测试函数
-module.exports = runTests
+    progressBar.destroy();
+    expect(container.innerHTML).toBe('');
+  });
+});

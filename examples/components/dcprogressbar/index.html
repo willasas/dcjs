@@ -3,204 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DC.ProgressBar 组件示例</title>
+    <title>DCProgressBar 示例</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .example {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .example h3 {
-            margin-top: 0;
+        h1 {
             color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .progress-container {
+            margin: 20px 0;
+        }
+        .control-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #666;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
         button {
+            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 8px 12px;
             border-radius: 4px;
             cursor: pointer;
-            margin: 5px;
+            font-size: 14px;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #45a049;
         }
-        .controls {
-            margin-bottom: 15px;
-        }
-        .progress-container {
-            width: 100%;
-            margin: 20px 0;
-        }
-        .info-panel {
-            background-color: #fff;
-            border: 1px solid #ddd;
+        .info-box {
+            background-color: #f0f8ff;
+            padding: 15px;
             border-radius: 4px;
-            padding: 10px;
-            margin-top: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #1e90ff;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #1e90ff;
+        }
+        .info-box p {
+            margin: 8px 0;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>DC.ProgressBar 组件示例</h1>
+    <div class="container">
+        <h1>DCProgressBar 示例</h1>
 
-    <div class="example">
-        <h3>基本进度条</h3>
-        <div class="controls">
-            <button onclick="basicProgressBar.setValue(25)">设置为 25%</button>
-            <button onclick="basicProgressBar.setValue(50)">设置为 50%</button>
-            <button onclick="basicProgressBar.setValue(75)">设置为 75%</button>
-            <button onclick="basicProgressBar.setValue(100)">设置为 100%</button>
+        <div class="info-box">
+            <h3>基本用法</h3>
+            <p>DCProgressBar 是一个功能强大的原生 JavaScript 进度条组件，支持以下特性：</p>
+            <ul>
+                <li>拖拽调整进度</li>
+                <li>点击轨道调整进度</li>
+                <li>支持触摸事件</li>
+                <li>自定义颜色和样式</li>
+                <li>支持步长设置</li>
+                <li>值变化回调</li>
+                <li>响应式设计</li>
+            </ul>
         </div>
-        <div id="basic-progress" class="progress-container"></div>
-        <div class="info-panel">
-            <div>当前值: <span id="basic-value">0</span>%</div>
+
+        <h2>示例 1: 基本进度条</h2>
+        <div id="progress1" class="progress-container"></div>
+
+        <h2>示例 2: 自定义颜色和初始值</h2>
+        <div id="progress2" class="progress-container"></div>
+
+        <h2>示例 3: 带步长控制的进度条</h2>
+        <div id="progress3" class="progress-container"></div>
+
+        <h2>控制选项</h2>
+
+        <div class="control-group">
+            <label for="value-input">设置值:</label>
+            <input type="number" id="value-input" min="0" max="100" value="50">
+            <button id="set-value-btn">设置值</button>
+        </div>
+
+        <div class="control-group">
+            <label for="color-input">进度条颜色:</label>
+            <input type="color" id="color-input" value="#4CAF50">
+            <button id="set-color-btn">设置颜色</button>
+        </div>
+
+        <div class="control-group">
+            <label for="step-input">步长:</label>
+            <input type="number" id="step-input" min="0.1" max="10" value="1" step="0.1">
+            <button id="set-step-btn">设置步长</button>
+        </div>
+
+        <div class="info-box">
+            <h3>事件监听</h3>
+            <p>当前值: <span id="current-value">0</span>%</p>
+            <p>上一个值: <span id="previous-value">0</span>%</p>
         </div>
     </div>
 
-    <div class="example">
-        <h3>自定义颜色进度条</h3>
-        <div class="controls">
-            <button onclick="customProgressBar.setValue(25)">设置为 25%</button>
-            <button onclick="customProgressBar.setValue(50)">设置为 50%</button>
-            <button onclick="customProgressBar.setValue(75)">设置为 75%</button>
-            <button onclick="customProgressBar.setValue(100)">设置为 100%</button>
-            <button onclick="changeCustomColor()">更改颜色</button>
-        </div>
-        <div id="custom-progress" class="progress-container"></div>
-        <div class="info-panel">
-            <div>当前值: <span id="custom-value">0</span>%</div>
-            <div>当前颜色: <span id="custom-color">#2196F3</span></div>
-        </div>
-    </div>
+    <!-- 引入 DCProgressBar 组件 -->
+    <script src="../../../src/components/dcprogressbar/dcprogressbar.js"></script>
 
-    <div class="example">
-        <h3>自定义范围进度条 (0-200)</h3>
-        <div class="controls">
-            <button onclick="rangeProgressBar.setValue(50)">设置为 50</button>
-            <button onclick="rangeProgressBar.setValue(100)">设置为 100</button>
-            <button onclick="rangeProgressBar.setValue(150)">设置为 150</button>
-            <button onclick="rangeProgressBar.setValue(200)">设置为 200</button>
-        </div>
-        <div id="range-progress" class="progress-container"></div>
-        <div class="info-panel">
-            <div>当前值: <span id="range-value">0</span></div>
-            <div>百分比: <span id="range-percent">0</span>%</div>
-        </div>
-    </div>
-
-    <div class="example">
-        <h3>带步长的进度条 (步长为10)</h3>
-        <div class="controls">
-            <button onclick="stepProgressBar.setValue(10)">增加 10</button>
-            <button onclick="stepProgressBar.setValue(30)">设置为 30</button>
-            <button onclick="stepProgressBar.setValue(60)">设置为 60</button>
-            <button onclick="stepProgressBar.setValue(90)">设置为 90</button>
-        </div>
-        <div id="step-progress" class="progress-container"></div>
-        <div class="info-panel">
-            <div>当前值: <span id="step-value">0</span>%</div>
-        </div>
-    </div>
-
-    <div class="example">
-        <h3>带回调函数的进度条</h3>
-        <div class="controls">
-            <button onclick="callbackProgressBar.setValue(25)">设置为 25%</button>
-            <button onclick="callbackProgressBar.setValue(50)">设置为 50%</button>
-            <button onclick="callbackProgressBar.setValue(75)">设置为 75%</button>
-            <button onclick="callbackProgressBar.setValue(100)">设置为 100%</button>
-        </div>
-        <div id="callback-progress" class="progress-container"></div>
-        <div class="info-panel">
-            <div>当前值: <span id="callback-value">0</span>%</div>
-            <div>变化历史: <span id="callback-history">无</span></div>
-        </div>
-    </div>
-
-    <script src="../../../dist/dc.js"></script>
     <script>
-        // 基本进度条
-        const basicProgressBar = new DC.ProgressBar({
-            container: '#basic-progress',
+        // 示例 1: 基本进度条
+        const progress1 = new DC.ProgressBar({
+            container: '#progress1',
             value: 30,
-            onChange: function(value, oldValue) {
-                document.getElementById('basic-value').textContent = Math.round(value);
+            onChange: (newValue, oldValue) => {
+                document.getElementById('current-value').textContent = newValue;
+                document.getElementById('previous-value').textContent = oldValue;
             }
         });
 
-        // 自定义颜色进度条
-        let currentColor = '#2196F3';
-        const customProgressBar = new DC.ProgressBar({
-            container: '#custom-progress',
+        // 示例 2: 自定义颜色和初始值
+        const progress2 = new DC.ProgressBar({
+            container: '#progress2',
+            value: 60,
+            color: '#2196F3',
+            onChange: (newValue, oldValue) => {
+                console.log('Progress 2 changed:', newValue, oldValue);
+            }
+        });
+
+        // 示例 3: 带步长控制的进度条
+        const progress3 = new DC.ProgressBar({
+            container: '#progress3',
             value: 40,
-            color: currentColor,
-            onChange: function(value, oldValue) {
-                document.getElementById('custom-value').textContent = Math.round(value);
+            step: 5,
+            color: '#FF9800',
+            onChange: (newValue, oldValue) => {
+                console.log('Progress 3 changed:', newValue, oldValue);
             }
         });
 
-        // 自定义范围进度条
-        const rangeProgressBar = new DC.ProgressBar({
-            container: '#range-progress',
-            value: 50,
-            min: 0,
-            max: 200,
-            onChange: function(value, oldValue) {
-                document.getElementById('range-value').textContent = Math.round(value);
-                document.getElementById('range-percent').textContent = Math.round((value / 200) * 100);
-            }
+        // 控制按钮事件
+        document.getElementById('set-value-btn').addEventListener('click', () => {
+            const value = parseInt(document.getElementById('value-input').value);
+            progress1.setValue(value);
         });
 
-        // 带步长的进度条
-        const stepProgressBar = new DC.ProgressBar({
-            container: '#step-progress',
-            value: 20,
-            step: 10,
-            onChange: function(value, oldValue) {
-                document.getElementById('step-value').textContent = Math.round(value);
-            }
+        document.getElementById('set-color-btn').addEventListener('click', () => {
+            const color = document.getElementById('color-input').value;
+            progress1.updateConfig({ color });
         });
 
-        // 带回调函数的进度条
-        let changeHistory = [];
-        const callbackProgressBar = new DC.ProgressBar({
-            container: '#callback-progress',
-            value: 10,
-            onChange: function(value, oldValue) {
-                document.getElementById('callback-value').textContent = Math.round(value);
-                changeHistory.push(`${oldValue} → ${value}`);
-                document.getElementById('callback-history').textContent = changeHistory.join(', ');
-            }
+        document.getElementById('set-step-btn').addEventListener('click', () => {
+            const step = parseFloat(document.getElementById('step-input').value);
+            progress1.updateConfig({ step });
         });
 
-        // 更改自定义颜色进度条的颜色
-        function changeCustomColor() {
-            const colors = ['#2196F3', '#4CAF50', '#FF9800', '#F44336', '#9C27B0', '#00BCD4'];
-            const currentIndex = colors.indexOf(currentColor);
-            currentColor = colors[(currentIndex + 1) % colors.length];
-
-            customProgressBar.updateConfig({ color: currentColor });
-            document.getElementById('custom-color').textContent = currentColor;
-        }
-
-        // 初始化显示值
-        document.getElementById('basic-value').textContent = basicProgressBar.getValue();
-        document.getElementById('custom-value').textContent = customProgressBar.getValue();
-        document.getElementById('range-value').textContent = rangeProgressBar.getValue();
-        document.getElementById('range-percent').textContent = Math.round((rangeProgressBar.getValue() / 200) * 100);
-        document.getElementById('step-value').textContent = stepProgressBar.getValue();
-        document.getElementById('callback-value').textContent = callbackProgressBar.getValue();
+        // 初始值显示
+        document.getElementById('current-value').textContent = progress1.getValue();
     </script>
 </body>
 </html>

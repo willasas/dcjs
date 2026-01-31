@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCFooter Example</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        pre {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            min-height: 400px;
+        }
+        .test-content {
+            min-height: 300px;
+            text-align: center;
+            padding: 20px;
+        }
+        .test-content h3 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCFooter Component Example</h1>
+
+        <div class="test-content">
+            <h3>Test Content Area</h3>
+            <p>This is a test content area to demonstrate the footer component at the bottom of the page.</p>
+            <p>Scroll down to see the footer.</p>
+        </div>
+
+        <div class="example-section">
+            <h2>Basic Usage</h2>
+            <p>This example demonstrates the basic usage of the DCFooter component.</p>
+
+            <div class="code-block">
+                <pre>// Basic configuration for the footer component
+const footerOptions = {
+  container: 'main-footer',
+  defaultTheme: 'light-theme',
+  defaultLang: 'en-US',
+  type: 'official',
+  onThemeChange: (theme) => {
+    console.log('Theme changed to:', theme);
+  },
+  onLangChange: (lang) => {
+    console.log('Language changed to:', lang);
+  }
+};
+
+// Initialize the footer component
+const footer = new DC.Footer(footerOptions);</pre>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <h2>Custom Container Example</h2>
+            <p>This example demonstrates how to use a custom container for the footer component.</p>
+
+            <div class="code-block">
+                <pre>// Custom container configuration
+const customContainerOptions = {
+  container: '#custom-footer-container',
+  defaultTheme: 'light-theme',
+  defaultLang: 'zh-CN',
+  type: 'gaming'
+};
+
+// Initialize with custom container
+const customFooter = new DC.Footer(customContainerOptions);</pre>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <h2>Different Footer Types</h2>
+            <p>This example demonstrates the different footer types available.</p>
+
+            <div class="code-block">
+                <pre>// Different footer types
+const footerTypes = {
+  official: 'Official website footer',
+  gaming: 'Gaming website footer',
+  lib: 'Resource library footer',
+  shop: 'Online shop footer',
+  product: 'Product website footer'
+};
+
+// Example: Gaming footer
+const gamingFooterOptions = {
+  defaultTheme: 'light-theme',
+  defaultLang: 'en-US',
+  type: 'gaming'
+};
+
+const gamingFooter = new DC.Footer(gamingFooterOptions);</pre>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <h2>Dynamic Theme and Language Change</h2>
+            <p>This example demonstrates how to dynamically change the theme and language.</p>
+
+            <div class="code-block">
+                <pre>// Initialize footer
+const dynamicFooterOptions = {
+  defaultTheme: 'light-theme',
+  defaultLang: 'en-US',
+  type: 'official'
+};
+
+const dynamicFooter = new DC.Footer(dynamicFooterOptions);
+
+// Later, change theme
+dynamicFooter.setTheme('dark-theme');
+
+// Later, change language
+dynamicFooter.setLanguage('zh-CN');</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the footer component -->
+    <script src="../../../src/components/footer/dcfooter.js"></script>
+
+    <script>
+        // Mock global DC configuration
+        window.DC = {
+            config: {
+                languages: [
+                    { langCode: 'en-US', langCNName: 'English' },
+                    { langCode: 'zh-CN', langCNName: '中文' }
+                ],
+                themes: [
+                    { name: 'light-theme', value: 'Light' },
+                    { name: 'dark-theme', value: 'Dark' }
+                ],
+                follow: {
+                    local: [
+                        {
+                            link: 'https://www.facebook.com',
+                            text: 'Facebook',
+                            hoverText: 'Follow us on Facebook',
+                            icon: '<svg class="icon" width="32" height="32"><path fill="currentColor" d="M16 0C7.167 0 0 7.167 0 16s7.167 16 16 16 16-7.167 16-16S24.833 0 16 0zm-2 26h-2v-10h-2v-4h2v-2h2v2h2v4h-2v10z"/></svg>'
+                        },
+                        {
+                            link: 'https://www.twitter.com',
+                            text: 'Twitter',
+                            hoverText: 'Follow us on Twitter',
+                            icon: '<svg class="icon" width="32" height="32"><path fill="currentColor" d="M32 6.036c-1.187.526-2.433.886-3.746 1.022 1.363-.813 2.396-2.08 2.887-3.63-.135.836-.42 1.61-1.08 2.226C26.82 5.24 25.202 4.5 23.41 4.072c-1.175.75-1.938 1.948-1.938 3.27 0 .238.026.47.074.696-1.616-.086-3.103-1.68-3.103-3.52 0-.788.215-1.515.578-2.154C18.484.42 19.774 0 21.18 0c1.504 0 2.84 1.27 2.84 2.82 0 .218-.02.43-.058.64C22.14 3.946 20.916 3.25 19.62 3.25c-.563 0-1.06.242-1.387.616 0 .208.104.398.265.507-.992-.05-1.907-.52-2.548-1.275-.1.17-.163.36-.163.56 0 .318.168.59.42.777-.15-.005-.297-.052-.433-.15C17.478 3.68 18.472 4 19.56 4c-.266.607-.434 1.285-.434 1.99 0 1.377 1.028 2.528 2.375 2.794-.24.07-.49.107-.748.107-.183 0-.362-.018-.534-.054.364 1.153 1.438 1.95 2.748 1.98 1.304.025 2.55.28 3.694.845-.962.37-2.006.608-3.09.608-.298 0-.59-.017-.88-.05 1.645 1.03 3.558 1.636 5.65 1.636.677 0 1.336-.066 1.97-.197-1.07-.01-2.095-.355-2.985-.936.53.097 1.03.156 1.54.156.758 0 1.48-.25 2.108-.694-.495.54-1.09.96-1.74.96-.21 0-.416-.02-.62-.06z"/></svg>'
+                        },
+                        {
+                            link: 'https://www.instagram.com',
+                            text: 'Instagram',
+                            hoverText: 'Follow us on Instagram',
+                            icon: '<svg class="icon" width="32" height="32"><path fill="currentColor" d="M16 0C7.167 0 0 7.167 0 16s7.167 16 16 16 16-7.167 16-16S24.833 0 16 0zm-2 26h-2v-10h-2v-4h2v-2h2v2h2v4h-2v10z"/></svg>'
+                        }
+                    ]
+                },
+                termsOfUse: {
+                    link: '#',
+                    text: 'Terms of Use',
+                    CNText: '使用条款'
+                },
+                privacyPolicy: {
+                    link: '#',
+                    text: 'Privacy Policy',
+                    CNText: '隐私政策'
+                },
+                cookie: {
+                    link: '#',
+                    text: 'Cookie Policy',
+                    CNText: 'Cookie政策'
+                },
+                copyright: {
+                    text: '© 2023 Company. All rights reserved.',
+                    CNText: '© 2023 公司。保留所有权利。'
+                },
+                footer: {
+                    official: {
+                        Community: [
+                            { link: '#', text: 'Forums' },
+                            { link: '#', text: 'Discord' },
+                            { link: '#', text: 'Twitter' }
+                        ],
+                        GameDevelopers: [
+                            { link: '#', text: 'Developer Portal' },
+                            { link: '#', text: 'API Documentation' },
+                            { link: '#', text: 'Game Engine' }
+                        ],
+                        Support: [
+                            { link: '#', text: 'Help Center' },
+                            { link: '#', text: 'Contact Us' },
+                            { link: '#', text: 'FAQ' }
+                        ],
+                        Company: [
+                            { link: '#', text: 'About Us' },
+                            { link: '#', text: 'Careers' },
+                            { link: '#', text: 'Press' }
+                        ],
+                        Partner: [
+                            { link: '#', text: 'Become a Partner' },
+                            { link: '#', text: 'Partner Portal' }
+                        ]
+                    },
+                    gaming: {
+                        Games: [
+                            { link: '#', text: 'Popular Games' },
+                            { link: '#', text: 'New Releases' },
+                            { link: '#', text: 'Upcoming' }
+                        ],
+                        Support: [
+                            { link: '#', text: 'Game Support' },
+                            { link: '#', text: 'Account Help' },
+                            { link: '#', text: 'Technical Support' }
+                        ],
+                        Company: [
+                            { link: '#', text: 'About Us' },
+                            { link: '#', text: 'Careers' },
+                            { link: '#', text: 'Press' }
+                        ]
+                    },
+                    lib: {
+                        Resources: [
+                            { link: '#', text: 'Documentation' },
+                            { link: '#', text: 'Tutorials' },
+                            { link: '#', text: 'API Reference' }
+                        ],
+                        Support: [
+                            { link: '#', text: 'Help Center' },
+                            { link: '#', text: 'Community Forum' },
+                            { link: '#', text: 'Contact Us' }
+                        ],
+                        Company: [
+                            { link: '#', text: 'About Us' },
+                            { link: '#', text: 'Careers' },
+                            { link: '#', text: 'Press' }
+                        ]
+                    },
+                    shop: {
+                        Shop: [
+                            { link: '#', text: 'All Products' },
+                            { link: '#', text: 'New Arrivals' },
+                            { link: '#', text: 'Sales' }
+                        ],
+                        Support: [
+                            { link: '#', text: 'Customer Service' },
+                            { link: '#', text: 'Shipping Info' },
+                            { link: '#', text: 'Returns Policy' }
+                        ],
+                        Company: [
+                            { link: '#', text: 'About Us' },
+                            { link: '#', text: 'Store Locations' },
+                            { link: '#', text: 'Careers' }
+                        ]
+                    },
+                    product: {
+                        Products: [
+                            { link: '#', text: 'Product 1' },
+                            { link: '#', text: 'Product 2' },
+                            { link: '#', text: 'Product 3' }
+                        ],
+                        Support: [
+                            { link: '#', text: 'Product Support' },
+                            { link: '#', text: 'Documentation' },
+                            { link: '#', text: 'Contact Us' }
+                        ],
+                        Company: [
+                            { link: '#', text: 'About Us' },
+                            { link: '#', text: 'Careers' },
+                            { link: '#', text: 'Press' }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // Basic configuration for the footer component
+        const footerOptions = {
+          container: 'main-footer',
+          defaultTheme: 'light-theme',
+          defaultLang: 'en-US',
+          type: 'official',
+          onThemeChange: (theme) => {
+            console.log('Theme changed to:', theme);
+          },
+          onLangChange: (lang) => {
+            console.log('Language changed to:', lang);
+          }
+        };
+
+        // Initialize the footer component
+        const footer = new DC.Footer(footerOptions);
+
+        console.log('Footer initialized successfully!');
+    </script>
+</body>
+</html>

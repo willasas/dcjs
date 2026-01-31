@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCFilter 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #40a9ff;
+        }
+        .reset-btn {
+            background-color: #f5222d;
+        }
+        .reset-btn:hover {
+            background-color: #ff4d4f;
+        }
+        .log {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        .product-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fff;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+        }
+        .product-item:hover {
+            background: #f5f7fa;
+        }
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product-name {
+            font-weight: bold;
+            color: #303133;
+        }
+        .product-category {
+            font-size: 12px;
+            color: #909399;
+        }
+        .product-price {
+            font-size: 14px;
+            color: #f56c6c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCFilter 示例</h1>
+
+        <!-- 示例 1: 基本使用 -->
+        <div class="example-section">
+            <h2>示例 1: 基本使用</h2>
+            <p>使用默认配置创建筛选器，包含分类和价格两个筛选维度。</p>
+            <div class="filter-container" id="basic-filter"></div>
+            <div class="result-container" id="basic-result"></div>
+            <button class="reset-btn" onclick="resetBasicFilter()">重置筛选</button>
+            <div class="log" id="basic-log"></div>
+        </div>
+
+        <!-- 示例 2: 单选模式 -->
+        <div class="example-section">
+            <h2>示例 2: 单选模式</h2>
+            <p>配置为单选模式，每个分类只能选择一个选项。</p>
+            <div class="filter-container" id="single-filter"></div>
+            <div class="result-container" id="single-result"></div>
+            <button class="reset-btn" onclick="resetSingleFilter()">重置筛选</button>
+            <div class="log" id="single-log"></div>
+        </div>
+
+        <!-- 示例 3: 自定义配置 -->
+        <div class="example-section">
+            <h2>示例 3: 自定义配置</h2>
+            <p>使用自定义配置，包括最多选择数量、自定义文本等。</p>
+            <div class="filter-container" id="custom-filter"></div>
+            <div class="result-container" id="custom-result"></div>
+            <button class="reset-btn" onclick="resetCustomFilter()">重置筛选</button>
+            <div class="log" id="custom-log"></div>
+        </div>
+
+        <!-- 示例 4: 动态数据 -->
+        <div class="example-section">
+            <h2>示例 4: 动态数据</h2>
+            <p>使用动态数据和自定义结果展示。</p>
+            <div class="filter-container" id="dynamic-filter"></div>
+            <div class="result-container" id="dynamic-result"></div>
+            <button class="reset-btn" onclick="resetDynamicFilter()">重置筛选</button>
+            <div class="log" id="dynamic-log"></div>
+        </div>
+    </div>
+
+    <!-- 引入 DCFilter -->
+    <script src="../../../src/components/dcfilter/dcfilter.js"></script>
+
+    <script>
+        // 测试数据
+        const products = [
+            { id: 1, name: '产品1', category: 'electronics', price: 'high', brand: 'brand1' },
+            { id: 2, name: '产品2', category: 'clothing', price: 'medium', brand: 'brand2' },
+            { id: 3, name: '产品3', category: 'electronics', price: 'medium', brand: 'brand1' },
+            { id: 4, name: '产品4', category: 'clothing', price: 'low', brand: 'brand3' },
+            { id: 5, name: '产品5', category: 'home', price: 'high', brand: 'brand2' },
+            { id: 6, name: '产品6', category: 'electronics', price: 'low', brand: 'brand3' },
+            { id: 7, name: '产品7', category: 'clothing', price: 'high', brand: 'brand1' },
+            { id: 8, name: '产品8', category: 'home', price: 'medium', brand: 'brand3' }
+        ];
+
+        // 测试分类
+        const categories = [
+            {
+                key: 'category',
+                name: '分类',
+                children: [
+                    { name: '电子产品', value: 'electronics' },
+                    { name: '服装', value: 'clothing' },
+                    { name: '家居', value: 'home' }
+                ]
+            },
+            {
+                key: 'price',
+                name: '价格',
+                children: [
+                    { name: '高', value: 'high' },
+                    { name: '中', value: 'medium' },
+                    { name: '低', value: 'low' }
+                ]
+            },
+            {
+                key: 'brand',
+                name: '品牌',
+                children: [
+                    { name: '品牌1', value: 'brand1' },
+                    { name: '品牌2', value: 'brand2' },
+                    { name: '品牌3', value: 'brand3' }
+                ]
+            }
+        ];
+
+        // 示例 1: 基本使用
+        let basicFilter;
+        function initBasicFilter() {
+            const container = document.getElementById('basic-filter');
+            const resultContainer = document.getElementById('basic-result');
+            const log = document.getElementById('basic-log');
+
+            basicFilter = new DC.Filter({
+                container: container,
+                data: products,
+                categories: categories,
+                resultContainer: resultContainer,
+                onFilter: (results, filters) => {
+                    log.innerHTML += `[筛选] 筛选结果: ${results.length} 个产品<br>`;
+                    log.innerHTML += `[筛选] 当前条件: ${JSON.stringify(filters)}<br>`;
+
+                    // 自定义结果展示
+                    renderResults(resultContainer, results);
+                },
+                onReset: () => {
+                    log.innerHTML += `[重置] 筛选条件已重置<br>`;
+                }
+            });
+        }
+
+        // 示例 2: 单选模式
+        let singleFilter;
+        function initSingleFilter() {
+            const container = document.getElementById('single-filter');
+            const resultContainer = document.getElementById('single-result');
+            const log = document.getElementById('single-log');
+
+            singleFilter = new DC.Filter({
+                container: container,
+                data: products,
+                categories: categories,
+                resultContainer: resultContainer,
+                multiple: false,
+                onFilter: (results, filters) => {
+                    log.innerHTML += `[筛选] 筛选结果: ${results.length} 个产品<br>`;
+                    log.innerHTML += `[筛选] 当前条件: ${JSON.stringify(filters)}<br>`;
+
+                    // 自定义结果展示
+                    renderResults(resultContainer, results);
+                },
+                onReset: () => {
+                    log.innerHTML += `[重置] 筛选条件已重置<br>`;
+                }
+            });
+        }
+
+        // 示例 3: 自定义配置
+        let customFilter;
+        function initCustomFilter() {
+            const container = document.getElementById('custom-filter');
+            const resultContainer = document.getElementById('custom-result');
+            const log = document.getElementById('custom-log');
+
+            customFilter = new DC.Filter({
+                container: container,
+                data: products,
+                categories: categories,
+                resultContainer: resultContainer,
+                maxSelection: 2,
+                noResultText: '没有找到符合条件的产品',
+                allText: '全部选项',
+                showSelectedCount: true,
+                onFilter: (results, filters) => {
+                    log.innerHTML += `[筛选] 筛选结果: ${results.length} 个产品<br>`;
+                    log.innerHTML += `[筛选] 当前条件: ${JSON.stringify(filters)}<br>`;
+
+                    // 自定义结果展示
+                    renderResults(resultContainer, results);
+                },
+                onReset: () => {
+                    log.innerHTML += `[重置] 筛选条件已重置<br>`;
+                }
+            });
+        }
+
+        // 示例 4: 动态数据
+        let dynamicFilter;
+        function initDynamicFilter() {
+            const container = document.getElementById('dynamic-filter');
+            const resultContainer = document.getElementById('dynamic-result');
+            const log = document.getElementById('dynamic-log');
+
+            // 动态生成数据
+            const dynamicProducts = generateDynamicProducts(20);
+
+            // 动态生成分类
+            const dynamicCategories = [
+                {
+                    key: 'category',
+                    name: '商品分类',
+                    children: [
+                        { name: '数码产品', value: 'digital' },
+                        { name: '家用电器', value: 'appliance' },
+                        { name: '服装鞋包', value: 'fashion' },
+                        { name: '食品饮料', value: 'food' },
+                        { name: '美妆个护', value: 'beauty' }
+                    ]
+                },
+                {
+                    key: 'price',
+                    name: '价格区间',
+                    children: [
+                        { name: '0-100元', value: '0-100' },
+                        { name: '100-500元', value: '100-500' },
+                        { name: '500-1000元', value: '500-1000' },
+                        { name: '1000元以上', value: '1000+' }
+                    ]
+                },
+                {
+                    key: 'rating',
+                    name: '评分',
+                    children: [
+                        { name: '4星以上', value: '4+' },
+                        { name: '3星以上', value: '3+' },
+                        { name: '2星以上', value: '2+' },
+                        { name: '1星以上', value: '1+' }
+                    ]
+                }
+            ];
+
+            dynamicFilter = new DC.Filter({
+                container: container,
+                data: dynamicProducts,
+                categories: dynamicCategories,
+                resultContainer: resultContainer,
+                onFilter: (results, filters) => {
+                    log.innerHTML += `[筛选] 筛选结果: ${results.length} 个产品<br>`;
+                    log.innerHTML += `[筛选] 当前条件: ${JSON.stringify(filters)}<br>`;
+
+                    // 自定义结果展示
+                    renderResults(resultContainer, results);
+                },
+                onReset: () => {
+                    log.innerHTML += `[重置] 筛选条件已重置<br>`;
+                }
+            });
+        }
+
+        // 渲染结果
+        function renderResults(container, results) {
+            container.innerHTML = '';
+
+            if (results.length === 0) {
+                const noResult = document.createElement('div');
+                noResult.className = 'dc-filter-no-result';
+                noResult.textContent = '暂无相关产品';
+                container.appendChild(noResult);
+                return;
+            }
+
+            results.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'product-item';
+                item.innerHTML = `
+                    <div class="product-info">
+                        <div>
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-category">分类: ${getCategoryName(product.category)} | 品牌: ${product.brand}</div>
+                        </div>
+                        <div class="product-price">${product.price}</div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // 获取分类名称
+        function getCategoryName(value) {
+            const categoryMap = {
+                'electronics': '电子产品',
+                'clothing': '服装',
+                'home': '家居',
+                'digital': '数码产品',
+                'appliance': '家用电器',
+                'fashion': '服装鞋包',
+                'food': '食品饮料',
+                'beauty': '美妆个护'
+            };
+            return categoryMap[value] || value;
+        }
+
+        // 生成动态产品数据
+        function generateDynamicProducts(count) {
+            const categories = ['digital', 'appliance', 'fashion', 'food', 'beauty'];
+            const brands = ['品牌A', '品牌B', '品牌C', '品牌D', '品牌E'];
+            const prices = ['0-100', '100-500', '500-1000', '1000+'];
+            const ratings = ['4+', '3+', '2+', '1+'];
+
+            const products = [];
+            for (let i = 1; i <= count; i++) {
+                products.push({
+                    id: i,
+                    name: `动态产品${i}`,
+                    category: categories[Math.floor(Math.random() * categories.length)],
+                    brand: brands[Math.floor(Math.random() * brands.length)],
+                    price: prices[Math.floor(Math.random() * prices.length)],
+                    rating: ratings[Math.floor(Math.random() * ratings.length)]
+                });
+            }
+            return products;
+        }
+
+        // 重置筛选
+        function resetBasicFilter() {
+            if (basicFilter) {
+                basicFilter.reset();
+            }
+        }
+
+        function resetSingleFilter() {
+            if (singleFilter) {
+                singleFilter.reset();
+            }
+        }
+
+        function resetCustomFilter() {
+            if (customFilter) {
+                customFilter.reset();
+            }
+        }
+
+        function resetDynamicFilter() {
+            if (dynamicFilter) {
+                dynamicFilter.reset();
+            }
+        }
+
+        // 页面加载完成后初始化所有示例
+        window.onload = function() {
+            initBasicFilter();
+            initSingleFilter();
+            initCustomFilter();
+            initDynamicFilter();
+        };
+    </script>
+</body>
+</html>

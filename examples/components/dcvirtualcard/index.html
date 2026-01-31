@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCVirtualCard 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .card-wrapper {
+            text-align: center;
+            max-width: 360px;
+        }
+
+        .card-title {
+            margin: 15px 0 5px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .card-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+
+        .instructions ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .theme-selector {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .theme-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .theme-btn {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .theme-btn.active {
+            background-color: #1976d2;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        #dynamic-card-container {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCVirtualCard 虚拟卡片组件示例</h1>
+        <p class="subtitle">一个具有多种主题和交互功能的虚拟卡片组件</p>
+
+        <div class="instructions">
+            <h3>交互说明</h3>
+            <ul>
+                <li><strong>点击卡号：</strong> 复制卡号到剪贴板，会显示复制成功的提示</li>
+                <li><strong>双击卡片：</strong> 翻转卡片，显示卡片背面效果</li>
+                <li><strong>主题切换：</strong> 使用下方的主题按钮切换不同的卡片样式</li>
+            </ul>
+        </div>
+
+        <h2>预设卡片示例</h2>
+        <div class="card-container">
+            <!-- 卡片1：默认主题 -->
+            <div class="card-wrapper">
+                <div id="card1-container"></div>
+                <h3 class="card-title">默认主题</h3>
+                <p class="card-desc">使用默认配置创建的虚拟卡片</p>
+            </div>
+
+            <!-- 卡片2：自定义主题 -->
+            <div class="card-wrapper">
+                <div id="card2-container"></div>
+                <h3 class="card-title">自定义主题</h3>
+                <p class="card-desc">使用自定义信息和主题创建的虚拟卡片</p>
+            </div>
+        </div>
+
+        <h2>动态主题切换</h2>
+        <p>选择下方的主题按钮，查看不同主题的卡片效果：</p>
+
+        <div class="theme-selector">
+            <div class="theme-buttons">
+                <button class="theme-btn active" data-theme="one">主题 1</button>
+                <button class="theme-btn" data-theme="two">主题 2</button>
+                <button class="theme-btn" data-theme="three">主题 3</button>
+                <button class="theme-btn" data-theme="four">主题 4</button>
+                <button class="theme-btn" data-theme="five">主题 5</button>
+                <button class="theme-btn" data-theme="six">主题 6</button>
+                <button class="theme-btn" data-theme="seven">主题 7</button>
+                <button class="theme-btn" data-theme="eight">主题 8</button>
+            </div>
+        </div>
+
+        <div id="dynamic-card-container" class="card-wrapper">
+            <div id="dynamic-card"></div>
+            <h3 class="card-title">动态主题卡片</h3>
+            <p class="card-desc">点击上方按钮切换主题</p>
+        </div>
+
+        <div class="instructions">
+            <h3>使用方法</h3>
+            <div class="code-block">
+// 初始化 DCVirtualCard 组件
+const card = new DC.VirtualCard({
+  virtualName: 'Virtual',
+  virtualDesc: 'Virtual Card',
+  logoUrl: 'https://assets.codepen.io/14762/airwallex-virtual.svg',
+  cardNumber: '6230 5678 0012 3456 828',
+  cardId: '00211',
+  cardName: 'Mike Trilford',
+  silkLogoUrl: 'https://assets.codepen.io/14762/visa-virtual.svg',
+  theme: 'one',
+  targetElement: document.getElementById('card-container')
+});
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 DCVirtualCard 组件 -->
+    <script src="../../../src/components/dcvirtualcard/dcvirtualcard.js"></script>
+
+    <script>
+        // 初始化预设卡片1：默认主题
+        const card1 = new DC.VirtualCard({
+            targetElement: document.getElementById('card1-container')
+        });
+
+        // 初始化预设卡片2：自定义主题
+        const card2 = new DC.VirtualCard({
+            virtualName: 'Custom',
+            virtualDesc: 'Custom Card',
+            cardNumber: '1234 5678 9012 3456',
+            cardId: '12345',
+            cardName: 'John Doe',
+            theme: 'five',
+            targetElement: document.getElementById('card2-container')
+        });
+
+        // 初始化动态主题卡片
+        let dynamicCard = new DC.VirtualCard({
+            theme: 'one',
+            targetElement: document.getElementById('dynamic-card')
+        });
+
+        // 主题切换功能
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const dynamicCardContainer = document.getElementById('dynamic-card');
+
+        themeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 移除所有按钮的active状态
+                themeButtons.forEach(btn => btn.classList.remove('active'));
+                // 添加当前按钮的active状态
+                this.classList.add('active');
+
+                // 获取选中的主题
+                const theme = this.getAttribute('data-theme');
+
+                // 销毁当前卡片
+                if (dynamicCard) {
+                    dynamicCard.destroy();
+                }
+
+                // 清空容器
+                dynamicCardContainer.innerHTML = '';
+
+                // 创建新的卡片
+                dynamicCard = new DC.VirtualCard({
+                    theme: theme,
+                    targetElement: dynamicCardContainer
+                });
+            });
+        });
+    </script>
+</body>
+</html>

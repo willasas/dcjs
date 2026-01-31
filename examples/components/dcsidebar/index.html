@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCSidebar 示例</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            height: 2000px; /* 为了测试滚动效果 */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #1e90ff;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #1e90ff;
+        }
+        .info-box p {
+            margin: 10px 0;
+            color: #333;
+        }
+        .control-group {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .control-group h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.secondary {
+            background-color: #2196F3;
+        }
+        button.secondary:hover {
+            background-color: #1976D2;
+        }
+        button.danger {
+            background-color: #f44336;
+        }
+        button.danger:hover {
+            background-color: #d32f2f;
+        }
+        .demo-section {
+            margin: 50px 0;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .demo-section h3 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+        .demo-content {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .demo-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .sidebar-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 80px;
+            z-index: 1000;
+        }
+        .log-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-height: 200px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .log-container h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 14px;
+        }
+        .log-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            color: #666;
+        }
+        .log-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCSidebar 示例</h1>
+
+        <div class="info-box">
+            <h3>基本用法</h3>
+            <p>DCSidebar 是一个功能强大的侧边栏组件，支持以下特性：</p>
+            <ul>
+                <li>可折叠的侧边栏菜单</li>
+                <li>自定义菜单项和图标</li>
+                <li>返回顶部功能</li>
+                <li>响应式设计</li>
+                <li>平滑的动画效果</li>
+                <li>丰富的API接口</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h3>示例 1: 基本侧边栏</h3>
+            <div class="demo-content">
+                <p>这是一个基本的侧边栏示例，包含三个菜单项和返回顶部按钮。</p>
+                <p>尝试点击右侧的侧边栏按钮来展开/收起菜单。</p>
+                <p>向下滚动页面，返回顶部按钮会自动显示。</p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>控制选项</h3>
+            <button id="expand-btn">展开侧边栏</button>
+            <button id="collapse-btn">收起侧边栏</button>
+            <button id="toggle-btn">切换侧边栏</button>
+            <button id="add-item-btn" class="secondary">添加菜单项</button>
+            <button id="remove-item-btn" class="danger">移除菜单项</button>
+            <button id="update-item-btn" class="secondary">更新菜单项</button>
+            <button id="reset-data-btn">重置菜单数据</button>
+        </div>
+
+        <div class="demo-section">
+            <h3>示例 2: 自定义返回顶部按钮</h3>
+            <div class="demo-content">
+                <p>这个示例展示了如何自定义返回顶部按钮的文本和图标。</p>
+            </div>
+        </div>
+
+        <div style="height: 1000px; margin: 50px 0;"></div>
+
+        <div class="info-box">
+            <h3>API 参考</h3>
+            <p>以下是 DCSidebar 组件的主要 API 方法：</p>
+            <ul>
+                <li><strong>setData(data)</strong> - 设置菜单数据</li>
+                <li><strong>addMenuItem(item, index)</strong> - 添加菜单项</li>
+                <li><strong>removeMenuItem(index)</strong> - 移除菜单项</li>
+                <li><strong>updateMenuItem(index, newData)</strong> - 更新菜单项</li>
+                <li><strong>expand()</strong> - 展开侧边栏</li>
+                <li><strong>collapse()</strong> - 收起侧边栏</li>
+                <li><strong>toggle()</strong> - 切换侧边栏状态</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 侧边栏容器 -->
+    <div id="sidebar-container" class="sidebar-container"></div>
+    <div id="sidebar-container-2" class="sidebar-container" style="right: 80px;"></div>
+
+    <!-- 操作日志 -->
+    <div class="log-container" id="log-container">
+        <h3>操作日志</h3>
+    </div>
+
+    <!-- 引入 DCSidebar 组件 -->
+    <script src="../../../src/components/dcsidebar/dcsidebar.js"></script>
+
+    <script>
+        // 操作日志
+        function addLog(message) {
+            const logContainer = document.getElementById('log-container');
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logItem);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // 测试数据
+        const menuData = [
+            {
+                title: '首页',
+                link: '#',
+                icon: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            },
+            {
+                title: '关于',
+                link: '#about',
+                icon: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm1-11h-2v3H8v2h3v3h2v-3h3v-2h-3V7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            },
+            {
+                title: '联系',
+                link: '#contact',
+                icon: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2 2v12h12V6H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            }
+        ];
+
+        // 示例 1: 基本侧边栏
+        const sidebar1 = new window.DC.Sidebar({
+            container: '#sidebar-container',
+            data: menuData,
+            onClick: (item, index) => {
+                addLog(`点击菜单项: "${item.title}" (索引: ${index})`);
+            }
+        });
+
+        // 示例 2: 自定义返回顶部按钮
+        const sidebar2 = new window.DC.Sidebar({
+            container: '#sidebar-container-2',
+            data: menuData,
+            backTop: {
+                text: '顶部',
+                icon: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            },
+            onClick: (item, index) => {
+                addLog(`点击菜单项 (自定义): "${item.title}" (索引: ${index})`);
+            }
+        });
+
+        // 控制按钮事件
+        document.getElementById('expand-btn').addEventListener('click', () => {
+            sidebar1.expand();
+            addLog('执行操作: 展开侧边栏');
+        });
+
+        document.getElementById('collapse-btn').addEventListener('click', () => {
+            sidebar1.collapse();
+            addLog('执行操作: 收起侧边栏');
+        });
+
+        document.getElementById('toggle-btn').addEventListener('click', () => {
+            sidebar1.toggle();
+            addLog('执行操作: 切换侧边栏');
+        });
+
+        document.getElementById('add-item-btn').addEventListener('click', () => {
+            const newItem = {
+                title: '服务',
+                link: '#services',
+                icon: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24"><path d="M17 11h-4v-1h4V8h-5v7h2v1h-2v2h5v-4h-4v-1h4v-2zm3-9H4c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 2v16H4V4h16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>'
+            };
+            sidebar1.addMenuItem(newItem);
+            addLog('执行操作: 添加菜单项 "服务"');
+        });
+
+        document.getElementById('remove-item-btn').addEventListener('click', () => {
+            sidebar1.removeMenuItem(sidebar1.data.length - 1);
+            addLog('执行操作: 移除最后一个菜单项');
+        });
+
+        document.getElementById('update-item-btn').addEventListener('click', () => {
+            const updatedData = {
+                title: '首页更新',
+                link: '#home'
+            };
+            sidebar1.updateMenuItem(0, updatedData);
+            addLog('执行操作: 更新第一个菜单项为 "首页更新"');
+        });
+
+        document.getElementById('reset-data-btn').addEventListener('click', () => {
+            sidebar1.setData(menuData);
+            addLog('执行操作: 重置菜单数据');
+        });
+
+        // 初始化日志
+        addLog('DCSidebar 组件初始化完成');
+    </script>
+</body>
+</html>

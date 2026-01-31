@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signin Component Examples</title>
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .example-section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .example-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .sign-in-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* 登录表单样式 */
+    .sign-in-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .sign-in-inner {
+      display: flex;
+      width: 100%;
+      gap: 30px;
+    }
+
+    .main-login-container {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .login-header {
+      margin-bottom: 20px;
+    }
+
+    .login-heading-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .login-heading-text {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+    }
+
+    .login-body {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .label-name,
+    .label-password {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .required {
+      color: red;
+    }
+
+    .login-input {
+      position: relative;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-user-name,
+    .input-password {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .input-user-name:focus,
+    .input-password:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    .forgot-password {
+      background: none;
+      border: none;
+      color: #007bff;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      padding: 0;
+      margin-top: 5px;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .sign-in-submit {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .sign-in-submit:hover {
+      background-color: #0069d9;
+    }
+
+    .sign-in-submit:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    .login-need-account {
+      font-size: 14px;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    .register-link {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .register-link:hover {
+      text-decoration: underline;
+    }
+
+    .vertical-separator-line {
+      width: 1px;
+      background-color: #ddd;
+      margin: 0 10px;
+    }
+
+    .qr-login-container {
+      flex: 1;
+      min-width: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .qr-login-inner {
+      margin-bottom: 20px;
+    }
+
+    .qr-login-img {
+      width: 150px;
+      height: 150px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .qr-login-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .qr-login-text {
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .other-login-container {
+      width: 100%;
+    }
+
+    .other-login-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+      text-align: center;
+    }
+
+    .other-login-inner {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .other-login-item {
+      width: 48px;
+      height: 48px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .other-login-item:hover {
+      border-color: #007bff;
+      background-color: #f8f9fa;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .sign-in-inner {
+        flex-direction: column;
+      }
+
+      .vertical-separator-line {
+        width: 100%;
+        height: 1px;
+        margin: 20px 0;
+      }
+
+      .qr-login-container {
+        border-top: 1px solid #ddd;
+        padding-top: 30px;
+      }
+    }
+
+    /* 错误状态 */
+    .error {
+      border-color: #dc3545 !important;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* 成功状态 */
+    .success {
+      border-color: #28a745 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Signin Component Examples</h1>
+
+    <!-- 基础登录表单 -->
+    <div class="example-section">
+      <h2 class="example-title">基础登录表单</h2>
+      <div class="sign-in-container">
+        <form class="sign-in-form" id="basicLoginForm">
+          <div class="sign-in-inner">
+            <div class="main-login-container">
+              <div class="login-header">
+                <h1 class="login-heading-title">欢迎回来！</h1>
+                <p class="login-heading-text">很高兴再次见到您！</p>
+              </div>
+              <div class="login-body">
+                <div class="login-item">
+                  <label class="label-name" id="rc" for="uid">
+                    电子邮箱地址或电话号码
+                    <span class="required">*</span>
+                  </label>
+                  <div class="login-input">
+                    <div class="input-phone hidden">
+                      <div class="countryCode" role="button" tabindex="0">HK +852</div>
+                    </div>
+                    <div class="input-wrapper">
+                      <input class="input-user-name" id="uid" name="email" type="text" placeholder="Input Email address or phone number" aria-label="电子邮箱地址或电话号码" required="" autocomplete="webauthn" autocapitalize="none" autocorrect="off" maxlength="999" spellcheck="false" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="login-item">
+                  <label class="label-password" id="re" for="pid">
+                    密码
+                    <span class="required">*</span>
+                  </label>
+                  <div class="login-input">
+                    <input class="input-password" name="password" type="password" placeholder="Input password" aria-label="密码" autocomplete="off" maxlength="999" spellcheck="false" id="pid" aria-labelledby="re" value="">
+                  </div>
+                </div>
+
+                <button type="button" class="forgot-password"><span>忘记密码？</span></button>
+                <button type="submit" class="sign-in-submit"><span>登录</span></button>
+
+                <div class="login-need-account">
+                  <span class="need-account">需要新的账号?</span>
+                  <a href="#" type="button" class="register-link">
+                    <span class="register-link-text">注册</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="vertical-separator-line"></div>
+            <div class="qr-login-container">
+              <div class="qr-login-inner">
+                <img class="qr-login-img" src="https://via.placeholder.com/150" alt="登录二维码">
+              </div>
+              <h1 class="qr-login-title">使用二维码登陆</h1>
+              <p class="qr-login-text">通过 <strong>DC 手机 APP</strong> 扫描二维码，便可即时登录。</p>
+              <div class="other-login-container">
+                <h1 class="other-login-title">其他登录方式</h1>
+                <ul class="other-login-inner">
+                  <li class="other-login-item login-qq" title="QQ登录">
+                    <svg class="icon icon_qq" width="24px" height="24.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#12B7F5" d="M671.346939 929.959184c-10.971429 0-22.465306-1.044898-33.436735-2.612245-41.273469-5.22449-78.367347-25.077551-106.057143-55.902041-14.106122 5.746939-29.779592 5.746939-43.885714 0-22.465306 29.779592-64.783673 50.677551-114.416327 55.902041-70.008163 7.314286-145.763265-12.016327-152.555102-58.514286-5.22449-36.04898 39.183673-64.261224 85.681633-79.934694-27.167347-29.779592-45.97551-67.395918-53.812245-107.102041l-0.522449 1.044898c-26.644898 32.914286-43.885714 52.767347-64.261224 52.767347-2.089796 0-4.702041-0.522449-6.791837-1.044898-7.314286-2.612245-13.583673-8.881633-18.285714-19.853061-17.240816-36.04898-9.926531-105.534694 16.195918-158.302041 0 0 0-0.522449 0.522449-0.522449 13.061224-24.032653 29.257143-45.97551 48.065306-65.306122-6.791837-12.016327-10.971429-25.077551-12.538775-38.661225v-3.134694c0.522449-20.37551 10.971429-39.183673 27.689796-49.632653-11.493878-76.8 10.44898-155.167347 61.648979-214.204081C356.310204 124.865306 430.497959 91.95102 509.387755 94.040816h5.22449c68.963265 0 136.359184 27.689796 185.991837 75.755102 51.722449 50.155102 80.979592 118.073469 82.024489 190.693878v7.836735c0.522449 9.926531 0 20.37551-1.044898 30.824489 14.628571 9.404082 22.465306 21.420408 22.465307 50.677551 0 14.628571-1.567347 29.257143-10.44898 37.616327 13.583673 18.808163 30.302041 44.930612 43.363265 66.35102l2.612245 4.179592c21.420408 34.481633 24.555102 78.367347 24.555102 101.355102 0 18.285714-2.089796 61.126531-19.330612 74.187755-3.657143 2.612245-7.836735 4.179592-12.538776 4.179592h-4.70204c-27.167347 0-43.885714-25.077551-61.126531-51.2l-1.567347-2.089796c-9.404082 38.661224-27.689796 74.710204-53.812245 104.489796 28.734694 9.926531 87.24898 33.436735 79.934694 77.322449-4.702041 35.526531-57.469388 63.738776-119.640816 63.738776z"></path>
+                    </svg>
+                  </li>
+                  <li class="other-login-item login-wx" title="微信登录">
+                    <svg class="icon icon_wechat" width="24px" height="24.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#07C160" d="M506.942 345.921c25.259 0 42.134-16.916 42.134-42.107 0-25.477-16.848-41.956-42.134-41.956-25.299 0-50.668 16.48-50.668 41.956 0.028 25.204 25.409 42.107 50.668 42.107v0zM506.942 345.921zM271.257 261.857c-25.259 0-50.79 16.48-50.79 41.956 0 25.19 25.532 42.107 50.79 42.107 25.163 0 42.012-16.916 42.012-42.107-0.014-25.477-16.834-41.956-42.012-41.956v0zM271.257 261.857zM1010.654 615.492c0-133.202-123.563-246.702-275.237-258.512 0.205-1.652 0.301-3.373-0.068-5.092-30.406-141.79-182.886-248.695-354.7-248.695-194.15 0-352.119 135.387-352.119 301.793 0 89.279 45.574 169.725 131.946 233.158l-30.106 90.508c-1.939 5.885-0.177 12.37 4.506 16.452 2.853 2.458 6.445 3.741 10.076 3.741 2.335 0 4.697-0.546 6.867-1.625l113.036-56.565 13.926 2.827c34.802 7.154 64.853 13.353 101.868 13.353 10.895 0 40.878-3.987 43.404-7.182 40.755 101.99 153.094 175.61 285.273 175.61 33.86 0 68.13-8.164 98.891-15.866l87.136 47.636c2.307 1.257 4.847 1.911 7.359 1.911 3.441 0 6.881-1.161 9.639-3.413 4.847-3.932 6.841-10.404 5.038-16.33l-22.255-74.001c74.602-58.955 115.521-129.488 115.521-199.708v0z"></path>
+                    </svg>
+                  </li>
+                  <li class="other-login-item login-facebook" title="Facebook登录">
+                    <svg class="icon icon_facebook" width="24px" height="24.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#1877F2" d="M512 0C229.12 0 0 229.12 0 512s229.12 512 512 512 512-229.12 512-512S794.88 0 512 0z m0 949.76c-241.28 0-437.76-196.48-437.76-437.76S270.72 74.24 512 74.24 949.76 270.72 949.76 512 753.28 949.76 512 949.76zM434.56 354.56v59.52h-60.16V512h60.16v295.68h97.28V512h97.28l15.36-97.92H531.84V364.8c0-25.6 8.32-49.92 44.8-49.92h72.96V216.96H545.92c-87.68 0-111.36 57.6-111.36 137.6z"></path>
+                    </svg>
+                  </li>
+                  <li class="other-login-item login-google" title="Google登录">
+                    <svg class="icon icon_google" width="24px" height="24.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#4285F4" d="M481.672533 635.306667V404.053333h531.2l5.717334 38.826667c3.498667 23.594667 5.290667 47.445333 5.418666 71.338667C1024.008533 795.392 794.333867 1024 511.880533 1024 166.152533 1024-83.0208 690.773333 25.821867 349.866667 92.040533 142.506667 291.421867 0 511.9232 0c114.133333 0 216.192 34.56 304.512 103.296l32 24.917333-122.282667 199.978667-38.741333-22.528C614.237867 263.04 555.101867 242.346667 512.4352 242.346667a271.701333 271.701333 0 0 0-267.690667 266.410666A269.184 269.184 0 0 0 320.861867 702.72a271.530667 271.530667 0 0 0 191.018666 83.498667 272.64 272.64 0 0 0 244.48-150.869334H481.7152z"></path>
+                    </svg>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 带验证的登录表单 -->
+    <div class="example-section">
+      <h2 class="example-title">带验证的登录表单</h2>
+      <div class="sign-in-container">
+        <form class="sign-in-form" id="validationLoginForm">
+          <div class="sign-in-inner">
+            <div class="main-login-container">
+              <div class="login-header">
+                <h1 class="login-heading-title">账户登录</h1>
+                <p class="login-heading-text">请输入您的账号信息</p>
+              </div>
+              <div class="login-body">
+                <div class="login-item">
+                  <label class="label-name" for="email">
+                    电子邮箱
+                    <span class="required">*</span>
+                  </label>
+                  <div class="login-input">
+                    <div class="input-wrapper">
+                      <input class="input-user-name" id="email" name="email" type="email" placeholder="请输入电子邮箱" aria-label="电子邮箱" required="" value="">
+                    </div>
+                    <div class="error-message" id="emailError"></div>
+                  </div>
+                </div>
+                <div class="login-item">
+                  <label class="label-password" for="password">
+                    密码
+                    <span class="required">*</span>
+                  </label>
+                  <div class="login-input">
+                    <input class="input-password" id="password" name="password" type="password" placeholder="请输入密码" aria-label="密码" required="" value="">
+                  </div>
+                  <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="button" class="forgot-password">忘记密码？</button>
+                <button type="submit" class="sign-in-submit">登录</button>
+
+                <div class="login-need-account">
+                  <span class="need-account">还没有账号?</span>
+                  <a href="#" class="register-link">立即注册</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 基础表单提交处理
+    document.getElementById('basicLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('uid').value;
+      const password = document.getElementById('pid').value;
+
+      if (!email || !password) {
+        alert('请填写所有必填字段');
+        return;
+      }
+
+      alert('登录表单提交成功！\n邮箱/电话: ' + email + '\n密码: ' + password);
+    });
+
+    // 带验证的表单处理
+    document.getElementById('validationLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+
+      let isValid = true;
+
+      // 验证邮箱
+      if (!email.value) {
+        email.classList.add('error');
+        emailError.textContent = '请输入电子邮箱';
+        isValid = false;
+      } else if (!/+@+\.+/.test(email.value)) {
+        email.classList.add('error');
+        emailError.textContent = '请输入有效的电子邮箱';
+        isValid = false;
+      } else {
+        email.classList.remove('error');
+        email.classList.add('success');
+        emailError.textContent = '';
+      }
+
+      // 验证密码
+      if (!password.value) {
+        password.classList.add('error');
+        passwordError.textContent = '请输入密码';
+        isValid = false;
+      } else if (password.value.length < 6) {
+        password.classList.add('error');
+        passwordError.textContent = '密码长度至少为6位';
+        isValid = false;
+      } else {
+        password.classList.remove('error');
+        password.classList.add('success');
+        passwordError.textContent = '';
+      }
+
+      if (isValid) {
+        alert('登录成功！\n邮箱: ' + email.value);
+        // 重置表单
+        email.classList.remove('success');
+        password.classList.remove('success');
+        this.reset();
+      }
+    });
+
+    // 社交登录处理
+    document.querySelectorAll('.other-login-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const platform = this.classList.contains('login-qq') ? 'QQ' :
+                        this.classList.contains('login-wx') ? '微信' :
+                        this.classList.contains('login-facebook') ? 'Facebook' : 'Google';
+        alert(platform + '登录功能开发中');
+      });
+    });
+
+    // 忘记密码处理
+    document.querySelectorAll('.forgot-password').forEach(btn => {
+      btn.addEventListener('click', function() {
+        alert('忘记密码功能开发中');
+      });
+    });
+
+    // 注册链接处理
+    document.querySelectorAll('.register-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('注册功能开发中');
+      });
+    });
+  </script>
+</body>
+</html>

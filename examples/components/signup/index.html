@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC Signup Component Examples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .password-strength {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        .password-strength.weak {
+            color: red;
+        }
+        .password-strength.medium {
+            color: orange;
+        }
+        .password-strength.strong {
+            color: green;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .submit-btn:hover {
+            background-color: #0069d9;
+        }
+        .submit-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        .subscribe-group {
+            display: flex;
+            align-items: center;
+        }
+        .subscribe-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .form-state {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DC Signup Component Examples</h1>
+
+        <!-- 基本注册表单示例 -->
+        <div class="example-section">
+            <h2>基本注册表单</h2>
+            <p>标准注册表单，包含邮箱/手机号、昵称、用户名、密码、出生日期和地址等字段。</p>
+            <div class="form-container">
+                <form id="basic-signup-form">
+                    <div class="form-group">
+                        <label for="basic-email">邮箱/手机号</label>
+                        <input type="text" id="basic-email" name="email" placeholder="请输入邮箱或手机号">
+                        <div class="error-message" id="basic-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-nickname">昵称</label>
+                        <input type="text" id="basic-nickname" name="nickname" placeholder="请输入昵称">
+                        <div class="error-message" id="basic-nickname-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-username">用户名</label>
+                        <input type="text" id="basic-username" name="username" placeholder="请输入用户名">
+                        <div class="error-message" id="basic-username-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-password">密码</label>
+                        <input type="password" id="basic-password" name="password" placeholder="请输入密码">
+                        <div class="password-strength" id="basic-password-strength"></div>
+                        <div class="error-message" id="basic-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-confirm-password">确认密码</label>
+                        <input type="password" id="basic-confirm-password" name="confirmPassword" placeholder="请确认密码">
+                        <div class="error-message" id="basic-confirm-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>出生日期</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <select id="basic-year" name="year">
+                                    <option value="">年</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="basic-month" name="month">
+                                    <option value="">月</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="basic-day" name="day">
+                                    <option value="">日</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="error-message" id="basic-dob-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-country">国家/地区</label>
+                        <select id="basic-country" name="country">
+                            <option value="">请选择国家/地区</option>
+                            <option value="CN">中国</option>
+                            <option value="US">美国</option>
+                            <option value="JP">日本</option>
+                            <option value="UK">英国</option>
+                        </select>
+                        <div class="error-message" id="basic-country-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-province">省份/州</label>
+                        <select id="basic-province" name="province">
+                            <option value="">请选择省份/州</option>
+                        </select>
+                        <div class="error-message" id="basic-province-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basic-city">城市</label>
+                        <select id="basic-city" name="city">
+                            <option value="">请选择城市</option>
+                        </select>
+                        <div class="error-message" id="basic-city-error"></div>
+                    </div>
+
+                    <div class="form-group subscribe-group">
+                        <input type="checkbox" id="basic-subscribe" name="subscribe">
+                        <label for="basic-subscribe">订阅我们的新闻和更新</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="basic-submit">注册</button>
+                    <div class="success-message" id="basic-success"></div>
+                    <div class="form-state" id="basic-form-state"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 自定义注册表单示例 -->
+        <div class="example-section">
+            <h2>自定义注册表单</h2>
+            <p>带有自定义配置的注册表单，展示如何通过配置项自定义表单行为。</p>
+            <div class="form-container">
+                <form id="custom-signup-form">
+                    <div class="form-group">
+                        <label for="custom-email">邮箱/手机号</label>
+                        <input type="text" id="custom-email" name="email" placeholder="请输入邮箱或手机号">
+                        <div class="error-message" id="custom-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custom-nickname">昵称</label>
+                        <input type="text" id="custom-nickname" name="nickname" placeholder="请输入昵称">
+                        <div class="error-message" id="custom-nickname-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custom-username">用户名</label>
+                        <input type="text" id="custom-username" name="username" placeholder="请输入用户名">
+                        <div class="error-message" id="custom-username-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custom-password">密码</label>
+                        <input type="password" id="custom-password" name="password" placeholder="请输入密码">
+                        <div class="password-strength" id="custom-password-strength"></div>
+                        <div class="error-message" id="custom-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custom-confirm-password">确认密码</label>
+                        <input type="password" id="custom-confirm-password" name="confirmPassword" placeholder="请确认密码">
+                        <div class="error-message" id="custom-confirm-password-error"></div>
+                    </div>
+
+                    <div class="form-group subscribe-group">
+                        <input type="checkbox" id="custom-subscribe" name="subscribe" checked>
+                        <label for="custom-subscribe">订阅我们的新闻和更新</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="custom-submit">注册</button>
+                    <div class="success-message" id="custom-success"></div>
+                    <div class="form-state" id="custom-form-state"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 表单控制按钮 -->
+        <div class="example-section">
+            <h2>表单控制</h2>
+            <p>使用按钮演示表单的重置、数据填充和验证功能。</p>
+            <div>
+                <button class="btn btn-primary" id="fill-form-btn">填充示例数据</button>
+                <button class="btn btn-secondary" id="reset-form-btn">重置表单</button>
+                <button class="btn btn-success" id="validate-form-btn">验证表单</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟 DC 命名空间
+        window.DC = window.DC || {};
+
+        // 模拟 DC.FormValidator 工具类
+        window.DC.FormValidator = {
+            validateEmail: function(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            },
+            validatePhone: function(phone) {
+                const phoneRegex = /^1[3-9]\d{9}$/;
+                return phoneRegex.test(phone);
+            },
+            validatePasswordStrength: function(password) {
+                if (password.length < 6) return 'weak';
+                if (password.length < 10) return 'medium';
+                return 'strong';
+            }
+        };
+
+        // 模拟 DC.Signup 组件
+        window.DC.Signup = class {
+            constructor(formId, options = {}) {
+                this.form = document.getElementById(formId);
+                if (!this.form) {
+                    console.error('Form not found:', formId);
+                    return;
+                }
+
+                this.options = {
+                    emailField: options.emailField || 'email',
+                    nicknameField: options.nicknameField || 'nickname',
+                    usernameField: options.usernameField || 'username',
+                    passwordField: options.passwordField || 'password',
+                    confirmPasswordField: options.confirmPasswordField || 'confirmPassword',
+                    dobFields: options.dobFields || {
+                        year: 'year',
+                        month: 'month',
+                        day: 'day'
+                    },
+                    addressFields: options.addressFields || {
+                        country: 'country',
+                        province: 'province',
+                        city: 'city'
+                    },
+                    subscribeField: options.subscribeField || 'subscribe',
+                    onSubmit: options.onSubmit || function(data) {
+                        console.log('Form submitted:', data);
+                        return true;
+                    },
+                    onError: options.onError || function(errors) {
+                        console.log('Form errors:', errors);
+                    }
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.initDateFields();
+                this.initAddressFields();
+            }
+
+            bindEvents() {
+                if (!this.form) return;
+
+                // 密码强度检测
+                const passwordInput = this.form.querySelector(`[name="${this.options.passwordField}"]`);
+                if (passwordInput) {
+                    passwordInput.addEventListener('input', (e) => {
+                        this.checkPasswordStrength(e.target.value);
+                    });
+                }
+
+                // 表单提交
+                this.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleSubmit();
+                });
+
+                // 国家/地区选择联动
+                const countrySelect = this.form.querySelector(`[name="${this.options.addressFields.country}"]`);
+                if (countrySelect) {
+                    countrySelect.addEventListener('change', () => {
+                        this.updateProvinceOptions();
+                    });
+                }
+
+                // 省份/州选择联动
+                const provinceSelect = this.form.querySelector(`[name="${this.options.addressFields.province}"]`);
+                if (provinceSelect) {
+                    provinceSelect.addEventListener('change', () => {
+                        this.updateCityOptions();
+                    });
+                }
+            }
+
+            initDateFields() {
+                const yearSelect = this.form.querySelector(`[name="${this.options.dobFields.year}"]`);
+                const monthSelect = this.form.querySelector(`[name="${this.options.dobFields.month}"]`);
+                const daySelect = this.form.querySelector(`[name="${this.options.dobFields.day}"]`);
+
+                if (yearSelect) {
+                    const currentYear = new Date().getFullYear();
+                    for (let i = currentYear; i >= currentYear - 100; i--) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        yearSelect.appendChild(option);
+                    }
+                }
+
+                if (monthSelect) {
+                    for (let i = 1; i <= 12; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        monthSelect.appendChild(option);
+                    }
+                }
+
+                if (daySelect) {
+                    for (let i = 1; i <= 31; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        daySelect.appendChild(option);
+                    }
+                }
+            }
+
+            initAddressFields() {
+                // 这里可以初始化地址字段
+            }
+
+            updateProvinceOptions() {
+                const countrySelect = this.form.querySelector(`[name="${this.options.addressFields.country}"]`);
+                const provinceSelect = this.form.querySelector(`[name="${this.options.addressFields.province}"]`);
+
+                if (!countrySelect || !provinceSelect) return;
+
+                // 清空省份选项
+                provinceSelect.innerHTML = '<option value="">请选择省份/州</option>';
+
+                // 根据国家添加省份选项
+                const country = countrySelect.value;
+                if (country === 'CN') {
+                    const provinces = ['北京', '上海', '广东', '江苏', '浙江', '四川', '湖北', '湖南', '山东', '河北'];
+                    provinces.forEach(province => {
+                        const option = document.createElement('option');
+                        option.value = province;
+                        option.textContent = province;
+                        provinceSelect.appendChild(option);
+                    });
+                } else if (country === 'US') {
+                    const states = ['California', 'Texas', 'New York', 'Florida', 'Illinois'];
+                    states.forEach(state => {
+                        const option = document.createElement('option');
+                        option.value = state;
+                        option.textContent = state;
+                        provinceSelect.appendChild(option);
+                    });
+                }
+            }
+
+            updateCityOptions() {
+                const provinceSelect = this.form.querySelector(`[name="${this.options.addressFields.province}"]`);
+                const citySelect = this.form.querySelector(`[name="${this.options.addressFields.city}"]`);
+
+                if (!provinceSelect || !citySelect) return;
+
+                // 清空城市选项
+                citySelect.innerHTML = '<option value="">请选择城市</option>';
+
+                // 根据省份添加城市选项
+                const province = provinceSelect.value;
+                if (province === '北京') {
+                    const cities = ['北京市'];
+                    cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                } else if (province === '上海') {
+                    const cities = ['上海市'];
+                    cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                } else if (province === '广东') {
+                    const cities = ['广州', '深圳', '佛山', '东莞', '珠海'];
+                    cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                }
+            }
+
+            checkPasswordStrength(password) {
+                const strength = window.DC.FormValidator.validatePasswordStrength(password);
+                const strengthElement = this.form.querySelector(`#${this.form.id}-password-strength`);
+
+                if (strengthElement) {
+                    strengthElement.className = `password-strength ${strength}`;
+                    switch (strength) {
+                        case 'weak':
+                            strengthElement.textContent = '密码强度：弱';
+                            break;
+                        case 'medium':
+                            strengthElement.textContent = '密码强度：中';
+                            break;
+                        case 'strong':
+                            strengthElement.textContent = '密码强度：强';
+                            break;
+                        default:
+                            strengthElement.textContent = '';
+                    }
+                }
+            }
+
+            validate() {
+                const errors = {};
+
+                // 验证邮箱/手机号
+                const emailInput = this.form.querySelector(`[name="${this.options.emailField}"]`);
+                if (emailInput) {
+                    const email = emailInput.value.trim();
+                    if (!email) {
+                        errors.email = '请输入邮箱或手机号';
+                    } else if (!window.DC.FormValidator.validateEmail(email) && !window.DC.FormValidator.validatePhone(email)) {
+                        errors.email = '请输入有效的邮箱或手机号';
+                    }
+                }
+
+                // 验证昵称
+                const nicknameInput = this.form.querySelector(`[name="${this.options.nicknameField}"]`);
+                if (nicknameInput) {
+                    const nickname = nicknameInput.value.trim();
+                    if (!nickname) {
+                        errors.nickname = '请输入昵称';
+                    } else if (nickname.length < 2) {
+                        errors.nickname = '昵称至少需要2个字符';
+                    }
+                }
+
+                // 验证用户名
+                const usernameInput = this.form.querySelector(`[name="${this.options.usernameField}"]`);
+                if (usernameInput) {
+                    const username = usernameInput.value.trim();
+                    if (!username) {
+                        errors.username = '请输入用户名';
+                    } else if (username.length < 3) {
+                        errors.username = '用户名至少需要3个字符';
+                    }
+                }
+
+                // 验证密码
+                const passwordInput = this.form.querySelector(`[name="${this.options.passwordField}"]`);
+                if (passwordInput) {
+                    const password = passwordInput.value;
+                    if (!password) {
+                        errors.password = '请输入密码';
+                    } else if (password.length < 6) {
+                        errors.password = '密码至少需要6个字符';
+                    }
+                }
+
+                // 验证确认密码
+                const confirmPasswordInput = this.form.querySelector(`[name="${this.options.confirmPasswordField}"]`);
+                const passwordInput = this.form.querySelector(`[name="${this.options.passwordField}"]`);
+                if (confirmPasswordInput && passwordInput) {
+                    const confirmPassword = confirmPasswordInput.value;
+                    const password = passwordInput.value;
+                    if (!confirmPassword) {
+                        errors.confirmPassword = '请确认密码';
+                    } else if (confirmPassword !== password) {
+                        errors.confirmPassword = '两次输入的密码不一致';
+                    }
+                }
+
+                // 验证出生日期
+                const yearSelect = this.form.querySelector(`[name="${this.options.dobFields.year}"]`);
+                const monthSelect = this.form.querySelector(`[name="${this.options.dobFields.month}"]`);
+                const daySelect = this.form.querySelector(`[name="${this.options.dobFields.day}"]`);
+                if (yearSelect && monthSelect && daySelect) {
+                    const year = yearSelect.value;
+                    const month = monthSelect.value;
+                    const day = daySelect.value;
+                    if (!year || !month || !day) {
+                        errors.dob = '请选择出生日期';
+                    }
+                }
+
+                // 验证地址
+                const countrySelect = this.form.querySelector(`[name="${this.options.addressFields.country}"]`);
+                if (countrySelect) {
+                    const country = countrySelect.value;
+                    if (!country) {
+                        errors.country = '请选择国家/地区';
+                    }
+                }
+
+                return errors;
+            }
+
+            handleSubmit() {
+                const errors = this.validate();
+
+                if (Object.keys(errors).length > 0) {
+                    this.displayErrors(errors);
+                    this.options.onError(errors);
+                    return false;
+                }
+
+                const formData = this.collectFormData();
+                const result = this.options.onSubmit(formData);
+
+                if (result) {
+                    this.displaySuccess();
+                }
+
+                return result;
+            }
+
+            collectFormData() {
+                const formData = {};
+
+                // 收集基本字段
+                const fields = [
+                    this.options.emailField,
+                    this.options.nicknameField,
+                    this.options.usernameField,
+                    this.options.passwordField,
+                    this.options.confirmPasswordField,
+                    this.options.subscribeField
+                ];
+
+                fields.forEach(field => {
+                    const element = this.form.querySelector(`[name="${field}"]`);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            formData[field] = element.checked;
+                        } else {
+                            formData[field] = element.value.trim();
+                        }
+                    }
+                });
+
+                // 收集出生日期
+                const yearSelect = this.form.querySelector(`[name="${this.options.dobFields.year}"]`);
+                const monthSelect = this.form.querySelector(`[name="${this.options.dobFields.month}"]`);
+                const daySelect = this.form.querySelector(`[name="${this.options.dobFields.day}"]`);
+                if (yearSelect && monthSelect && daySelect) {
+                    formData.dob = {
+                        year: yearSelect.value,
+                        month: monthSelect.value,
+                        day: daySelect.value
+                    };
+                }
+
+                // 收集地址
+                const countrySelect = this.form.querySelector(`[name="${this.options.addressFields.country}"]`);
+                const provinceSelect = this.form.querySelector(`[name="${this.options.addressFields.province}"]`);
+                const citySelect = this.form.querySelector(`[name="${this.options.addressFields.city}"]`);
+                if (countrySelect) {
+                    formData.address = {
+                        country: countrySelect.value,
+                        province: provinceSelect ? provinceSelect.value : '',
+                        city: citySelect ? citySelect.value : ''
+                    };
+                }
+
+                return formData;
+            }
+
+            displayErrors(errors) {
+                // 清除所有错误消息
+                const errorElements = this.form.querySelectorAll('.error-message');
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                });
+
+                // 显示新的错误消息
+                Object.keys(errors).forEach(field => {
+                    const errorElement = this.form.querySelector(`#${this.form.id}-${field}-error`);
+                    if (errorElement) {
+                        errorElement.textContent = errors[field];
+                    }
+                });
+            }
+
+            displaySuccess() {
+                const successElement = this.form.querySelector(`#${this.form.id}-success`);
+                if (successElement) {
+                    successElement.textContent = '注册成功！';
+                    setTimeout(() => {
+                        successElement.textContent = '';
+                    }, 3000);
+                }
+            }
+
+            reset() {
+                this.form.reset();
+
+                // 清除所有错误消息
+                const errorElements = this.form.querySelectorAll('.error-message');
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                });
+
+                // 清除密码强度
+                const strengthElement = this.form.querySelector(`#${this.form.id}-password-strength`);
+                if (strengthElement) {
+                    strengthElement.textContent = '';
+                }
+
+                // 清除成功消息
+                const successElement = this.form.querySelector(`#${this.form.id}-success`);
+                if (successElement) {
+                    successElement.textContent = '';
+                }
+            }
+
+            fill(data) {
+                // 填充表单数据
+                Object.keys(data).forEach(field => {
+                    const element = this.form.querySelector(`[name="${field}"]`);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = data[field];
+                        } else {
+                            element.value = data[field];
+                        }
+                    }
+                });
+
+                // 填充出生日期
+                if (data.dob) {
+                    const yearSelect = this.form.querySelector(`[name="${this.options.dobFields.year}"]`);
+                    const monthSelect = this.form.querySelector(`[name="${this.options.dobFields.month}"]`);
+                    const daySelect = this.form.querySelector(`[name="${this.options.dobFields.day}"]`);
+                    if (yearSelect) yearSelect.value = data.dob.year;
+                    if (monthSelect) monthSelect.value = data.dob.month;
+                    if (daySelect) daySelect.value = data.dob.day;
+                }
+
+                // 填充地址
+                if (data.address) {
+                    const countrySelect = this.form.querySelector(`[name="${this.options.addressFields.country}"]`);
+                    const provinceSelect = this.form.querySelector(`[name="${this.options.addressFields.province}"]`);
+                    const citySelect = this.form.querySelector(`[name="${this.options.addressFields.city}"]`);
+                    if (countrySelect) {
+                        countrySelect.value = data.address.country;
+                        // 触发省份更新
+                        this.updateProvinceOptions();
+                        if (provinceSelect) {
+                            provinceSelect.value = data.address.province;
+                            // 触发城市更新
+                            this.updateCityOptions();
+                            if (citySelect) {
+                                citySelect.value = data.address.city;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // 初始化基本注册表单
+        const basicSignup = new window.DC.Signup('basic-signup-form', {
+            onSubmit: function(data) {
+                console.log('Basic signup form submitted:', data);
+                document.getElementById('basic-form-state').textContent = '表单提交成功！数据已发送到服务器。';
+                return true;
+            },
+            onError: function(errors) {
+                console.log('Basic signup form errors:', errors);
+                document.getElementById('basic-form-state').textContent = '表单验证失败，请检查输入。';
+            }
+        });
+
+        // 初始化自定义注册表单
+        const customSignup = new window.DC.Signup('custom-signup-form', {
+            onSubmit: function(data) {
+                console.log('Custom signup form submitted:', data);
+                document.getElementById('custom-form-state').textContent = '自定义表单提交成功！';
+                return true;
+            },
+            onError: function(errors) {
+                console.log('Custom signup form errors:', errors);
+                document.getElementById('custom-form-state').textContent = '自定义表单验证失败。';
+            }
+        });
+
+        // 绑定控制按钮事件
+        document.getElementById('fill-form-btn').addEventListener('click', function() {
+            // 填充示例数据到基本表单
+            basicSignup.fill({
+                email: 'example@test.com',
+                nickname: '测试用户',
+                username: 'testuser123',
+                password: 'Password123',
+                confirmPassword: 'Password123',
+                subscribe: true,
+                dob: {
+                    year: '1990',
+                    month: '1',
+                    day: '1'
+                },
+                address: {
+                    country: 'CN',
+                    province: '广东',
+                    city: '深圳'
+                }
+            });
+
+            // 更新密码强度显示
+            const passwordInput = document.getElementById('basic-password');
+            if (passwordInput) {
+                basicSignup.checkPasswordStrength(passwordInput.value);
+            }
+        });
+
+        document.getElementById('reset-form-btn').addEventListener('click', function() {
+            basicSignup.reset();
+            customSignup.reset();
+        });
+
+        document.getElementById('validate-form-btn').addEventListener('click', function() {
+            const basicErrors = basicSignup.validate();
+            const customErrors = customSignup.validate();
+
+            if (Object.keys(basicErrors).length === 0) {
+                document.getElementById('basic-form-state').textContent = '基本表单验证通过！';
+            } else {
+                document.getElementById('basic-form-state').textContent = '基本表单验证失败，请检查输入。';
+            }
+
+            if (Object.keys(customErrors).length === 0) {
+                document.getElementById('custom-form-state').textContent = '自定义表单验证通过！';
+            } else {
+                document.getElementById('custom-form-state').textContent = '自定义表单验证失败，请检查输入。';
+            }
+        });
+    </script>
+</body>
+</html>

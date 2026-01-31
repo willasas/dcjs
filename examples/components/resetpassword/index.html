@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重置密码组件示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .example-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+        .reset-password-demo {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .reset-password-demo iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        .code-section {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>重置密码组件示例</h1>
+        
+        <!-- 示例 1: 基本重置密码表单 -->
+        <div class="example-section">
+            <h2>示例 1: 基本重置密码表单</h2>
+            <p>展示完整的重置密码表单，包含邮箱/电话输入、验证码、新密码和确认密码字段。</p>
+            
+            <div class="reset-password-demo">
+                <iframe src="../../../src/components/resetpassword/resetpassword.html"></iframe>
+            </div>
+            
+            <h3>使用方法</h3>
+            <p>1. 引入CSS文件：</p>
+            <div class="code-section">
+                <pre>&lt;link rel="stylesheet" href="path/to/resetpassword.css"&gt;</pre>
+            </div>
+            
+            <p>2. 复制HTML结构：</p>
+            <div class="code-section">
+                <pre>&lt;div class="reset-container"&gt;
+  &lt;form class="reset-form"&gt;
+    &lt;div class="reset-inner"&gt;
+        &lt;div class="reset-header"&gt;
+          &lt;h1 class="reset-heading-title"&gt;重置密码&lt;/h1&gt;
+          &lt;p class="reset-heading-text"&gt;重置你的用户密码&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="reset-body"&gt;
+          &lt;div class="reset-item"&gt;
+            &lt;label class="label-name" id="rc" for="uid"&gt;
+              电子邮箱地址或电话号码
+              &lt;span class="required"&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class="reset-input"&gt;
+              &lt;div class="input-phone hidden"&gt;
+                &lt;div class="countryCode" role="button" tabindex="0"&gt;HK +852&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class="reset-wrapper"&gt;
+                &lt;input class="reset-user-name" id="uid" name="email" type="text" placeholder="Input Email address or phone number" aria-label="电子邮箱地址或电话号码" required="" autocomplete="webauthn" autocapitalize="none" autocorrect="off" maxlength="999" spellcheck="false" value=""&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="reset-item"&gt;
+            &lt;label class="label-verification-code" id="re" for="vcd"&gt;
+              验证码
+              &lt;span class="required"&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class="reset-input"&gt;
+              &lt;input class="input-verification-code" name="verification-code" type="text" placeholder="Input verification code" aria-label="验证码" autocomplete="off" maxlength="999" spellcheck="false" id="vcd" aria-labelledby="re" value=""&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="reset-item"&gt;
+            &lt;label class="label-new-password" id="re" for="npid"&gt;
+              新密码
+              &lt;span class="required"&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class="reset-input"&gt;
+              &lt;input class="input-new-password" name="new password" type="password" placeholder="Input new password" aria-label="新密码" autocomplete="off" maxlength="999" spellcheck="false" id="npid" aria-labelledby="re" value=""&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="reset-item"&gt;
+            &lt;label class="label-confirm-password" id="re" for="cpid"&gt;
+              确认密码
+              &lt;span class="required"&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class="reset-input"&gt;
+              &lt;input class="input-confirm-password" name="confirm password" type="password" placeholder="Input confirm password" aria-label="确认密码" autocomplete="off" maxlength="999" spellcheck="false" id="cpid" aria-labelledby="re" value=""&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;button type="submit" class="reset-submit"&gt;&lt;span&gt;发送&lt;/span&gt;&lt;/button&gt;
+          &lt;a href="./login.html" type="button" class="login-link"&gt;
+            &lt;span class="login-link-text"&gt;登录&lt;/span&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</pre>
+            </div>
+            
+            <p>3. 添加表单提交处理（示例）：</p>
+            <div class="code-section">
+                <pre>&lt;script&gt;
+  document.querySelector('.reset-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // 获取表单数据
+    const email = document.getElementById('uid').value;
+    const verificationCode = document.getElementById('vcd').value;
+    const newPassword = document.getElementById('npid').value;
+    const confirmPassword = document.getElementById('cpid').value;
+    
+    // 表单验证
+    if (!email) {
+      alert('请输入电子邮箱地址或电话号码');
+      return;
+    }
+    
+    if (!verificationCode) {
+      alert('请输入验证码');
+      return;
+    }
+    
+    if (!newPassword) {
+      alert('请输入新密码');
+      return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+      alert('两次输入的密码不一致');
+      return;
+    }
+    
+    // 发送重置密码请求
+    console.log('提交重置密码请求:', {
+      email,
+      verificationCode,
+      newPassword
+    });
+    
+    // 模拟成功响应
+    alert('密码重置成功！');
+  });
+&lt;/script&gt;</pre>
+            </div>
+        </div>
+        
+        <!-- 示例 2: 自定义重置密码表单 -->
+        <div class="example-section">
+            <h2>示例 2: 自定义重置密码表单</h2>
+            <p>展示如何自定义重置密码表单的样式和功能。</p>
+            
+            <h3>自定义选项</h3>
+            <p>1. 自定义标题和描述：</p>
+            <div class="code-section">
+                <pre>&lt;div class="reset-header"&gt;
+  &lt;h1 class="reset-heading-title"&gt;找回密码&lt;/h1&gt;
+  &lt;p class="reset-heading-text"&gt;请输入你的账户信息来重置密码&lt;/p&gt;
+&lt;/div&gt;</pre>
+            </div>
+            
+            <p>2. 自定义提交按钮文本：</p>
+            <div class="code-section">
+                <pre>&lt;button type="submit" class="reset-submit"&gt;&lt;span&gt;重置密码&lt;/span&gt;&lt;/button&gt;</pre>
+            </div>
+            
+            <p>3. 自定义登录链接文本：</p>
+            <div class="code-section">
+                <pre>&lt;a href="./login.html" type="button" class="login-link"&gt;
+  &lt;span class="login-link-text"&gt;返回登录&lt;/span&gt;
+&lt;/a&gt;</pre>
+            </div>
+            
+            <p>4. 添加验证码发送按钮：</p>
+            <div class="code-section">
+                <pre>&lt;div class="reset-item"&gt;
+  &lt;label class="label-verification-code" id="re" for="vcd"&gt;
+    验证码
+    &lt;span class="required"&gt;*&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;div class="reset-input" style="display: flex; gap: 10px;"&gt;
+    &lt;input class="input-verification-code" name="verification-code" type="text" placeholder="Input verification code" aria-label="验证码" autocomplete="off" maxlength="999" spellcheck="false" id="vcd" aria-labelledby="re" value="" style="flex: 1;"&gt;
+    &lt;button type="button" class="reset-submit" style="flex-shrink: 0;"&gt;发送验证码&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+        
+        <!-- 示例 3: 表单验证示例 -->
+        <div class="example-section">
+            <h2>示例 3: 表单验证示例</h2>
+            <p>展示如何为重置密码表单添加客户端验证。</p>
+            
+            <div class="code-section">
+                <pre>&lt;script&gt;
+  // 验证码发送按钮点击事件
+  document.querySelector('.reset-form').addEventListener('click', function(e) {
+    if (e.target.textContent === '发送验证码') {
+      const email = document.getElementById('uid').value;
+      
+      if (!email) {
+        alert('请先输入电子邮箱地址或电话号码');
+        return;
+      }
+      
+      // 模拟发送验证码
+      console.log('发送验证码到:', email);
+      
+      // 显示倒计时
+      const button = e.target;
+      const originalText = button.textContent;
+      let countdown = 60;
+      
+      button.disabled = true;
+      button.textContent = `${countdown}秒后重新发送`;
+      
+      const timer = setInterval(() => {
+        countdown--;
+        button.textContent = `${countdown}秒后重新发送`;
+        
+        if (countdown <= 0) {
+          clearInterval(timer);
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }, 1000);
+    }
+  });
+  
+  // 密码强度检查
+  document.getElementById('npid').addEventListener('input', function() {
+    const password = this.value;
+    let strength = 0;
+    
+    // 检查密码长度
+    if (password.length >= 8) strength++;
+    // 检查是否包含数字
+    if (/\d/.test(password)) strength++;
+    // 检查是否包含小写字母
+    if (/[a-z]/.test(password)) strength++;
+    // 检查是否包含大写字母
+    if (/[A-Z]/.test(password)) strength++;
+    // 检查是否包含特殊字符
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+    
+    // 显示密码强度
+    console.log('密码强度:', strength, '/ 5');
+    
+    // 可以在这里添加密码强度指示器
+  });
+&lt;/script&gt;</pre>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
