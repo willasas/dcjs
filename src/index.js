@@ -26,10 +26,51 @@ import './utils/dcwaterfall'
 import './utils/dprettylog'
 import './utils/ga'
 import './utils/sampleadapt'
-import './utils/dcDailyQuote'  // 添加每日一言工具
-import './utils/dcScreenshot'  // 添加截图工具
+import './utils/dcDailyQuote' // 添加每日一言工具
+import './utils/dcScreenshot' // 添加截图工具
+import './utils/dcImageViewer' // 添加图片查看器工具
 
-// 各个工具类已在各自文件中注册到 window.DC 对象
+// 导入所有组件模块，它们会自动注册到 window.DC 对象
+import './components/animate/dcanimator'
+import './components/article/dcarticlecard'
+import './components/article/dcarticletopinfo'
+import './components/article/dccourseaccordion'
+import './components/bgm/dcontrolsound'
+import './components/bgm/dcsamplebgm'
+import './components/cookies/dcookiespopup'
+import './components/dcanswer/dcanswer'
+import './components/dcbottombar/dcbottombar'
+import './components/dcdateselector/dcdateselector'
+import './components/dcfileupload/dcfileupload'
+import './components/dcfilter/dcfilter'
+import './components/dcity/dcity'
+import './components/dclocal/dclang'
+import './components/dclocal/dclangselector'
+import './components/dclocal/dclocalselector'
+import './components/dclocal/dcphoneselector'
+import './components/dcolor/dcolor'
+import './components/dcpartner/dcpartner'
+import './components/dcpricing/dcpricing'
+import './components/dcproductivityslider/dcproductivityslider'
+import './components/dcprogressbar/dcprogressbar'
+import './components/dcsearch/dcsearch'
+import './components/dcsidebar/dcsidebar'
+import './components/dcsidenav/dcsidenav'
+import './components/dcslider/dcslider'
+import './components/dctheme/dctheme'
+import './components/dctopbar/dctopbar'
+import './components/dcvirtualcard/dcvirtualcard'
+import './components/dcvirtualscroller/dcvirtualscroller'
+import './components/designby/designby'
+import './components/followus/dcfollowbtn'
+import './components/followus/dcfollowus'
+import './components/footer/dcfooter'
+import './components/header/dcheader'
+import './components/icons/dciconlist'
+import './components/pager/dcpager'
+import './components/popup/dcpopup'
+
+// 各个工具类和组件已在各自文件中注册到 window.DC 对象
 // 此文件提供跨环境（浏览器、CommonJS、AMD）的兼容性支持
 ;(function (global, factory) {
   // 浏览器环境检查

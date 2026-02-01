@@ -117,6 +117,14 @@ if (typeof window === 'undefined') {
     createObjectURL: () => 'blob:url',
     revokeObjectURL: () => {},
   }
+  global.URL = function (url) {
+    return {
+      href: url,
+      toString: () => url,
+    }
+  }
+  global.URL.createObjectURL = () => 'blob:url'
+  global.URL.revokeObjectURL = () => {}
   global.requestAnimationFrame = callback => setTimeout(callback, 0)
   global.cancelAnimationFrame = id => clearTimeout(id)
 }
@@ -259,6 +267,27 @@ function runTests() {
     return typeof dcMedia.convertVideoFormat === 'function'
   })
 
+  // 新增 Streaming 和 Backpressure 相关方法测试
+  test('createBackpressureStream 方法存在', () => {
+    return typeof dcMedia.createBackpressureStream === 'function'
+  })
+
+  test('uploadWithBackpressure 方法存在', () => {
+    return typeof dcMedia.uploadWithBackpressure === 'function'
+  })
+
+  test('processRealtimeData 方法存在', () => {
+    return typeof dcMedia.processRealtimeData === 'function'
+  })
+
+  test('transformStream 方法存在', () => {
+    return typeof dcMedia.transformStream === 'function'
+  })
+
+  test('downloadWithProgress 方法存在', () => {
+    return typeof dcMedia.downloadWithProgress === 'function'
+  })
+
   // 实例方法测试
   console.log('\n=== 实例方法测试 ===')
 
@@ -334,6 +363,75 @@ function runTests() {
     try {
       dcMedia.preloadImage(mockImg)
       return true
+    } catch (error) {
+      return false
+    }
+  })
+
+  // 新增 Streaming 和 Backpressure 功能测试
+  console.log('\n=== Streaming 和 Backpressure 功能测试 ===')
+
+  test('createBackpressureStream 方法不抛出错误', () => {
+    try {
+      // 创建模拟流
+      const mockStream = new ReadableStream({
+        start(controller) {
+          controller.close()
+        },
+      })
+      const result = dcMedia.createBackpressureStream(mockStream)
+      return result instanceof ReadableStream
+    } catch (error) {
+      console.error('createBackpressureStream 测试失败:', error.message)
+      return false
+    }
+  })
+
+  test('uploadWithBackpressure 方法返回 Promise', () => {
+    try {
+      // 创建模拟文件
+      const mockFile = new Blob(['test content'], { type: 'text/plain' })
+      const result = dcMedia.uploadWithBackpressure(mockFile, 'https://example.com/upload')
+      return result instanceof Promise
+    } catch (error) {
+      return false
+    }
+  })
+
+  test('processRealtimeData 方法不抛出错误', () => {
+    try {
+      // 创建模拟流
+      const mockStream = new ReadableStream({
+        start(controller) {
+          controller.close()
+        },
+      })
+      const stopFunction = dcMedia.processRealtimeData(mockStream, () => {})
+      return typeof stopFunction === 'function'
+    } catch (error) {
+      return false
+    }
+  })
+
+  test('transformStream 方法不抛出错误', () => {
+    try {
+      // 创建模拟流
+      const mockStream = new ReadableStream({
+        start(controller) {
+          controller.close()
+        },
+      })
+      const result = dcMedia.transformStream(mockStream, data => data)
+      return result instanceof ReadableStream
+    } catch (error) {
+      return false
+    }
+  })
+
+  test('downloadWithProgress 方法返回 Promise', () => {
+    try {
+      const result = dcMedia.downloadWithProgress('https://example.com/file.txt')
+      return result instanceof Promise
     } catch (error) {
       return false
     }

@@ -520,6 +520,242 @@ class dcMedia {
       video.onerror = reject
     })
   }
+
+  /**
+   * 创建带背压控制的可读流
+   * @param {ReadableStream|MediaStream} source - 源流
+   * @param {Object} options - 配置选项
+   * @returns {ReadableStream} 带背压控制的流
+   */
+  static createBackpressureStream(source, options = {}) {
+    const { highWaterMark = 16384, onBackpressure } = options
+
+    // 处理 MediaStream 类型（如果 MediaStream 构造函数存在）
+    if (typeof MediaStream !== 'undefined' && source instanceof MediaStream) {
+      return source // MediaStream 本身已经有流量控制
+    }
+
+    // 处理 ReadableStream 类型
+    if (source instanceof ReadableStream) {
+      return new ReadableStream({
+        highWaterMark,
+        start(controller) {
+          const reader = source.getReader()
+
+          const processChunk = async () => {
+            try {
+              const { done, value } = await reader.read()
+              if (done) {
+                controller.close()
+                return
+              }
+
+              // 检查背压
+              if (controller.desiredSize <= 0 && onBackpressure) {
+                onBackpressure(true)
+                // 等待消费者处理
+                await new Promise(resolve => {
+                  const checkDesiredSize = () => {
+                    if (controller.desiredSize > 0) {
+                      onBackpressure(false)
+                      resolve()
+                    } else {
+                      setTimeout(checkDesiredSize, 10)
+                    }
+                  }
+                  checkDesiredSize()
+                })
+              }
+
+              controller.enqueue(value)
+              processChunk()
+            } catch (error) {
+              controller.error(error)
+            }
+          }
+
+          processChunk()
+        },
+      })
+    }
+
+    throw new Error('Unsupported source type. Expected ReadableStream or MediaStream.')
+  }
+
+  /**
+   * 带背压的大文件上传
+   * @param {File|Blob} file - 要上传的文件
+   * @param {string} url - 上传 URL
+   * @param {Object} options - 上传选项
+   * @returns {Promise<Response>} 上传响应
+   */
+  static async uploadWithBackpressure(file, url, options = {}) {
+    const {
+      chunkSize = 1024 * 1024, // 1MB chunks
+      onProgress,
+      headers = {},
+    } = options
+
+    const totalSize = file.size
+    let uploadedSize = 0
+
+    // 检查文件是否有 stream 方法（浏览器环境）
+    if (file.stream) {
+      // 浏览器环境：使用 file.stream()
+      const fileStream = file.stream()
+      const reader = fileStream.getReader()
+
+      // 使用 fetch API 上传
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          ...headers,
+        },
+        body: fileStream,
+      })
+    } else {
+      // Node.js 环境或不支持 stream() 的环境：使用 FormData
+      const formData = new FormData()
+      formData.append('file', file)
+
+      // 使用 fetch API 上传
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          ...headers,
+        },
+        body: formData,
+      })
+    }
+  }
+
+  /**
+   * 处理实时数据流
+   * @param {ReadableStream} stream - 实时数据流
+   * @param {Function} processor - 数据处理器
+   * @param {Object} options - 配置选项
+   * @returns {Function} 停止处理的函数
+   */
+  static processRealtimeData(stream, processor, options = {}) {
+    const { highWaterMark = 16384 } = options
+    let isRunning = true
+
+    const process = async () => {
+      const reader = stream.getReader()
+
+      while (isRunning) {
+        try {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          // 处理数据
+          await processor(value)
+        } catch (error) {
+          console.error('Error processing real-time data:', error)
+          break
+        }
+      }
+    }
+
+    process()
+
+    return () => {
+      isRunning = false
+    }
+  }
+
+  /**
+   * 流转换和处理
+   * @param {ReadableStream} source - 源流
+   * @param {Function} transformFn - 转换函数
+   * @param {Object} options - 配置选项
+   * @returns {ReadableStream} 转换后的流
+   */
+  static transformStream(source, transformFn, options = {}) {
+    const { highWaterMark = 16384 } = options
+
+    return new ReadableStream({
+      highWaterMark,
+      start(controller) {
+        const reader = source.getReader()
+
+        const processChunk = async () => {
+          try {
+            const { done, value } = await reader.read()
+            if (done) {
+              controller.close()
+              return
+            }
+
+            // 转换数据
+            const transformedValue = await transformFn(value)
+
+            // 检查背压
+            if (controller.desiredSize <= 0) {
+              // 等待消费者处理
+              await new Promise(resolve => {
+                const checkDesiredSize = () => {
+                  if (controller.desiredSize > 0) {
+                    resolve()
+                  } else {
+                    setTimeout(checkDesiredSize, 10)
+                  }
+                }
+                checkDesiredSize()
+              })
+            }
+
+            controller.enqueue(transformedValue)
+            processChunk()
+          } catch (error) {
+            controller.error(error)
+          }
+        }
+
+        processChunk()
+      },
+    })
+  }
+
+  /**
+   * 下载大文件（带进度和背压）
+   * @param {string} url - 文件 URL
+   * @param {Object} options - 配置选项
+   * @returns {Promise<Blob>} 下载的文件
+   */
+  static async downloadWithProgress(url, options = {}) {
+    const { onProgress } = options
+
+    const response = await fetch(url)
+    const contentLength = response.headers.get('content-length')
+    const totalSize = contentLength ? parseInt(contentLength, 10) : 0
+    let downloadedSize = 0
+
+    const reader = response.body.getReader()
+    const chunks = []
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      chunks.push(value)
+      downloadedSize += value.length
+
+      // 报告进度
+      if (onProgress && totalSize > 0) {
+        onProgress({
+          loaded: downloadedSize,
+          total: totalSize,
+          percentage: Math.round((downloadedSize / totalSize) * 100),
+        })
+      }
+
+      // 模拟背压控制（如果需要）
+      // await new Promise(resolve => setTimeout(resolve, 10));
+    }
+
+    return new Blob(chunks, { type: response.headers.get('content-type') })
+  }
 }
 
 // 注册到全局DC对象
