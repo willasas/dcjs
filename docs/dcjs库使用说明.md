@@ -173,27 +173,6 @@ URL 处理工具类，提供 URL 解析、构建等功能。
 
 二维码生成工具类，提供简单易用的二维码生成功能。
 
-```javascript
-// 创建二维码实例
-const qrCode = new DC.QRCode();
-
-// 生成二维码并获取data URL
-const qrCodeDataUrl = qrCode.generate('https://example.com', {
-  size: 200,
-  bgColor: '#FFFFFF',
-  fgColor: '#000000',
-  margin: 4,
-  errorCorrectionLevel: 'M'
-});
-
-// 将二维码渲染到指定元素
-qrCode.render('qrcode-container', 'https://example.com', {
-  size: 250,
-  bgColor: '#FFFFFF',
-  fgColor: '#0000FF'
-});
-```
-
 ### DC.adapt
 
 屏幕适配工具类，提供响应式设计支持。
@@ -226,79 +205,219 @@ JSON 处理工具类，提供 JSON 操作功能。
 
 示例适配工具。
 
-## 使用示例
+### DC.ContentStats
 
-### 基础使用
+内容统计工具类，提供内容统计功能。
 
-```javascript
-// 使用数组工具
-const arr = [1, 2, 2, 3, 4, 4, 5];
-const uniqueArr = DC.Array.unique(arr);
-console.log(uniqueArr); // [1, 2, 3, 4, 5]
+### DC.DailyQuote
 
-// 使用日期工具
-const now = new Date();
-const formattedDate = DC.Date.format(now, 'YYYY-MM-DD HH:mm:ss');
-console.log(formattedDate);
+每日名言工具类，提供每日名言获取功能。
 
-// 使用网络检测
-const networkChecker = new DC.NetworkChecker();
-networkChecker.testConnection().then(result => {
-  if (result.online) {
-    console.log('网络连接正常');
-  } else {
-    console.log('网络连接失败');
-  }
-});
-```
+### DC.DynamicLoader
 
-### 二维码使用示例
+动态加载工具类，提供动态加载脚本和样式功能。
 
-```javascript
-// 创建二维码
-const qrCode = new DC.QRCode();
+### DC.Ele
 
-// 方法1: 生成二维码并获取data URL
-const qrDataUrl = qrCode.generate('https://www.example.com', {
-  size: 200,           // 二维码尺寸
-  bgColor: '#FFFFFF',  // 背景色
-  fgColor: '#000000',  // 前景色
-  margin: 4,           // 边距
-  errorCorrectionLevel: 'M'  // 纠错级别
-});
+DOM 元素操作工具类，提供元素选择、操作等功能。
 
-// 方法2: 直接渲染到页面元素
-const container = document.getElementById('qrcode-container');
-qrCode.render(container, 'https://www.example.com', {
-  size: 250,
-  bgColor: '#F0F0F0',
-  fgColor: '#003366'
-});
-```
+### DC.ImageViewer
 
-### 高级使用
+图片查看器工具类，提供图片查看功能。
 
-```javascript
-// 自定义网络检测配置
-const networkChecker = new DC.NetworkChecker({
-  testUrls: [
-    'https://api.yourdomain.com/health',
-    'https://www.google.com/generate_204'
-  ],
-  timeout: 5000,
-  interval: 10000,
-  onOnline: () => console.log('网络已连接'),
-  onOffline: () => console.log('网络已断开')
-});
+### DC.Media
 
-// 开始监控网络状态
-networkChecker.startMonitoring();
+媒体处理工具类，提供音频、视频处理等功能。
 
-// 获取网络状态摘要
-networkChecker.getStatusSummary().then(summary => {
-  console.log('网络状态摘要:', summary);
-});
-```
+### DC.NetworkChecker
+
+网络连接检测工具类，提供网络连接状态检测功能。
+
+### DC.Screenshot
+
+截图工具类，提供网页截图功能。
+
+### DC.Search
+
+搜索工具类，提供搜索功能。
+
+### DC.StarSign
+
+星座工具类，提供星座相关功能。
+
+### DC.Storage
+
+存储工具类，提供本地存储操作功能。
+
+### DC.Tags
+
+标签管理工具类，提供标签操作功能。
+
+### DC.cookie
+
+Cookie 操作工具类，提供 Cookie 读写功能。
+
+### DC.picolor
+
+颜色处理工具类，提供颜色操作功能。
+
+### DC.ga
+
+Google Analytics 工具类，提供 GA 跟踪功能。
+
+## 组件
+
+### 表单组件
+
+#### signin
+
+登录组件，提供用户登录功能。
+
+#### signup
+
+注册组件，提供用户注册功能。
+
+#### resetpassword
+
+密码重置组件，提供密码重置功能。
+
+#### dcfileupload
+
+文件上传组件，提供文件上传功能。
+
+#### dcfilter
+
+筛选组件，提供数据筛选功能。
+
+#### dcdateselector
+
+日期选择器组件，提供日期选择功能。
+
+### UI组件
+
+#### dcprogressbar
+
+进度条组件，提供进度显示功能。
+
+#### dcslider
+
+滑块组件，提供滑块交互功能。
+
+#### dcpopup
+
+弹窗组件，提供弹窗显示功能。
+
+#### dcsearch
+
+搜索组件，提供搜索输入功能。
+
+#### dcsidebar
+
+侧边栏组件，提供侧边栏导航功能。
+
+#### dcsidenav
+
+侧边导航组件，提供侧边导航功能。
+
+#### dcvirtualcard
+
+虚拟卡片组件，提供卡片展示功能。
+
+#### dcvirtualscroller
+
+虚拟滚动组件，提供高效滚动功能。
+
+#### dcpager
+
+分页组件，提供分页导航功能。
+
+#### dcanswer
+
+回答组件，提供回答展示功能。
+
+#### dcbottombar
+
+底部栏组件，提供底部导航功能。
+
+#### dctopbar
+
+顶部栏组件，提供顶部导航功能。
+
+#### dciconlist
+
+图标列表组件，提供图标展示功能。
+
+### 布局组件
+
+#### dcheader
+
+头部组件，提供页面头部功能。
+
+#### dcfooter
+
+底部组件，提供页面底部功能。
+
+#### dcsidebar
+
+侧边栏组件，提供侧边栏布局功能。
+
+#### dcsidenav
+
+侧边导航组件，提供侧边导航布局功能。
+
+### 功能组件
+
+#### dcanimator
+
+动画组件，提供动画效果功能。
+
+#### article
+
+文章组件，提供文章展示功能。
+
+#### bgm
+
+背景音乐组件，提供背景音乐功能。
+
+#### cookies
+
+Cookie 提示组件，提供 Cookie 同意功能。
+
+#### dcity
+
+城市选择组件，提供城市选择功能。
+
+#### dclocal
+
+本地化组件，提供语言和地区选择功能。
+
+#### dcolor
+
+颜色选择组件，提供颜色选择功能。
+
+#### dcpartner
+
+合作伙伴组件，提供合作伙伴展示功能。
+
+#### dcpricing
+
+定价组件，提供价格展示功能。
+
+#### dcproductivityslider
+
+生产力滑块组件，提供生产力评估功能。
+
+#### dctheme
+
+主题组件，提供主题切换功能。
+
+#### designby
+
+设计by组件，提供设计 credits 功能。
+
+#### dcfollowus
+
+关注我们组件，提供社交媒体关注功能。
 
 ## 测试
 

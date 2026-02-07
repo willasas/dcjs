@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGM 组件示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .example {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .volume-control {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            width: 200px;
+        }
+        .bgm-player {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BGM 组件示例</h1>
+
+        <div class="example">
+            <h2>1. 音频控制组件 (DControlSound)</h2>
+            <div class="bgm-player">
+                <h3>音频控制</h3>
+                <div class="controls">
+                    <button class="btn-play-bgm1">播放 BGM 1</button>
+                    <button class="btn-play-bgm2">播放 BGM 2</button>
+                    <button class="btn-play-bgm3">播放 BGM 3</button>
+                    <button id="btn-play-all">播放所有 BGM</button>
+                </div>
+                <div class="volume-control">
+                    <label for="volume-bgm1">BGM 1 音量:</label>
+                    <input type="range" id="volume-bgm1" min="0" max="1" step="0.1" value="0.3">
+                    <span id="volume-value-bgm1">0.3</span>
+                </div>
+                <div class="status" id="status-bgm1">状态: 未播放</div>
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>2. 示例 BGM 播放器 (DCSampleBGM)</h2>
+            <div class="bgm-player">
+                <h3>示例 BGM 播放器</h3>
+                <div id="bgm-container"></div>
+                <div class="controls">
+                    <button id="btn-play-sample">播放/暂停</button>
+                </div>
+                <div class="status" id="status-sample">状态: 未播放</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 BGM 组件 -->
+    <!-- <script src="../../../src/components/bgm/dcontrolsound.js"></script>
+    <script src="../../../src/components/bgm/dcsamplebgm.js"></script> -->
+    script src="../../../dist/dc.js"></script>
+
+    <script>
+        // 示例 1: 使用 DControlSound 组件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化 DControlSound 实例
+            const controlSound = new DC.ControlSound({
+                // 创建 BGM 元素和 URL 的映射关系
+                bgmUrls: {
+                    '#audio-bgm1': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                    '#audio-bgm2': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+                    '#audio-bgm3': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+                },
+                // 遍历按钮和音频的映射关系，如果配置了这里，按钮的点击播放事件不用再写
+                buttonMap: {
+                    '.btn-play-bgm1': '#audio-bgm1',
+                    '.btn-play-bgm2': '#audio-bgm2',
+                    '.btn-play-bgm3': '#audio-bgm3'
+                },
+                // 统一将所有音量设置为0.3
+                defaultVolume: 0.3
+            });
+
+            // 播放所有 BGM 按钮
+            document.getElementById('btn-play-all').addEventListener('click', function() {
+                controlSound.playAllBgms();
+                document.getElementById('status-bgm1').textContent = '状态: 所有 BGM 播放中';
+            });
+
+            // 音量控制
+            const volumeSlider = document.getElementById('volume-bgm1');
+            const volumeValue = document.getElementById('volume-value-bgm1');
+
+            volumeSlider.addEventListener('input', function() {
+                const volume = parseFloat(this.value);
+                volumeValue.textContent = volume.toFixed(1);
+                controlSound.setVolumeById('#audio-bgm1', volume);
+            });
+
+            // 示例 2: 使用 DCSampleBGM 组件
+            const bgmList = [
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+            ];
+
+            // 创建 BGM 播放器实例
+            const sampleBGM = new DC.SampleBGM(
+                'bgm-audio',
+                'bgm-btn',
+                'bgm-icon',
+                bgmList,
+                '#bgm-container'
+            );
+
+            // 播放/暂停按钮
+            document.getElementById('btn-play-sample').addEventListener('click', function() {
+                sampleBGM.play();
+                const statusElement = document.getElementById('status-sample');
+                statusElement.textContent = sampleBGM.bgmAudio.paused ? '状态: 已暂停' : '状态: 播放中';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCVirtualScroller 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #1976d2;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #666;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .scroll-container {
+            width: 100%;
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #f9f9f9;
+            transition: background-color 0.2s ease;
+        }
+
+        .item:hover {
+            background-color: #f0f7ff;
+        }
+
+        .custom-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .item-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+
+        button.primary {
+            background-color: #1976d2;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        button.primary:hover {
+            background-color: #1565c0;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .performance-stats {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .stats-row {
+            margin: 5px 0;
+        }
+
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .instructions {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+
+        .instructions h3 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+
+        .instructions ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCVirtualScroller 虚拟滚动组件示例</h1>
+
+        <div class="instructions">
+            <h3>组件介绍</h3>
+            <p>DCVirtualScroller 是一个高性能的虚拟滚动组件，能够处理大量数据的高效渲染，适用于以下场景：</p>
+            <ul>
+                <li>长列表渲染（如商品列表、用户列表等）</li>
+                <li>大数据量表格</li>
+                <li>无限滚动加载</li>
+                <li>任何需要高效渲染大量元素的场景</li>
+            </ul>
+            <p><strong>核心优势：</strong> 只渲染可视区域及其缓冲区的元素，大幅减少 DOM 节点数量，提升滚动性能。</p>
+        </div>
+
+        <!-- 基本使用示例 -->
+        <div class="demo-section">
+            <h2>1. 基本使用示例</h2>
+            <p>最简单的虚拟滚动实现，使用默认渲染函数。</p>
+
+            <div class="scroll-container" id="basic-container"></div>
+
+            <div class="controls">
+                <button onclick="scrollToIndex(100)">滚动到第 101 项</button>
+                <button onclick="scrollToIndex(500)">滚动到第 501 项</button>
+                <button onclick="scrollToIndex(999)">滚动到第 1000 项</button>
+                <button onclick="resetScroll()">重置滚动</button>
+            </div>
+
+            <div class="code-block">
+// 基本使用示例
+const container = document.getElementById('basic-container');
+const totalItems = 1000;
+const itemHeight = 60;
+
+const scroller = new DC.VirtualScroller(
+    container,
+    totalItems,
+    itemHeight
+);
+            </div>
+        </div>
+
+        <!-- 自定义渲染示例 -->
+        <div class="demo-section">
+            <h2>2. 自定义渲染函数示例</h2>
+            <p>使用自定义渲染函数创建更复杂的列表项。</p>
+
+            <div class="scroll-container" id="custom-container"></div>
+
+            <div class="code-block">
+// 自定义渲染函数示例
+const customContainer = document.getElementById('custom-container');
+const customTotalItems = 500;
+const customItemHeight = 100;
+
+function customRenderItem(index) {
+    const item = document.createElement('div');
+    item.className = 'custom-item';
+    item.style.height = `${customItemHeight}px`;
+    item.style.position = 'absolute';
+    item.style.top = `${index * customItemHeight}px`;
+
+    item.innerHTML = `
+        <div class="item-image">${index + 1}</div>
+        <div class="item-info">
+            <div class="item-title">商品 ${index + 1}</div>
+            <div class="item-desc">这是商品 ${index + 1} 的详细描述信息，包含商品的各种属性和特点。</div>
+        </div>
+    `;
+
+    return item;
+}
+
+const customScroller = new DC.VirtualScroller(
+    customContainer,
+    customTotalItems,
+    customItemHeight,
+    customRenderItem
+);
+            </div>
+        </div>
+
+        <!-- 动态数据更新示例 -->
+        <div class="demo-section">
+            <h2>3. 动态数据更新示例</h2>
+            <p>演示如何动态更新列表数据和项高度。</p>
+
+            <div class="input-group">
+                <label for="total-items">总项数：</label>
+                <input type="number" id="total-items" value="300" min="100" max="2000" step="100">
+            </div>
+
+            <div class="input-group">
+                <label for="item-height">项高度：</label>
+                <input type="number" id="item-height" value="80" min="40" max="150" step="10">
+            </div>
+
+            <button class="primary" onclick="updateData()">更新数据</button>
+
+            <div class="scroll-container" id="dynamic-container"></div>
+        </div>
+
+        <!-- 性能监控示例 -->
+        <div class="demo-section">
+            <h2>4. 性能监控示例</h2>
+            <p>展示滚动性能统计信息。</p>
+
+            <div class="scroll-container" id="performance-container"></div>
+
+            <div class="controls">
+                <button onclick="showPerformanceStats()">显示性能统计</button>
+                <button onclick="resetPerformanceStats()">重置统计</button>
+            </div>
+
+            <div class="performance-stats" id="stats-container">
+                <!-- 性能统计将显示在这里 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 DCVirtualScroller 组件 -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 基本使用示例
+        let basicScroller;
+        function initBasicScroller() {
+            const container = document.getElementById('basic-container');
+            const totalItems = 1000;
+            const itemHeight = 60;
+
+            basicScroller = new DC.VirtualScroller(
+                container,
+                totalItems,
+                itemHeight
+            );
+        }
+
+        // 滚动到指定索引
+        function scrollToIndex(index) {
+            if (basicScroller) {
+                basicScroller.scrollToIndex(index);
+            }
+        }
+
+        // 重置滚动
+        function resetScroll() {
+            if (basicScroller) {
+                basicScroller.scrollToIndex(0);
+            }
+        }
+
+        // 自定义渲染函数示例
+        let customScroller;
+        function initCustomScroller() {
+            const customContainer = document.getElementById('custom-container');
+            const customTotalItems = 500;
+            const customItemHeight = 100;
+
+            function customRenderItem(index) {
+                const item = document.createElement('div');
+                item.className = 'custom-item';
+                item.style.height = `${customItemHeight}px`;
+                item.style.position = 'absolute';
+                item.style.top = `${index * customItemHeight}px`;
+
+                item.innerHTML = `
+                    <div class="item-image">${index + 1}</div>
+                    <div class="item-info">
+                        <div class="item-title">商品 ${index + 1}</div>
+                        <div class="item-desc">这是商品 ${index + 1} 的详细描述信息，包含商品的各种属性和特点。</div>
+                    </div>
+                `;
+
+                return item;
+            }
+
+            customScroller = new DC.VirtualScroller(
+                customContainer,
+                customTotalItems,
+                customItemHeight,
+                customRenderItem
+            );
+        }
+
+        // 动态数据更新示例
+        let dynamicScroller;
+        function initDynamicScroller() {
+            const container = document.getElementById('dynamic-container');
+            const totalItems = 300;
+            const itemHeight = 80;
+
+            function dynamicRenderItem(index) {
+                const item = document.createElement('div');
+                item.className = 'item';
+                item.style.height = `${itemHeight}px`;
+                item.style.position = 'absolute';
+                item.style.top = `${index * itemHeight}px`;
+                item.textContent = `动态项 ${index + 1} - 高度: ${itemHeight}px`;
+                return item;
+            }
+
+            dynamicScroller = new DC.VirtualScroller(
+                container,
+                totalItems,
+                itemHeight,
+                dynamicRenderItem
+            );
+        }
+
+        // 更新数据
+        function updateData() {
+            const totalItems = parseInt(document.getElementById('total-items').value);
+            const itemHeight = parseInt(document.getElementById('item-height').value);
+
+            if (dynamicScroller) {
+                dynamicScroller.updateData(totalItems, itemHeight);
+            }
+        }
+
+        // 性能监控示例
+        let performanceScroller;
+        function initPerformanceScroller() {
+            const container = document.getElementById('performance-container');
+            const totalItems = 2000;
+            const itemHeight = 50;
+
+            performanceScroller = new DC.VirtualScroller(
+                container,
+                totalItems,
+                itemHeight
+            );
+        }
+
+        // 显示性能统计
+        function showPerformanceStats() {
+            if (performanceScroller) {
+                const stats = performanceScroller.getPerformanceStats();
+                const statsContainer = document.getElementById('stats-container');
+
+                statsContainer.innerHTML = `
+                    <div class="stats-row">渲染次数: ${stats.renderCount}</div>
+                    <div class="stats-row">最后渲染时间: ${stats.lastRenderTime.toFixed(2)}ms</div>
+                    <div class="stats-row">平均渲染时间: ${stats.averageRenderTime.toFixed(2)}ms</div>
+                    <div class="stats-row">总项数: ${stats.totalItems}</div>
+                    <div class="stats-row">可见项数: ${stats.visibleItems}</div>
+                    <div class="stats-row">缓冲区大小: ${stats.bufferSize}</div>
+                `;
+            }
+        }
+
+        // 重置性能统计
+        function resetPerformanceStats() {
+            if (performanceScroller) {
+                performanceScroller.resetPerformanceStats();
+                document.getElementById('stats-container').innerHTML = '性能统计已重置';
+            }
+        }
+
+        // 初始化所有示例
+        function initAllScrollers() {
+            initBasicScroller();
+            initCustomScroller();
+            initDynamicScroller();
+            initPerformanceScroller();
+        }
+
+        // 页面加载完成后初始化
+        window.onload = initAllScrollers;
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dcBrowser 示例</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #333;
+    }
+    h2 {
+      color: #555;
+      margin-top: 30px;
+    }
+    .example {
+      background: #f5f5f5;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .input {
+      margin: 10px 0;
+    }
+    .output {
+      background: #e8f4f8;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    button {
+      padding: 8px 16px;
+      margin: 5px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .feature-item {
+      background: #fff;
+      padding: 10px;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .feature-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .feature-status {
+      font-size: 0.9em;
+    }
+    .status-supported {
+      color: green;
+    }
+    .status-unsupported {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>dcBrowser 示例</h1>
+
+  <h2>1. 资源加载</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testLoadCss()">加载CSS文件</button>
+      <button onclick="testLoadJs()">加载JavaScript文件</button>
+    </div>
+    <div class="output" id="resourceOutput"></div>
+  </div>
+
+  <h2>2. Cookie 操作</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testSetCookie()">设置Cookie</button>
+      <button onclick="testGetCookie()">获取Cookie</button>
+    </div>
+    <div class="output" id="cookieOutput"></div>
+  </div>
+
+  <h2>3. 浏览器信息</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testGetBrowserInfo()">获取浏览器信息</button>
+    </div>
+    <div class="output" id="browserInfoOutput"></div>
+  </div>
+
+  <h2>4. 设备检测</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testDeviceDetection()">检测设备类型</button>
+    </div>
+    <div class="output" id="deviceOutput"></div>
+  </div>
+
+  <h2>5. 屏幕信息</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testScreenInfo()">获取屏幕信息</button>
+    </div>
+    <div class="output" id="screenOutput"></div>
+  </div>
+
+  <h2>6. 网络连接</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testConnection()">获取网络连接信息</button>
+    </div>
+    <div class="output" id="connectionOutput"></div>
+  </div>
+
+  <h2>7. 特性支持检测</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testFeatureSupport()">检测特性支持</button>
+    </div>
+    <div class="output" id="featureOutput">
+      <div class="feature-list" id="featureList"></div>
+    </div>
+  </div>
+
+  <h2>8. 事件中心</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testEventHub()">测试事件中心</button>
+    </div>
+    <div class="output" id="eventOutput"></div>
+  </div>
+
+  <h2>9. 性能信息</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testPerformance()">获取性能信息</button>
+    </div>
+    <div class="output" id="performanceOutput"></div>
+  </div>
+
+  <h2>10. 全屏操作</h2>
+  <div class="example">
+    <div class="input">
+      <button onclick="testFullscreenSupport()">检查全屏支持</button>
+      <button onclick="testRequestFullscreen()" id="fullscreenBtn">进入全屏</button>
+      <button onclick="testExitFullscreen()">退出全屏</button>
+    </div>
+    <div class="output" id="fullscreenOutput"></div>
+  </div>
+
+  <script src="../../../dist/dc.iife.js"></script>
+  <script>
+    // 确保 DC.Browser 可用
+    const dcBrowser = window.DC ? window.DC.Browser : require('../../../src/utils/dcBrowser');
+
+    function setOutput(id, content) {
+      document.getElementById(id).textContent = JSON.stringify(content, null, 2);
+    }
+
+    // 测试资源加载
+    function testLoadCss() {
+      // 注意：这里只是演示，实际加载会影响页面
+      setOutput('resourceOutput', { message: 'CSS加载方法已调用' });
+    }
+
+    function testLoadJs() {
+      // 注意：这里只是演示，实际加载会影响页面
+      setOutput('resourceOutput', { message: 'JS加载方法已调用' });
+    }
+
+    // 测试 Cookie 操作
+    function testSetCookie() {
+      dcBrowser.cookie('testCookie', 'testValue', 1);
+      setOutput('cookieOutput', { message: 'Cookie已设置' });
+    }
+
+    function testGetCookie() {
+      const value = dcBrowser.cookie('testCookie');
+      setOutput('cookieOutput', { cookie: value });
+    }
+
+    // 测试浏览器信息
+    function testGetBrowserInfo() {
+      const info = dcBrowser.getBrowserInfo();
+      setOutput('browserInfoOutput', info);
+    }
+
+    // 测试设备检测
+    function testDeviceDetection() {
+      const result = {
+        isMobile: dcBrowser.isMobile(),
+        isTablet: dcBrowser.isTablet(),
+        orientation: dcBrowser.getOrientation()
+      };
+      setOutput('deviceOutput', result);
+    }
+
+    // 测试屏幕信息
+    function testScreenInfo() {
+      const info = dcBrowser.getScreenInfo();
+      setOutput('screenOutput', info);
+    }
+
+    // 测试网络连接
+    function testConnection() {
+      const info = dcBrowser.getConnection();
+      setOutput('connectionOutput', info);
+    }
+
+    // 测试特性支持
+    function testFeatureSupport() {
+      const features = [
+        'webp', 'webgl', 'webgl2', 'touch', 'geolocation',
+        'localStorage', 'sessionStorage', 'indexedDB', 'webWorker',
+        'serviceWorker', 'webSocket', 'fetch', 'canvas', 'svg',
+        'webAudio', 'webRTC'
+      ];
+
+      const featureList = document.getElementById('featureList');
+      featureList.innerHTML = '';
+
+      features.forEach(feature => {
+        const supported = dcBrowser.supports(feature);
+        const item = document.createElement('div');
+        item.className = 'feature-item';
+        item.innerHTML = `
+          <div class="feature-name">${feature}</div>
+          <div class="feature-status ${supported ? 'status-supported' : 'status-unsupported'}">
+            ${supported ? '支持' : '不支持'}
+          </div>
+        `;
+        featureList.appendChild(item);
+      });
+
+      setOutput('featureOutput', { message: '特性检测完成' });
+    }
+
+    // 测试事件中心
+    function testEventHub() {
+      const hub = dcBrowser.createEventHub();
+      const messages = [];
+
+      // 监听事件
+      hub.on('test', (data) => {
+        messages.push(data);
+      });
+
+      // 触发事件
+      hub.emit('test', 'Hello');
+      hub.emit('test', 'World');
+
+      setOutput('eventOutput', { messages });
+    }
+
+    // 测试性能信息
+    function testPerformance() {
+      const info = dcBrowser.getPerformance();
+      setOutput('performanceOutput', info);
+    }
+
+    // 测试全屏操作
+    function testFullscreenSupport() {
+      const supported = dcBrowser.supportsFullscreen();
+      setOutput('fullscreenOutput', { supportsFullscreen: supported });
+    }
+
+    function testRequestFullscreen() {
+      const element = document.documentElement;
+      dcBrowser.requestFullscreen(element)
+        .then(() => {
+          setOutput('fullscreenOutput', { message: '已进入全屏' });
+        })
+        .catch(err => {
+          setOutput('fullscreenOutput', { error: err.message });
+        });
+    }
+
+    function testExitFullscreen() {
+      dcBrowser.exitFullscreen()
+        .then(() => {
+          setOutput('fullscreenOutput', { message: '已退出全屏' });
+        })
+        .catch(err => {
+          setOutput('fullscreenOutput', { error: err.message });
+        });
+    }
+
+    // 监听在线状态变化
+    const unsubscribe = dcBrowser.onConnectionChange(
+      () => {
+        console.log('网络已连接');
+      },
+      () => {
+        console.log('网络已断开');
+      }
+    );
+
+    // 页面卸载时取消监听
+    window.addEventListener('unload', unsubscribe);
+  </script>
+</body>
+</html>

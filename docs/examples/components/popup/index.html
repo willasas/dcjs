@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCPopup 组件示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .example-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+        .content-item {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        video {
+            width: 100%;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCPopup 组件示例</h1>
+
+        <!-- 示例 1: 基本文本弹窗 -->
+        <div class="example-section">
+            <h2>示例 1: 基本文本弹窗</h2>
+            <p>显示包含文本内容的基本弹窗。</p>
+            <div id="text-content" class="content-item">
+                <h3>弹窗标题</h3>
+                <p>这是一个基本的文本弹窗示例，展示了如何使用 DCPopup 组件显示文本内容。</p>
+                <p>弹窗可以包含任意 HTML 内容，包括标题、段落、列表等。</p>
+            </div>
+            <button class="btn" onclick="showTextPopup()">显示文本弹窗</button>
+        </div>
+
+        <!-- 示例 2: 视频弹窗 -->
+        <div class="example-section">
+            <h2>示例 2: 视频弹窗</h2>
+            <p>显示包含视频的弹窗，点击视频时会自动暂停。</p>
+            <div id="video-content" class="content-item">
+                <div class="video-container">
+                    <video controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                    <p style="text-align: center; margin-top: 10px;">示例视频：Big Buck Bunny</p>
+                </div>
+            </div>
+            <button class="btn" onclick="showVideoPopup()">显示视频弹窗</button>
+        </div>
+
+        <!-- 示例 3: 自定义背景弹窗 -->
+        <div class="example-section">
+            <h2>示例 3: 自定义背景弹窗</h2>
+            <p>显示带有自定义背景颜色和透明度的弹窗。</p>
+            <div id="custom-bg-content" class="content-item">
+                <h3>自定义背景弹窗</h3>
+                <p>这个弹窗使用了自定义的背景颜色和透明度。</p>
+                <p>您可以根据需要设置不同的背景样式。</p>
+            </div>
+            <button class="btn" onclick="showCustomBgPopup()">显示自定义背景弹窗</button>
+        </div>
+
+        <!-- 示例 4: 动态内容弹窗 -->
+        <div class="example-section">
+            <h2>示例 4: 动态内容弹窗</h2>
+            <p>动态创建内容并显示为弹窗。</p>
+            <button class="btn" onclick="showDynamicPopup()">显示动态内容弹窗</button>
+        </div>
+    </div>
+
+    <!-- 引入 DCPopup 组件 -->
+    <script src="../../dist/dc.iife.js"></script>
+
+    <script>
+        // 创建 DCPopup 实例
+        const popup = new DC.Popup();
+
+        // 显示文本弹窗
+        function showTextPopup() {
+            const content = document.getElementById('text-content');
+
+            // 创建弹窗元素
+            popup.createPopup('text-popup', content.cloneNode(true));
+
+            // 显示弹窗
+            popup.showPopup('text-popup', content);
+        }
+
+        // 显示视频弹窗
+        function showVideoPopup() {
+            const content = document.getElementById('video-content');
+
+            // 创建弹窗元素
+            popup.createPopup('video-popup', content.cloneNode(true));
+
+            // 显示弹窗
+            popup.showPopup('video-popup', content);
+        }
+
+        // 显示自定义背景弹窗
+        function showCustomBgPopup() {
+            const content = document.getElementById('custom-bg-content');
+
+            // 创建弹窗元素
+            popup.createPopup('custom-bg-popup', content.cloneNode(true));
+
+            // 显示弹窗，使用自定义背景
+            popup.showPopup('custom-bg-popup', content, 'rgba(255, 100, 100, 0.5)');
+        }
+
+        // 显示动态内容弹窗
+        function showDynamicPopup() {
+            // 动态创建内容
+            const dynamicContent = document.createElement('div');
+            dynamicContent.innerHTML = `
+                <h3>动态内容弹窗</h3>
+                <p>这个弹窗的内容是动态创建的。</p>
+                <p>当前时间：${new Date().toLocaleString()}</p>
+                <ul>
+                    <li>动态项 1</li>
+                    <li>动态项 2</li>
+                    <li>动态项 3</li>
+                </ul>
+            `;
+
+            // 创建弹窗元素
+            const popupId = 'dynamic-popup-' + Date.now();
+            popup.createPopup(popupId, dynamicContent);
+
+            // 显示弹窗
+            popup.showPopup(popupId, dynamicContent);
+        }
+    </script>
+</body>
+</html>

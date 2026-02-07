@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCInfiniteScroller 无限滚动示例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #444;
+      margin: 25px 0 15px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    h3 {
+      color: #555;
+      margin: 20px 0 10px;
+    }
+
+    .example-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .scroll-container {
+      width: 100%;
+      height: 400px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      overflow-y: auto;
+      margin: 20px 0;
+      background-color: #fff;
+    }
+
+    .item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      transition: background-color 0.3s ease;
+    }
+
+    .item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .item:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .item h4 {
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .item p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .item-id {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    .control-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button.secondary {
+      background-color: #2196f3;
+    }
+
+    button.secondary:hover {
+      background-color: #0b7dda;
+    }
+
+    button.danger {
+      background-color: #f44336;
+    }
+
+    button.danger:hover {
+      background-color: #da190b;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .result h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .result pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .info-box {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .info-box p {
+      margin: 5px 0;
+    }
+
+    .loading-indicator {
+      padding: 10px;
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+
+    .stats {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DCInfiniteScroller 无限滚动示例</h1>
+
+    <div class="info-box">
+      <h3>工具介绍</h3>
+      <p>DCInfiniteScroller 是一个无限滚动组件，用于实现长列表的懒加载和性能优化。</p>
+      <p>主要功能：</p>
+      <ul>
+        <li>滚动到底部自动加载更多内容</li>
+        <li>DOM 元素回收，优化性能</li>
+        <li>可配置的加载阈值和批量大小</li>
+        <li>支持自定义加载回调</li>
+        <li>加载状态显示</li>
+      </ul>
+    </div>
+
+    <!-- 基本示例 -->
+    <div class="example-section">
+      <h3>1. 基本无限滚动示例</h3>
+
+      <div class="scroll-container" id="basic-container">
+        <!-- 动态生成的内容将在这里显示 -->
+      </div>
+
+      <div class="stats" id="basic-stats">
+        已加载: 0 项 | 可见: 0 项
+      </div>
+
+      <button onclick="initBasicScroller()">初始化基本滚动</button>
+      <button onclick="destroyBasicScroller()" class="danger">销毁滚动</button>
+    </div>
+
+    <!-- 高级配置示例 -->
+    <div class="example-section">
+      <h3>2. 高级配置示例</h3>
+
+      <div class="control-group">
+        <label for="threshold">加载阈值（像素）：</label>
+        <input type="number" id="threshold" value="200" min="0" max="1000">
+      </div>
+
+      <div class="control-group">
+        <label for="batch-size">批量大小：</label>
+        <input type="number" id="batch-size" value="20" min="1" max="100">
+      </div>
+
+      <div class="control-group">
+        <label for="recycle-threshold">回收阈值（像素）：</label>
+        <input type="number" id="recycle-threshold" value="1000" min="0" max="2000">
+      </div>
+
+      <div class="control-group">
+        <label for="max-items">最大元素数：</label>
+        <input type="number" id="max-items" value="1000" min="100" max="5000">
+      </div>
+
+      <div class="scroll-container" id="advanced-container">
+        <!-- 动态生成的内容将在这里显示 -->
+      </div>
+
+      <div class="stats" id="advanced-stats">
+        已加载: 0 项 | 可见: 0 项
+      </div>
+
+      <button onclick="initAdvancedScroller()">初始化高级滚动</button>
+      <button onclick="destroyAdvancedScroller()" class="danger">销毁滚动</button>
+    </div>
+
+    <!-- 性能测试示例 -->
+    <div class="example-section">
+      <h3>3. 性能测试示例</h3>
+
+      <p>此示例演示了 DCInfiniteScroller 的性能优化能力，即使加载大量数据也能保持流畅。</p>
+
+      <div class="scroll-container" id="performance-container">
+        <!-- 动态生成的内容将在这里显示 -->
+      </div>
+
+      <div class="stats" id="performance-stats">
+        已加载: 0 项 | 可见: 0 项 | 内存使用: 0 MB
+      </div>
+
+      <button onclick="initPerformanceScroller()">初始化性能测试</button>
+      <button onclick="destroyPerformanceScroller()" class="danger">销毁滚动</button>
+    </div>
+  </div>
+
+  <script src="../../../dist/dc.iife.js"></script>
+  <script>
+    // 全局变量
+    let basicScroller = null;
+    let advancedScroller = null;
+    let performanceScroller = null;
+    let basicItemCount = 0;
+    let advancedItemCount = 0;
+    let performanceItemCount = 0;
+
+    // 模拟数据加载
+    function loadItems(count) {
+      return new Promise(resolve => {
+        // 模拟网络延迟
+        setTimeout(() => {
+          const items = [];
+          for (let i = 0; i < count; i++) {
+            items.push({
+              id: Date.now() + i,
+              title: `项目 ${Date.now() + i}`,
+              content: `这是项目 ${Date.now() + i} 的详细内容，用于演示无限滚动功能。`
+            });
+          }
+          resolve(items);
+        }, 500);
+      });
+    }
+
+    // 渲染项目
+    function renderItems(container, items) {
+      items.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'item';
+        itemElement.innerHTML = `
+          <div class="item-id">${item.id % 100}</div>
+          <h4>${item.title}</h4>
+          <p>${item.content}</p>
+        `;
+        container.appendChild(itemElement);
+      });
+    }
+
+    // 更新统计信息
+    function updateStats(containerId, itemCount) {
+      const container = document.getElementById(containerId);
+      const visibleItems = container.querySelectorAll('.item').length;
+      document.getElementById(containerId.replace('container', 'stats')).textContent =
+        `已加载: ${itemCount} 项 | 可见: ${visibleItems} 项`;
+    }
+
+    // 基本滚动示例
+    function initBasicScroller() {
+      if (basicScroller) {
+        destroyBasicScroller();
+      }
+
+      const container = document.getElementById('basic-container');
+      container.innerHTML = '';
+      basicItemCount = 0;
+
+      // 加载初始数据
+      loadItems(20).then(items => {
+        renderItems(container, items);
+        basicItemCount += items.length;
+        updateStats('basic-container', basicItemCount);
+
+        // 初始化无限滚动
+        basicScroller = new window.DC.InfiniteScroller(container, async (batchSize) => {
+          const items = await loadItems(batchSize);
+          renderItems(container, items);
+          basicItemCount += items.length;
+          updateStats('basic-container', basicItemCount);
+        });
+      });
+    }
+
+    function destroyBasicScroller() {
+      if (basicScroller) {
+        basicScroller.destroy();
+        basicScroller = null;
+      }
+    }
+
+    // 高级配置示例
+    function initAdvancedScroller() {
+      if (advancedScroller) {
+        destroyAdvancedScroller();
+      }
+
+      const container = document.getElementById('advanced-container');
+      container.innerHTML = '';
+      advancedItemCount = 0;
+
+      // 获取配置
+      const threshold = parseInt(document.getElementById('threshold').value);
+      const batchSize = parseInt(document.getElementById('batch-size').value);
+      const recycleThreshold = parseInt(document.getElementById('recycle-threshold').value);
+      const maxItems = parseInt(document.getElementById('max-items').value);
+
+      // 加载初始数据
+      loadItems(batchSize).then(items => {
+        renderItems(container, items);
+        advancedItemCount += items.length;
+        updateStats('advanced-container', advancedItemCount);
+
+        // 初始化无限滚动
+        advancedScroller = new window.DC.InfiniteScroller(container, async (size) => {
+          const items = await loadItems(size);
+          renderItems(container, items);
+          advancedItemCount += items.length;
+          updateStats('advanced-container', advancedItemCount);
+        }, {
+          threshold: threshold,
+          batchSize: batchSize,
+          recycleThreshold: recycleThreshold,
+          maxItems: maxItems,
+          enableScrollRecycling: true
+        });
+      });
+    }
+
+    function destroyAdvancedScroller() {
+      if (advancedScroller) {
+        advancedScroller.destroy();
+        advancedScroller = null;
+      }
+    }
+
+    // 性能测试示例
+    function initPerformanceScroller() {
+      if (performanceScroller) {
+        destroyPerformanceScroller();
+      }
+
+      const container = document.getElementById('performance-container');
+      container.innerHTML = '';
+      performanceItemCount = 0;
+
+      // 加载初始数据
+      loadItems(50).then(items => {
+        renderItems(container, items);
+        performanceItemCount += items.length;
+        updatePerformanceStats();
+
+        // 初始化无限滚动
+        performanceScroller = new window.DC.InfiniteScroller(container, async (batchSize) => {
+          const items = await loadItems(batchSize);
+          renderItems(container, items);
+          performanceItemCount += items.length;
+          updatePerformanceStats();
+        }, {
+          threshold: 100,
+          batchSize: 50,
+          recycleThreshold: 500,
+          maxItems: 2000,
+          enableScrollRecycling: true
+        });
+      });
+    }
+
+    function updatePerformanceStats() {
+      const container = document.getElementById('performance-container');
+      const visibleItems = container.querySelectorAll('.item').length;
+      // 模拟内存使用
+      const memoryUsage = (performanceItemCount * 0.01).toFixed(2);
+      document.getElementById('performance-stats').textContent =
+        `已加载: ${performanceItemCount} 项 | 可见: ${visibleItems} 项 | 内存使用: ${memoryUsage} MB`;
+    }
+
+    function destroyPerformanceScroller() {
+      if (performanceScroller) {
+        performanceScroller.destroy();
+        performanceScroller = null;
+      }
+    }
+
+    // 页面加载完成后初始化
+    window.addEventListener('DOMContentLoaded', function() {
+      // 初始化基本示例
+      initBasicScroller();
+    });
+  </script>
+</body>
+</html>

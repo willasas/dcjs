@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCFileUpload 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #40a9ff;
+        }
+        .upload-container {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .log {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCFileUpload 示例</h1>
+
+        <!-- 示例 1: 默认配置 -->
+        <div class="example-section">
+            <h2>示例 1: 默认配置</h2>
+            <p>使用默认配置创建文件上传组件，支持上传单个文件，最大 5MB。</p>
+            <div class="upload-container" id="default-upload"></div>
+            <div class="log" id="default-log"></div>
+        </div>
+
+        <!-- 示例 2: 图片上传 -->
+        <div class="example-section">
+            <h2>示例 2: 图片上传</h2>
+            <p>配置为只接受图片文件，最大 2MB。</p>
+            <div class="upload-container" id="image-upload"></div>
+            <div class="log" id="image-log"></div>
+        </div>
+
+        <!-- 示例 3: 多文件上传 -->
+        <div class="example-section">
+            <h2>示例 3: 多文件上传</h2>
+            <p>配置为支持上传多个文件，最多 3 个，每个文件最大 1MB。</p>
+            <div class="upload-container" id="multiple-upload"></div>
+            <div class="log" id="multiple-log"></div>
+        </div>
+
+        <!-- 示例 4: 自定义回调 -->
+        <div class="example-section">
+            <h2>示例 4: 自定义回调</h2>
+            <p>使用自定义回调函数，显示上传进度和结果。</p>
+            <div class="upload-container" id="callback-upload"></div>
+            <div class="log" id="callback-log"></div>
+        </div>
+    </div>
+
+    <!-- 引入 DCFileUpload -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 示例 1: 默认配置
+        function initDefaultUpload() {
+            const container = document.getElementById('default-upload');
+            const log = document.getElementById('default-log');
+
+            new DC.FileUpload({
+                container: container,
+                onFileSelect: (files) => {
+                    log.innerHTML += `[文件选择] 选择了 ${files.length} 个文件<br>`;
+                },
+                onUploadStart: (files) => {
+                    log.innerHTML += `[上传开始] 开始上传 ${files.length} 个文件<br>`;
+                },
+                onUploadSuccess: (data) => {
+                    log.innerHTML += `[上传成功] ${data.file.name} 上传成功<br>`;
+                }
+            });
+        }
+
+        // 示例 2: 图片上传
+        function initImageUpload() {
+            const container = document.getElementById('image-upload');
+            const log = document.getElementById('image-log');
+
+            new DC.FileUpload({
+                container: container,
+                accept: 'image/*',
+                maxSize: 2 * 1024 * 1024, // 2MB
+                onFileSelect: (files) => {
+                    log.innerHTML += `[文件选择] 选择了 ${files.length} 个图片文件<br>`;
+                },
+                onUploadSuccess: (data) => {
+                    log.innerHTML += `[上传成功] ${data.file.name} 上传成功<br>`;
+                }
+            });
+        }
+
+        // 示例 3: 多文件上传
+        function initMultipleUpload() {
+            const container = document.getElementById('multiple-upload');
+            const log = document.getElementById('multiple-log');
+
+            new DC.FileUpload({
+                container: container,
+                maxFiles: 3,
+                maxSize: 1 * 1024 * 1024, // 1MB
+                onFileSelect: (files) => {
+                    log.innerHTML += `[文件选择] 选择了 ${files.length} 个文件<br>`;
+                },
+                onUploadStart: (files) => {
+                    log.innerHTML += `[上传开始] 开始上传 ${files.length} 个文件<br>`;
+                },
+                onUploadSuccess: (data) => {
+                    log.innerHTML += `[上传成功] ${data.file.name} 上传成功<br>`;
+                }
+            });
+        }
+
+        // 示例 4: 自定义回调
+        function initCallbackUpload() {
+            const container = document.getElementById('callback-upload');
+            const log = document.getElementById('callback-log');
+
+            new DC.FileUpload({
+                container: container,
+                onFileSelect: (files) => {
+                    log.innerHTML += `[文件选择] 选择了 ${files.length} 个文件<br>`;
+                    files.forEach(file => {
+                        log.innerHTML += `  - ${file.name} (${(file.size / 1024).toFixed(2)} KB)<br>`;
+                    });
+                },
+                onUploadStart: (files) => {
+                    log.innerHTML += `[上传开始] 开始上传 ${files.length} 个文件<br>`;
+                },
+                onUploadProgress: (data) => {
+                    // 只在控制台显示进度，避免日志过多
+                    console.log(`[上传进度] ${data.file.name}: ${data.progress}%`);
+                },
+                onUploadSuccess: (data) => {
+                    log.innerHTML += `[上传成功] ${data.file.name} 上传成功<br>`;
+                    log.innerHTML += `  - 访问地址: ${data.response.url}<br>`;
+                },
+                onUploadError: (data) => {
+                    log.innerHTML += `[上传失败] ${data.file.name} 上传失败<br>`;
+                }
+            });
+        }
+
+        // 页面加载完成后初始化所有示例
+        window.onload = function() {
+            initDefaultUpload();
+            initImageUpload();
+            initMultipleUpload();
+            initCallbackUpload();
+        };
+    </script>
+</body>
+</html>

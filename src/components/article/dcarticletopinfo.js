@@ -161,7 +161,6 @@ class DCArticleTopInfo {
 }
 
 // 导出全局变量
-
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = DCArticleTopInfo;
 } else {

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article 组件示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .example {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        #article-info-container {
+            margin-bottom: 30px;
+        }
+        #article-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Article 组件示例</h1>
+
+        <div class="example">
+            <h2>1. 文章顶部信息组件 (DCArticleTopInfo)</h2>
+            <div id="article-info-container"></div>
+        </div>
+
+        <div class="example">
+            <h2>2. 文章卡片组件 (DCArticleCard)</h2>
+            <div id="article-card-container"></div>
+        </div>
+    </div>
+
+    <!-- 引入 Article 组件 -->
+    <script src="../../../src/components/article/dcarticletopinfo.js"></script>
+    <script src="../../../src/components/article/dcarticlecard.js"></script>
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 示例 1: 使用 DCArticleTopInfo 组件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建文章顶部信息实例
+            const articleInfo = new DC.ArticleTopInfo(
+                '2023-10-01',
+                '2023-10-10',
+                '1500 字',
+                '8 分钟',
+                '2500 次',
+                '#article-info-container'
+            );
+
+            // 示例 2: 使用 DCArticleCard 组件
+            const articleData = [
+                {
+                    title: '前端开发最佳实践',
+                    cover: 'https://via.placeholder.com/420x220?text=前端开发',
+                    articleHref: 'javascript:void(0);',
+                    content: '本文介绍了前端开发中的一些最佳实践，包括代码组织、性能优化、无障碍访问等方面的内容。通过遵循这些最佳实践，可以提高前端代码的质量和可维护性。',
+                    updateTime: '2023-10-01',
+                    views: '1200',
+                    author: '张三',
+                    authorLink: 'javascript:void(0);',
+                    status: ['置顶', '热门'],
+                    tags: [
+                        { name: '前端', link: 'javascript:void(0);' },
+                        { name: '最佳实践', link: 'javascript:void(0);' }
+                    ]
+                },
+                {
+                    title: 'React 性能优化技巧',
+                    cover: 'https://via.placeholder.com/420x220?text=React优化',
+                    articleHref: 'javascript:void(0);',
+                    content: 'React 是一个非常流行的前端框架，但在处理大型应用时，性能问题可能会变得明显。本文介绍了一些 React 性能优化的技巧，帮助你构建更高效的 React 应用。',
+                    updateTime: '2023-09-15',
+                    views: '980',
+                    author: '李四',
+                    authorLink: 'javascript:void(0);',
+                    status: ['推荐'],
+                    tags: [
+                        { name: 'React', link: 'javascript:void(0);' },
+                        { name: '性能优化', link: 'javascript:void(0);' }
+                    ]
+                },
+                {
+                    title: 'CSS Grid 布局完全指南',
+                    cover: 'https://via.placeholder.com/420x220?text=CSS Grid',
+                    articleHref: 'javascript:void(0);',
+                    content: 'CSS Grid 是一种强大的布局系统，允许你创建复杂的二维布局。本文提供了 CSS Grid 布局的完全指南，包括基本概念、常用属性和实际应用示例。',
+                    updateTime: '2023-08-20',
+                    views: '1560',
+                    author: '王五',
+                    authorLink: 'javascript:void(0);',
+                    status: [],
+                    tags: [
+                        { name: 'CSS', link: 'javascript:void(0);' },
+                        { name: '布局', link: 'javascript:void(0);' }
+                    ]
+                }
+            ];
+
+            // 创建文章卡片实例
+            const articleCard = new DC.ArticleCard({
+                articleList: articleData,
+                targetElement: '#article-card-container'
+            });
+        });
+    </script>
+</body>
+</html>

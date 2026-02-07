@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCAnimator 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .example {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .animation-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        #sequence-animation {
+            width: 200px;
+            height: 200px;
+            display: block;
+            margin: 0 auto;
+        }
+        #scroll-animation-container {
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+        }
+        #scroll-animation-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #scroll-animation-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCAnimator 组件示例</h1>
+
+        <div class="example">
+            <h2>1. 序列帧动画示例</h2>
+            <div class="animation-container">
+                <img id="sequence-animation" alt="序列帧动画">
+            </div>
+            <div class="controls">
+                <button id="start-sequence">开始动画</button>
+                <button id="stop-sequence">停止动画</button>
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>2. 滚动动画示例</h2>
+            <div class="animation-container">
+                <div id="scroll-animation-container">
+                    <ul id="scroll-animation-list">
+                        <li>项目 1</li>
+                        <li>项目 2</li>
+                        <li>项目 3</li>
+                        <li>项目 4</li>
+                        <li>项目 5</li>
+                        <li>项目 6</li>
+                        <li>项目 7</li>
+                        <li>项目 8</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="start-scroll">开始动画</button>
+                <button id="stop-scroll">停止动画</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 DCAnimator 组件 -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 序列帧动画示例
+        const sequenceFrames = [
+            // 这里使用占位图像，实际使用时替换为真实的动画帧图像
+            'https://via.placeholder.com/200x200?text=Frame+1',
+            'https://via.placeholder.com/200x200?text=Frame+2',
+            'https://via.placeholder.com/200x200?text=Frame+3',
+            'https://via.placeholder.com/200x200?text=Frame+4',
+            'https://via.placeholder.com/200x200?text=Frame+5',
+            'https://via.placeholder.com/200x200?text=Frame+6'
+        ];
+
+        const sequenceElement = document.getElementById('sequence-animation');
+        const sequenceAnimator = new DC.Animator('sequence', sequenceFrames, sequenceElement, 10);
+
+        document.getElementById('start-sequence').addEventListener('click', () => {
+            sequenceAnimator.startAnimation();
+        });
+
+        document.getElementById('stop-sequence').addEventListener('click', () => {
+            sequenceAnimator.stopAnimation();
+        });
+
+        // 滚动动画示例
+        const scrollAnimator = new DC.Animator('scroll', '#scroll-animation-container', '#scroll-animation-list', 'li', 1);
+
+        document.getElementById('start-scroll').addEventListener('click', () => {
+            scrollAnimator.startAnimation();
+        });
+
+        document.getElementById('stop-scroll').addEventListener('click', () => {
+            scrollAnimator.stopAnimation();
+        });
+
+        // 页面加载完成后自动开始滚动动画
+        window.addEventListener('load', () => {
+            scrollAnimator.startAnimation();
+        });
+    </script>
+</body>
+</html>

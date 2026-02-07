@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcpartner组件示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .partner-carousel-container {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .partner-carousel {
+            margin: 20px 0;
+        }
+        .test-buttons {
+            margin: 20px 0;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+        .info h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        .info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcpartner组件示例</h1>
+
+        <h2>合作伙伴轮播</h2>
+        <div class="partner-carousel-container">
+            <div id="partner-carousel"></div>
+        </div>
+
+        <h2>测试功能</h2>
+        <div class="test-buttons">
+            <button id="btn-pause">暂停轮播</button>
+            <button id="btn-play">播放轮播</button>
+        </div>
+
+        <h2>使用说明</h2>
+        <div class="info">
+            <h4>基本用法</h4>
+            <p>1. 初始化DCPartner组件，传入合作伙伴数据和配置选项</p>
+            <p>2. 调用init()方法启动轮播</p>
+            <p>3. 组件会自动开始轮播，并支持鼠标悬停暂停</p>
+        </div>
+
+        <div class="info">
+            <h4>配置选项</h4>
+            <p>- containerSelector: 容器选择器，默认为'body'</p>
+            <p>- interval: 轮播间隔，默认为3000毫秒</p>
+        </div>
+
+        <div class="info">
+            <h4>合作伙伴数据格式</h4>
+            <p>每个合作伙伴对象包含以下属性：</p>
+            <p>- name: 合作伙伴名称</p>
+            <p>- logo: 合作伙伴Logo图片路径</p>
+        </div>
+    </div>
+
+    <!-- 加载dcpartner.js -->
+    <script>
+        // 模拟模块导出
+        window.module = {};
+        window.module.exports = {};
+    </script>
+
+    <!-- 加载dcpartner.js -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 模拟合作伙伴数据
+        const partners = [
+            { name: '合作伙伴1', logo: 'https://via.placeholder.com/150x50?text=Partner+1' },
+            { name: '合作伙伴2', logo: 'https://via.placeholder.com/150x50?text=Partner+2' },
+            { name: '合作伙伴3', logo: 'https://via.placeholder.com/150x50?text=Partner+3' },
+            { name: '合作伙伴4', logo: 'https://via.placeholder.com/150x50?text=Partner+4' },
+            { name: '合作伙伴5', logo: 'https://via.placeholder.com/150x50?text=Partner+5' }
+        ];
+
+        // 初始化DCPartner
+        const dcPartner = new DC.Partner(partners, {
+            containerSelector: '#partner-carousel',
+            interval: 2000
+        });
+
+        // 启动轮播
+        dcPartner.init();
+
+        // 绑定测试按钮事件
+        document.getElementById('btn-pause').addEventListener('click', function() {
+            dcPartner.pause();
+            console.log('轮播已暂停');
+        });
+
+        document.getElementById('btn-play').addEventListener('click', function() {
+            dcPartner.play();
+            console.log('轮播已播放');
+        });
+    </script>
+</body>
+</html>

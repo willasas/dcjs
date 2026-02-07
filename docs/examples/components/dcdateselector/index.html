@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCDateSelector 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #40a9ff;
+        }
+        .date-selector-container {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCDateSelector 示例</h1>
+
+        <!-- 示例 1: 默认配置 -->
+        <div class="example-section">
+            <h2>示例 1: 默认配置</h2>
+            <p>使用默认配置创建日期选择器，会自动添加到 document.body 中。</p>
+            <button onclick="initDefaultDateSelector()">初始化默认日期选择器</button>
+            <div class="result" id="default-result">
+                <p>选择结果: <span id="default-date"></span></p>
+            </div>
+        </div>
+
+        <!-- 示例 2: 自定义容器 -->
+        <div class="example-section">
+            <h2>示例 2: 自定义容器</h2>
+            <p>指定自定义容器创建日期选择器。</p>
+            <div class="date-selector-container" id="custom-container"></div>
+            <div class="result" id="custom-result">
+                <p>选择结果: <span id="custom-date"></span></p>
+            </div>
+        </div>
+
+        <!-- 示例 3: 获取选中日期 -->
+        <div class="example-section">
+            <h2>示例 3: 获取选中日期</h2>
+            <p>使用 getSelectedDate 方法获取当前选中的日期。</p>
+            <button onclick="initGetDateSelector()">初始化日期选择器</button>
+            <button onclick="getSelectedDate()">获取选中日期</button>
+            <div class="result" id="get-date-result">
+                <p>获取结果: <span id="get-date"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 DCDateSelector -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        let defaultDateSelector;
+        let customDateSelector;
+        let getDateSelector;
+
+        // 示例 1: 默认配置
+        function initDefaultDateSelector() {
+            if (defaultDateSelector) return;
+
+            defaultDateSelector = new DC.DateSelector({
+                onSelect: function(date) {
+                    document.getElementById('default-date').textContent =
+                        `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+                }
+            });
+        }
+
+        // 示例 2: 自定义容器
+        function initCustomDateSelector() {
+            if (customDateSelector) return;
+
+            const container = document.getElementById('custom-container');
+            customDateSelector = new DC.DateSelector({
+                container: container,
+                onSelect: function(date) {
+                    document.getElementById('custom-date').textContent =
+                        `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+                }
+            });
+        }
+
+        // 示例 3: 获取选中日期
+        function initGetDateSelector() {
+            if (getDateSelector) return;
+
+            getDateSelector = new DC.DateSelector({
+                onSelect: function(date) {
+                    document.getElementById('get-date').textContent =
+                        `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+                }
+            });
+        }
+
+        function getSelectedDate() {
+            if (!getDateSelector) return;
+
+            const selectedDate = getDateSelector.getSelectedDate();
+            document.getElementById('get-date').textContent =
+                `${selectedDate.year}-${String(selectedDate.month).padStart(2, '0')}-${String(selectedDate.day).padStart(2, '0')}`;
+        }
+
+        // 页面加载完成后初始化示例 2
+        window.onload = function() {
+            initCustomDateSelector();
+        };
+    </script>
+</body>
+</html>

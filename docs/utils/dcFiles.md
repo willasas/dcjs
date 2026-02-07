@@ -34,7 +34,7 @@ dcFiles 是一个功能强大的文件操作工具类，提供了丰富的方法
 - `file` (File): 要读取的文件
 - `readAs` (String): 读取方式：'text', 'dataURL', 'arrayBuffer', 'binaryString'
 
-**返回值**: Promise<string|ArrayBuffer> - 文件内容
+**返回值**: `Promise&lt;string|ArrayBuffer&gt;` - 文件内容
 
 #### readImage(file)
 
@@ -43,7 +43,7 @@ dcFiles 是一个功能强大的文件操作工具类，提供了丰富的方法
 **参数**:
 - `file` (File): 要读取的图片文件
 
-**返回值**: Promise<string> - 图片 Data URL
+**返回值**: `Promise&lt;string&gt;` - 图片 Data URL
 
 #### createImage(src)
 
@@ -52,7 +52,7 @@ dcFiles 是一个功能强大的文件操作工具类，提供了丰富的方法
 **参数**:
 - `src` (String): 图片 URL 或 Data URL
 
-**返回值**: Promise<HTMLImageElement> - 图片元素
+**返回值**: `Promise&lt;HTMLImageElement&gt;` - 图片元素
 
 #### loadImages(sources)
 
@@ -61,7 +61,7 @@ dcFiles 是一个功能强大的文件操作工具类，提供了丰富的方法
 **参数**:
 - `sources` (String[]): 图片 URL 数组
 
-**返回值**: Promise<HTMLImageElement[]> - 加载完成的图片数组
+**返回值**: `Promise&lt;HTMLImageElement[]&gt;` - 加载完成的图片数组
 
 #### resizeFile(file, maxSize)
 
@@ -71,7 +71,7 @@ dcFiles 是一个功能强大的文件操作工具类，提供了丰富的方法
 - `file` (File): 要转换的文件
 - `maxSize` (Number): 最大大小（字节）
 
-**返回值**: Promise<Blob> - 转换后的 Blob 对象
+**返回值**: `Promise&lt;Blob&gt;` - 转换后的 Blob 对象
 
 #### downloadFile(content, filename)
 
@@ -88,7 +88,7 @@ dcFiles 是一个功能强大的文件操作工具类，提供了丰富的方法
 **参数**:
 - `file` (File): 图片文件
 
-**返回值**: Promise<string> - 预览 URL
+**返回值**: `Promise&lt;string&gt;` - 预览 URL
 
 ### 图片预加载类
 
@@ -287,7 +287,7 @@ const lazyLoader = new DC.Files.LazyLoader({
 setTimeout(() => {
   const newImg = document.createElement('img');
   newImg.className = 'lazy';
-  newImg.data-src = 'https://example.com/image4.jpg';
+  newImg.setAttribute('data-src', 'https://example.com/image4.jpg');
   newImg.width = 200;
   newImg.height = 150;
   newImg.alt = 'Image 4';

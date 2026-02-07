@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcEle 工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .example {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+        .info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        select {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .demo-element {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f3e5f5;
+            border-radius: 4px;
+        }
+        .highlight {
+            background-color: #ffeb3b;
+            color: #f57f17;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+        .test-element {
+            width: 100px;
+            height: 100px;
+            background-color: #2196f3;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .active {
+            background-color: #4CAF50 !important;
+        }
+        .tab-container {
+            margin: 20px 0;
+        }
+        .tab-headers {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tab-header {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-right: none;
+        }
+        .tab-header:last-child {
+            border-right: 1px solid #ddd;
+        }
+        .tab-header.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .tab-bodies {
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+        .tab-body {
+            display: none;
+        }
+        .tab-body.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcEle 工具类示例</h1>
+
+        <div class="section">
+            <h2>1. 元素创建</h2>
+            <div class="example">
+                <button onclick="createElementFromHTML()">从HTML创建元素</button>
+                <button onclick="createElementByTag()">通过标签名创建元素</button>
+                <button onclick="createElementWithClassAndId()">创建带类和ID的元素</button>
+                <div class="result" id="createResult"></div>
+                <div id="createContainer" class="demo-element"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. 元素查找</h2>
+            <div class="example">
+                <button onclick="findElements()">查找元素</button>
+                <div class="result" id="findResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. 元素内容操作</h2>
+            <div class="example">
+                <label>文本内容: <input type="text" id="textContent" value="测试文本"></label>
+                <button onclick="setTextContent()">设置文本</button>
+                <button onclick="getTextContent()">获取文本</button>
+                <br>
+                <label>HTML内容: <input type="text" id="htmlContent" value="<strong>加粗文本</strong>"></label>
+                <button onclick="setHTMLContent()">设置HTML</button>
+                <button onclick="getHTMLContent()">获取HTML</button>
+                <div class="result" id="contentResult"></div>
+                <div id="contentContainer" class="demo-element">初始内容</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. 元素属性操作</h2>
+            <div class="example">
+                <label>属性名: <input type="text" id="attrName" value="title"></label>
+                <label>属性值: <input type="text" id="attrValue" value="测试标题"></label>
+                <button onclick="setAttribute()">设置属性</button>
+                <button onclick="getAttribute()">获取属性</button>
+                <button onclick="removeAttribute()">移除属性</button>
+                <div class="result" id="attrResult"></div>
+                <div id="attrContainer" class="demo-element">属性操作示例</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. 样式操作</h2>
+            <div class="example">
+                <button onclick="addClass()">添加类名</button>
+                <button onclick="removeClass()">移除类名</button>
+                <button onclick="toggleClass()">切换类名</button>
+                <button onclick="setCSS()">设置样式</button>
+                <div class="result" id="styleResult"></div>
+                <div id="styleContainer" class="demo-element">样式操作示例</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. 元素操作</h2>
+            <div class="example">
+                <button onclick="appendElement()">添加到末尾</button>
+                <button onclick="prependElement()">添加到开头</button>
+                <button onclick="insertBeforeElement()">插入到前面</button>
+                <button onclick="insertAfterElement()">插入到后面</button>
+                <button onclick="removeElement()">移除元素</button>
+                <button onclick="emptyElement()">清空元素</button>
+                <button onclick="cloneElement()">克隆元素</button>
+                <div class="result" id="elementResult"></div>
+                <div id="elementContainer" class="demo-element">
+                    <div id="referenceElement" class="test-element">参考元素</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. 辅助方法</h2>
+            <div class="example">
+                <button onclick="checkVisibility()">检查元素可见性</button>
+                <button onclick="setVisibility()">切换元素可见性</button>
+                <button onclick="getBoundingRect()">获取元素位置和尺寸</button>
+                <button onclick="checkContains()">检查元素包含关系</button>
+                <button onclick="addInlineStyle()">添加内联样式</button>
+                <div class="result" id="helperResult"></div>
+                <div id="helperContainer" class="demo-element">
+                    <div id="childElement" class="test-element">子元素</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. 选项卡功能</h2>
+            <div class="example">
+                <div class="tab-container">
+                    <div class="tab-headers">
+                        <div class="tab-header active">标签1</div>
+                        <div class="tab-header">标签2</div>
+                        <div class="tab-header">标签3</div>
+                    </div>
+                    <div class="tab-bodies">
+                        <div class="tab-body active">标签1内容</div>
+                        <div class="tab-body">标签2内容</div>
+                        <div class="tab-body">标签3内容</div>
+                    </div>
+                </div>
+                <button onclick="setupTabSwitching()">设置选项卡切换</button>
+                <div class="result" id="tabResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../dist/dc.iife.js"></script>
+    <script>
+        // 1. 元素创建
+        function createElementFromHTML() {
+            try {
+                const element = DC.Ele.createElement('<div class="highlight">从HTML创建的元素</div>');
+                const container = document.getElementById('createContainer');
+                container.appendChild(element);
+                document.getElementById('createResult').innerHTML =
+                    '<div class="success">元素创建成功！</div>';
+            } catch (error) {
+                document.getElementById('createResult').innerHTML =
+                    '<div class="error">元素创建失败: ' + error.message + '</div>';
+            }
+        }
+
+        function createElementByTag() {
+            try {
+                const element = DC.Ele.createElementByTag('div', {
+                    id: 'test-element',
+                    className: 'highlight',
+                    style: {
+                        color: 'blue',
+                        padding: '10px',
+                        border: '1px solid blue'
+                    },
+                    title: '测试元素'
+                });
+                element.textContent = '通过标签名创建的元素';
+                const container = document.getElementById('createContainer');
+                container.appendChild(element);
+                document.getElementById('createResult').innerHTML =
+                    '<div class="success">元素创建成功！</div>';
+            } catch (error) {
+                document.getElementById('createResult').innerHTML =
+                    '<div class="error">元素创建失败: ' + error.message + '</div>';
+            }
+        }
+
+        function createElementWithClassAndId() {
+            try {
+                const element = DC.Ele.createElementWithClassAndId('div', 'highlight test-class', 'unique-id');
+                element.textContent = '带类和ID的元素';
+                const container = document.getElementById('createContainer');
+                container.appendChild(element);
+                document.getElementById('createResult').innerHTML =
+                    '<div class="success">元素创建成功！</div>';
+            } catch (error) {
+                document.getElementById('createResult').innerHTML =
+                    '<div class="error">元素创建失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 2. 元素查找
+        function findElements() {
+            try {
+                const singleElement = DC.Ele.find('.demo-element');
+                const allElements = DC.Ele.findAll('.demo-element');
+                document.getElementById('findResult').innerHTML =
+                    '<div class="success">元素查找成功！</div>' +
+                    '<div>找到单个元素: ' + (singleElement ? '是' : '否') + '</div>' +
+                    '<div>找到元素数量: ' + allElements.length + '</div>';
+            } catch (error) {
+                document.getElementById('findResult').innerHTML =
+                    '<div class="error">元素查找失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 3. 元素内容操作
+        function setTextContent() {
+            try {
+                const text = document.getElementById('textContent').value;
+                const container = document.getElementById('contentContainer');
+                DC.Ele.text(container, text);
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="success">文本设置成功！</div>';
+            } catch (error) {
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="error">文本设置失败: ' + error.message + '</div>';
+            }
+        }
+
+        function getTextContent() {
+            try {
+                const container = document.getElementById('contentContainer');
+                const text = DC.Ele.text(container);
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="success">文本获取成功！</div>' +
+                    '<div>文本内容: ' + text + '</div>';
+            } catch (error) {
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="error">文本获取失败: ' + error.message + '</div>';
+            }
+        }
+
+        function setHTMLContent() {
+            try {
+                const html = document.getElementById('htmlContent').value;
+                const container = document.getElementById('contentContainer');
+                DC.Ele.html(container, html);
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="success">HTML设置成功！</div>';
+            } catch (error) {
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="error">HTML设置失败: ' + error.message + '</div>';
+            }
+        }
+
+        function getHTMLContent() {
+            try {
+                const container = document.getElementById('contentContainer');
+                const html = DC.Ele.html(container);
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="success">HTML获取成功！</div>' +
+                    '<div>HTML内容: ' + html + '</div>';
+            } catch (error) {
+                document.getElementById('contentResult').innerHTML =
+                    '<div class="error">HTML获取失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 4. 元素属性操作
+        function setAttribute() {
+            try {
+                const name = document.getElementById('attrName').value;
+                const value = document.getElementById('attrValue').value;
+                const container = document.getElementById('attrContainer');
+                DC.Ele.attr(container, name, value);
+                document.getElementById('attrResult').innerHTML =
+                    '<div class="success">属性设置成功！</div>' +
+                    '<div>属性: ' + name + ' = ' + value + '</div>';
+            } catch (error) {
+                document.getElementById('attrResult').innerHTML =
+                    '<div class="error">属性设置失败: ' + error.message + '</div>';
+            }
+        }
+
+        function getAttribute() {
+            try {
+                const name = document.getElementById('attrName').value;
+                const container = document.getElementById('attrContainer');
+                const value = DC.Ele.attr(container, name);
+                document.getElementById('attrResult').innerHTML =
+                    '<div class="success">属性获取成功！</div>' +
+                    '<div>属性值: ' + (value || '无') + '</div>';
+            } catch (error) {
+                document.getElementById('attrResult').innerHTML =
+                    '<div class="error">属性获取失败: ' + error.message + '</div>';
+            }
+        }
+
+        function removeAttribute() {
+            try {
+                const name = document.getElementById('attrName').value;
+                const container = document.getElementById('attrContainer');
+                DC.Ele.removeAttr(container, name);
+                document.getElementById('attrResult').innerHTML =
+                    '<div class="success">属性移除成功！</div>';
+            } catch (error) {
+                document.getElementById('attrResult').innerHTML =
+                    '<div class="error">属性移除失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 5. 样式操作
+        function addClass() {
+            try {
+                DC.Ele.addClass('styleContainer', 'highlight');
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="success">类名添加成功！</div>';
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="error">类名添加失败: ' + error.message + '</div>';
+            }
+        }
+
+        function removeClass() {
+            try {
+                DC.Ele.removeClass('styleContainer', 'highlight');
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="success">类名移除成功！</div>';
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="error">类名移除失败: ' + error.message + '</div>';
+            }
+        }
+
+        function toggleClass() {
+            try {
+                const container = document.getElementById('styleContainer');
+                const result = DC.Ele.toggleClass(container, 'highlight');
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="success">类名切换成功！</div>' +
+                    '<div>类名状态: ' + (result ? '已添加' : '已移除') + '</div>';
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="error">类名切换失败: ' + error.message + '</div>';
+            }
+        }
+
+        function setCSS() {
+            try {
+                const container = document.getElementById('styleContainer');
+                DC.Ele.css(container, {
+                    color: 'red',
+                    fontSize: '18px',
+                    padding: '15px'
+                });
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="success">样式设置成功！</div>';
+            } catch (error) {
+                document.getElementById('styleResult').innerHTML =
+                    '<div class="error">样式设置失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 6. 元素操作
+        function appendElement() {
+            try {
+                const container = document.getElementById('elementContainer');
+                const newElement = DC.Ele.createElementByTag('div', {
+                    className: 'test-element',
+                    style: {
+                        backgroundColor: '#ff9800',
+                        marginLeft: '20px'
+                    }
+                });
+                newElement.textContent = '新元素';
+                DC.Ele.append(container, newElement);
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="success">元素添加成功！</div>';
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素添加失败: ' + error.message + '</div>';
+            }
+        }
+
+        function prependElement() {
+            try {
+                const container = document.getElementById('elementContainer');
+                const newElement = DC.Ele.createElementByTag('div', {
+                    className: 'test-element',
+                    style: {
+                        backgroundColor: '#9c27b0',
+                        marginLeft: '20px'
+                    }
+                });
+                newElement.textContent = '前置元素';
+                DC.Ele.prepend(container, newElement);
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="success">元素前置成功！</div>';
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素前置失败: ' + error.message + '</div>';
+            }
+        }
+
+        function insertBeforeElement() {
+            try {
+                const container = document.getElementById('elementContainer');
+                const referenceElement = document.getElementById('referenceElement');
+                const newElement = DC.Ele.createElementByTag('div', {
+                    className: 'test-element',
+                    style: {
+                        backgroundColor: '#00bcd4',
+                        marginLeft: '20px'
+                    }
+                });
+                newElement.textContent = '前面元素';
+                DC.Ele.insertBefore(newElement, referenceElement);
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="success">元素插入前面成功！</div>';
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素插入失败: ' + error.message + '</div>';
+            }
+        }
+
+        function insertAfterElement() {
+            try {
+                const referenceElement = document.getElementById('referenceElement');
+                const newElement = DC.Ele.createElementByTag('div', {
+                    className: 'test-element',
+                    style: {
+                        backgroundColor: '#4caf50',
+                        marginLeft: '20px'
+                    }
+                });
+                newElement.textContent = '后面元素';
+                DC.Ele.insertAfter(newElement, referenceElement);
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="success">元素插入后面成功！</div>';
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素插入失败: ' + error.message + '</div>';
+            }
+        }
+
+        function removeElement() {
+            try {
+                const container = document.getElementById('elementContainer');
+                if (container.lastChild && container.lastChild !== document.getElementById('referenceElement')) {
+                    DC.Ele.remove(container.lastChild);
+                    document.getElementById('elementResult').innerHTML =
+                        '<div class="success">元素移除成功！</div>';
+                } else {
+                    document.getElementById('elementResult').innerHTML =
+                        '<div class="info">没有可移除的元素！</div>';
+                }
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素移除失败: ' + error.message + '</div>';
+            }
+        }
+
+        function emptyElement() {
+            try {
+                const container = document.getElementById('elementContainer');
+                DC.Ele.empty(container);
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="success">元素清空成功！</div>';
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素清空失败: ' + error.message + '</div>';
+            }
+        }
+
+        function cloneElement() {
+            try {
+                const referenceElement = document.getElementById('referenceElement');
+                if (referenceElement) {
+                    const clonedElement = DC.Ele.clone(referenceElement);
+                    clonedElement.textContent = '克隆元素';
+                    clonedElement.style.backgroundColor = '#ff5722';
+                    clonedElement.style.marginLeft = '20px';
+                    const container = document.getElementById('elementContainer');
+                    DC.Ele.append(container, clonedElement);
+                    document.getElementById('elementResult').innerHTML =
+                        '<div class="success">元素克隆成功！</div>';
+                } else {
+                    document.getElementById('elementResult').innerHTML =
+                        '<div class="info">没有可克隆的元素！</div>';
+                }
+            } catch (error) {
+                document.getElementById('elementResult').innerHTML =
+                    '<div class="error">元素克隆失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 7. 辅助方法
+        function checkVisibility() {
+            try {
+                const container = document.getElementById('helperContainer');
+                const isVisible = DC.Ele.isVisible(container);
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="success">可见性检查成功！</div>' +
+                    '<div>元素可见: ' + (isVisible ? '是' : '否') + '</div>';
+            } catch (error) {
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="error">可见性检查失败: ' + error.message + '</div>';
+            }
+        }
+
+        function setVisibility() {
+            try {
+                const container = document.getElementById('helperContainer');
+                const currentDisplay = container.style.display;
+                const newVisibility = currentDisplay === 'none';
+                DC.Ele.setVisible(container, newVisibility);
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="success">可见性设置成功！</div>' +
+                    '<div>元素状态: ' + (newVisibility ? '可见' : '隐藏') + '</div>';
+            } catch (error) {
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="error">可见性设置失败: ' + error.message + '</div>';
+            }
+        }
+
+        function getBoundingRect() {
+            try {
+                const container = document.getElementById('helperContainer');
+                const rect = DC.Ele.getBoundingRect(container);
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="success">位置和尺寸获取成功！</div>' +
+                    '<div>宽度: ' + rect.width + 'px</div>' +
+                    '<div>高度: ' + rect.height + 'px</div>' +
+                    '<div>顶部: ' + rect.top + 'px</div>' +
+                    '<div>左侧: ' + rect.left + 'px</div>';
+            } catch (error) {
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="error">位置和尺寸获取失败: ' + error.message + '</div>';
+            }
+        }
+
+        function checkContains() {
+            try {
+                const parent = document.getElementById('helperContainer');
+                const child = document.getElementById('childElement');
+                const contains = DC.Ele.elementContains(parent, child);
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="success">包含关系检查成功！</div>' +
+                    '<div>父元素包含子元素: ' + (contains ? '是' : '否') + '</div>';
+            } catch (error) {
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="error">包含关系检查失败: ' + error.message + '</div>';
+            }
+        }
+
+        function addInlineStyle() {
+            try {
+                DC.Ele.addInlineStyleById('helperContainer', 'border: 2px solid red; padding: 20px;');
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="success">内联样式添加成功！</div>';
+            } catch (error) {
+                document.getElementById('helperResult').innerHTML =
+                    '<div class="error">内联样式添加失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 8. 选项卡功能
+        function setupTabSwitching() {
+            try {
+                DC.Ele.setupTabSwitching('.tab-header', '.tab-body');
+                document.getElementById('tabResult').innerHTML =
+                    '<div class="success">选项卡切换功能设置成功！</div>' +
+                    '<div>点击标签页测试切换效果</div>';
+            } catch (error) {
+                document.getElementById('tabResult').innerHTML =
+                    '<div class="error">选项卡切换功能设置失败: ' + error.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>

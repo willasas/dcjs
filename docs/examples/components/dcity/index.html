@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCity 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #40a9ff;
+        }
+        .address-container {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .log {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            padding: 20px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #1890ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCity 示例</h1>
+
+        <!-- 示例 1: 基本使用 -->
+        <div class="example-section">
+            <h2>示例 1: 基本使用</h2>
+            <p>使用默认配置创建省市区选择器，选择后会在下方显示选择结果。</p>
+            <div class="address-container" id="basic-address"></div>
+            <div class="result" id="basic-result">
+                <p>选择结果: <span id="basic-address-text"></span></p>
+            </div>
+            <div class="log" id="basic-log"></div>
+        </div>
+
+        <!-- 示例 2: 获取完整地址信息 -->
+        <div class="example-section">
+            <h2>示例 2: 获取完整地址信息</h2>
+            <p>选择地址后，点击按钮获取完整的地址信息，包括行政区划代码。</p>
+            <div class="address-container" id="full-address"></div>
+            <button onclick="getFullAddress()">获取完整地址信息</button>
+            <div class="result" id="full-result"></div>
+            <div class="log" id="full-log"></div>
+        </div>
+
+        <!-- 示例 3: 预设地址 -->
+        <div class="example-section">
+            <h2>示例 3: 预设地址</h2>
+            <p>页面加载完成后，自动预设一个地址。</p>
+            <div class="address-container" id="preset-address"></div>
+            <div class="result" id="preset-result">
+                <p>预设地址: <span id="preset-address-text"></span></p>
+            </div>
+            <div class="log" id="preset-log"></div>
+        </div>
+    </div>
+
+    <!-- 引入 DCity -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 示例 1: 基本使用
+        let basicCity;
+        function initBasicCity() {
+            const container = document.getElementById('basic-address');
+            const resultText = document.getElementById('basic-address-text');
+            const log = document.getElementById('basic-log');
+
+            try {
+                basicCity = new DC.DCity({
+                    container: '#basic-address',
+                    jsonPath: 'city-data.json', // 注意：需要提供实际的城市数据文件
+                    onChange: (address) => {
+                        log.innerHTML += `[变更] 地址变更: ${JSON.stringify(address)}<br>`;
+
+                        if (address.province) {
+                            let addressStr = address.province;
+                            if (address.city) {
+                                addressStr += ` ${address.city}`;
+                                if (address.area) {
+                                    addressStr += ` ${address.area}`;
+                                }
+                            }
+                            resultText.textContent = addressStr;
+                        } else {
+                            resultText.textContent = '请选择地址';
+                        }
+                    }
+                });
+            } catch (error) {
+                container.innerHTML = `<div class="error">初始化失败: ${error.message}</div>`;
+                log.innerHTML += `[错误] 初始化失败: ${error.message}<br>`;
+            }
+        }
+
+        // 示例 2: 获取完整地址信息
+        let fullCity;
+        function initFullCity() {
+            const container = document.getElementById('full-address');
+            const log = document.getElementById('full-log');
+
+            try {
+                fullCity = new DC.DCity({
+                    container: '#full-address',
+                    jsonPath: 'city-data.json', // 注意：需要提供实际的城市数据文件
+                    onChange: (address) => {
+                        log.innerHTML += `[变更] 地址变更: ${JSON.stringify(address)}<br>`;
+                    }
+                });
+            } catch (error) {
+                container.innerHTML = `<div class="error">初始化失败: ${error.message}</div>`;
+                log.innerHTML += `[错误] 初始化失败: ${error.message}<br>`;
+            }
+        }
+
+        // 示例 3: 预设地址
+        let presetCity;
+        function initPresetCity() {
+            const container = document.getElementById('preset-address');
+            const resultText = document.getElementById('preset-address-text');
+            const log = document.getElementById('preset-log');
+
+            try {
+                presetCity = new DC.DCity({
+                    container: '#preset-address',
+                    jsonPath: 'city-data.json', // 注意：需要提供实际的城市数据文件
+                    onChange: (address) => {
+                        log.innerHTML += `[变更] 地址变更: ${JSON.stringify(address)}<br>`;
+
+                        if (address.province) {
+                            let addressStr = address.province;
+                            if (address.city) {
+                                addressStr += ` ${address.city}`;
+                                if (address.area) {
+                                    addressStr += ` ${address.area}`;
+                                }
+                            }
+                            resultText.textContent = addressStr;
+                        } else {
+                            resultText.textContent = '请选择地址';
+                        }
+                    }
+                });
+
+                // 等待数据加载完成后预设地址
+                presetCity.dataLoaded.then(() => {
+                    setTimeout(() => {
+                        presetCity.setValue({
+                            province: '北京市',
+                            city: '北京市',
+                            area: '东城区'
+                        });
+                        log.innerHTML += `[预设] 已预设地址: 北京市 北京市 东城区<br>`;
+                    }, 1000);
+                });
+            } catch (error) {
+                container.innerHTML = `<div class="error">初始化失败: ${error.message}</div>`;
+                log.innerHTML += `[错误] 初始化失败: ${error.message}<br>`;
+            }
+        }
+
+        // 获取完整地址信息
+        function getFullAddress() {
+            if (fullCity) {
+                const fullResult = document.getElementById('full-result');
+                const log = document.getElementById('full-log');
+
+                try {
+                    const fullAddress = fullCity.getFullAddress();
+                    if (fullAddress) {
+                        fullResult.innerHTML = `
+                            <h3>完整地址信息:</h3>
+                            <p>省份: ${fullAddress.province.name} (${fullAddress.province.code})</p>
+                            ${fullAddress.city ? `<p>城市: ${fullAddress.city.name} (${fullAddress.city.code})</p>` : ''}
+                            ${fullAddress.area ? `<p>区县: ${fullAddress.area.name} (${fullAddress.area.code})</p>` : ''}
+                        `;
+                        log.innerHTML += `[获取] 成功获取完整地址信息<br>`;
+                    } else {
+                        fullResult.innerHTML = '<p>请先选择完整的地址</p>';
+                        log.innerHTML += `[获取] 请先选择完整的地址<br>`;
+                    }
+                } catch (error) {
+                    fullResult.innerHTML = `<p>获取失败: ${error.message}</p>`;
+                    log.innerHTML += `[错误] 获取完整地址信息失败: ${error.message}<br>`;
+                }
+            }
+        }
+
+        // 页面加载完成后初始化所有示例
+        window.onload = function() {
+            initBasicCity();
+            initFullCity();
+            initPresetCity();
+        };
+
+        // 注意：需要创建 city-data.json 文件，包含完整的城市数据
+        // 以下是 city-data.json 的示例结构：
+        /*
+        {
+            "北京市": {
+                "code": "110000",
+                "city": {
+                    "北京市": {
+                        "code": "110100",
+                        "country": {
+                            "东城区": { "code": "110101" },
+                            "西城区": { "code": "110102" },
+                            "朝阳区": { "code": "110105" }
+                        }
+                    }
+                }
+            },
+            "上海市": {
+                "code": "310000",
+                "city": {
+                    "上海市": {
+                        "code": "310100",
+                        "country": {
+                            "黄浦区": { "code": "310101" },
+                            "徐汇区": { "code": "310104" },
+                            "长宁区": { "code": "310105" }
+                        }
+                    }
+                }
+            }
+        }
+        */
+    </script>
+</body>
+</html>

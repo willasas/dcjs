@@ -411,4 +411,4 @@ DCity 会自动创建以下默认样式：
 
 ## 9. 许可证
 
-DCity 组件采用 MIT 许可证，详见 [LICENSE](../../../LICENSE) 文件。
+DCity 组件采用 MIT 许可证，详见 [LICENSE](../../LICENSE.md) 文件。

@@ -139,8 +139,12 @@ class dcValidate {
 }
 
 // 注册到全局DC对象
-if (typeof window !== 'undefined' && window.DC) {
+if (typeof window !== 'undefined') {
+  window.DC = window.DC || {}
   window.DC.Validate = dcValidate
-} else if (typeof module !== 'undefined' && module.exports) {
+}
+
+// CommonJS 模块导出
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = dcValidate
 }

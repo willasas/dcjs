@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dprettylog 工具类示例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 20px;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #444;
+      margin: 25px 0 15px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .example-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .example-section h3 {
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button.warning {
+      background-color: #ff9800;
+    }
+
+    button.warning:hover {
+      background-color: #f57c00;
+    }
+
+    button.error {
+      background-color: #f44336;
+    }
+
+    button.error:hover {
+      background-color: #da190b;
+    }
+
+    button.info {
+      background-color: #2196f3;
+    }
+
+    button.info:hover {
+      background-color: #0b7dda;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .result h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .result pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .table-data {
+      margin-bottom: 15px;
+    }
+
+    .table-row {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .table-row input {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    .image-url {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .console-info {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 4px;
+    }
+
+    .console-info p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>dprettylog 工具类示例</h1>
+
+    <div class="console-info">
+      <h3>使用说明</h3>
+      <p>dprettylog 是一个美化日志输出的工具类，提供了多种日志级别和特殊功能。</p>
+      <p><strong>注意：</strong>所有日志输出都会显示在浏览器控制台中，请打开控制台查看结果。</p>
+      <p>按 F12 或右键选择「检查」打开浏览器开发者工具，切换到「控制台」标签页查看日志输出。</p>
+    </div>
+
+    <!-- 基本日志级别示例 -->
+    <div class="example-section">
+      <h3>1. 基本日志级别</h3>
+
+      <div class="input-group">
+        <label for="log-message">日志消息：</label>
+        <input type="text" id="log-message" value="这是一条测试消息" placeholder="请输入日志消息">
+      </div>
+
+      <button onclick="testInfoLog()" class="info">Info 日志</button>
+      <button onclick="testSuccessLog()">Success 日志</button>
+      <button onclick="testWarningLog()" class="warning">Warning 日志</button>
+      <button onclick="testErrorLog()" class="error">Error 日志</button>
+
+      <div class="result">
+        <h4>结果说明</h4>
+        <p>点击上方按钮后，对应的日志会显示在浏览器控制台中，不同级别的日志会有不同的颜色。</p>
+      </div>
+    </div>
+
+    <!-- 表格日志示例 -->
+    <div class="example-section">
+      <h3>2. 表格日志</h3>
+
+      <div class="input-group">
+        <label>测试数据：</label>
+        <p>点击下方按钮，会在控制台中以表格形式显示测试数据。</p>
+      </div>
+
+      <button onclick="testTableLog()">测试表格日志</button>
+
+      <div class="result">
+        <h4>结果说明</h4>
+        <p>控制台会显示一个格式化的表格，包含姓名、年龄和城市字段。</p>
+      </div>
+    </div>
+
+    <!-- 图片日志示例 -->
+    <div class="example-section">
+      <h3>3. 图片日志</h3>
+
+      <div class="input-group">
+        <label for="image-url">图片 URL：</label>
+        <input type="text" id="image-url" class="image-url" value="https://via.placeholder.com/150" placeholder="请输入图片 URL">
+      </div>
+
+      <button onclick="testPictureLog()">测试图片日志</button>
+
+      <div class="result">
+        <h4>结果说明</h4>
+        <p>点击按钮后，控制台会显示图片的详细信息和预览。</p>
+      </div>
+    </div>
+
+    <!-- 环境信息示例 -->
+    <div class="example-section">
+      <h3>4. 环境信息</h3>
+
+      <div class="input-group">
+        <label>环境检测：</label>
+        <p>点击下方按钮，会在控制台中显示当前浏览器环境信息。</p>
+      </div>
+
+      <button onclick="testEnvironmentLog()">测试环境信息</button>
+
+      <div class="result">
+        <h4>结果说明</h4>
+        <p>控制台会显示当前浏览器名称、版本和用户代理字符串等信息。</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../dist/dc.iife.js"></script>
+  <script>
+    // 确保 DC.PrettyLog 可用
+    const logger = window.DC && window.DC.PrettyLog ? window.DC.PrettyLog : console;
+
+    // 检查 logger 是否有效
+    if (!logger.info) {
+      console.error('DC.PrettyLog 未正确加载，请检查 dist/dc.js 文件');
+    }
+
+    function testInfoLog() {
+      const message = document.getElementById('log-message').value;
+      if (logger.info) {
+        logger.info(message);
+      } else {
+        console.log('Info:', message);
+      }
+    }
+
+    function testSuccessLog() {
+      const message = document.getElementById('log-message').value;
+      if (logger.success) {
+        logger.success(message);
+      } else {
+        console.log('Success:', message);
+      }
+    }
+
+    function testWarningLog() {
+      const message = document.getElementById('log-message').value;
+      if (logger.warning) {
+        logger.warning(message);
+      } else {
+        console.warn('Warning:', message);
+      }
+    }
+
+    function testErrorLog() {
+      const message = document.getElementById('log-message').value;
+      if (logger.error) {
+        logger.error(message);
+      } else {
+        console.error('Error:', message);
+      }
+    }
+
+    function testTableLog() {
+      const testData = [
+        { name: '张三', age: 25, city: '北京' },
+        { name: '李四', age: 30, city: '上海' },
+        { name: '王五', age: 28, city: '广州' }
+      ];
+      if (logger.table) {
+        logger.table(testData);
+      } else {
+        console.table(testData);
+      }
+    }
+
+    function testPictureLog() {
+      const imageUrl = document.getElementById('image-url').value;
+      if (logger.picture) {
+        logger.picture(imageUrl, 0.5); // 0.5 是缩放比例
+      } else {
+        console.log('Picture:', imageUrl);
+      }
+    }
+
+    function testEnvironmentLog() {
+      if (logger.environment) {
+        logger.environment();
+      } else {
+        console.log('Environment info:', navigator.userAgent);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -75,3 +75,6 @@ config.json
 .history
 .cache
 .cursorrules
+
+# Local Netlify folder
+.netlify

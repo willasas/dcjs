@@ -87,6 +87,38 @@ function runTests() {
     return typeof dcString.contains === 'function'
   })
 
+  test('padLeft 方法存在', () => {
+    return typeof dcString.padLeft === 'function'
+  })
+
+  test('padRight 方法存在', () => {
+    return typeof dcString.padRight === 'function'
+  })
+
+  test('removeWhitespace 方法存在', () => {
+    return typeof dcString.removeWhitespace === 'function'
+  })
+
+  test('isEmail 方法存在', () => {
+    return typeof dcString.isEmail === 'function'
+  })
+
+  test('isUrl 方法存在', () => {
+    return typeof dcString.isUrl === 'function'
+  })
+
+  test('isPhone 方法存在', () => {
+    return typeof dcString.isPhone === 'function'
+  })
+
+  test('isNumber 方法存在', () => {
+    return typeof dcString.isNumber === 'function'
+  })
+
+  test('countOccurrences 方法存在', () => {
+    return typeof dcString.countOccurrences === 'function'
+  })
+
   // 字符串转换测试
   console.log('\n=== 字符串转换测试 ===')
 
@@ -145,6 +177,18 @@ function runTests() {
     return dcString.unescapeHtml('&lt;script&gt;') === '<script>'
   })
 
+  test('padLeft("hello", 10) 应该返回 "     hello"', () => {
+    return dcString.padLeft('hello', 10) === '     hello'
+  })
+
+  test('padRight("hello", 10) 应该返回 "hello     "', () => {
+    return dcString.padRight('hello', 10) === 'hello     '
+  })
+
+  test('removeWhitespace("hello world") 应该返回 "helloworld"', () => {
+    return dcString.removeWhitespace('hello world') === 'helloworld'
+  })
+
   // 字符串验证测试
   console.log('\n=== 字符串验证测试 ===')
 
@@ -174,6 +218,62 @@ function runTests() {
 
   test('template("Hello ${name}, ${greeting}", {name: "World", greeting: "Good morning"}) 应该返回 "Hello World, Good morning"', () => {
     return dcString.template('Hello ${name}, ${greeting}', { name: 'World', greeting: 'Good morning' }) === 'Hello World, Good morning'
+  })
+
+  test('isEmail("test@example.com") 应该返回 true', () => {
+    return dcString.isEmail('test@example.com') === true
+  })
+
+  test('isEmail("test") 应该返回 false', () => {
+    return dcString.isEmail('test') === false
+  })
+
+  test('isUrl("https://example.com") 应该返回 true', () => {
+    return dcString.isUrl('https://example.com') === true
+  })
+
+  test('isUrl("example.com") 应该返回 true', () => {
+    return dcString.isUrl('example.com') === true
+  })
+
+  test('isUrl("test") 应该返回 false', () => {
+    return dcString.isUrl('test') === false
+  })
+
+  test('isPhone("1234567890") 应该返回 true', () => {
+    return dcString.isPhone('1234567890') === true
+  })
+
+  test('isPhone("+1 123-456-7890") 应该返回 true', () => {
+    return dcString.isPhone('+1 123-456-7890') === true
+  })
+
+  test('isPhone("123") 应该返回 false', () => {
+    return dcString.isPhone('123') === false
+  })
+
+  test('isNumber("123") 应该返回 true', () => {
+    return dcString.isNumber('123') === true
+  })
+
+  test('isNumber("123.45") 应该返回 true', () => {
+    return dcString.isNumber('123.45') === true
+  })
+
+  test('isNumber("test") 应该返回 false', () => {
+    return dcString.isNumber('test') === false
+  })
+
+  test('countOccurrences("hello world", "l") 应该返回 3', () => {
+    return dcString.countOccurrences('hello world', 'l') === 3
+  })
+
+  test('countOccurrences("hello world", "world") 应该返回 1', () => {
+    return dcString.countOccurrences('hello world', 'world') === 1
+  })
+
+  test('countOccurrences("hello world", "test") 应该返回 0', () => {
+    return dcString.countOccurrences('hello world', 'test') === 0
   })
 
   // 字符串工具测试

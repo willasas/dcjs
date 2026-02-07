@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcSearch 示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin: 25px 0 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin: 15px 0 10px;
+            font-size: 16px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .search-section {
+            margin-top: 20px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button.create-index-btn {
+            background-color: #27ae60;
+        }
+        
+        button.create-index-btn:hover {
+            background-color: #229954;
+        }
+        
+        button.get-info-btn {
+            background-color: #f39c12;
+        }
+        
+        button.get-info-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        button.clear-btn {
+            background-color: #e74c3c;
+        }
+        
+        button.clear-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .data-section {
+            margin-bottom: 20px;
+        }
+        
+        .data-section pre {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+        
+        .results-section {
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .result-item h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .result-item p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .suggestions-list {
+            list-style-type: none;
+            margin-top: 10px;
+        }
+        
+        .suggestions-list li {
+            padding: 8px 12px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .suggestions-list li:hover {
+            background-color: #bbdefb;
+        }
+        
+        .info-box {
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .info-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .success-message {
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcSearch 搜索工具示例</h1>
+        
+        <div class="section">
+            <h2>1. 示例数据</h2>
+            <div class="data-section">
+                <p>以下是将被索引的示例数据：</p>
+                <pre id="sampleData"></pre>
+                <button class="create-index-btn" onclick="createIndex()">创建搜索索引</button>
+                <button class="get-info-btn" onclick="getIndexInfo()">获取索引信息</button>
+                <div id="indexInfo"></div>
+            </div>
+        </div>
+        
+        <div class="section search-section">
+            <h2>2. 搜索功能</h2>
+            <div>
+                <input type="text" id="searchQuery" placeholder="输入搜索关键词..." oninput="getSuggestions()">
+                <button onclick="performSearch()">执行搜索</button>
+                <button class="clear-btn" onclick="clearResults()">清空结果</button>
+            </div>
+            <div class="suggestions-section">
+                <h3>搜索建议：</h3>
+                <ul class="suggestions-list" id="suggestionsList"></ul>
+            </div>
+            <div class="results-section" id="searchResults"></div>
+        </div>
+    </div>
+    
+    <script src="../../../../src/utils/dcSearch.js"></script>
+    <script>
+        // 初始化 Search
+        const search = new DC.Search();
+        
+        // 示例数据
+        const sampleData = [
+            {
+                id: 1,
+                title: 'JavaScript 基础教程',
+                content: '这是一本关于 JavaScript 基础知识的教程，涵盖变量、函数、对象、数组等核心概念。',
+                description: 'JavaScript 入门指南'
+            },
+            {
+                id: 2,
+                title: 'Python 进阶指南',
+                content: 'Python 高级特性和最佳实践，包括装饰器、生成器、上下文管理器等。',
+                description: 'Python 高级编程技巧'
+            },
+            {
+                id: 3,
+                title: 'React 组件开发',
+                content: 'React 组件设计和开发技巧，包括状态管理、生命周期、Hooks 等。',
+                description: 'React 前端开发'
+            },
+            {
+                id: 4,
+                title: 'Node.js 后端开发',
+                content: '使用 Node.js 构建高性能后端服务，包括 Express 框架、MongoDB 数据库等。',
+                description: 'Node.js 服务端编程'
+            },
+            {
+                id: 5,
+                title: 'CSS 布局技巧',
+                content: '现代 CSS 布局技术，包括 Flexbox、Grid、响应式设计等。',
+                description: 'CSS 前端样式'
+            },
+            {
+                id: 6,
+                title: '数据结构与算法',
+                content: '计算机科学中的基础数据结构和算法，包括链表、树、图、排序算法等。',
+                description: '计算机科学基础'
+            }
+        ];
+        
+        // 显示示例数据
+        document.getElementById('sampleData').textContent = JSON.stringify(sampleData, null, 2);
+        
+        function createIndex() {
+            // 创建搜索索引
+            search.createIndex('documents', sampleData, {
+                fields: ['title', 'content', 'description']
+            });
+            
+            // 显示成功消息
+            const message = document.createElement('div');
+            message.className = 'success-message';
+            message.textContent = '搜索索引创建成功！';
+            
+            const indexInfoDiv = document.getElementById('indexInfo');
+            indexInfoDiv.innerHTML = '';
+            indexInfoDiv.appendChild(message);
+        }
+        
+        function getIndexInfo() {
+            // 获取索引信息
+            const info = search.getIndexInfo('documents');
+            
+            // 显示索引信息
+            const indexInfoDiv = document.getElementById('indexInfo');
+            indexInfoDiv.innerHTML = `
+                <div class="info-box">
+                    <h4>索引信息：</h4>
+                    <p><strong>索引名称：</strong>${info.name}</p>
+                    <p><strong>项目数量：</strong>${info.itemCount}</p>
+                    <p><strong>索引字段：</strong>${info.fields.join(', ')}</p>
+                    <p><strong>分词数量：</strong>${info.tokenCount}</p>
+                </div>
+            `;
+        }
+        
+        function getSuggestions() {
+            const query = document.getElementById('searchQuery').value;
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            if (!query.trim()) {
+                suggestionsList.innerHTML = '';
+                return;
+            }
+            
+            // 获取搜索建议
+            const suggestions = search.getSuggestions('documents', query);
+            
+            // 显示搜索建议
+            suggestionsList.innerHTML = suggestions.map(suggestion => 
+                `<li onclick="selectSuggestion('${suggestion}')">${suggestion}</li>`
+            ).join('');
+        }
+        
+        function selectSuggestion(suggestion) {
+            document.getElementById('searchQuery').value = suggestion;
+            document.getElementById('suggestionsList').innerHTML = '';
+            performSearch();
+        }
+        
+        function performSearch() {
+            const query = document.getElementById('searchQuery').value;
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!query.trim()) {
+                alert('请输入搜索关键词');
+                return;
+            }
+            
+            // 执行搜索
+            const results = search.search('documents', query, {
+                limit: 10
+            });
+            
+            // 显示搜索结果
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p>没有找到匹配的结果</p>';
+                return;
+            }
+            
+            resultsDiv.innerHTML = results.map(result => `
+                <div class="result-item">
+                    <h4>${result.title}</h4>
+                    <p><strong>内容：</strong>${result.content}</p>
+                    <p><strong>描述：</strong>${result.description}</p>
+                </div>
+            `).join('');
+        }
+        
+        function clearResults() {
+            document.getElementById('searchQuery').value = '';
+            document.getElementById('suggestionsList').innerHTML = '';
+            document.getElementById('searchResults').innerHTML = '';
+        }
+        
+        // 页面加载完成后自动创建索引
+        window.onload = function() {
+            createIndex();
+        };
+    </script>
+</body>
+</html>

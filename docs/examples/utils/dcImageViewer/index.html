@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCImageViewer 示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        h2 {
+            margin: 30px 0 20px;
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .example {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .example p {
+            margin-bottom: 15px;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .single-image {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .single-image img {
+            max-width: 400px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .features {
+            margin: 20px 0;
+        }
+
+        .features ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .features li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCImageViewer 示例</h1>
+
+        <div class="example">
+            <h2>基本介绍</h2>
+            <p>DCImageViewer 是一个功能强大的图片预览工具类，类似于 viewerjs，支持以下功能：</p>
+            <div class="features">
+                <ul>
+                    <li>图片预览和画廊功能</li>
+                    <li>图片放大、缩小功能</li>
+                    <li>图片旋转（左/右）</li>
+                    <li>图片水平和垂直翻转</li>
+                    <li>图片下载功能</li>
+                    <li>键盘快捷键支持</li>
+                    <li>响应式设计</li>
+                    <li>自定义配置选项</li>
+                    <li>平滑动画效果</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>示例 1: 单张图片预览</h2>
+            <p>点击下方图片查看预览效果：</p>
+            <div class="single-image" id="single-image-container">
+                <img src="https://picsum.photos/800/600?random=1" alt="示例图片 1" title="美丽的风景">
+            </div>
+            <div class="code-block">
+// 单张图片预览
+const singleViewer = new DC.ImageViewer({
+    container: '#single-image-container'
+});
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>示例 2: 多图片画廊</h2>
+            <p>点击下方任意图片查看画廊效果：</p>
+            <div class="image-container" id="gallery-container">
+                <img src="https://picsum.photos/800/600?random=1" alt="示例图片 1" title="风景 1">
+                <img src="https://picsum.photos/800/600?random=2" alt="示例图片 2" title="风景 2">
+                <img src="https://picsum.photos/800/600?random=3" alt="示例图片 3" title="风景 3">
+                <img src="https://picsum.photos/800/600?random=4" alt="示例图片 4" title="风景 4">
+                <img src="https://picsum.photos/800/600?random=5" alt="示例图片 5" title="风景 5">
+                <img src="https://picsum.photos/800/600?random=6" alt="示例图片 6" title="风景 6">
+            </div>
+            <div class="code-block">
+// 多图片画廊
+const galleryViewer = new DC.ImageViewer({
+    container: '#gallery-container',
+    navbar: true,
+    toolbar: true,
+    title: true
+});
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>示例 3: 自定义配置</h2>
+            <p>带有自定义配置的图片预览：</p>
+            <div class="single-image" id="custom-container">
+                <img src="https://picsum.photos/800/600?random=7" alt="自定义配置示例" title="自定义配置效果">
+            </div>
+            <div class="code-block">
+// 自定义配置
+const customViewer = new DC.ImageViewer({
+    container: '#custom-container',
+    modal: true,
+    backdrop: 'static', // 点击背景不关闭
+    keyboard: true,
+    initialZoomRatio: 1,
+    minZoomRatio: 0.1,
+    maxZoomRatio: 5,
+    navbar: false, // 隐藏导航栏
+    toolbar: true,
+    title: true,
+    button: true,
+    animated: true,
+    // 回调函数
+    viewed: function() {
+        console.log('图片已查看');
+    },
+    shown: function() {
+        console.log('查看器已显示');
+    },
+    hidden: function() {
+        console.log('查看器已隐藏');
+    },
+    rotated: function() {
+        console.log('图片已旋转');
+    },
+    zoomed: function() {
+        console.log('图片已缩放');
+    }
+});
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>键盘快捷键</h2>
+            <div class="code-block">
+Esc: 关闭查看器
+Arrow Left: 上一张图片
+Arrow Right: 下一张图片
++ 或 =: 放大图片
+-: 缩小图片
+0: 重置图片
+r: 向右旋转
+l: 向左旋转
+f: 水平翻转
+            </div>
+        </div>
+
+        <div class="example">
+            <h2>API 方法</h2>
+            <div class="code-block">
+// 打开查看器
+viewer.open(index); // index 为图片索引
+
+// 关闭查看器
+viewer.close();
+
+// 放大图片
+viewer.zoomIn();
+
+// 缩小图片
+viewer.zoomOut();
+
+// 向左旋转
+viewer.rotateLeft();
+
+// 向右旋转
+viewer.rotateRight();
+
+// 水平翻转
+viewer.flipHorizontal();
+
+// 垂直翻转
+viewer.flipVertical();
+
+// 重置
+viewer.reset();
+
+// 下载图片
+viewer.download();
+
+// 销毁查看器
+viewer.destroy();
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 DCImageViewer -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 示例 1: 单张图片预览
+        const singleViewer = new DC.ImageViewer({
+            container: '#single-image-container'
+        });
+
+        // 示例 2: 多图片画廊
+        const galleryViewer = new DC.ImageViewer({
+            container: '#gallery-container',
+            navbar: true,
+            toolbar: true,
+            title: true
+        });
+
+        // 示例 3: 自定义配置
+        const customViewer = new DC.ImageViewer({
+            container: '#custom-container',
+            modal: true,
+            backdrop: 'static', // 点击背景不关闭
+            keyboard: true,
+            initialZoomRatio: 1,
+            minZoomRatio: 0.1,
+            maxZoomRatio: 5,
+            navbar: false, // 隐藏导航栏
+            toolbar: true,
+            title: true,
+            button: true,
+            animated: true,
+            // 回调函数
+            viewed: function() {
+                console.log('图片已查看');
+            },
+            shown: function() {
+                console.log('查看器已显示');
+            },
+            hidden: function() {
+                console.log('查看器已隐藏');
+            },
+            rotated: function() {
+                console.log('图片已旋转');
+            },
+            zoomed: function() {
+                console.log('图片已缩放');
+            }
+        });
+    </script>
+</body>
+</html>

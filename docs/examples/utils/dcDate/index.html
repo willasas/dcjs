@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcDate 工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .example {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        select {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcDate 工具类示例</h1>
+
+        <div class="section">
+            <h2>1. 日期格式化</h2>
+            <div class="example">
+                <label>选择日期: <input type="date" id="formatDateInput"></label>
+                <label>格式: <input type="text" id="formatInput" value="YYYY-MM-DD HH:mm:ss"></label>
+                <button onclick="formatDate()">格式化</button>
+                <div class="result" id="formatResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. 日期解析</h2>
+            <div class="example">
+                <label>日期字符串: <input type="text" id="parseInput" value="2024-01-01"></label>
+                <button onclick="parseDate()">解析</button>
+                <div class="result" id="parseResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. 相对时间</h2>
+            <div class="example">
+                <label>时间差(分钟): <input type="number" id="relativeInput" value="5"></label>
+                <button onclick="getRelativeTime()">获取相对时间</button>
+                <div class="result" id="relativeResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. 日期范围</h2>
+            <div class="example">
+                <label>范围类型:
+                    <select id="rangeType">
+                        <option value="today">今天</option>
+                        <option value="thisweek">本周</option>
+                        <option value="thismonth">本月</option>
+                        <option value="thisyear">本年</option>
+                    </select>
+                </label>
+                <button onclick="getDateRange()">获取范围</button>
+                <div class="result" id="rangeResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. 日期计算</h2>
+            <div class="example">
+                <label>基础日期: <input type="date" id="addDateInput"></label>
+                <label>数量: <input type="number" id="addAmount" value="1"></label>
+                <label>单位:
+                    <select id="addUnit">
+                        <option value="years">年</option>
+                        <option value="months">月</option>
+                        <option value="days">日</option>
+                        <option value="hours">时</option>
+                        <option value="minutes">分</option>
+                        <option value="seconds">秒</option>
+                    </select>
+                </label>
+                <button onclick="addDate()">计算</button>
+                <div class="result" id="addResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. 日期差异</h2>
+            <div class="example">
+                <label>开始日期: <input type="date" id="diffStartInput"></label>
+                <label>结束日期: <input type="date" id="diffEndInput"></label>
+                <label>单位:
+                    <select id="diffUnit">
+                        <option value="days">日</option>
+                        <option value="hours">时</option>
+                        <option value="minutes">分</option>
+                        <option value="seconds">秒</option>
+                    </select>
+                </label>
+                <button onclick="diffDate()">计算差异</button>
+                <div class="result" id="diffResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. 闰年检测</h2>
+            <div class="example">
+                <label>年份: <input type="number" id="leapYearInput" value="2024"></label>
+                <button onclick="checkLeapYear()">检测</button>
+                <div class="result" id="leapYearResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. 月份天数</h2>
+            <div class="example">
+                <label>年份: <input type="number" id="daysYearInput" value="2024"></label>
+                <label>月份: <input type="number" id="daysMonthInput" value="2" min="1" max="12"></label>
+                <button onclick="getDaysInMonth()">获取天数</button>
+                <div class="result" id="daysResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>9. 周数计算</h2>
+            <div class="example">
+                <label>日期: <input type="date" id="weekDateInput"></label>
+                <button onclick="getWeekOfYear()">计算周数</button>
+                <div class="result" id="weekResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>10. 日期之间的所有日期</h2>
+            <div class="example">
+                <label>开始日期: <input type="date" id="betweenStartInput"></label>
+                <label>结束日期: <input type="date" id="betweenEndInput"></label>
+                <button onclick="getDatesBetween()">获取日期列表</button>
+                <div class="result" id="betweenResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>11. 季度计算</h2>
+            <div class="example">
+                <label>日期: <input type="date" id="quarterDateInput"></label>
+                <button onclick="getQuarter()">计算季度</button>
+                <div class="result" id="quarterResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>12. 日期选择器</h2>
+            <div class="example">
+                <div id="datePickerContainer"></div>
+                <button onclick="getDatePickerValue()">获取值</button>
+                <button onclick="setDatePickerValue()">设置值</button>
+                <div class="result" id="datePickerResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../dist/dc.iife.js"></script>
+    <script>
+        // 初始化日期输入为今天
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('formatDateInput').value = today;
+        document.getElementById('addDateInput').value = today;
+        document.getElementById('diffStartInput').value = today;
+        document.getElementById('diffEndInput').value = today;
+        document.getElementById('weekDateInput').value = today;
+        document.getElementById('betweenStartInput').value = today;
+        document.getElementById('betweenEndInput').value = today;
+        document.getElementById('quarterDateInput').value = today;
+
+        // 1. 日期格式化
+        function formatDate() {
+            const dateStr = document.getElementById('formatDateInput').value;
+            const format = document.getElementById('formatInput').value;
+            const date = new Date(dateStr);
+            const result = dcDate.format(date, format);
+            document.getElementById('formatResult').textContent = result;
+        }
+
+        // 2. 日期解析
+        function parseDate() {
+            const input = document.getElementById('parseInput').value;
+            const result = dcDate.parseDate(input);
+            document.getElementById('parseResult').textContent = result ? result.toString() : '无效日期';
+        }
+
+        // 3. 相对时间
+        function getRelativeTime() {
+            const minutes = parseInt(document.getElementById('relativeInput').value);
+            const date = new Date(Date.now() - minutes * 60 * 1000);
+            const result = dcDate.getRelativeTime(date);
+            document.getElementById('relativeResult').textContent = result;
+        }
+
+        // 4. 日期范围
+        function getDateRange() {
+            const type = document.getElementById('rangeType').value;
+            const [start, end] = dcDate.getDateRange(type);
+            const result = `开始: ${dcDate.format(start, 'YYYY-MM-DD HH:mm:ss')}\n结束: ${dcDate.format(end, 'YYYY-MM-DD HH:mm:ss')}`;
+            document.getElementById('rangeResult').textContent = result;
+        }
+
+        // 5. 日期计算
+        function addDate() {
+            const dateStr = document.getElementById('addDateInput').value;
+            const amount = parseInt(document.getElementById('addAmount').value);
+            const unit = document.getElementById('addUnit').value;
+            const date = new Date(dateStr);
+            const result = dcDate.add(date, amount, unit);
+            document.getElementById('addResult').textContent = dcDate.format(result, 'YYYY-MM-DD HH:mm:ss');
+        }
+
+        // 6. 日期差异
+        function diffDate() {
+            const startStr = document.getElementById('diffStartInput').value;
+            const endStr = document.getElementById('diffEndInput').value;
+            const unit = document.getElementById('diffUnit').value;
+            const start = new Date(startStr);
+            const end = new Date(endStr);
+            const result = dcDate.diff(start, end, unit);
+            document.getElementById('diffResult').textContent = `${result} ${unit === 'days' ? '天' : unit === 'hours' ? '小时' : unit === 'minutes' ? '分钟' : '秒'}`;
+        }
+
+        // 7. 闰年检测
+        function checkLeapYear() {
+            const year = parseInt(document.getElementById('leapYearInput').value);
+            const result = dcDate.isLeapYear(year);
+            document.getElementById('leapYearResult').textContent = result ? '是闰年' : '不是闰年';
+        }
+
+        // 8. 月份天数
+        function getDaysInMonth() {
+            const year = parseInt(document.getElementById('daysYearInput').value);
+            const month = parseInt(document.getElementById('daysMonthInput').value);
+            const result = dcDate.getDaysInMonth(year, month);
+            document.getElementById('daysResult').textContent = `${year}年${month}月有${result}天`;
+        }
+
+        // 9. 周数计算
+        function getWeekOfYear() {
+            const dateStr = document.getElementById('weekDateInput').value;
+            const date = new Date(dateStr);
+            const result = dcDate.getWeekOfYear(date);
+            document.getElementById('weekResult').textContent = `${dcDate.format(date, 'YYYY-MM-DD')} 是当年的第 ${result} 周`;
+        }
+
+        // 10. 日期之间的所有日期
+        function getDatesBetween() {
+            const startStr = document.getElementById('betweenStartInput').value;
+            const endStr = document.getElementById('betweenEndInput').value;
+            const start = new Date(startStr);
+            const end = new Date(endStr);
+            const result = dcDate.getDatesBetween(start, end);
+            const dates = result.map(date => dcDate.format(date, 'YYYY-MM-DD')).join('\n');
+            document.getElementById('betweenResult').textContent = dates;
+        }
+
+        // 11. 季度计算
+        function getQuarter() {
+            const dateStr = document.getElementById('quarterDateInput').value;
+            const date = new Date(dateStr);
+            const result = dcDate.getQuarter(date);
+            document.getElementById('quarterResult').textContent = `${dcDate.format(date, 'YYYY-MM-DD')} 是第 ${result} 季度`;
+        }
+
+        // 12. 日期选择器
+        let datePicker;
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('datePickerContainer');
+            datePicker = dcDate.createDatePicker(container);
+        });
+
+        function getDatePickerValue() {
+            const value = datePicker.getValue();
+            document.getElementById('datePickerResult').textContent = value ? dcDate.format(value, 'YYYY-MM-DD HH:mm:ss') : '未选择';
+        }
+
+        function setDatePickerValue() {
+            const date = new Date();
+            datePicker.setValue(date);
+            document.getElementById('datePickerResult').textContent = '已设置为当前时间';
+        }
+
+        // 初始化调用
+        formatDate();
+        parseDate();
+        getRelativeTime();
+        getDateRange();
+        addDate();
+        diffDate();
+        checkLeapYear();
+        getDaysInMonth();
+        getWeekOfYear();
+        getDatesBetween();
+        getQuarter();
+    </script>
+</body>
+</html>

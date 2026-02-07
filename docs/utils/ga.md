@@ -1,86 +1,206 @@
-# ga 工具类文档
+# Google Analytics 4 工具使用说明
 
-## 1. 工具类介绍
+## 简介
 
-`ga` 工具类提供了一个简单的函数 `initGoogleAnalytics`，用于初始化 Google Analytics 经典版（ga.js）跟踪代码。该工具类可以帮助开发者快速集成 Google Analytics 到前端项目中，实现网站访问数据的收集和分析。
+`DC.GA` 是一个基于 Google Analytics 4 (gtag.js) 的封装工具类，用于在网页中集成和使用 Google Analytics 4 分析服务。该工具类提供了简洁易用的 API，帮助开发者快速实现网站数据统计和用户行为分析。
 
-**注意：** Google Analytics 经典版（ga.js）已于 2023 年 7 月 1 日停止服务，建议使用 Google Analytics 4（gtag.js）替代。
+## 功能特性
 
-## 2. 安装和引入
+- ✅ 初始化 Google Analytics 4 测量 ID
+- ✅ 发送页面浏览事件
+- ✅ 发送自定义事件
+- ✅ 发送用户参与度事件
+- ✅ 发送转化事件
+- ✅ 动态加载 Google Analytics 4 gtag.js 脚本
+- ✅ 提供完整的 Google Analytics 4 API 封装
+- ✅ 支持 HTTP/HTTPS 协议自动切换
+- ✅ 提供错误处理和日志输出
 
-### 2.1 ES6 模块引入
+## 快速开始
 
-```javascript
-import initGoogleAnalytics from 'path/to/ga.js';
-```
+### 1. 引入工具类
 
-### 2.2 直接引入
+在 HTML 文件中引入 DC 库：
 
 ```html
-<script type="module">
-  import initGoogleAnalytics from 'path/to/ga.js';
-  // 使用 initGoogleAnalytics 函数
-</script>
+<script src="../../../dist/dc.iife.js"></script>
 ```
 
-## 3. API 参考
+### 2. 初始化 Google Analytics 4
 
-### 3.1 initGoogleAnalytics(accountId)
-
-初始化 Google Analytics 跟踪代码。
-
-**参数**：
-- `accountId` (String): Google Analytics 账户 ID，格式为 "UA-XXXXXXXX-X"
-
-**功能**：
-1. 创建并初始化 `_gaq` 全局数组
-2. 设置 Google Analytics 账户 ID
-3. 发送页面浏览事件
-4. 动态加载 Google Analytics 跟踪脚本
-5. 根据当前协议（http/https）选择合适的脚本 URL
-
-## 4. 使用示例
-
-### 4.1 基本使用
+使用您的 Google Analytics 4 测量 ID 初始化：
 
 ```javascript
-// 引入 ga 工具类
-import initGoogleAnalytics from 'path/to/ga.js';
-
-// 初始化 Google Analytics
-// 注意：请替换为您自己的 Google Analytics 账户 ID
-initGoogleAnalytics('UA-12345678-1');
+// 初始化 Google Analytics 4
+// 注意：请替换为您自己的 Google Analytics 4 测量 ID
+DC.GA.init('G-XXXXXXXXXX');
 ```
 
-### 4.2 发送自定义事件
+### 3. 发送页面浏览事件
 
 ```javascript
-// 引入 ga 工具类
-import initGoogleAnalytics from 'path/to/ga.js';
+// 发送页面浏览事件
+DC.GA.trackPageview('/home');
 
-// 初始化 Google Analytics
-initGoogleAnalytics('UA-12345678-1');
+// 带自定义参数的页面浏览事件
+DC.GA.trackPageview('/product/123', {
+  page_title: '产品详情页',
+  user_type: 'registered'
+});
+```
 
+### 4. 发送自定义事件
+
+```javascript
 // 发送自定义事件
-try {
-  if (window._gaq) {
-    // 发送事件：分类、操作、标签
-    window._gaq.push(['_trackEvent', 'Button', 'Click', 'Submit']);
+DC.GA.trackEvent('button_click', {
+  event_category: 'engagement',
+  event_label: 'homepage',
+  value: 1
+});
 
-    // 发送页面浏览：虚拟页面路径
-    window._gaq.push(['_trackPageview', '/virtual-page']);
-
-    // 发送电子商务事件
-    window._gaq.push(['_addTrans', 'order123', 'store', '100.00', '5.00', '10.00', 'City', 'State', 'Country']);
-    window._gaq.push(['_addItem', 'order123', 'sku123', 'Product', 'Category', '50.00', '2']);
-    window._gaq.push(['_trackTrans']);
-  }
-} catch (error) {
-  console.error('发送 Google Analytics 事件失败:', error);
-}
+// 发送表单提交事件
+DC.GA.trackEvent('form_submit', {
+  event_category: 'conversion',
+  event_label: 'contact_form',
+  form_name: '联系表单'
+});
 ```
 
-### 4.3 完整 HTML 示例
+### 5. 发送用户参与度事件
+
+```javascript
+// 发送用户参与度事件
+DC.GA.trackEngagement('scroll', {
+  percent_scrolled: 75
+});
+
+// 发送视频观看事件
+DC.GA.trackEngagement('video_watch', {
+  video_title: '产品介绍视频',
+  percent_watched: 50
+});
+```
+
+### 6. 发送转化事件
+
+```javascript
+// 发送转化事件
+DC.GA.trackConversion('signup', {
+  value: 100,
+  currency: 'CNY'
+});
+
+// 发送购买转化事件
+DC.GA.trackConversion('purchase', {
+  value: 299,
+  currency: 'CNY',
+  product_id: 'P123',
+  quantity: 1
+});
+```
+
+## API 文档
+
+### 1. init(measurementId, options)
+
+初始化 Google Analytics 4。
+
+**参数：**
+- `measurementId`：Google Analytics 4 测量 ID (格式: G-XXXXXXXXXX)
+- `options`：配置选项（可选）
+
+**返回值：**
+- 无
+
+**示例：**
+```javascript
+DC.GA.init('G-XXXXXXXXXX', {
+  debug_mode: true,
+  page_title: '首页'
+});
+```
+
+### 2. trackPageview(pagePath, options)
+
+发送页面浏览事件。
+
+**参数：**
+- `pagePath`：页面路径
+- `options`：配置选项（可选）
+
+**返回值：**
+- 无
+
+**示例：**
+```javascript
+DC.GA.trackPageview('/about', {
+  page_title: '关于我们',
+  user_type: 'guest'
+});
+```
+
+### 3. trackEvent(eventName, eventParams)
+
+发送自定义事件。
+
+**参数：**
+- `eventName`：事件名称
+- `eventParams`：事件参数（可选）
+
+**返回值：**
+- 无
+
+**示例：**
+```javascript
+DC.GA.trackEvent('search', {
+  event_category: 'engagement',
+  event_label: 'site_search',
+  search_term: '产品'
+});
+```
+
+### 4. trackEngagement(engagementType, params)
+
+发送用户参与度事件。
+
+**参数：**
+- `engagementType`：参与度类型
+- `params`：事件参数（可选）
+
+**返回值：**
+- 无
+
+**示例：**
+```javascript
+DC.GA.trackEngagement('time_on_page', {
+  seconds: 300
+});
+```
+
+### 5. trackConversion(conversionName, params)
+
+发送转化事件。
+
+**参数：**
+- `conversionName`：转化名称
+- `params`：事件参数（可选）
+
+**返回值：**
+- 无
+
+**示例：**
+```javascript
+DC.GA.trackConversion('subscription', {
+  value: 50,
+  currency: 'CNY',
+  plan_type: 'premium'
+});
+```
+
+## 完整示例
+
+### 基本用法
 
 ```html
 <!DOCTYPE html>
@@ -88,153 +208,194 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Analytics 示例</title>
+  <title>Google Analytics 4 示例</title>
+  <script src="../../../dist/dc.iife.js"></script>
 </head>
 <body>
-  <h1>网站标题</h1>
-  <p>网站内容</p>
-  <button onclick="trackButtonClick()">点击按钮</button>
+  <h1>Google Analytics 4 集成示例</h1>
 
-  <script type="module">
-    // 引入 ga 工具类
-    import initGoogleAnalytics from 'path/to/ga.js';
+  <button id="clickButton">点击我</button>
+  <button id="convertButton">转化按钮</button>
 
-    // 初始化 Google Analytics
-    initGoogleAnalytics('UA-12345678-1');
+  <script>
+    // 初始化 Google Analytics 4
+    DC.GA.init('G-XXXXXXXXXX');
 
-    // 跟踪按钮点击事件
-    window.trackButtonClick = function() {
-      try {
-        if (window._gaq) {
-          window._gaq.push(['_trackEvent', 'Button', 'Click', 'Demo Button']);
-          alert('事件已发送到 Google Analytics');
-        }
-      } catch (error) {
-        console.error('发送事件失败:', error);
-      }
-    };
+    // 发送页面浏览事件
+    DC.GA.trackPageview('/demo');
+
+    // 点击事件跟踪
+    document.getElementById('clickButton').addEventListener('click', function() {
+      DC.GA.trackEvent('button_click', {
+        event_category: 'engagement',
+        event_label: 'demo_button'
+      });
+    });
+
+    // 转化事件跟踪
+    document.getElementById('convertButton').addEventListener('click', function() {
+      DC.GA.trackConversion('demo_conversion', {
+        value: 100,
+        currency: 'CNY'
+      });
+    });
   </script>
 </body>
 </html>
 ```
 
-## 5. 浏览器兼容性
-
-| 浏览器 | 支持情况 |
-|--------|----------|
-| Chrome | ✅ |
-| Firefox | ✅ |
-| Safari | ✅ |
-| Edge | ✅ |
-| IE 11 | ❌ (不支持 ES6 模块) |
-
-## 6. 注意事项
-
-1. **服务停止**：Google Analytics 经典版（ga.js）已于 2023 年 7 月 1 日停止服务，建议使用 Google Analytics 4（gtag.js）替代。
-
-2. **账户 ID**：使用时请替换为您自己的 Google Analytics 账户 ID，格式为 "UA-XXXXXXXX-X"。
-
-3. **隐私合规**：根据 GDPR 等隐私法规，使用 Google Analytics 前请确保获得用户同意，并提供隐私政策说明。
-
-4. **HTTPS 支持**：工具类会自动根据当前协议选择合适的脚本 URL，支持 HTTPS 和 HTTP。
-
-5. **错误处理**：建议在使用 `_gaq` 数组时添加错误处理，以避免因 Google Analytics 脚本加载失败而导致的页面错误。
-
-6. **ES6 模块**：该工具类使用 ES6 模块语法，不支持 IE 11 等旧浏览器。如需支持旧浏览器，请使用 Babel 等工具进行转译。
-
-## 7. 迁移到 Google Analytics 4
-
-由于 Google Analytics 经典版已停止服务，建议迁移到 Google Analytics 4。以下是 GA4 的初始化代码示例：
-
-### 7.1 GA4 初始化代码
+### 高级用法
 
 ```javascript
-function initGoogleAnalytics4(measurementId) {
-  // 初始化 dataLayer
-  window.dataLayer = window.dataLayer || [];
+// 初始化时设置用户属性
+DC.GA.init('G-XXXXXXXXXX', {
+  user_properties: {
+    membership_level: 'gold',
+    user_age: 25
+  },
+  debug_mode: true
+});
 
-  // 定义 gtag 函数
-  function gtag(){dataLayer.push(arguments);}
+// 发送复杂事件
+DC.GA.trackEvent('product_view', {
+  event_category: 'ecommerce',
+  event_label: 'product_detail',
+  product_id: 'P12345',
+  product_name: '高端智能手机',
+  price: 5999,
+  currency: 'CNY',
+  brand: 'Example Brand',
+  category: 'electronics'
+});
 
-  // 设置时间戳
-  gtag('js', new Date());
+// 跟踪用户滚动深度
+window.addEventListener('scroll', function() {
+  const scrollTop = window.pageYOffset;
+  const docHeight = document.documentElement.scrollHeight;
+  const winHeight = window.innerHeight;
+  const scrollPercent = Math.round((scrollTop / (docHeight - winHeight)) * 100);
 
-  // 配置 GA4 测量 ID
-  gtag('config', measurementId);
+  if (scrollPercent >= 25 && !window.scrolled25) {
+    DC.GA.trackEngagement('scroll', { percent_scrolled: 25 });
+    window.scrolled25 = true;
+  }
 
-  // 动态加载 gtag.js 脚本
-  const script = document.createElement('script');
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-  script.async = true;
+  if (scrollPercent >= 50 && !window.scrolled50) {
+    DC.GA.trackEngagement('scroll', { percent_scrolled: 50 });
+    window.scrolled50 = true;
+  }
 
-  // 插入脚本到文档中
-  const s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(script, s);
+  if (scrollPercent >= 75 && !window.scrolled75) {
+    DC.GA.trackEngagement('scroll', { percent_scrolled: 75 });
+    window.scrolled75 = true;
+  }
+
+  if (scrollPercent >= 90 && !window.scrolled90) {
+    DC.GA.trackEngagement('scroll', { percent_scrolled: 90 });
+    window.scrolled90 = true;
+  }
+});
+```
+
+## 注意事项
+
+1. **测量 ID 获取**：
+   - 登录 Google Analytics 4 管理界面
+   - 创建或选择现有属性
+   - 在 "数据收集" > "数据流" 中获取测量 ID
+   - 测量 ID 格式为 `G-XXXXXXXXXX`
+
+2. **权限设置**：
+   - 确保您的网站域名已在 Google Analytics 4 中添加为允许的来源
+   - 检查浏览器的内容安全策略 (CSP) 设置，确保允许加载 gtag.js 脚本
+
+3. **隐私合规**：
+   - 根据 GDPR、CCPA 等隐私法规，确保在使用前获取用户同意
+   - 提供隐私政策和 Cookie 同意选项
+
+4. **调试模式**：
+   - 在开发环境中，可启用调试模式查看详细日志
+   - 在生产环境中，建议禁用调试模式
+
+5. **性能优化**：
+   - 脚本会异步加载，不会阻塞页面渲染
+   - 事件发送采用队列机制，确保数据可靠传输
+
+## 常见问题
+
+### Q: 为什么事件没有显示在 Google Analytics 4 中？
+
+**A:** 可能的原因：
+- 测量 ID 不正确
+- 网络连接问题
+- 数据处理延迟（Google Analytics 4 可能需要 24-48 小时处理数据）
+- 浏览器广告拦截器阻止了跟踪脚本
+- 事件参数格式不正确
+
+### Q: 如何在单页应用中使用？
+
+**A:** 在路由变更时发送页面浏览事件：
+
+```javascript
+// 路由变更时
+function onRouteChange(newPath) {
+  DC.GA.trackPageview(newPath);
 }
-
-// 使用示例
-initGoogleAnalytics4('G-XXXXXXXXXX');
 ```
 
-### 7.2 GA4 事件发送示例
+### Q: 如何跟踪电子商务事件？
+
+**A:** 使用标准的电子商务事件参数：
 
 ```javascript
-// 发送页面浏览事件
-gtag('config', 'G-XXXXXXXXXX', {
-  'page_path': '/new-page',
-  'page_title': '新页面标题'
+// 跟踪产品点击
+DC.GA.trackEvent('select_item', {
+  items: [{
+    item_id: 'P123',
+    item_name: '产品名称',
+    price: 99.99,
+    quantity: 1
+  }]
 });
 
-// 发送自定义事件
-gtag('event', 'button_click', {
-  'event_category': 'Button',
-  'event_label': 'Submit',
-  'value': 1
-});
-
-// 发送电子商务事件
-gtag('event', 'begin_checkout', {
-  'items': [
-    {
-      'id': 'sku123',
-      'name': 'Product',
-      'category': 'Category',
-      'quantity': 1,
-      'price': '50.00'
-    }
-  ]
+// 跟踪购买
+DC.GA.trackEvent('purchase', {
+  transaction_id: 'T12345',
+  value: 299.99,
+  tax: 29.99,
+  shipping: 10,
+  currency: 'CNY',
+  items: [{
+    item_id: 'P123',
+    item_name: '产品名称',
+    price: 99.99,
+    quantity: 3
+  }]
 });
 ```
 
-## 8. 测试
+## 浏览器兼容性
 
-测试文件位于 `test/utils/ga/ga.test.js`，包含了对 `initGoogleAnalytics` 函数的测试用例。
+- ✅ Chrome 60+
+- ✅ Firefox 55+
+- ✅ Safari 12+
+- ✅ Edge 79+
+- ✅ Opera 47+
 
-### 8.1 运行测试
+## 版本历史
 
-```bash
-# 在项目根目录运行
-npm test
+### v1.0.0
+- 初始版本
+- 基于 Google Analytics 4 (gtag.js) 实现
+- 提供完整的事件跟踪 API
+- 支持所有 Google Analytics 4 标准事件
 
-# 或者直接运行特定测试文件
-node test/utils/ga/ga.test.js
-```
+## 相关资源
 
-## 9. 示例代码
+- [Google Analytics 4 官方文档](https://support.google.com/analytics/answer/10089681)
+- [gtag.js 开发者指南](https://developers.google.com/analytics/devguides/collection/gtagjs)
+- [Google Analytics 4 事件参数参考](https://support.google.com/analytics/answer/9267735)
 
-示例代码位于 `examples/utils/ga/index.html`，提供了一个完整的 Google Analytics 集成示例，包括基本使用、事件发送和迁移到 GA4 的指南。
+## 许可证
 
-### 9.1 打开示例
-
-在浏览器中打开 `examples/utils/ga/index.html` 文件即可查看和测试 Google Analytics 集成示例。
-
-## 10. 总结
-
-`ga` 工具类提供了一个简单的方法来初始化 Google Analytics 经典版跟踪代码，具有以下特点：
-
-1. **简单易用**：只需一行代码即可初始化 Google Analytics
-2. **自动协议检测**：支持 HTTP 和 HTTPS 协议
-3. **事件发送**：可通过 `_gaq` 数组发送各种类型的事件
-4. **ES6 模块**：使用现代 JavaScript 模块语法
-
-**注意**：由于 Google Analytics 经典版已停止服务，建议使用 Google Analytics 4 替代。本工具类仅作为历史代码参考。
+MIT License

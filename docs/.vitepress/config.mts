@@ -1,0 +1,424 @@
+import { defineConfig } from 'vitepress'
+
+// https://vitepress.dev/reference/site-config
+export default defineConfig({
+  title: 'DCJS 工具库',
+  description: 'DC.js 是一个纯前端的常用组件和工具类库，旨在为前端开发提供基础组件和工具类',
+  ignoreDeadLinks: true,
+  markdown: {
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark',
+    },
+    lineNumbers: true,
+  },
+  themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    codeCopy: {
+      buttonText: '复制',
+      copiedText: '已复制',
+      timeout: 2000,
+    },
+    nav: [
+      {
+        text: '首页',
+        link: '/',
+      },
+      {
+        text: '指南',
+        items: [
+          {
+            text: '快速开始',
+            link: '/dcjs库使用说明',
+          },
+          {
+            text: '项目结构',
+            link: '/#项目结构',
+          },
+          {
+            text: '安装和使用',
+            link: '/#安装和使用',
+          },
+          {
+            text: '开发指南',
+            link: '/#开发指南',
+          },
+        ],
+      },
+      {
+        text: '工具类',
+        link: '/utils/',
+        items: [
+          {
+            text: '数组工具',
+            link: '/utils/dcArray',
+          },
+          {
+            text: '浏览器工具',
+            link: '/utils/dcBrowser',
+          },
+          {
+            text: '日期工具',
+            link: '/utils/dcDate',
+          },
+          {
+            text: '存储工具',
+            link: '/utils/dcStorage',
+          },
+          {
+            text: '字符串工具',
+            link: '/utils/dcString',
+          },
+          {
+            text: '验证工具',
+            link: '/utils/dcValidate',
+          },
+          {
+            text: '更多工具',
+            link: '/utils/',
+          },
+        ],
+      },
+      {
+        text: '组件',
+        link: '/components/',
+        items: [
+          {
+            text: '表单组件',
+            items: [
+              {
+                text: '登录组件',
+                link: '/components/signin/signin',
+              },
+              {
+                text: '注册组件',
+                link: '/components/signup/signup',
+              },
+              {
+                text: '密码重置组件',
+                link: '/components/resetpassword/resetpassword',
+              },
+            ],
+          },
+          {
+            text: 'UI组件',
+            items: [
+              {
+                text: '进度条组件',
+                link: '/components/dcprogressbar/dcProgressBar',
+              },
+              {
+                text: '滑块组件',
+                link: '/components/dcslider/dcslider',
+              },
+              {
+                text: '弹窗组件',
+                link: '/components/popup/dcpopup',
+              },
+            ],
+          },
+          {
+            text: '更多组件',
+            link: '/components/',
+          },
+        ],
+      },
+      {
+        text: '资源',
+        items: [
+          {
+            text: '工具类示例',
+            link: '/utils-examples',
+          },
+          {
+            text: '组件示例',
+            link: '/components-examples',
+          },
+        ],
+      },
+    ],
+
+    // 搜索功能
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索',
+            buttonAriaLabel: '搜索',
+          },
+          modal: {
+            noResultsText: '未找到结果',
+            resetButtonTitle: '清除查询',
+            footer: {
+              selectText: '选择',
+              navigateText: '切换',
+              closeText: '关闭',
+            },
+          },
+        },
+      },
+    },
+
+    // 主题切换
+    appearance: {
+      defaultMode: 'light',
+      switchToDarkMode: '🌙',
+      switchToLightMode: '☀️',
+    },
+
+    sidebar: {
+      '/utils-examples': [
+        {
+          text: '工具类示例',
+          items: [
+            {
+              text: '基础工具',
+              items: [
+                { text: 'dcArray', link: '/examples/utils/dcArray/index.html' },
+                { text: 'dcObject', link: '/examples/utils/dcObject/index.html' },
+                { text: 'dcString', link: '/examples/utils/dcString/index.html' },
+                { text: 'dcNumber', link: '/examples/utils/dcNumber/index.html' },
+                { text: 'dcDate', link: '/examples/utils/dcDate/index.html' },
+                { text: 'dcUrl', link: '/examples/utils/dcUrl/index.html' },
+                { text: 'dcFunction', link: '/examples/utils/dcFunction/index.html' },
+                { text: 'dcjson', link: '/examples/utils/dcjson/index.html' },
+              ],
+            },
+            {
+              text: '浏览器相关',
+              items: [
+                { text: 'dcBrowser', link: '/examples/utils/dcBrowser/index.html' },
+                { text: 'dcplatform', link: '/examples/utils/dcplatform/index.html' },
+                { text: 'dcCookie', link: '/examples/utils/dcCookie/index.html' },
+                { text: 'dcStorage', link: '/examples/utils/dcStorage/index.html' },
+                { text: 'dcEle', link: '/examples/utils/dcEle/index.html' },
+                { text: 'dcDynamicLoader', link: '/examples/utils/dcDynamicLoader/index.html' },
+              ],
+            },
+            {
+              text: '网络与媒体',
+              items: [
+                { text: 'dcNetworkChecker', link: '/examples/utils/dcNetworkChecker/index.html' },
+                { text: 'dchttps', link: '/examples/utils/dchttps/index.html' },
+                { text: 'dcMedia', link: '/examples/utils/dcMedia/index.html' },
+                { text: 'dcImageViewer', link: '/examples/utils/dcImageViewer/index.html' },
+                { text: 'dcScreenshot', link: '/examples/utils/dcScreenshot/index.html' },
+              ],
+            },
+            {
+              text: '工具与辅助',
+              items: [
+                { text: 'dcCrypto', link: '/examples/utils/dcCrypto/index.html' },
+                { text: 'dcValidate', link: '/examples/utils/dcValidate/index.html' },
+                { text: 'dcFiles', link: '/examples/utils/dcFiles/index.html' },
+                { text: 'dcStarSign', link: '/examples/utils/dcStarSign/index.html' },
+                { text: 'dcDailyQuote', link: '/examples/utils/dcDailyQuote/index.html' },
+                { text: 'dcContentStats', link: '/examples/utils/dcContentStats/index.html' },
+                { text: 'dcSearch', link: '/examples/utils/dcSearch/index.html' },
+                { text: 'dcTags', link: '/examples/utils/dcTags/index.html' },
+                { text: 'dcwaterfall', link: '/examples/utils/dcwaterfall/index.html' },
+                { text: 'dcinfinitescroller', link: '/examples/utils/dcinfinitescroller/index.html' },
+                { text: 'dcregexp', link: '/examples/utils/dcregexp/index.html' },
+                { text: 'dcpicolor', link: '/examples/utils/dcpicolor/index.html' },
+                { text: 'dprettylog', link: '/examples/utils/dprettylog/index.html' },
+                { text: 'ga', link: '/examples/utils/ga/index.html' },
+                { text: 'dcadapt', link: '/examples/utils/dcadapt/index.html' },
+                { text: 'sampleadapt', link: '/examples/utils/sampleadapt/index.html' },
+                { text: 'dclottery', link: '/examples/utils/dclottery/index.html' },
+                { text: 'dcqrcode', link: '/examples/utils/dcqrcode/index.html' },
+              ],
+            },
+          ],
+        },
+      ],
+      '/components-examples': [
+        {
+          text: '组件示例',
+          items: [
+            {
+              text: '表单组件',
+              items: [
+                { text: 'signin', link: '/examples/components/signin/index.html' },
+                { text: 'signup', link: '/examples/components/signup/index.html' },
+                { text: 'resetpassword', link: '/examples/components/resetpassword/index.html' },
+                { text: 'dcfileupload', link: '/examples/components/dcfileupload/index.html' },
+                { text: 'dcfilter', link: '/examples/components/dcfilter/index.html' },
+                { text: 'dcdateselector', link: '/examples/components/dcdateselector/index.html' },
+              ],
+            },
+            {
+              text: 'UI组件',
+              items: [
+                { text: 'dcProgressBar', link: '/examples/components/dcprogressbar/index.html' },
+                { text: 'dcslider', link: '/examples/components/dcslider/index.html' },
+                { text: 'dcpopup', link: '/examples/components/popup/index.html' },
+                { text: 'dcsearch', link: '/examples/components/dcsearch/index.html' },
+                { text: 'dcsidebar', link: '/examples/components/dcsidebar/index.html' },
+                { text: 'dcsidenav', link: '/examples/components/dcsidenav/index.html' },
+                { text: 'dcvirtualcard', link: '/examples/components/dcvirtualcard/index.html' },
+                { text: 'dcvirtualscroller', link: '/examples/components/dcvirtualscroller/index.html' },
+                { text: 'dcpager', link: '/examples/components/pager/index.html' },
+                { text: 'dcanswer', link: '/examples/components/dcanswer/index.html' },
+                { text: 'dcbottombar', link: '/examples/components/dcbottombar/index.html' },
+                { text: 'dctopbar', link: '/examples/components/dctopbar/index.html' },
+                { text: 'dciconlist', link: '/examples/components/icons/index.html' },
+              ],
+            },
+            {
+              text: '布局组件',
+              items: [
+                { text: 'dcheader', link: '/examples/components/header/index.html' },
+                { text: 'dcfooter', link: '/examples/components/footer/index.html' },
+                { text: 'dcsidebar', link: '/examples/components/dcsidebar/index.html' },
+                { text: 'dcsidenav', link: '/examples/components/dcsidenav/index.html' },
+              ],
+            },
+            {
+              text: '功能组件',
+              items: [
+                { text: 'dcanimator', link: '/examples/components/animate/index.html' },
+                { text: 'article', link: '/examples/components/article/index.html' },
+                { text: 'bgm', link: '/examples/components/bgm/index.html' },
+                { text: 'cookies', link: '/examples/components/cookies/index.html' },
+                { text: 'dcity', link: '/examples/components/dcity/index.html' },
+                { text: 'dclocal', link: '/examples/components/dclocal/index.html' },
+                { text: 'dcolor', link: '/examples/components/dcolor/index.html' },
+                { text: 'dcpartner', link: '/examples/components/dcpartner/index.html' },
+                { text: 'dcpricing', link: '/examples/components/dcpricing/index.html' },
+                { text: 'dcproductivityslider', link: '/examples/components/dcproductivityslider/index.html' },
+                { text: 'dctheme', link: '/examples/components/dctheme/index.html' },
+                { text: 'designby', link: '/examples/components/designby/index.html' },
+                { text: 'dcfollowus', link: '/examples/components/followus/index.html' },
+              ],
+            },
+          ],
+        },
+      ],
+      '/utils/': [
+        {
+          text: '基础工具',
+          items: [
+            { text: 'dcArray', link: '/utils/dcArray' },
+            { text: 'dcObject', link: '/utils/dcObject' },
+            { text: 'dcString', link: '/utils/dcString' },
+            { text: 'dcNumber', link: '/utils/dcNumber' },
+            { text: 'dcDate', link: '/utils/dcDate' },
+            { text: 'dcUrl', link: '/utils/dcUrl' },
+            { text: 'dcFunction', link: '/utils/dcFunction' },
+            { text: 'dcjson', link: '/utils/dcjson' },
+          ],
+        },
+        {
+          text: '浏览器相关',
+          items: [
+            { text: 'dcBrowser', link: '/utils/dcBrowser' },
+            { text: 'dcplatform', link: '/utils/dcplatform' },
+            { text: 'dcCookie', link: '/utils/dcCookie' },
+            { text: 'dcStorage', link: '/utils/dcStorage' },
+            { text: 'dcEle', link: '/utils/dcEle' },
+            { text: 'dcDynamicLoader', link: '/utils/dcDynamicLoader' },
+          ],
+        },
+        {
+          text: '网络与媒体',
+          items: [
+            { text: 'dcNetworkChecker', link: '/utils/dcNetworkChecker' },
+            { text: 'dchttps', link: '/utils/dchttps' },
+            { text: 'dcMedia', link: '/utils/dcMedia' },
+            { text: 'dcImageViewer', link: '/utils/dcImageViewer' },
+            { text: 'dcScreenshot', link: '/utils/dcScreenshot' },
+          ],
+        },
+        {
+          text: '工具与辅助',
+          items: [
+            { text: 'dcCrypto', link: '/utils/dcCrypto' },
+            { text: 'dcValidate', link: '/utils/dcValidate' },
+            { text: 'dcFiles', link: '/utils/dcFiles' },
+            { text: 'dcStarSign', link: '/utils/dcStarSign' },
+            { text: 'dcDailyQuote', link: '/utils/dcDailyQuote' },
+            { text: 'dcContentStats', link: '/utils/dcContentStats' },
+            { text: 'dcSearch', link: '/utils/dcSearch' },
+            { text: 'dcTags', link: '/utils/dcTags' },
+            { text: 'dclottery', link: '/utils/dclottery' },
+            { text: 'dcqrcode', link: '/utils/dcqrcode' },
+            { text: 'dcwaterfall', link: '/utils/dcwaterfall' },
+            { text: 'dcinfinitescroller', link: '/utils/dcinfinitescroller' },
+            { text: 'dcregexp', link: '/utils/dcregexp' },
+            { text: 'dcpicolor', link: '/utils/dcpicolor' },
+            { text: 'dprettylog', link: '/utils/dprettylog' },
+            { text: 'ga', link: '/utils/ga' },
+            { text: 'dcadapt', link: '/utils/dcadapt' },
+            { text: 'sampleadapt', link: '/utils/sampleadapt' },
+          ],
+        },
+      ],
+      '/components/': [
+        {
+          text: '表单组件',
+          items: [
+            { text: 'signin', link: '/components/signin/signin' },
+            { text: 'signup', link: '/components/signup/signup' },
+            { text: 'resetpassword', link: '/components/resetpassword/resetpassword' },
+            { text: 'dcfileupload', link: '/components/dcfileupload/dcfileupload' },
+            { text: 'dcfilter', link: '/components/dcfilter/dcfilter' },
+            { text: 'dcdateselector', link: '/components/dcdateselector/dcdateselector' },
+          ],
+        },
+        {
+          text: 'UI组件',
+          items: [
+            { text: 'dcProgressBar', link: '/components/dcprogressbar/dcProgressBar' },
+            { text: 'dcslider', link: '/components/dcslider/dcslider' },
+            { text: 'dcpopup', link: '/components/popup/dcpopup' },
+            { text: 'dcsearch', link: '/components/dcsearch/dcsearch' },
+            { text: 'dcsidebar', link: '/components/dcsidebar/dcsidebar' },
+            { text: 'dcsidenav', link: '/components/dcsidenav/dcsidenav' },
+            { text: 'dcvirtualcard', link: '/components/dcvirtualcard/dcvirtualcard' },
+            { text: 'dcvirtualscroller', link: '/components/dcvirtualscroller/dcvirtualscroller' },
+            { text: 'dcpager', link: '/components/pager/dcpager' },
+            { text: 'dcanswer', link: '/components/dcanswer/dcanswer' },
+            { text: 'dcbottombar', link: '/components/dcbottombar/dcbottombar' },
+            { text: 'dctopbar', link: '/components/dctopbar/dctopbar' },
+            { text: 'dciconlist', link: '/components/icons/dciconlist' },
+          ],
+        },
+        {
+          text: '布局组件',
+          items: [
+            { text: 'dcheader', link: '/components/header/dcheader' },
+            { text: 'dcfooter', link: '/components/footer/dcfooter' },
+            { text: 'dcsidebar', link: '/components/dcsidebar/dcsidebar' },
+            { text: 'dcsidenav', link: '/components/dcsidenav/dcsidenav' },
+          ],
+        },
+        {
+          text: '功能组件',
+          items: [
+            { text: 'dcanimator', link: '/components/animate/dcanimator' },
+            { text: 'article', link: '/components/article/article' },
+            { text: 'bgm', link: '/components/bgm/bgm' },
+            { text: 'cookies', link: '/components/cookies/cookies' },
+            { text: 'dcity', link: '/components/dcity/dcity' },
+            { text: 'dclocal', link: '/components/dclocal/dclocal' },
+            { text: 'dcolor', link: '/components/dcolor/dcolor' },
+            { text: 'dcpartner', link: '/components/dcpartner/dcpartner' },
+            { text: 'dcpricing', link: '/components/dcpricing/dcpricing' },
+            { text: 'dcproductivityslider', link: '/components/dcproductivityslider/dcproductivityslider' },
+            { text: 'dctheme', link: '/components/dctheme/dctheme' },
+            { text: 'designby', link: '/components/designby/designby' },
+            { text: 'dcfollowus', link: '/components/followus/dcfollowus' },
+          ],
+        },
+      ],
+    },
+
+    socialLinks: [
+      {
+        icon: 'github',
+        link: 'https://github.com/yourusername/dcjs',
+      },
+    ],
+  },
+})

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ga 工具类示例</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .info {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #e3f2fd;
+      border-radius: 4px;
+      line-height: 1.6;
+    }
+
+    .info h2 {
+      color: #1976D2;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .info p {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .info ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .info li {
+      margin-bottom: 5px;
+      color: #666;
+    }
+
+    .code-section {
+      margin-bottom: 30px;
+    }
+
+    .code-section h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.4;
+      border: 1px solid #ddd;
+    }
+
+    .warning {
+      padding: 15px;
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 4px;
+      color: #856404;
+      margin-bottom: 30px;
+    }
+
+    .demo {
+      text-align: center;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ga 工具类示例</h1>
+
+    <div class="info">
+      <h2>工具类介绍</h2>
+      <p>ga 工具类提供了 <code>DC.GA</code> 对象，用于初始化和使用 Google Analytics 4 跟踪代码。</p>
+      <p>主要功能：</p>
+      <ul>
+        <li>初始化 Google Analytics 4 测量 ID</li>
+        <li>发送页面浏览事件</li>
+        <li>发送自定义事件</li>
+        <li>发送用户参与度事件</li>
+        <li>发送转化事件</li>
+        <li>动态加载 Google Analytics 4 gtag.js 脚本</li>
+        <li>提供完整的 Google Analytics 4 API 封装</li>
+      </ul>
+    </div>
+
+    <div class="code-section">
+      <h2>使用示例</h2>
+      <pre>
+// 使用 DC.GA 工具类
+
+// 初始化 Google Analytics 4
+// 注意：请替换为您自己的 Google Analytics 4 测量 ID
+DC.GA.init('G-XXXXXXXXXX');
+
+// 发送页面浏览事件
+DC.GA.trackPageview('/home');
+
+// 发送自定义事件
+DC.GA.trackEvent('button_click', {
+  event_category: 'engagement',
+  event_label: 'homepage',
+  value: 1
+});
+
+// 发送用户参与度事件
+DC.GA.trackEngagement('scroll', {
+  percent_scrolled: 75
+});
+
+// 发送转化事件
+DC.GA.trackConversion('signup', {
+  value: 100,
+  currency: 'CNY'
+});
+      </pre>
+    </div>
+
+    <div class="code-section">
+      <h2>直接引入示例</h2>
+      <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Google Analytics 4 示例&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Google Analytics 4 示例&lt;/h1&gt;
+
+  &lt;script src="path/to/dist/dc.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // 初始化 Google Analytics 4
+    DC.GA.init('G-XXXXXXXXXX');
+
+    // 发送页面浏览事件
+    DC.GA.trackPageview('/home');
+
+    // 发送自定义事件
+    document.getElementById('myButton').addEventListener('click', function() {
+      DC.GA.trackEvent('button_click', {
+        event_category: 'engagement',
+        event_label: 'homepage_button'
+      });
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+      </pre>
+    </div>
+
+    <div class="demo">
+      <h2>演示</h2>
+      <p>点击下方按钮模拟初始化 Google Analytics（仅在控制台输出日志，不会真正加载脚本）</p>
+      <button class="btn" onclick="demoInitGA()">模拟初始化 Google Analytics</button>
+    </div>
+
+    <div class="info">
+      <h2>迁移到 Google Analytics 4</h2>
+      <p>由于 Google Analytics 经典版已停止服务，建议迁移到 Google Analytics 4。以下是 GA4 的初始化代码示例：</p>
+      <pre>
+// Google Analytics 4 初始化代码
+function initGoogleAnalytics4(measurementId) {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', measurementId);
+
+  const script = document.createElement('script');
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+  script.async = true;
+  const s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(script, s);
+}
+
+// 使用示例
+initGoogleAnalytics4('G-XXXXXXXXXX');
+      </pre>
+    </div>
+  </div>
+
+  <script>
+    // 演示函数
+    window.demoInitGA = function() {
+      console.log('模拟初始化 Google Analytics 4...');
+
+      try {
+        // 检查 DC 对象是否可用
+        if (window.DC) {
+          console.log('DC 对象加载成功');
+
+          // 检查 DC.GA 是否可用
+          if (window.DC.GA) {
+            console.log('DC.GA 工具类加载成功');
+
+            // 实际调用 DC.GA.init 方法（使用模拟的测量 ID）
+            console.log('\n调用 DC.GA.init 方法...');
+            window.DC.GA.init('G-XXXXXXXXXX');
+
+            // 显示使用说明
+            console.log('\n使用示例:');
+            console.log('// 初始化 Google Analytics 4');
+            console.log('DC.GA.init(\'G-XXXXXXXXXX\');');
+            console.log('\n// 发送页面浏览事件');
+            console.log('DC.GA.trackPageview(\'/home\');');
+            console.log('\n// 发送自定义事件');
+            console.log('DC.GA.trackEvent(\'button_click\', {');
+            console.log('  event_category: \'engagement\',');
+            console.log('  event_label: \'homepage\'');
+            console.log('});');
+          } else {
+            console.log('DC.GA 工具类未加载，使用模拟实现');
+
+            // 模拟初始化 Google Analytics 4
+            console.log('设置测量 ID: G-XXXXXXXXXX');
+            console.log('初始化配置...');
+            console.log('发送页面浏览事件');
+            console.log('模拟加载 gtag.js 脚本');
+
+            // 显示使用说明
+            console.log('\n使用示例:');
+            console.log('// 初始化 Google Analytics 4');
+            console.log('DC.GA.init(\'G-XXXXXXXXXX\');');
+            console.log('\n// 发送页面浏览事件');
+            console.log('DC.GA.trackPageview(\'/home\');');
+            console.log('\n// 发送自定义事件');
+            console.log('DC.GA.trackEvent(\'button_click\', {');
+            console.log('  event_category: \'engagement\',');
+            console.log('  event_label: \'homepage\'');
+            console.log('});');
+          }
+        } else {
+          console.log('DC 对象未加载，使用模拟实现');
+
+          // 模拟初始化 Google Analytics 4
+          console.log('设置测量 ID: G-XXXXXXXXXX');
+          console.log('初始化配置...');
+          console.log('发送页面浏览事件');
+          console.log('模拟加载 gtag.js 脚本');
+
+          // 显示使用说明
+          console.log('\n使用示例:');
+          console.log('// 初始化 Google Analytics 4');
+          console.log('DC.GA.init(\'G-XXXXXXXXXX\');');
+          console.log('\n// 发送页面浏览事件');
+          console.log('DC.GA.trackPageview(\'/home\');');
+          console.log('\n// 发送自定义事件');
+          console.log('DC.GA.trackEvent(\'button_click\', {');
+          console.log('  event_category: \'engagement\',');
+          console.log('  event_label: \'homepage\'');
+          console.log('});');
+        }
+
+        console.log('\n初始化完成！');
+      } catch (error) {
+        console.error('模拟初始化失败:', error.message);
+      }
+    };
+  </script>
+  <script src="../../../dist/dc.iife.js"></script>
+</body>
+</html>

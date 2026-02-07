@@ -528,7 +528,7 @@ A: 可以添加二维码刷新功能，或显示登录状态提示。
 
 - [Reset Password Component](./../resetpassword/resetpassword.md) - 密码重置组件
 - [Signup Component](./../signup/signup.md) - 注册组件
-- [Popup Component](./../popup/popup.md) - 弹窗组件（用于国家代码选择器）
+- [Popup Component](./../popup/dcpopup.md) - 弹窗组件（用于国家代码选择器）
 
 ## 12. 完整示例
 

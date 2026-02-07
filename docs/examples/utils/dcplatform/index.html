@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCJS - Platform 工具类示例</title>
+  <style>
+    body {
+      font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    h2 {
+      color: #3498db;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    h3 {
+      color: #27ae60;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .example-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      background-color: #fafafa;
+    }
+
+    .code-block {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    .demo-container {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      background-color: white;
+    }
+
+    .result {
+      background-color: #e8f4f8;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+      margin: 5px 0;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    button:active {
+      background-color: #1f618d;
+    }
+
+    .controls {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .info-box {
+      background-color: #e8f4f8;
+      border-left: 4px solid #3498db;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .success-box {
+      background-color: #e8f5e8;
+      border-left: 4px solid #27ae60;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .warning-box {
+      background-color: #fff3e0;
+      border-left: 4px solid #f39c12;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .feature-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 8px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .feature-list li:before {
+      content: '✓';
+      color: #27ae60;
+      position: absolute;
+      left: 0;
+    }
+
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .api-table th, .api-table td {
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .api-table th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+
+    .api-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    .detection-result {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+
+    .detection-result .label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .detection-result .value {
+      color: #3498db;
+    }
+
+    .detection-result.true {
+      background-color: #e8f5e8;
+      border-color: #27ae60;
+    }
+
+    .detection-result.false {
+      background-color: #ffebee;
+      border-color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DCJS - Platform 工具类示例</h1>
+
+    <div class="info-box">
+      <h3>什么是 DCPlatform？</h3>
+      <p>DCPlatform 是一个环境判断工具类，提供了丰富的方法用于检测当前运行环境的各种信息，包括：</p>
+      <ul class="feature-list">
+        <li>设备类型检测（PC、移动设备、平板、TV）</li>
+        <li>操作系统检测（iOS、Android、Windows、Mac、Linux）</li>
+        <li>浏览器类型检测（Chrome、Firefox、Safari、QQ浏览器等）</li>
+        <li>应用环境检测（微信、QQ、微信小程序、支付宝小程序等）</li>
+        <li>全屏模式检测</li>
+        <li>内核检测（WebKit等）</li>
+      </ul>
+    </div>
+
+    <h2>基本用法</h2>
+    <div class="example-section">
+      <h3>示例 1：创建实例</h3>
+      <p>首先，创建 DCPlatform 实例：</p>
+      <div class="code-block">
+// 创建 Platform 实例
+const platform = new DC.Platform();</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="createPlatformInstance()">创建实例并检测环境</button>
+        </div>
+        <div id="platform-instance-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>设备类型检测</h2>
+    <div class="example-section">
+      <h3>示例 2：检测设备类型</h3>
+      <p>使用 DCPlatform 检测当前设备类型：</p>
+      <div class="code-block">
+// 检测设备类型
+const isPC = platform.isPC();
+const isMobile = platform.isMobile();
+const isTablet = platform.isTablet();
+const isTV = platform.isTV();
+
+// 获取设备类型
+const deviceType = platform.getDeviceType(); // 返回 'mobile' | 'tablet' | 'pc' | 'tv'
+
+console.log('Is PC:', isPC);
+console.log('Is Mobile:', isMobile);
+console.log('Is Tablet:', isTablet);
+console.log('Is TV:', isTV);
+console.log('Device Type:', deviceType);</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="detectDeviceType()">检测设备类型</button>
+        </div>
+        <div id="device-type-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>操作系统检测</h2>
+    <div class="example-section">
+      <h3>示例 3：检测操作系统</h3>
+      <p>使用 DCPlatform 检测当前操作系统：</p>
+      <div class="code-block">
+// 检测操作系统
+const isIOS = platform.isIOS();
+const isAndroid = platform.isAndroid();
+const isIPhone = platform.isIPhone();
+const isIPad = platform.isIPad();
+const isIPod = platform.isIPod();
+
+// 获取操作系统
+const os = platform.getOS(); // 返回 'ios' | 'android' | 'windows' | 'mac' | 'linux' | 'unknown'
+
+console.log('Is iOS:', isIOS);
+console.log('Is Android:', isAndroid);
+console.log('Is iPhone:', isIPhone);
+console.log('Is iPad:', isIPad);
+console.log('Is iPod:', isIPod);
+console.log('OS:', os);</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="detectOS()">检测操作系统</button>
+        </div>
+        <div id="os-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>浏览器检测</h2>
+    <div class="example-section">
+      <h3>示例 4：检测浏览器</h3>
+      <p>使用 DCPlatform 检测当前浏览器：</p>
+      <div class="code-block">
+// 检测浏览器
+const isChrome = platform.isChrome();
+const isFirefox = platform.isFirefox();
+const isSafari = platform.isSafari();
+const isQQBrowser = platform.isQQBrowser();
+const isWebkit = platform.isWebkit();
+const isOpera = platform.isOpera();
+const isMozilla = platform.isMozilla();
+
+// 获取浏览器
+const browser = platform.getBrowser(); // 返回浏览器名称或 'unknown'
+
+console.log('Is Chrome:', isChrome);
+console.log('Is Firefox:', isFirefox);
+console.log('Is Safari:', isSafari);
+console.log('Is QQ Browser:', isQQBrowser);
+console.log('Is Webkit:', isWebkit);
+console.log('Browser:', browser);</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="detectBrowser()">检测浏览器</button>
+        </div>
+        <div id="browser-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>应用环境检测</h2>
+    <div class="example-section">
+      <h3>示例 5：检测应用环境</h3>
+      <p>使用 DCPlatform 检测当前应用环境：</p>
+      <div class="code-block">
+// 检测应用环境
+const isWeChat = platform.isWeChat();
+const isQQ = platform.isQQ();
+const isWeChatApp = platform.isWeChatApp();
+const isQQApp = platform.isQQApp();
+const isWeChatMiniProgram = platform.isWeChatMiniProgram();
+const isAlipayMiniProgram = platform.isAlipayMiniProgram();
+const isQQMiniProgram = platform.isQQMiniProgram();
+const isInGame = platform.isInGame();
+
+console.log('Is WeChat:', isWeChat);
+console.log('Is QQ:', isQQ);
+console.log('Is WeChat App:', isWeChatApp);
+console.log('Is QQ App:', isQQApp);
+console.log('Is WeChat Mini Program:', isWeChatMiniProgram);
+console.log('Is Alipay Mini Program:', isAlipayMiniProgram);
+console.log('Is QQ Mini Program:', isQQMiniProgram);
+console.log('Is In Game:', isInGame);</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="detectAppEnvironment()">检测应用环境</button>
+        </div>
+        <div id="app-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>其他检测</h2>
+    <div class="example-section">
+      <h3>示例 6：检测全屏模式</h3>
+      <p>使用 DCPlatform 检测当前是否处于全屏模式：</p>
+      <div class="code-block">
+// 检测全屏模式
+const isFullscreen = platform.isFullscreen();
+console.log('Is Fullscreen:', isFullscreen);</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="detectFullscreen()">检测全屏模式</button>
+          <button onclick="toggleFullscreen()">切换全屏模式</button>
+        </div>
+        <div id="fullscreen-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>综合示例</h2>
+    <div class="example-section">
+      <h3>示例 7：环境信息综合检测</h3>
+      <p>使用 DCPlatform 获取完整的环境信息：</p>
+      <div class="code-block">
+// 获取完整环境信息
+const environmentInfo = {
+  device: {
+    type: platform.getDeviceType(),
+    isPC: platform.isPC(),
+    isMobile: platform.isMobile(),
+    isTablet: platform.isTablet(),
+    isTV: platform.isTV()
+  },
+  os: {
+    name: platform.getOS(),
+    isIOS: platform.isIOS(),
+    isAndroid: platform.isAndroid(),
+    isIPhone: platform.isIPhone(),
+    isIPad: platform.isIPad()
+  },
+  browser: {
+    name: platform.getBrowser(),
+    isChrome: platform.isChrome(),
+    isFirefox: platform.isFirefox(),
+    isSafari: platform.isSafari(),
+    isQQBrowser: platform.isQQBrowser(),
+    isWebkit: platform.isWebkit()
+  },
+  app: {
+    isWeChat: platform.isWeChat(),
+    isQQ: platform.isQQ(),
+    isWeChatMiniProgram: platform.isWeChatMiniProgram(),
+    isAlipayMiniProgram: platform.isAlipayMiniProgram(),
+    isQQMiniProgram: platform.isQQMiniProgram()
+  },
+  state: {
+    isFullscreen: platform.isFullscreen()
+  }
+};
+
+console.log('Environment Info:', environmentInfo);</div>
+      <div class="demo-container">
+        <h4>演示效果：</h4>
+        <div class="controls">
+          <button onclick="detectEnvironmentInfo()">检测完整环境信息</button>
+        </div>
+        <div id="environment-result" class="result"></div>
+      </div>
+    </div>
+
+    <h2>API 参考</h2>
+    <div class="example-section">
+      <h3>设备检测方法</h3>
+      <table class="api-table">
+        <tr>
+          <th>方法名</th>
+          <th>返回值</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td><code>isPC()</code></td>
+          <td>boolean</td>
+          <td>是否为 PC 端</td>
+        </tr>
+        <tr>
+          <td><code>isMobile()</code></td>
+          <td>boolean</td>
+          <td>是否为移动设备</td>
+        </tr>
+        <tr>
+          <td><code>isTablet()</code></td>
+          <td>boolean</td>
+          <td>是否为平板设备</td>
+        </tr>
+        <tr>
+          <td><code>isTV()</code></td>
+          <td>boolean</td>
+          <td>是否为 TV 设备</td>
+        </tr>
+        <tr>
+          <td><code>getDeviceType()</code></td>
+          <td>string</td>
+          <td>获取设备类型：'mobile' | 'tablet' | 'pc' | 'tv'</td>
+        </tr>
+      </table>
+
+      <h3>操作系统检测方法</h3>
+      <table class="api-table">
+        <tr>
+          <th>方法名</th>
+          <th>返回值</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td><code>isIOS()</code></td>
+          <td>boolean</td>
+          <td>是否为 iOS 设备</td>
+        </tr>
+        <tr>
+          <td><code>isAndroid()</code></td>
+          <td>boolean</td>
+          <td>是否为 Android 设备</td>
+        </tr>
+        <tr>
+          <td><code>isIPhone()</code></td>
+          <td>boolean</td>
+          <td>是否为 iPhone</td>
+        </tr>
+        <tr>
+          <td><code>isIPad()</code></td>
+          <td>boolean</td>
+          <td>是否为 iPad</td>
+        </tr>
+        <tr>
+          <td><code>isIPod()</code></td>
+          <td>boolean</td>
+          <td>是否为 iPod</td>
+        </tr>
+        <tr>
+          <td><code>getOS()</code></td>
+          <td>string</td>
+          <td>获取操作系统：'ios' | 'android' | 'windows' | 'mac' | 'linux' | 'unknown'</td>
+        </tr>
+      </table>
+
+      <h3>浏览器检测方法</h3>
+      <table class="api-table">
+        <tr>
+          <th>方法名</th>
+          <th>返回值</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td><code>isChrome()</code></td>
+          <td>boolean</td>
+          <td>是否为 Chrome 浏览器</td>
+        </tr>
+        <tr>
+          <td><code>isFirefox()</code></td>
+          <td>boolean</td>
+          <td>是否为 Firefox 浏览器</td>
+        </tr>
+        <tr>
+          <td><code>isSafari()</code></td>
+          <td>boolean</td>
+          <td>是否为 Safari 浏览器</td>
+        </tr>
+        <tr>
+          <td><code>isQQBrowser()</code></td>
+          <td>boolean</td>
+          <td>是否为 QQ 浏览器</td>
+        </tr>
+        <tr>
+          <td><code>isQQMobileBrowser()</code></td>
+          <td>boolean</td>
+          <td>是否为 QQ 手机端浏览器</td>
+        </tr>
+        <tr>
+          <td><code>isWebkit()</code></td>
+          <td>boolean</td>
+          <td>是否为 WebKit 内核</td>
+        </tr>
+        <tr>
+          <td><code>isOpera()</code></td>
+          <td>boolean</td>
+          <td>是否为 Opera 浏览器</td>
+        </tr>
+        <tr>
+          <td><code>isMozilla()</code></td>
+          <td>boolean</td>
+          <td>是否为 Mozilla 浏览器</td>
+        </tr>
+        <tr>
+          <td><code>getBrowser()</code></td>
+          <td>string</td>
+          <td>获取浏览器名称或 'unknown'</td>
+        </tr>
+      </table>
+
+      <h3>应用环境检测方法</h3>
+      <table class="api-table">
+        <tr>
+          <th>方法名</th>
+          <th>返回值</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td><code>isWeChat()</code></td>
+          <td>boolean</td>
+          <td>是否为微信环境</td>
+        </tr>
+        <tr>
+          <td><code>isQQ()</code></td>
+          <td>boolean</td>
+          <td>是否为 QQ 环境</td>
+        </tr>
+        <tr>
+          <td><code>isWeChatApp()</code></td>
+          <td>boolean</td>
+          <td>是否为微信 App</td>
+        </tr>
+        <tr>
+          <td><code>isQQApp()</code></td>
+          <td>boolean</td>
+          <td>是否为 QQ App</td>
+        </tr>
+        <tr>
+          <td><code>isWeChatMiniProgram()</code></td>
+          <td>boolean</td>
+          <td>是否为微信小程序</td>
+        </tr>
+        <tr>
+          <td><code>isAlipayMiniProgram()</code></td>
+          <td>boolean</td>
+          <td>是否为支付宝小程序</td>
+        </tr>
+        <tr>
+          <td><code>isQQMiniProgram()</code></td>
+          <td>boolean</td>
+          <td>是否为 QQ 小程序</td>
+        </tr>
+        <tr>
+          <td><code>isInGame()</code></td>
+          <td>boolean</td>
+          <td>是否为游戏内环境</td>
+        </tr>
+      </table>
+
+      <h3>其他方法</h3>
+      <table class="api-table">
+        <tr>
+          <th>方法名</th>
+          <th>返回值</th>
+          <th>说明</th>
+        </tr>
+        <tr>
+          <td><code>isFullscreen()</code></td>
+          <td>boolean</td>
+          <td>是否为全屏模式</td>
+        </tr>
+      </table>
+    </div>
+
+    <h2>使用场景</h2>
+    <div class="example-section">
+      <h3>场景 1：响应式布局适配</h3>
+      <div class="code-block">
+// 根据设备类型调整布局
+if (platform.isMobile()) {
+  // 移动端布局
+  document.body.classList.add('mobile-layout');
+} else if (platform.isTablet()) {
+  // 平板布局
+  document.body.classList.add('tablet-layout');
+} else {
+  // PC 布局
+  document.body.classList.add('pc-layout');
+}</div>
+
+      <h3>场景 2：浏览器兼容性处理</h3>
+      <div class="code-block">
+// 根据浏览器类型处理兼容性
+if (platform.isIE()) {
+  // IE 浏览器特殊处理
+  console.warn('您正在使用 IE 浏览器，部分功能可能受限');
+} else if (platform.isSafari()) {
+  // Safari 浏览器特殊处理
+  console.log('您正在使用 Safari 浏览器');
+}</div>
+
+      <h3>场景 3：应用环境适配</h3>
+      <div class="code-block">
+// 根据应用环境调整功能
+if (platform.isWeChatMiniProgram()) {
+  // 微信小程序环境
+  initWeChatMiniProgram();
+} else if (platform.isWeChat()) {
+  // 微信环境
+  initWeChatShare();
+} else if (platform.isQQ()) {
+  // QQ 环境
+  initQQShare();
+}</div>
+
+      <h3>场景 4：全屏模式检测</h3>
+      <div class="code-block">
+// 检测全屏模式并调整界面
+if (platform.isFullscreen()) {
+  // 全屏模式
+  document.getElementById('fullscreen提示').style.display = 'none';
+} else {
+  // 非全屏模式
+  document.getElementById('fullscreen提示').style.display = 'block';
+}</div>
+    </div>
+
+    <h2>浏览器兼容性</h2>
+    <div class="info-box">
+      <h3>支持的浏览器</h3>
+      <ul class="feature-list">
+        <li>Chrome 4+</li>
+        <li>Firefox 3.5+</li>
+        <li>Safari 4+</li>
+        <li>Edge 12+</li>
+        <li>IE 9+</li>
+        <li>移动端浏览器（Chrome、Safari、QQ浏览器、微信浏览器等）</li>
+      </ul>
+      <p>注意：DCPlatform 工具类依赖于 <code>navigator.userAgent</code> 和 <code>navigator.platform</code> 属性，这些属性在不同浏览器中可能存在差异，因此检测结果可能会有一定的误差。</p>
+    </div>
+
+    <h2>注意事项</h2>
+    <div class="example-section">
+      <h3>1. 关于 userAgent 检测的局限性</h3>
+      <p>DCPlatform 工具类主要基于 <code>navigator.userAgent</code> 进行检测，这种方法存在一定的局限性：</p>
+      <ul>
+        <li>userAgent 可以被用户修改或伪装</li>
+        <li>不同浏览器和设备的 userAgent 格式可能不同</li>
+        <li>新设备和浏览器的 userAgent 可能未被覆盖</li>
+      </ul>
+
+      <h3>2. 关于检测结果的缓存</h3>
+      <p>DCPlatform 工具类在初始化时会进行一次完整的检测，并将结果缓存起来。这意味着：</p>
+      <ul>
+        <li>大多数检测方法（如 <code>isPC()</code>、<code>isMobile()</code> 等）会返回缓存的结果，性能较好</li>
+        <li><code>isFullscreen()</code> 方法会实时检测，因为全屏状态可能会动态变化</li>
+      </ul>
+
+      <h3>3. 关于小程序检测</h3>
+      <p>小程序检测的准确性可能会受到平台更新的影响：</p>
+      <ul>
+        <li>微信小程序检测依赖于 <code>window.__wxjs_environment</code> 属性</li>
+        <li>支付宝小程序和 QQ 小程序主要基于 userAgent 检测</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 引入 DCJS 库 -->
+  <script src="../../../dist/dc.iife.js"></script>
+
+  <!-- 示例代码 -->
+  <script>
+    let platformInstance = null;
+
+    // 创建平台实例
+    function createPlatformInstance() {
+      platformInstance = new DC.Platform();
+      document.getElementById('platform-instance-result').textContent =
+        '平台实例创建成功！\n' +
+        '用户代理字符串: ' + navigator.userAgent;
+    }
+
+    // 检测设备类型
+    function detectDeviceType() {
+      if (!platformInstance) {
+        platformInstance = new DC.Platform();
+      }
+
+      const result = {
+        deviceType: platformInstance.getDeviceType(),
+        isPC: platformInstance.isPC(),
+        isMobile: platformInstance.isMobile(),
+        isTablet: platformInstance.isTablet(),
+        isTV: platformInstance.isTV()
+      };
+
+      let html = '设备类型检测结果：\n';
+      html += `设备类型: ${result.deviceType}\n`;
+      html += `是否为PC: ${result.isPC}\n`;
+      html += `是否为移动设备: ${result.isMobile}\n`;
+      html += `是否为平板: ${result.isTablet}\n`;
+      html += `是否为TV: ${result.isTV}\n`;
+
+      document.getElementById('device-type-result').textContent = html;
+    }
+
+    // 检测操作系统
+    function detectOS() {
+      if (!platformInstance) {
+        platformInstance = new DC.Platform();
+      }
+
+      const result = {
+        os: platformInstance.getOS(),
+        isIOS: platformInstance.isIOS(),
+        isAndroid: platformInstance.isAndroid(),
+        isIPhone: platformInstance.isIPhone(),
+        isIPad: platformInstance.isIPad(),
+        isIPod: platformInstance.isIPod()
+      };
+
+      let html = '操作系统检测结果：\n';
+      html += `操作系统: ${result.os}\n`;
+      html += `是否为iOS: ${result.isIOS}\n`;
+      html += `是否为Android: ${result.isAndroid}\n`;
+      html += `是否为iPhone: ${result.isIPhone}\n`;
+      html += `是否为iPad: ${result.isIPad}\n`;
+      html += `是否为iPod: ${result.isIPod}\n`;
+
+      document.getElementById('os-result').textContent = html;
+    }
+
+    // 检测浏览器
+    function detectBrowser() {
+      if (!platformInstance) {
+        platformInstance = new DC.Platform();
+      }
+
+      const result = {
+        browser: platformInstance.getBrowser(),
+        isChrome: platformInstance.isChrome(),
+        isFirefox: platformInstance.isFirefox(),
+        isSafari: platformInstance.isSafari(),
+        isQQBrowser: platformInstance.isQQBrowser(),
+        isQQMobileBrowser: platformInstance.isQQMobileBrowser(),
+        isWebkit: platformInstance.isWebkit(),
+        isOpera: platformInstance.isOpera(),
+        isMozilla: platformInstance.isMozilla()
+      };
+
+      let html = '浏览器检测结果：\n';
+      html += `浏览器: ${result.browser}\n`;
+      html += `是否为Chrome: ${result.isChrome}\n`;
+      html += `是否为Firefox: ${result.isFirefox}\n`;
+      html += `是否为Safari: ${result.isSafari}\n`;
+      html += `是否为QQ浏览器: ${result.isQQBrowser}\n`;
+      html += `是否为QQ手机浏览器: ${result.isQQMobileBrowser}\n`;
+      html += `是否为Webkit: ${result.isWebkit}\n`;
+      html += `是否为Opera: ${result.isOpera}\n`;
+      html += `是否为Mozilla: ${result.isMozilla}\n`;
+
+      document.getElementById('browser-result').textContent = html;
+    }
+
+    // 检测应用环境
+    function detectAppEnvironment() {
+      if (!platformInstance) {
+        platformInstance = new DC.Platform();
+      }
+
+      const result = {
+        isWeChat: platformInstance.isWeChat(),
+        isQQ: platformInstance.isQQ(),
+        isWeChatApp: platformInstance.isWeChatApp(),
+        isQQApp: platformInstance.isQQApp(),
+        isWeChatMiniProgram: platformInstance.isWeChatMiniProgram(),
+        isAlipayMiniProgram: platformInstance.isAlipayMiniProgram(),
+        isQQMiniProgram: platformInstance.isQQMiniProgram(),
+        isInGame: platformInstance.isInGame()
+      };
+
+      let html = '应用环境检测结果：\n';
+      html += `是否为微信: ${result.isWeChat}\n`;
+      html += `是否为QQ: ${result.isQQ}\n`;
+      html += `是否为微信App: ${result.isWeChatApp}\n`;
+      html += `是否为QQApp: ${result.isQQApp}\n`;
+      html += `是否为微信小程序: ${result.isWeChatMiniProgram}\n`;
+      html += `是否为支付宝小程序: ${result.isAlipayMiniProgram}\n`;
+      html += `是否为QQ小程序: ${result.isQQMiniProgram}\n`;
+      html += `是否为游戏内: ${result.isInGame}\n`;
+
+      document.getElementById('app-result').textContent = html;
+    }
+
+    // 检测全屏模式
+    function detectFullscreen() {
+      if (!platformInstance) {
+        platformInstance = new DC.Platform();
+      }
+
+      const isFullscreen = platformInstance.isFullscreen();
+      document.getElementById('fullscreen-result').textContent =
+        '全屏模式检测结果：\n' +
+        `是否为全屏模式: ${isFullscreen}\n` +
+        '提示：点击「切换全屏模式」按钮可测试全屏检测功能';
+    }
+
+    // 切换全屏模式
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        // 进入全屏
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+          document.documentElement.msRequestFullscreen();
+        }
+      } else {
+        // 退出全屏
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+
+      // 延迟检测，确保全屏状态已更新
+      setTimeout(detectFullscreen, 300);
+    }
+
+    // 检测完整环境信息
+    function detectEnvironmentInfo() {
+      if (!platformInstance) {
+        platformInstance = new DC.Platform();
+      }
+
+      const environmentInfo = {
+        device: {
+          type: platformInstance.getDeviceType(),
+          isPC: platformInstance.isPC(),
+          isMobile: platformInstance.isMobile(),
+          isTablet: platformInstance.isTablet(),
+          isTV: platformInstance.isTV()
+        },
+        os: {
+          name: platformInstance.getOS(),
+          isIOS: platformInstance.isIOS(),
+          isAndroid: platformInstance.isAndroid(),
+          isIPhone: platformInstance.isIPhone(),
+          isIPad: platformInstance.isIPad()
+        },
+        browser: {
+          name: platformInstance.getBrowser(),
+          isChrome: platformInstance.isChrome(),
+          isFirefox: platformInstance.isFirefox(),
+          isSafari: platformInstance.isSafari(),
+          isQQBrowser: platformInstance.isQQBrowser(),
+          isWebkit: platformInstance.isWebkit()
+        },
+        app: {
+          isWeChat: platformInstance.isWeChat(),
+          isQQ: platformInstance.isQQ(),
+          isWeChatMiniProgram: platformInstance.isWeChatMiniProgram(),
+          isAlipayMiniProgram: platformInstance.isAlipayMiniProgram(),
+          isQQMiniProgram: platformInstance.isQQMiniProgram()
+        },
+        state: {
+          isFullscreen: platformInstance.isFullscreen()
+        }
+      };
+
+      document.getElementById('environment-result').textContent =
+        '完整环境信息：\n' +
+        JSON.stringify(environmentInfo, null, 2);
+    }
+
+    // 页面加载完成后自动创建实例并检测环境
+    window.onload = function() {
+      platformInstance = new DC.Platform();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCDesignBy Example</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .example-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        pre {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DCDesignBy Component Example</h1>
+
+        <div class="example-section">
+            <h2>Basic Usage</h2>
+            <p>This example demonstrates the basic usage of the DCDesignBy component.</p>
+
+            <div class="code-block">
+                <pre>// Sample data for the designby component
+const designData = [
+    {
+        name: 'UI Design',
+        icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 16H48V48H16V16Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 32H48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 16V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+    },
+    {
+        name: 'Web Development',
+        icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 18L24 6L38 18L52 6V48L38 36L24 48L10 36V18Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 6V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M38 18V36" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+    },
+    {
+        name: 'Mobile Apps',
+        icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="32" height="48" rx="4" stroke="currentColor" stroke-width="4"/><path d="M32 8V4" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 60V56" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 16H40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+    },
+    {
+        name: 'Graphic Design',
+        icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 32L28 20L40 32L28 44L16 32Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 20V44" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M16 32H40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+    },
+    {
+        name: 'Branding',
+        icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="4"/><path d="M22 32H42" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 22V42" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+    },
+    {
+        name: 'Animation',
+        icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 24L48 24V40L16 40V24Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 16V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M40 16V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="24" r="4" fill="currentColor"/><circle cx="40" cy="32" r="4" fill="currentColor"/><circle cx="24" cy="40" r="4" fill="currentColor"/></svg>'
+    }
+];
+
+// Initialize the designby component
+const designBy = new DC.DesignBy('#designby-container', designData);</pre>
+            </div>
+
+            <h3>Result:</h3>
+            <div id="designby-container"></div>
+        </div>
+
+        <div class="example-section">
+            <h2>Empty Data Example</h2>
+            <p>This example demonstrates how the component handles empty data.</p>
+
+            <div class="code-block">
+                <pre>// Initialize with empty data
+const emptyDesignBy = new DC.DesignBy('#empty-designby-container', []);</pre>
+            </div>
+
+            <h3>Result:</h3>
+            <div id="empty-designby-container"></div>
+        </div>
+
+        <div class="example-section">
+            <h2>Default Parameters Example</h2>
+            <p>This example demonstrates the component with default parameters.</p>
+
+            <div class="code-block">
+                <pre>// Initialize with default parameters (targets body, empty data)
+const defaultDesignBy = new DC.DesignBy();</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the designby component -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // Sample data for the designby component
+        const designData = [
+            {
+                name: 'UI Design',
+                icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 16H48V48H16V16Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 32H48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 16V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+            },
+            {
+                name: 'Web Development',
+                icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 18L24 6L38 18L52 6V48L38 36L24 48L10 36V18Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 6V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M38 18V36" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+            },
+            {
+                name: 'Mobile Apps',
+                icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="8" width="32" height="48" rx="4" stroke="currentColor" stroke-width="4"/><path d="M32 8V4" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 60V56" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 16H40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+            },
+            {
+                name: 'Graphic Design',
+                icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 32L28 20L40 32L28 44L16 32Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 20V44" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M16 32H40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+            },
+            {
+                name: 'Branding',
+                icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="20" stroke="currentColor" stroke-width="4"/><path d="M22 32H42" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 22V42" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+            },
+            {
+                name: 'Animation',
+                icon: '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 24L48 24V40L16 40V24Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 16V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M40 16V48" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="24" r="4" fill="currentColor"/><circle cx="40" cy="32" r="4" fill="currentColor"/><circle cx="24" cy="40" r="4" fill="currentColor"/></svg>'
+            }
+        ];
+
+        // Initialize the designby component
+        const designBy = new DC.DesignBy('#designby-container', designData);
+
+        // Initialize with empty data
+        const emptyDesignBy = new DC.DesignBy('#empty-designby-container', []);
+
+        // Initialize with default parameters (targets body, empty data)
+        const defaultDesignBy = new DC.DesignBy();
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dcDailyQuote 示例</title>
+  <style>
+    body {
+      font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .example {
+      background: white;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #555;
+      margin-top: 0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .controls {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 5px;
+    }
+    button {
+      padding: 8px 16px;
+      margin: 5px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .settings {
+      margin: 20px 0;
+    }
+    .setting-item {
+      margin: 10px 0;
+    }
+    label {
+      display: inline-block;
+      width: 100px;
+      font-weight: bold;
+    }
+    input[type="range"] {
+      width: 200px;
+    }
+    input[type="text"] {
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+    .info {
+      margin: 20px 0;
+      padding: 15px;
+      background: #e8f4f8;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>dcDailyQuote 示例</h1>
+
+  <div class="container">
+    <div class="example">
+      <h2>1. 基本用法</h2>
+      <div id="quote-container"></div>
+      <div class="info" id="basic-info">
+        提示：点击下方按钮控制语句切换和朗读
+      </div>
+    </div>
+
+    <div class="example">
+      <h2>2. 高级设置</h2>
+      <div id="quote-container-advanced"></div>
+      <div class="settings">
+        <div class="setting-item">
+          <label>语速：</label>
+          <input type="range" id="rate-input" min="0.1" max="3" step="0.1" value="1">
+          <span id="rate-value">1</span>
+        </div>
+        <div class="setting-item">
+          <label>音调：</label>
+          <input type="range" id="pitch-input" min="0" max="2" step="0.1" value="1">
+          <span id="pitch-value">1</span>
+        </div>
+        <div class="setting-item">
+          <label>语言：</label>
+          <select id="language-select">
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁体中文</option>
+          </select>
+        </div>
+      </div>
+      <div class="controls">
+        <button onclick="testPreviousAdvanced()">上一句</button>
+        <button onclick="testSpeakAdvanced()">朗读</button>
+        <button onclick="testNextAdvanced()">下一句</button>
+        <button onclick="testPauseAdvanced()">暂停</button>
+        <button onclick="testResumeAdvanced()">恢复</button>
+        <button onclick="testStopAdvanced()">停止</button>
+      </div>
+      <div class="info" id="advanced-info">
+        提示：调整上方设置后点击朗读按钮测试效果
+      </div>
+    </div>
+
+    <div class="example">
+      <h2>3. 自定义回调</h2>
+      <div id="quote-container-callback"></div>
+      <div class="info" id="callback-info">
+        提示：语句切换时会触发回调函数并显示在这里
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../dist/dc.iife.js"></script>
+  <script>
+    // 确保 DC.DailyQuote 可用
+    const DailyQuote = window.DC ? window.DC.DailyQuote : require('../../../src/utils/dcDailyQuote');
+
+    // 示例 1: 基本用法
+    const quoteBasic = new DailyQuote({
+      container: '#quote-container',
+      autoPlay: false
+    });
+
+    // 示例 2: 高级设置
+    const quoteAdvanced = new DailyQuote({
+      container: '#quote-container-advanced',
+      language: 'zh-CN',
+      rate: 1,
+      pitch: 1
+    });
+
+    // 示例 3: 自定义回调
+    const quoteCallback = new DailyQuote({
+      container: '#quote-container-callback',
+      onQuoteChange: function(data) {
+        document.getElementById('callback-info').innerHTML = `
+          回调触发：<br>
+          索引: ${data.index}<br>
+          语句: ${data.quote}<br>
+          总数: ${data.total}
+        `;
+      }
+    });
+
+    // 绑定高级设置控件
+    document.getElementById('rate-input').addEventListener('input', function(e) {
+      const rate = parseFloat(e.target.value);
+      document.getElementById('rate-value').textContent = rate;
+      quoteAdvanced.setRate(rate);
+    });
+
+    document.getElementById('pitch-input').addEventListener('input', function(e) {
+      const pitch = parseFloat(e.target.value);
+      document.getElementById('pitch-value').textContent = pitch;
+      quoteAdvanced.setPitch(pitch);
+    });
+
+    document.getElementById('language-select').addEventListener('change', function(e) {
+      quoteAdvanced.setLanguage(e.target.value);
+    });
+
+    // 高级控制函数
+    function testPreviousAdvanced() {
+      quoteAdvanced.previous();
+    }
+
+    function testSpeakAdvanced() {
+      quoteAdvanced.speak();
+    }
+
+    function testNextAdvanced() {
+      quoteAdvanced.next();
+    }
+
+    function testPauseAdvanced() {
+      quoteAdvanced.pause();
+    }
+
+    function testResumeAdvanced() {
+      quoteAdvanced.resume();
+    }
+
+    function testStopAdvanced() {
+      quoteAdvanced.stop();
+    }
+  </script>
+</body>
+</html>

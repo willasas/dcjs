@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcpricing组件示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .pricing-container {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+        .info h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        .info p {
+            margin: 5px 0;
+        }
+        /* 自定义CSS变量 */
+        :root {
+            --bg-theme-100: #f0f0f0;
+            --bg-theme-200: #e0e0e0;
+            --bg-theme-500: #4CAF50;
+            --bg-theme-800: #388E3C;
+            --font-theme-600: #666;
+            --font-theme-800: #333;
+            --font-theme-900: #222;
+            --font-theme-950: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcpricing组件示例</h1>
+
+        <h2>价格卡片展示</h2>
+        <div class="pricing-container">
+            <div id="pricing-container"></div>
+        </div>
+
+        <h2>使用说明</h2>
+        <div class="info">
+            <h4>基本用法</h4>
+            <p>1. 准备价格数据数组，包含每个计划的名称、价格、特性等信息</p>
+            <p>2. 初始化DCPricing组件，传入价格数据和容器选择器</p>
+            <p>3. 调用init()方法渲染价格卡片</p>
+        </div>
+
+        <div class="info">
+            <h4>价格数据格式</h4>
+            <p>每个计划对象包含以下属性：</p>
+            <p>- name: 计划名称（Basic计划会自动标记为Popular）</p>
+            <p>- price: 价格</p>
+            <p>- priceUnit: 价格单位（如$、¥等）</p>
+            <p>- unit: 计费周期（如/month、/year等）</p>
+            <p>- buy: 购买按钮文本</p>
+            <p>- buyLink: 购买链接</p>
+            <p>- features: 特性列表</p>
+            <p>  - features[].desc: 特性描述</p>
+            <p>  - features[].tag: 特性是否可用（'true'或'false'）</p>
+        </div>
+
+        <div class="info">
+            <h4>样式说明</h4>
+            <p>组件使用CSS变量定义主题色，可以通过修改:root中的变量来自定义样式</p>
+        </div>
+    </div>
+
+    <!-- 加载dcpricing.js -->
+    <script>
+        // 模拟模块导出
+        window.module = {};
+        window.module.exports = {};
+    </script>
+
+    <!-- 加载dcpricing.js -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 价格数据
+        const priceData = [
+            {
+                name: 'Basic',
+                price: 10,
+                priceUnit: '$',
+                unit: '/month',
+                buy: 'Buy Now',
+                buyLink: 'https://example.com/buy/basic',
+                features: [
+                    { desc: '10GB Storage', tag: 'true' },
+                    { desc: 'Basic Support', tag: 'true' },
+                    { desc: '1 User', tag: 'true' },
+                    { desc: 'Advanced Features', tag: 'false' }
+                ]
+            },
+            {
+                name: 'Pro',
+                price: 20,
+                priceUnit: '$',
+                unit: '/month',
+                buy: 'Buy Now',
+                buyLink: 'https://example.com/buy/pro',
+                features: [
+                    { desc: '50GB Storage', tag: 'true' },
+                    { desc: 'Priority Support', tag: 'true' },
+                    { desc: '5 Users', tag: 'true' },
+                    { desc: 'Advanced Features', tag: 'true' }
+                ]
+            },
+            {
+                name: 'Enterprise',
+                price: 50,
+                priceUnit: '$',
+                unit: '/month',
+                buy: 'Buy Now',
+                buyLink: 'https://example.com/buy/enterprise',
+                features: [
+                    { desc: 'Unlimited Storage', tag: 'true' },
+                    { desc: '24/7 Support', tag: 'true' },
+                    { desc: 'Unlimited Users', tag: 'true' },
+                    { desc: 'Advanced Features', tag: 'true' }
+                ]
+            }
+        ];
+
+        // 初始化DCPricing
+        const dcPricing = new DC.Pricing(priceData, '#pricing-container');
+
+        // 渲染价格卡片
+        dcPricing.init();
+    </script>
+</body>
+</html>

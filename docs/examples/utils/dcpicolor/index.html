@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcpicolor 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .gradient-preview {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .image-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcpicolor 颜色提取工具示例</h1>
+
+        <!-- 基本使用示例 -->
+        <div class="section">
+            <h2>1. 基本使用</h2>
+            <div class="input-group">
+                <label for="imageUrl">图片URL：</label>
+                <input type="text" id="imageUrl" value="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300&h=200" placeholder="请输入图片URL">
+            </div>
+            <button onclick="extractColors()">提取颜色</button>
+
+            <div class="result" id="result">
+                <h3>提取结果：</h3>
+                <div id="resultContent"></div>
+            </div>
+        </div>
+
+        <!-- 颜色调色板示例 -->
+        <div class="section">
+            <h2>2. 颜色调色板</h2>
+            <div class="input-group">
+                <label for="paletteUrl">图片URL：</label>
+                <input type="text" id="paletteUrl" value="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=300&h=200" placeholder="请输入图片URL">
+            </div>
+            <button onclick="extractPalette()">提取调色板</button>
+
+            <div class="result" id="paletteResult">
+                <h3>调色板：</h3>
+                <div id="paletteContent"></div>
+            </div>
+        </div>
+
+        <!-- 背景色渐变示例 -->
+        <div class="section">
+            <h2>3. 背景色渐变</h2>
+            <div class="input-group">
+                <label for="gradientUrl">图片URL：</label>
+                <input type="text" id="gradientUrl" value="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&q=80&w=300&h=200" placeholder="请输入图片URL">
+            </div>
+            <button onclick="extractBackground()">提取背景色</button>
+
+            <div class="result" id="gradientResult">
+                <h3>背景色渐变：</h3>
+                <div id="gradientContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入dcpicolor工具 -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 提取完整颜色信息
+        async function extractColors() {
+            const imageUrl = document.getElementById('imageUrl').value;
+            const resultContent = document.getElementById('resultContent');
+
+            try {
+                resultContent.innerHTML = '<p>正在提取颜色...</p>';
+
+                // 显示图片
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'image-container';
+                imageContainer.innerHTML = `<img src="${imageUrl}" alt="测试图片">`;
+                resultContent.appendChild(imageContainer);
+
+                // 提取颜色
+                const colors = await DC.Color.getImageColors(imageUrl);
+
+                // 显示结果
+                resultContent.innerHTML += `
+                    <p><strong>主题色：</strong><span style="display: inline-block; width: 20px; height: 20px; background-color: ${colors.dominantColor}; margin-left: 10px;"></span> ${colors.dominantColor}</p>
+                    <p><strong>次要色：</strong><span style="display: inline-block; width: 20px; height: 20px; background-color: ${colors.secondaryColor}; margin-left: 10px;"></span> ${colors.secondaryColor}</p>
+                    <p><strong>水平渐变：</strong></p>
+                    <div class="gradient-preview" style="background: ${colors.backgroundColor.gradient.horizontal};"></div>
+                    <p><strong>垂直渐变：</strong></p>
+                    <div class="gradient-preview" style="background: ${colors.backgroundColor.gradient.vertical};"></div>
+                `;
+
+                // 显示调色板
+                const paletteDiv = document.createElement('div');
+                paletteDiv.innerHTML = '<p><strong>调色板：</strong></p>';
+                const colorPalette = document.createElement('div');
+                colorPalette.className = 'color-palette';
+
+                colors.palette.forEach(color => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    swatch.style.backgroundColor = color;
+                    swatch.title = color;
+                    colorPalette.appendChild(swatch);
+                });
+
+                paletteDiv.appendChild(colorPalette);
+                resultContent.appendChild(paletteDiv);
+
+            } catch (error) {
+                resultContent.innerHTML = `<p style="color: red;">错误：${error.message}</p>`;
+            }
+        }
+
+        // 提取颜色调色板
+        async function extractPalette() {
+            const imageUrl = document.getElementById('paletteUrl').value;
+            const paletteContent = document.getElementById('paletteContent');
+
+            try {
+                paletteContent.innerHTML = '<p>正在提取调色板...</p>';
+
+                // 显示图片
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'image-container';
+                imageContainer.innerHTML = `<img src="${imageUrl}" alt="测试图片">`;
+                paletteContent.appendChild(imageContainer);
+
+                // 提取调色板
+                const palette = await DC.Color.getColorPalette(imageUrl, { colors: 15, quality: 3 });
+                const hexPalette = palette.map(color => DC.Color.rgbToHex(color));
+
+                // 显示调色板
+                const colorPalette = document.createElement('div');
+                colorPalette.className = 'color-palette';
+
+                hexPalette.forEach(color => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    swatch.style.backgroundColor = color;
+                    swatch.title = color;
+                    colorPalette.appendChild(swatch);
+                });
+
+                paletteContent.appendChild(colorPalette);
+
+            } catch (error) {
+                paletteContent.innerHTML = `<p style="color: red;">错误：${error.message}</p>`;
+            }
+        }
+
+        // 提取背景色渐变
+        async function extractBackground() {
+            const imageUrl = document.getElementById('gradientUrl').value;
+            const gradientContent = document.getElementById('gradientContent');
+
+            try {
+                gradientContent.innerHTML = '<p>正在提取背景色...</p>';
+
+                // 显示图片
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'image-container';
+                imageContainer.innerHTML = `<img src="${imageUrl}" alt="测试图片">`;
+                gradientContent.appendChild(imageContainer);
+
+                // 提取背景色
+                const background = await DC.Color.getBackgroundColor(imageUrl);
+
+                // 显示结果
+                gradientContent.innerHTML += `
+                    <p><strong>左侧颜色：</strong><span style="display: inline-block; width: 20px; height: 20px; background-color: ${background.left}; margin-left: 10px;"></span> ${background.left}</p>
+                    <p><strong>右侧颜色：</strong><span style="display: inline-block; width: 20px; height: 20px; background-color: ${background.right}; margin-left: 10px;"></span> ${background.right}</p>
+                    <p><strong>顶部颜色：</strong><span style="display: inline-block; width: 20px; height: 20px; background-color: ${background.top}; margin-left: 10px;"></span> ${background.top}</p>
+                    <p><strong>底部颜色：</strong><span style="display: inline-block; width: 20px; height: 20px; background-color: ${background.bottom}; margin-left: 10px;"></span> ${background.bottom}</p>
+                    <p><strong>水平渐变：</strong></p>
+                    <div class="gradient-preview" style="background: ${background.gradient.horizontal};"></div>
+                    <p><strong>垂直渐变：</strong></p>
+                    <div class="gradient-preview" style="background: ${background.gradient.vertical};"></div>
+                `;
+
+            } catch (error) {
+                gradientContent.innerHTML = `<p style="color: red;">错误：${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

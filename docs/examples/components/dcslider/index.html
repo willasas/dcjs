@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCSlider 示例</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .example-section {
+            margin: 40px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .example-header {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .example-header h2 {
+            margin: 0;
+            color: #1e90ff;
+        }
+        .example-content {
+            padding: 20px;
+        }
+        .slider-container {
+            height: 500px !important;
+        }
+        .slide {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .slide h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .slide p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .control-group {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .control-group h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.secondary {
+            background-color: #2196F3;
+        }
+        button.secondary:hover {
+            background-color: #1976D2;
+        }
+        button.danger {
+            background-color: #f44336;
+        }
+        button.danger:hover {
+            background-color: #d32f2f;
+        }
+        .info-box {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #1e90ff;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #1e90ff;
+        }
+        .info-box p {
+            margin: 8px 0;
+            color: #333;
+        }
+        .log-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-container h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 14px;
+        }
+        .log-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            color: #666;
+        }
+        .log-item:last-child {
+            border-bottom: none;
+        }
+        .slide-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .slide-image {
+            max-width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>DCSlider 示例</h1>
+    </div>
+
+    <div class="container">
+        <div class="info-box">
+            <h3>基本介绍</h3>
+            <p>DCSlider 是一个功能强大的轮播组件，支持以下特性：</p>
+            <ul>
+                <li>水平和垂直方向轮播</li>
+                <li>自动播放功能</li>
+                <li>循环播放</li>
+                <li>分页器和导航按钮</li>
+                <li>自定义分页器</li>
+                <li>事件回调</li>
+                <li>响应式设计</li>
+            </ul>
+        </div>
+
+        <div class="example-section">
+            <div class="example-header">
+                <h2>示例 1: 基本水平轮播</h2>
+            </div>
+            <div class="example-content">
+                <div id="slider1"></div>
+                <div class="control-group">
+                    <h3>控制选项</h3>
+                    <button id="prev1">上一张</button>
+                    <button id="next1">下一张</button>
+                    <button id="slideTo1">切换到第2张</button>
+                    <button id="startAutoplay1">开始自动播放</button>
+                    <button id="stopAutoplay1">停止自动播放</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <div class="example-header">
+                <h2>示例 2: 垂直轮播</h2>
+            </div>
+            <div class="example-content">
+                <div id="slider2"></div>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <div class="example-header">
+                <h2>示例 3: 带自定义分页器的轮播</h2>
+            </div>
+            <div class="example-content">
+                <div id="slider3"></div>
+            </div>
+        </div>
+
+        <div class="log-container" id="log-container">
+            <h3>操作日志</h3>
+        </div>
+    </div>
+
+    <!-- 引入 DCSlider 组件 -->
+    <script src="../../../dist/dc.iife.js"></script>
+
+    <script>
+        // 操作日志
+        function addLog(message) {
+            const logContainer = document.getElementById('log-container');
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logItem);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // 测试数据
+        const testSlides = [
+            `
+                <div class="slide-content">
+                    <img class="slide-image" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=beautiful%20nature%20landscape%20with%20mountains%20and%20lake&image_size=landscape_16_9" alt="Slide 1">
+                    <h2>Slide 1</h2>
+                    <p>这是第一张幻灯片的内容，展示了美丽的自然风景。</p>
+                </div>
+            `,
+            `
+                <div class="slide-content">
+                    <img class="slide-image" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20city%20skyline%20at%20night&image_size=landscape_16_9" alt="Slide 2">
+                    <h2>Slide 2</h2>
+                    <p>这是第二张幻灯片的内容，展示了现代城市的夜景。</p>
+                </div>
+            `,
+            `
+                <div class="slide-content">
+                    <img class="slide-image" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=peaceful%20beach%20with%20palm%20trees&image_size=landscape_16_9" alt="Slide 3">
+                    <h2>Slide 3</h2>
+                    <p>这是第三张幻灯片的内容，展示了宁静的海滩风光。</p>
+                </div>
+            `
+        ];
+
+        // 示例 1: 基本水平轮播
+        const slider1 = new DC.Slider({
+            container: '#slider1',
+            slides: testSlides,
+            direction: 'horizontal',
+            autoplay: true,
+            autoplayDelay: 3000,
+            loop: true,
+            pagination: {
+                enable: true,
+                clickable: true
+            },
+            navigation: {
+                enable: true
+            },
+            onChange: (index) => {
+                addLog(`示例 1: 切换到幻灯片 ${index + 1}`);
+            },
+            onInit: () => {
+                addLog('示例 1: 轮播初始化完成');
+            }
+        });
+
+        // 示例 1 控制按钮事件
+        document.getElementById('prev1').addEventListener('click', () => {
+            slider1.prev();
+        });
+
+        document.getElementById('next1').addEventListener('click', () => {
+            slider1.next();
+        });
+
+        document.getElementById('slideTo1').addEventListener('click', () => {
+            slider1.slideTo(1);
+        });
+
+        document.getElementById('startAutoplay1').addEventListener('click', () => {
+            slider1.startAutoplay();
+            addLog('示例 1: 开始自动播放');
+        });
+
+        document.getElementById('stopAutoplay1').addEventListener('click', () => {
+            slider1.stopAutoplay();
+            addLog('示例 1: 停止自动播放');
+        });
+
+        // 示例 2: 垂直轮播
+        const slider2 = new DC.Slider({
+            container: '#slider2',
+            slides: testSlides,
+            direction: 'vertical',
+            autoplay: false,
+            loop: true,
+            pagination: {
+                enable: true,
+                clickable: true
+            },
+            navigation: {
+                enable: true
+            },
+            onChange: (index) => {
+                addLog(`示例 2: 切换到幻灯片 ${index + 1}`);
+            },
+            onInit: () => {
+                addLog('示例 2: 轮播初始化完成');
+            }
+        });
+
+        // 示例 3: 带自定义分页器的轮播
+        const slider3 = new DC.Slider({
+            container: '#slider3',
+            slides: testSlides,
+            direction: 'horizontal',
+            autoplay: false,
+            loop: true,
+            pagination: {
+                enable: true,
+                clickable: true,
+                renderBullet: (index, slide) => {
+                    return `<span class="custom-bullet" style="padding: 5px 15px; border: 1px solid #ddd; border-radius: 15px; cursor: pointer;">第 ${index + 1} 张</span>`;
+                },
+                bulletActiveClass: 'custom-active'
+            },
+            navigation: {
+                enable: true
+            },
+            onChange: (index) => {
+                addLog(`示例 3: 切换到幻灯片 ${index + 1}`);
+            },
+            onInit: () => {
+                addLog('示例 3: 轮播初始化完成');
+            }
+        });
+
+        // 添加自定义分页器样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .custom-bullet {
+                margin: 0 5px;
+                transition: all 0.3s ease;
+            }
+            .custom-bullet.custom-active {
+                background-color: #1e90ff;
+                color: white;
+                border-color: #1e90ff;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

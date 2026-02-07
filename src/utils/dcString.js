@@ -40,7 +40,7 @@ class dcString {
     if (!str) return ''
     return str
       .replace(/([A-Z])/g, '_$1')
-      .replace(/[-\s]+/g, '_')
+      .replace(/[-_\s]+/g, '_')
       .toLowerCase()
       .replace(/^_/, '')
   }
@@ -119,7 +119,7 @@ class dcString {
       "'": '&#x27;',
       '/': '&#x2F;',
     }
-    return str.replace(/[&<>"'/]/g, char => htmlEscapes[char])
+    return str.replace(/[&<>'"/]/g, char => htmlEscapes[char])
   }
 
   /**
@@ -277,6 +277,106 @@ class dcString {
   }
 
   /**
+   * 统计字符串中字符的出现次数
+   * @param {string} str - 输入字符串
+   * @param {string} char - 要统计的字符
+   * @returns {number} 出现次数
+   */
+  static countChar(str, char) {
+    if (!str || !char) return 0
+    return (str.match(new RegExp(char, 'g')) || []).length
+  }
+
+  /**
+   * 在字符串左侧填充指定字符
+   * @param {string} str - 输入字符串
+   * @param {number} length - 目标长度
+   * @param {string} [char=' '] - 填充字符
+   * @returns {string} 填充后的字符串
+   */
+  static padLeft(str, length, char = ' ') {
+    return this.pad(str, length, char, false)
+  }
+
+  /**
+   * 在字符串右侧填充指定字符
+   * @param {string} str - 输入字符串
+   * @param {number} length - 目标长度
+   * @param {string} [char=' '] - 填充字符
+   * @returns {string} 填充后的字符串
+   */
+  static padRight(str, length, char = ' ') {
+    return this.pad(str, length, char, true)
+  }
+
+  /**
+   * 移除字符串中的所有空白字符
+   * @param {string} str - 输入字符串
+   * @returns {string} 移除空白字符后的字符串
+   */
+  static removeWhitespace(str) {
+    if (!str) return ''
+    return str.replace(/\s/g, '')
+  }
+
+  /**
+   * 检查字符串是否为有效的邮箱地址
+   * @param {string} str - 输入字符串
+   * @returns {boolean} 是否为有效的邮箱地址
+   */
+  static isEmail(str) {
+    if (!str) return false
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(str)
+  }
+
+  /**
+   * 检查字符串是否为有效的URL
+   * @param {string} str - 输入字符串
+   * @returns {boolean} 是否为有效的URL
+   */
+  static isUrl(str) {
+    if (!str) return false
+
+    // 使用正则表达式检查URL格式
+    const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i
+    return urlRegex.test(str)
+  }
+
+  /**
+   * 检查字符串是否为有效的电话号码
+   * @param {string} str - 输入字符串
+   * @returns {boolean} 是否为有效的电话号码
+   */
+  static isPhone(str) {
+    if (!str) return false
+    const phoneRegex = /^\+?[\d\s-]{8,}$/
+    return phoneRegex.test(str)
+  }
+
+  /**
+   * 检查字符串是否为有效的数字
+   * @param {string} str - 输入字符串
+   * @returns {boolean} 是否为有效的数字
+   */
+  static isNumber(str) {
+    if (!str) return false
+    return !isNaN(str) && !isNaN(parseFloat(str))
+  }
+
+  /**
+   * 统计字符串中子字符串的出现次数
+   * @param {string} str - 输入字符串
+   * @param {string} substring - 要统计的子字符串
+   * @returns {number} 出现次数
+   */
+  static countOccurrences(str, substring) {
+    if (!str || !substring) return 0
+    const regex = new RegExp(substring.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')
+    return (str.match(regex) || []).length
+  }
+
+  /**
    * 检查字符串是否为有效的JSON
    * @param {string} str - 输入字符串
    * @returns {boolean} 是否为有效的JSON
@@ -290,37 +390,15 @@ class dcString {
       return false
     }
   }
-
-  /**
-   * 将字符串转换为URL友好的slug
-   * @param {string} str - 输入字符串
-   * @returns {string} slug字符串
-   */
-  static slug(str) {
-    if (!str) return ''
-    return str
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-  }
-
-  /**
-   * 统计字符串中字符的出现次数
-   * @param {string} str - 输入字符串
-   * @param {string} char - 要统计的字符
-   * @returns {number} 出现次数
-   */
-  static countChar(str, char) {
-    if (!str || !char) return 0
-    return (str.match(new RegExp(char, 'g')) || []).length
-  }
 }
 
 // 注册到全局DC对象
-if (typeof window !== 'undefined' && window.DC) {
+if (typeof window !== 'undefined') {
+  window.DC = window.DC || {}
   window.DC.String = dcString
-} else if (typeof module !== 'undefined' && module.exports) {
+}
+
+// CommonJS 模块导出
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = dcString
 }

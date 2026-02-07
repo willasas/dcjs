@@ -37,6 +37,7 @@ const DCJson = require('path/to/dcjson.js');
 ```javascript
 // 验证有效的 JSON 字符串
 const validJson = '{"name": "John", "age": 30}';
+console.log('Valid JSON:', validJson);
 const isValid = DC.Json.isValidJSON(validJson);
 console.log('Is valid JSON:', isValid); // 输出: true
 
@@ -51,8 +52,8 @@ console.log('Is invalid JSON:', isInvalid); // 输出: false
 将 JSON 对象数组转换为 CSV 格式字符串。
 
 **参数**：
-- `data`：Array<Object> - 要转换的 JSON 对象数组
-- `columns`：Array<string> - CSV 列名列表，必须与数据对象中的属性名称相对应
+- `data`：Array&lt;Object&gt; - 要转换的 JSON 对象数组
+- `columns`：Array&lt;string&gt; - CSV 列名列表，必须与数据对象中的属性名称相对应
 - `delimiter`：string (可选) - 分隔符，默认为 ','
 
 **返回值**：
@@ -193,7 +194,7 @@ function validateJsonInput(input) {
 function exportToCsv(data, filename) {
   const columns = Object.keys(data[0] || {});
   const csv = DC.Json.jsonToCsv(data, columns);
-  
+
   // 创建下载链接
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);

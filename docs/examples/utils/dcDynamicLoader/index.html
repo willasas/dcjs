@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dcDynamicLoader 工具类示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        .example {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+        .info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        select {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .dependency-list {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f3e5f5;
+            border-radius: 4px;
+        }
+        .dependency-item {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: white;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dcDynamicLoader 工具类示例</h1>
+
+        <div class="section">
+            <h2>1. 基本用法</h2>
+            <div class="example">
+                <button onclick="initLoader()">初始化加载器</button>
+                <div class="result" id="initResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. 加载单个CSS文件</h2>
+            <div class="example">
+                <label>CSS URL: <input type="text" id="cssUrl" value="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"></label>
+                <button onclick="loadSingleCSS()">加载CSS</button>
+                <div class="result" id="cssResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. 加载单个JavaScript文件</h2>
+            <div class="example">
+                <label>JS URL: <input type="text" id="jsUrl" value="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></label>
+                <button onclick="loadSingleJS()">加载JS</button>
+                <div class="result" id="jsResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. 批量加载依赖</h2>
+            <div class="example">
+                <div class="dependency-list">
+                    <h3>依赖列表：</h3>
+                    <div class="dependency-item">Bootstrap CSS</div>
+                    <div class="dependency-item">jQuery JS</div>
+                    <div class="dependency-item">Bootstrap JS</div>
+                </div>
+                <button onclick="loadMultipleDependencies()">批量加载</button>
+                <div class="result" id="batchResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. 检查依赖状态</h2>
+            <div class="example">
+                <label>URL: <input type="text" id="checkUrl" value="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"></label>
+                <button onclick="checkDependencyStatus()">检查状态</button>
+                <div class="result" id="statusResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. 获取已加载的依赖</h2>
+            <div class="example">
+                <button onclick="getLoadedDependencies()">获取已加载依赖</button>
+                <div class="result" id="loadedResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. 卸载依赖</h2>
+            <div class="example">
+                <label>URL: <input type="text" id="unloadUrl" value="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"></label>
+                <button onclick="unloadDependency()">卸载依赖</button>
+                <div class="result" id="unloadResult"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. 自定义加载器选项</h2>
+            <div class="example">
+                <label>超时(ms): <input type="number" id="timeout" value="5000"></label>
+                <label>重试次数: <input type="number" id="retryCount" value="2"></label>
+                <label>详细日志: <input type="checkbox" id="verbose" checked></label>
+                <button onclick="createCustomLoader()">创建自定义加载器</button>
+                <div class="result" id="customResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../dist/dc.iife.js"></script>
+    <script>
+        let loader = null;
+
+        // 1. 初始化加载器
+        function initLoader() {
+            try {
+                loader = new DC.DynamicDependencyLoader({
+                    verbose: true
+                });
+                document.getElementById('initResult').innerHTML =
+                    '<div class="success">加载器初始化成功！</div>' +
+                    '<div>基础路径: ' + loader.getBasePath() + '</div>';
+            } catch (error) {
+                document.getElementById('initResult').innerHTML =
+                    '<div class="error">加载器初始化失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 2. 加载单个CSS文件
+        function loadSingleCSS() {
+            if (!loader) {
+                document.getElementById('cssResult').innerHTML =
+                    '<div class="error">请先初始化加载器</div>';
+                return;
+            }
+
+            const url = document.getElementById('cssUrl').value;
+            const resultElement = document.getElementById('cssResult');
+
+            resultElement.innerHTML = '<div class="info">开始加载CSS...</div>';
+
+            loader.loadCSS(url)
+                .then(() => {
+                    resultElement.innerHTML = '<div class="success">CSS加载成功！</div>';
+                })
+                .catch(error => {
+                    resultElement.innerHTML = '<div class="error">CSS加载失败: ' + error.message + '</div>';
+                });
+        }
+
+        // 3. 加载单个JavaScript文件
+        function loadSingleJS() {
+            if (!loader) {
+                document.getElementById('jsResult').innerHTML =
+                    '<div class="error">请先初始化加载器</div>';
+                return;
+            }
+
+            const url = document.getElementById('jsUrl').value;
+            const resultElement = document.getElementById('jsResult');
+
+            resultElement.innerHTML = '<div class="info">开始加载JavaScript...</div>';
+
+            loader.loadScript(url)
+                .then(() => {
+                    resultElement.innerHTML = '<div class="success">JavaScript加载成功！</div>';
+                    // 测试jQuery是否加载成功
+                    if (typeof $ !== 'undefined') {
+                        resultElement.innerHTML += '<div class="success">jQuery已成功加载，可以使用 $ 变量</div>';
+                    }
+                })
+                .catch(error => {
+                    resultElement.innerHTML = '<div class="error">JavaScript加载失败: ' + error.message + '</div>';
+                });
+        }
+
+        // 4. 批量加载依赖
+        function loadMultipleDependencies() {
+            if (!loader) {
+                document.getElementById('batchResult').innerHTML =
+                    '<div class="error">请先初始化加载器</div>';
+                return;
+            }
+
+            const dependencies = [
+                'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+                'https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js',
+                'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'
+            ];
+
+            const resultElement = document.getElementById('batchResult');
+            resultElement.innerHTML = '<div class="info">开始批量加载依赖...</div>';
+
+            loader.loadDependencies(dependencies)
+                .then(() => {
+                    resultElement.innerHTML = '<div class="success">所有依赖加载成功！</div>';
+                    // 测试是否加载成功
+                    if (typeof $ !== 'undefined') {
+                        resultElement.innerHTML += '<div class="success">jQuery已加载</div>';
+                    }
+                    if (typeof bootstrap !== 'undefined') {
+                        resultElement.innerHTML += '<div class="success">Bootstrap已加载</div>';
+                    }
+                })
+                .catch(error => {
+                    resultElement.innerHTML = '<div class="error">依赖加载失败: ' + error.message + '</div>';
+                });
+        }
+
+        // 5. 检查依赖状态
+        function checkDependencyStatus() {
+            if (!loader) {
+                document.getElementById('statusResult').innerHTML =
+                    '<div class="error">请先初始化加载器</div>';
+                return;
+            }
+
+            const url = document.getElementById('checkUrl').value;
+            const isLoaded = loader.isLoaded(url);
+
+            document.getElementById('statusResult').innerHTML =
+                '<div class="' + (isLoaded ? 'success' : 'info') + '">' +
+                (isLoaded ? '依赖已加载' : '依赖未加载') +
+                '</div>';
+        }
+
+        // 6. 获取已加载的依赖
+        function getLoadedDependencies() {
+            if (!loader) {
+                document.getElementById('loadedResult').innerHTML =
+                    '<div class="error">请先初始化加载器</div>';
+                return;
+            }
+
+            const loaded = loader.getLoadedDependencies();
+            let html = '<div class="info">已加载的依赖:</div>';
+
+            if (loaded.length === 0) {
+                html += '<div>暂无依赖</div>';
+            } else {
+                loaded.forEach((url, index) => {
+                    html += '<div>' + (index + 1) + '. ' + url + '</div>';
+                });
+            }
+
+            document.getElementById('loadedResult').innerHTML = html;
+        }
+
+        // 7. 卸载依赖
+        function unloadDependency() {
+            if (!loader) {
+                document.getElementById('unloadResult').innerHTML =
+                    '<div class="error">请先初始化加载器</div>';
+                return;
+            }
+
+            const url = document.getElementById('unloadUrl').value;
+
+            try {
+                loader.unload(url);
+                document.getElementById('unloadResult').innerHTML =
+                    '<div class="success">依赖卸载成功！</div>';
+            } catch (error) {
+                document.getElementById('unloadResult').innerHTML =
+                    '<div class="error">依赖卸载失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 8. 创建自定义加载器
+        function createCustomLoader() {
+            const timeout = parseInt(document.getElementById('timeout').value);
+            const retryCount = parseInt(document.getElementById('retryCount').value);
+            const verbose = document.getElementById('verbose').checked;
+
+            try {
+                const customLoader = new DC.DynamicDependencyLoader({
+                    timeout: timeout,
+                    retryCount: retryCount,
+                    verbose: verbose
+                });
+
+                document.getElementById('customResult').innerHTML =
+                    '<div class="success">自定义加载器创建成功！</div>' +
+                    '<div>超时设置: ' + timeout + 'ms</div>' +
+                    '<div>重试次数: ' + retryCount + '</div>' +
+                    '<div>详细日志: ' + (verbose ? '开启' : '关闭') + '</div>';
+            } catch (error) {
+                document.getElementById('customResult').innerHTML =
+                    '<div class="error">自定义加载器创建失败: ' + error.message + '</div>';
+            }
+        }
+
+        // 初始化
+        window.onload = function() {
+            initLoader();
+        };
+    </script>
+</body>
+</html>

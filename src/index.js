@@ -29,6 +29,8 @@ import './utils/sampleadapt'
 import './utils/dcDailyQuote' // 添加每日一言工具
 import './utils/dcScreenshot' // 添加截图工具
 import './utils/dcImageViewer' // 添加图片查看器工具
+import './utils/dcpicolor' // 添加颜色工具
+import './utils/dcStorage' // 添加存储工具
 
 // 导入所有组件模块，它们会自动注册到 window.DC 对象
 import './components/animate/dcanimator'
