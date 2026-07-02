@@ -225,43 +225,43 @@ DOM 元素操作工具类，提供元素选择、操作等功能。
 
 图片查看器工具类，提供图片查看功能。
 
-### DC.Media
+### `DC.Media`
 
 媒体处理工具类，提供音频、视频处理等功能。
 
-### DC.NetworkChecker
+### `DC.NetworkChecker`
 
 网络连接检测工具类，提供网络连接状态检测功能。
 
-### DC.Screenshot
+### `DC.Screenshot`
 
 截图工具类，提供网页截图功能。
 
-### DC.Search
+### `DC.Search`
 
 搜索工具类，提供搜索功能。
 
-### DC.StarSign
+### `DC.StarSign`
 
 星座工具类，提供星座相关功能。
 
-### DC.Storage
+### `DC.Storage`
 
 存储工具类，提供本地存储操作功能。
 
-### DC.Tags
+### `DC.Tags`
 
 标签管理工具类，提供标签操作功能。
 
-### DC.cookie
+### `DC.cookie`
 
 Cookie 操作工具类，提供 Cookie 读写功能。
 
-### DC.picolor
+### `DC.picolor`
 
 颜色处理工具类，提供颜色操作功能。
 
-### DC.ga
+### `DC.ga`
 
 Google Analytics 工具类，提供 GA 跟踪功能。
 
@@ -353,21 +353,21 @@ Google Analytics 工具类，提供 GA 跟踪功能。
 
 头部组件，提供页面头部功能。
 
-#### dcfooter
+#### `dcfooter`
 
 底部组件，提供页面底部功能。
 
-#### dcsidebar
+#### `dcsidebar`
 
 侧边栏组件，提供侧边栏布局功能。
 
-#### dcsidenav
+#### `dcsidenav`
 
 侧边导航组件，提供侧边导航布局功能。
 
 ### 功能组件
 
-#### dcanimator
+#### `dcanimator`
 
 动画组件，提供动画效果功能。
 
@@ -445,6 +445,7 @@ npm run test:all
 ```
 
 测试文件说明：
+
 - `test/all-tools.test.js` - 所有工具类的自动化测试
 - `test/all-tools-browser.test.js` - 浏览器环境下的测试
 - `test/all-tools-test.html` - 浏览器测试页面
