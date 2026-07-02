@@ -71,6 +71,7 @@ import './components/header/dcheader'
 import './components/icons/dciconlist'
 import './components/pager/dcpager'
 import './components/popup/dcpopup'
+import './components/dcmarquee/dcmarquee'
 
 // 各个工具类和组件已在各自文件中注册到 window.DC 对象
 // 此文件提供跨环境（浏览器、CommonJS、AMD）的兼容性支持
